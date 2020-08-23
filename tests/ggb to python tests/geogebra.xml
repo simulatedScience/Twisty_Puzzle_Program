@@ -1,0 +1,2295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<geogebra format="5.0" version="5.0.593.0" app="classic" platform="d" id="508d64c6-f685-4eff-8d79-0c316c7d00b2"  xsi:noNamespaceSchemaLocation="http://www.geogebra.org/apps/xsd/ggb.xsd" xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+<gui>
+	<window width="1938" height="1048" />
+	<perspectives>
+<perspective id="tmp">
+	<panes>
+		<pane location="" divider="0.12899896800825594" orientation="1" />
+		<pane location="1" divider="0.6130030959752322" orientation="1" />
+	</panes>
+	<views>
+		<view id="1" visible="false" inframe="false" stylebar="true" location="1,3,3" size="688" window="100,100,600,400" />
+		<view id="4" toolbar="0 || 2020 , 2021 , 2022 , 66 || 2001 , 2003 , 2002 , 2004 , 2005 || 2040 , 2041 , 2042 , 2044 , 2043" visible="false" inframe="false" stylebar="true" location="1,1" size="300" window="100,100,600,400" />
+		<view id="8" toolbar="1001 | 1002 | 1003  || 1005 | 1004 || 1006 | 1007 | 1010 || 1008 1009 || 66 68 || 6" visible="false" inframe="false" stylebar="false" location="1,3" size="300" window="100,100,600,400" />
+		<view id="4097" visible="true" inframe="false" stylebar="true" location="1,1" size="461" window="100,100,700,550" />
+		<view id="512" toolbar="0 | 1 501 5 19 , 67 | 2 15 45 18 , 7 37 | 514 3 9 , 13 44 , 47 | 16 51 | 551 550 11 ,  20 22 21 23 , 55 56 57 , 12 | 69 | 510 511 , 512 513 | 533 531 , 534 532 , 522 523 , 537 536 , 535 | 521 520 | 36 , 38 49 560 | 571 30 29 570 31 33 | 17 | 540 40 41 42 , 27 28 35 , 6 , 502" visible="true" inframe="false" stylebar="true" location="1,3" size="1188" window="100,100,600,400" />
+		<view id="2" visible="true" inframe="false" stylebar="true" location="3" size="250" window="100,100,600,400" />
+		<view id="16" visible="false" inframe="false" stylebar="false" location="1" size="150" window="50,50,500,500" />
+		<view id="32" visible="false" inframe="false" stylebar="true" location="1" size="150" window="50,50,500,500" />
+		<view id="64" toolbar="0" visible="false" inframe="false" stylebar="false" location="1" size="150" window="50,50,500,500" />
+		<view id="70" toolbar="0 || 2020 || 2021 || 2022" visible="false" inframe="false" stylebar="true" location="1" size="150" window="50,50,500,500" />
+	</views>
+	<toolbar show="true" items="0 39 73 62 | 1 501 67 , 5 19 , 72 75 76 | 2 15 45 , 18 65 , 7 37 | 4 3 8 9 , 13 44 , 58 , 47 | 16 51 64 , 70 | 10 34 53 11 , 24  20 22 , 21 23 | 55 56 57 , 12 | 36 46 , 38 49  50 , 71  14  68 | 30 29 54 32 31 33 | 25 17 26 60 52 61 | 40 41 42 , 27 28 35 , 6" position="1" help="false" />
+	<input show="true" cmd="true" top="algebra" />
+	<dockBar show="true" east="true" />
+</perspective>
+	</perspectives>
+	<labelingStyle  val="0"/>
+	<font  size="16"/>
+</gui>
+<euclidianView>
+	<viewNumber viewNo="1"/>
+	<size  width="688" height="838"/>
+	<coordSystem xZero="295.27509764677706" yZero="408.1196087665225" scale="24.90382006130337" yscale="24.903820061303076"/>
+	<evSettings axes="true" grid="true" gridIsBold="false" pointCapturing="3" rightAngleStyle="1" checkboxSize="26" gridType="3"/>
+	<bgColor r="255" g="255" b="255"/>
+	<axesColor r="0" g="0" b="0"/>
+	<gridColor r="192" g="192" b="192"/>
+	<lineStyle axes="1" grid="0"/>
+	<axis id="0" show="true" label="" unitLabel="" tickStyle="1" showNumbers="true"/>
+	<axis id="1" show="true" label="" unitLabel="" tickStyle="1" showNumbers="true"/>
+</euclidianView>
+<algebraView>
+	<mode val="1"/>
+</algebraView>
+<kernel>
+	<uses3D val="true"/>
+	<continuous val="false"/>
+	<usePathAndRegionParameters val="true"/>
+	<decimals val="3"/>
+	<angleUnit val="degree"/>
+	<algebraStyle val="0" spreadsheet="0"/>
+	<coordStyle val="0"/>
+</kernel>
+<tableview min="-2.0" max="2.0" step="1.0"/>
+<scripting blocked="false" disabled="false"/>
+<euclidianView3D>
+	<coordSystem xZero="0.29427444786040213" yZero="-0.1141816948931004" zZero="-0.4548198629633048" scale="197.41725557826885" xAngle="30.0" zAngle="-1613.0523741143247"/>
+	<evSettings axes="true" grid="false" gridIsBold="false" pointCapturing="3" rightAngleStyle="1" gridType="3"/>
+	<axis id="0" show="true" label="" unitLabel="" tickStyle="1" showNumbers="true"/>
+	<axis id="1" show="true" label="" unitLabel="" tickStyle="1" showNumbers="true"/>
+	<axis id="2" show="true" label="" unitLabel="" tickStyle="1" showNumbers="true"/>
+	<plate show="false"/>
+	<bgColor r="255" g="255" b="255"/>
+	<clipping use="false" show="false" size="1"/>
+	<projection type="0"/>
+</euclidianView3D>
+<construction title="" author="" date="">
+<element type="point3d" label="A">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="1.0" y="1.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="B">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="-1.0" y="-1.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="C">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="1.0" y="-1.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="D">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="1.0" y="1.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="E">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="1.0" y="-1.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="F">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="-1.0" y="1.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="G">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="-1.0" y="-1.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="H">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="-1.0" y="1.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="W4" exp="(0, 0, 1)" type="point"/>
+<element type="point3d" label="W4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="0.0" y="0.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="G1" exp="(1, 0, 0)" type="point"/>
+<element type="point3d" label="G1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="1.0" y="0.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="R9" exp="(0, 1, 0)" type="point"/>
+<element type="point3d" label="R9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="0.0" y="1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="B3" exp="(-1, 0, 0)" type="point"/>
+<element type="point3d" label="B3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="-1.0" y="0.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="O4" exp="(0, -1, 0)" type="point"/>
+<element type="point3d" label="O4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="0.0" y="-1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="Y2" exp="(0, 0, -1)" type="point"/>
+<element type="point3d" label="Y2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="0.0" y="0.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<expression label="P" exp="(-1, 0, -1)" type="point"/>
+<element type="point3d" label="P">
+	<show object="false" label="true" ev="4"/>
+	<objColor r="77" g="77" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<auxiliary val="true"/>
+	<coords x="-1.0" y="0.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="yAxis" a1="xAxis"/>
+	<output a0="S"/>
+</command>
+<element type="point" label="S">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="68" g="68" b="68" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<coords x="-0.0" y="-0.0" z="1.0"/>
+	<coordStyle style="cartesian3d"/>
+	<pointSize val="4"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Plane">
+	<input a0="E" a1="C" a2="H"/>
+	<output a0="p"/>
+</command>
+<element type="plane3d" label="p">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="99" g="219" b="219" alpha="0.5"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<coords x="4.0" y="4.0" z="0.0" w="-0.0"/>
+	<fading val="0.1"/>
+	<lineStyle thickness="0" type="0" typeHidden="1"/>
+</element>
+<command name="Plane">
+	<input a0="S" a1="A" a2="E"/>
+	<output a0="q"/>
+</command>
+<element type="plane3d" label="q">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="99" g="219" b="219" alpha="0.5"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<coords x="2.0" y="0.0" z="-2.0" w="0.0"/>
+	<fading val="0.1"/>
+	<lineStyle thickness="0" type="0" typeHidden="1"/>
+</element>
+<command name="AngularBisector">
+	<input a0="zAxis" a1="xAxis"/>
+	<output a0="j" a1="k"/>
+</command>
+<element type="line3d" label="j">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="2" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="0.0" ow="1.0" vx="1.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<element type="line3d" label="k">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="2" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="0.0" ow="1.0" vx="-1.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<element type="numeric" label="r">
+	<value val="0.3"/>
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="0" alpha="0.10000000149011612"/>
+	<layer val="0"/>
+	<labelMode val="1"/>
+	<slider min="-5" max="5" absoluteScreenLocation="true" width="200.0" x="30.0" y="50.0" fixed="false" horizontal="true" showAlgebra="true"/>
+	<lineStyle thickness="10" type="0" typeHidden="1"/>
+	<animation speed="1" type="0" playing="false"/>
+</element>
+<command name="Circle">
+	<input a0="P" a1="r" a2="j"/>
+	<output a0="c"/>
+</command>
+<element type="conic3d" label="c">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Segment">
+	<input a0="Y2" a1="B3"/>
+	<output a0="f"/>
+</command>
+<element type="segment3d" label="f">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Line">
+	<input a0="P" a1="f"/>
+	<output a0="g"/>
+</command>
+<element type="line3d" label="g">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="-1.0" oy="0.0" oz="-1.0" ow="1.0" vx="-0.7071067811865476" vy="0.0" vz="0.7071067811865476" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Intersect">
+	<input a0="g" a1="c" a2="1"/>
+	<output a0="B4"/>
+</command>
+<element type="point3d" label="B4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.2121320343559643" y="0.0" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Rotate">
+	<input a0="B4" a1="(-(60°))" a2="j"/>
+	<output a0="B5"/>
+</command>
+<element type="point3d" label="B5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779821" y="0.2598076211353316" z="-0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Rotate">
+	<input a0="B5" a1="(-(60°))" a2="j"/>
+	<output a0="Y3"/>
+</command>
+<element type="point3d" label="Y3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220177" y="0.25980762113533173" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Rotate">
+	<input a0="Y3" a1="(-(60°))" a2="j"/>
+	<output a0="Y4"/>
+</command>
+<element type="point3d" label="Y4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440355" y="1.6653345369377348E-16" z="-1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Rotate">
+	<input a0="Y4" a1="(-(60°))" a2="j"/>
+	<output a0="Y6"/>
+</command>
+<element type="point3d" label="Y6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220174" y="-0.2598076211353315" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Rotate">
+	<input a0="Y6" a1="(-(60°))" a2="j"/>
+	<output a0="B8"/>
+</command>
+<element type="point3d" label="B8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779817" y="-0.25980762113533173" z="-0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y3" a1="S"/>
+	<output a0="W5"/>
+</command>
+<element type="point3d" label="W5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220177" y="-0.25980762113533173" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B5" a1="S"/>
+	<output a0="G3"/>
+</command>
+<element type="point3d" label="G3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779821" y="-0.2598076211353316" z="0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B4" a1="S"/>
+	<output a0="G4"/>
+</command>
+<element type="point3d" label="G4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.2121320343559643" y="-0.0" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B8" a1="S"/>
+	<output a0="G6"/>
+</command>
+<element type="point3d" label="G6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779817" y="0.25980762113533173" z="0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y6" a1="S"/>
+	<output a0="W8"/>
+</command>
+<element type="point3d" label="W8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220174" y="0.2598076211353315" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y4" a1="S"/>
+	<output a0="W9"/>
+</command>
+<element type="point3d" label="W9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440355" y="-1.6653345369377348E-16" z="1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B4" a1="xAxis"/>
+	<output a0="B7"/>
+</command>
+<element type="point3d" label="B7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.2121320343559643" y="0.0" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B8" a1="xAxis"/>
+	<output a0="B9"/>
+</command>
+<element type="point3d" label="B9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779817" y="0.25980762113533173" z="0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B5" a1="xAxis"/>
+	<output a0="B6"/>
+</command>
+<element type="point3d" label="B6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779821" y="-0.2598076211353316" z="0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y3" a1="xAxis"/>
+	<output a0="W6"/>
+</command>
+<element type="point3d" label="W6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220177" y="-0.25980762113533173" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y4" a1="xAxis"/>
+	<output a0="W11"/>
+</command>
+<element type="point3d" label="W11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440355" y="-1.6653345369377348E-16" z="1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y6" a1="xAxis"/>
+	<output a0="W7"/>
+</command>
+<element type="point3d" label="W7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220174" y="0.2598076211353315" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G3" a1="xAxis"/>
+	<output a0="G12"/>
+</command>
+<element type="point3d" label="G12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779821" y="0.2598076211353316" z="-0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G4" a1="xAxis"/>
+	<output a0="G13"/>
+</command>
+<element type="point3d" label="G13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.2121320343559643" y="0.0" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G6" a1="xAxis"/>
+	<output a0="G7"/>
+</command>
+<element type="point3d" label="G7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779817" y="-0.25980762113533173" z="-0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W5" a1="xAxis"/>
+	<output a0="Y11"/>
+</command>
+<element type="point3d" label="Y11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220177" y="0.25980762113533173" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W9" a1="xAxis"/>
+	<output a0="Y9"/>
+</command>
+<element type="point3d" label="Y9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440355" y="1.6653345369377348E-16" z="-1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W8" a1="xAxis"/>
+	<output a0="Y12"/>
+</command>
+<element type="point3d" label="Y12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220174" y="-0.2598076211353315" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W5" a1="p"/>
+	<output a0="W13"/>
+</command>
+<element type="point3d" label="W13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.25980762113533185" y="-0.8939339828220179" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W9" a1="p"/>
+	<output a0="W10"/>
+</command>
+<element type="point3d" label="W10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1102230246251565E-16" y="-0.7878679656440355" z="1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W8" a1="p"/>
+	<output a0="W1"/>
+</command>
+<element type="point3d" label="W1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.2598076211353315" y="-0.8939339828220174" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G6" a1="p"/>
+	<output a0="O9"/>
+</command>
+<element type="point3d" label="O9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.25980762113533173" y="-1.1060660171779817" z="0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G4" a1="p"/>
+	<output a0="O1"/>
+</command>
+<element type="point3d" label="O1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-1.2121320343559643" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G3" a1="p"/>
+	<output a0="O2"/>
+</command>
+<element type="point3d" label="O2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.2598076211353315" y="-1.1060660171779824" z="0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G13" a1="p"/>
+	<output a0="O12"/>
+</command>
+<element type="point3d" label="O12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-1.2121320343559643" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G7" a1="p"/>
+	<output a0="O3"/>
+</command>
+<element type="point3d" label="O3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.25980762113533173" y="-1.1060660171779817" z="-0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y12" a1="p"/>
+	<output a0="Y7"/>
+</command>
+<element type="point3d" label="Y7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.2598076211353315" y="-0.8939339828220174" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y9" a1="p"/>
+	<output a0="Y10"/>
+</command>
+<element type="point3d" label="Y10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-3.3306690738754696E-16" y="-0.7878679656440357" z="-1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="G12" a1="p"/>
+	<output a0="O10"/>
+</command>
+<element type="point3d" label="O10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.25980762113533173" y="-1.1060660171779824" z="-0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y11" a1="p"/>
+	<output a0="Y13"/>
+</command>
+<element type="point3d" label="Y13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.25980762113533185" y="-0.8939339828220179" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W7" a1="p"/>
+	<output a0="W2"/>
+</command>
+<element type="point3d" label="W2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.2598076211353315" y="0.8939339828220174" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W11" a1="p"/>
+	<output a0="W12"/>
+</command>
+<element type="point3d" label="W12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="2.220446049250313E-16" y="0.7878679656440355" z="1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W6" a1="p"/>
+	<output a0="W3"/>
+</command>
+<element type="point3d" label="W3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.25980762113533185" y="0.8939339828220179" z="1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B6" a1="p"/>
+	<output a0="R3"/>
+</command>
+<element type="point3d" label="R3">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.25980762113533173" y="1.1060660171779824" z="0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B7" a1="p"/>
+	<output a0="R4"/>
+</command>
+<element type="point3d" label="R4">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="1.2121320343559643" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B9" a1="p"/>
+	<output a0="R5"/>
+</command>
+<element type="point3d" label="R5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.2598076211353313" y="1.1060660171779821" z="0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B4" a1="p"/>
+	<output a0="R7"/>
+</command>
+<element type="point3d" label="R7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="1.2121320343559643" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B5" a1="p"/>
+	<output a0="R6"/>
+</command>
+<element type="point3d" label="R6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.2598076211353315" y="1.1060660171779824" z="-0.8939339828220177" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y3" a1="p"/>
+	<output a0="Y5"/>
+</command>
+<element type="point3d" label="Y5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.2598076211353323" y="0.8939339828220174" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="B8" a1="p"/>
+	<output a0="R8"/>
+</command>
+<element type="point3d" label="R8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.25980762113533173" y="1.1060660171779817" z="-0.8939339828220176" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y6" a1="p"/>
+	<output a0="Y8"/>
+</command>
+<element type="point3d" label="Y8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.2598076211353315" y="0.8939339828220174" z="-1.106066017177982" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y4" a1="p"/>
+	<output a0="Y1"/>
+</command>
+<element type="point3d" label="Y1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-4.440892098500626E-16" y="0.7878679656440353" z="-1.212132034355964" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W13" a1="q"/>
+	<output a0="G2"/>
+</command>
+<element type="point3d" label="G2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.106066017177982" y="-0.8939339828220179" z="0.25980762113533196" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O2" a1="q"/>
+	<output a0="O5"/>
+</command>
+<element type="point3d" label="O5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220176" y="-1.1060660171779824" z="0.2598076211353314" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O1" a1="q"/>
+	<output a0="O6"/>
+</command>
+<element type="point3d" label="O6">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440355" y="-1.2121320343559643" z="2.220446049250313E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O9" a1="q"/>
+	<output a0="O8"/>
+</command>
+<element type="point3d" label="O8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220176" y="-1.1060660171779817" z="-0.25980762113533173" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W1" a1="q"/>
+	<output a0="G5"/>
+</command>
+<element type="point3d" label="G5">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779817" y="-0.8939339828220174" z="-0.2598076211353313" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W10" a1="q"/>
+	<output a0="G8"/>
+</command>
+<element type="point3d" label="G8">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.2121320343559638" y="-0.7878679656440355" z="2.220446049250313E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W12" a1="q"/>
+	<output a0="G10"/>
+</command>
+<element type="point3d" label="G10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.2121320343559643" y="0.7878679656440355" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W3" a1="q"/>
+	<output a0="G9"/>
+</command>
+<element type="point3d" label="G9">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.106066017177982" y="0.8939339828220179" z="0.2598076211353315" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R3" a1="q"/>
+	<output a0="R10"/>
+</command>
+<element type="point3d" label="R10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220181" y="1.1060660171779824" z="0.2598076211353314" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="W2" a1="q"/>
+	<output a0="G11"/>
+</command>
+<element type="point3d" label="G11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.1060660171779821" y="0.8939339828220174" z="-0.25980762113533173" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R5" a1="q"/>
+	<output a0="R11"/>
+</command>
+<element type="point3d" label="R11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.8939339828220179" y="1.1060660171779821" z="-0.2598076211353315" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R4" a1="q"/>
+	<output a0="R12"/>
+</command>
+<element type="point3d" label="R12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440358" y="1.2121320343559643" z="-1.1102230246251565E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y8" a1="q"/>
+	<output a0="B12"/>
+</command>
+<element type="point3d" label="B12">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779817" y="0.8939339828220174" z="0.2598076211353313" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R8" a1="q"/>
+	<output a0="R13"/>
+</command>
+<element type="point3d" label="R13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220176" y="1.1060660171779817" z="0.25980762113533173" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R7" a1="q"/>
+	<output a0="R1"/>
+</command>
+<element type="point3d" label="R1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440355" y="1.2121320343559643" z="-2.220446049250313E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="R6" a1="q"/>
+	<output a0="R2"/>
+</command>
+<element type="point3d" label="R2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220176" y="1.1060660171779824" z="-0.2598076211353314" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y1" a1="q"/>
+	<output a0="B1"/>
+</command>
+<element type="point3d" label="B1">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.212132034355964" y="0.7878679656440353" z="-4.440892098500626E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y5" a1="q"/>
+	<output a0="B2"/>
+</command>
+<element type="point3d" label="B2">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.106066017177982" y="0.8939339828220174" z="-0.2598076211353324" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y7" a1="q"/>
+	<output a0="B13"/>
+</command>
+<element type="point3d" label="B13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.1060660171779821" y="-0.8939339828220174" z="0.25980762113533173" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y10" a1="q"/>
+	<output a0="B10"/>
+</command>
+<element type="point3d" label="B10">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.2121320343559647" y="-0.7878679656440357" z="2.220446049250313E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="Y13" a1="q"/>
+	<output a0="B11"/>
+</command>
+<element type="point3d" label="B11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.106066017177982" y="-0.8939339828220179" z="-0.2598076211353315" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O10" a1="q"/>
+	<output a0="O11"/>
+</command>
+<element type="point3d" label="O11">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220181" y="-1.1060660171779824" z="-0.2598076211353314" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O12" a1="q"/>
+	<output a0="O13"/>
+</command>
+<element type="point3d" label="O13">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440358" y="-1.2121320343559643" z="1.1102230246251565E-16" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Mirror">
+	<input a0="O3" a1="q"/>
+	<output a0="O7"/>
+</command>
+<element type="point3d" label="O7">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.8939339828220176" y="-1.1060660171779817" z="0.25980762113533173" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Line">
+	<input a0="B3" a1="zAxis"/>
+	<output a0="h"/>
+</command>
+<element type="line3d" label="h">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="-1.0" oy="0.0" oz="0.0" ow="1.0" vx="0.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="O4" a1="xAxis"/>
+	<output a0="i"/>
+</command>
+<element type="line3d" label="i">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="-1.0" oz="0.0" ow="1.0" vx="1.0" vy="-0.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="O4" a1="zAxis"/>
+	<output a0="l"/>
+</command>
+<element type="line3d" label="l">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="-1.0" oz="0.0" ow="1.0" vx="0.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="R9" a1="zAxis"/>
+	<output a0="m"/>
+</command>
+<element type="line3d" label="m">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="1.0" oz="0.0" ow="1.0" vx="0.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="R9" a1="xAxis"/>
+	<output a0="n"/>
+</command>
+<element type="line3d" label="n">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="1.0" oz="0.0" ow="1.0" vx="1.0" vy="-0.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="B3" a1="yAxis"/>
+	<output a0="s"/>
+</command>
+<element type="line3d" label="s">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="-1.0" oy="0.0" oz="0.0" ow="1.0" vx="0.0" vy="1.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="G1" a1="zAxis"/>
+	<output a0="a"/>
+</command>
+<element type="line3d" label="a">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="1.0" oy="0.0" oz="0.0" ow="1.0" vx="0.0" vy="0.0" vz="1.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="G1" a1="yAxis"/>
+	<output a0="t"/>
+</command>
+<element type="line3d" label="t">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="1.0" oy="0.0" oz="0.0" ow="1.0" vx="0.0" vy="1.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="W4" a1="xAxis"/>
+	<output a0="b"/>
+</command>
+<element type="line3d" label="b">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="1.0" ow="1.0" vx="1.0" vy="-0.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="W4" a1="yAxis"/>
+	<output a0="d"/>
+</command>
+<element type="line3d" label="d">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="1.0" ow="1.0" vx="0.0" vy="1.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="Y2" a1="yAxis"/>
+	<output a0="e"/>
+</command>
+<element type="line3d" label="e">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="-1.0" ow="1.0" vx="0.0" vy="1.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Line">
+	<input a0="Y2" a1="xAxis"/>
+	<output a0="f_1"/>
+</command>
+<element type="line3d" label="f_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<coords ox="0.0" oy="0.0" oz="-1.0" ow="1.0" vx="1.0" vy="-0.0" vz="0.0" vw="0.0"/>
+	<eqnStyle style="parametric" parameter="λ"/>
+</element>
+<command name="Circle">
+	<input a0="Y2" a1="r" a2="zAxis"/>
+	<output a0="c_1"/>
+</command>
+<element type="conic3d" label="c_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Circle">
+	<input a0="B3" a1="r" a2="xAxis"/>
+	<output a0="d_1"/>
+</command>
+<element type="conic3d" label="d_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Circle">
+	<input a0="G1" a1="r" a2="xAxis"/>
+	<output a0="e_1"/>
+</command>
+<element type="conic3d" label="e_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Circle">
+	<input a0="W4" a1="r" a2="zAxis"/>
+	<output a0="g_1"/>
+</command>
+<element type="conic3d" label="g_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Circle">
+	<input a0="O4" a1="r" a2="yAxis"/>
+	<output a0="h_1"/>
+</command>
+<element type="conic3d" label="h_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Circle">
+	<input a0="R9" a1="r" a2="yAxis"/>
+	<output a0="k_1"/>
+</command>
+<element type="conic3d" label="k_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="1.0" x1="-0.0" y1="1.0" z1="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="-0.09" A3="0.0" A4="-0.0" A5="-0.0"/>
+	<eqnStyle style="parametric"/>
+</element>
+<command name="Intersect">
+	<input a0="a" a1="e_1" a2="1"/>
+	<output a0="G14"/>
+</command>
+<element type="point3d" label="G14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="0.0" z="0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="t" a1="e_1" a2="1"/>
+	<output a0="G15"/>
+</command>
+<element type="point3d" label="G15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="0.3" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="a" a1="e_1" a2="2"/>
+	<output a0="G16"/>
+</command>
+<element type="point3d" label="G16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="0.0" z="-0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="t" a1="e_1" a2="2"/>
+	<output a0="G17"/>
+</command>
+<element type="point3d" label="G17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="-0.3" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="m" a1="k_1" a2="1"/>
+	<output a0="R14"/>
+</command>
+<element type="point3d" label="R14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="1.0" z="0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="n" a1="k_1" a2="2"/>
+	<output a0="R15"/>
+</command>
+<element type="point3d" label="R15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.3" y="1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="m" a1="k_1" a2="2"/>
+	<output a0="R16"/>
+</command>
+<element type="point3d" label="R16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="1.0" z="-0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="n" a1="k_1" a2="1"/>
+	<output a0="R17"/>
+</command>
+<element type="point3d" label="R17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.3" y="1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="d" a1="g_1"/>
+	<output a0="W14" a1="W15"/>
+</command>
+<element type="point3d" label="W14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="0.3" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="W15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-0.3" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="b" a1="g_1"/>
+	<output a0="W16" a1="W17"/>
+</command>
+<element type="point3d" label="W16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.3" y="0.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="W17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.3" y="0.0" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="e" a1="c_1"/>
+	<output a0="Y14" a1="Y15"/>
+</command>
+<element type="point3d" label="Y14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="0.3" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="Y15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-0.3" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="f_1" a1="c_1"/>
+	<output a0="Y16" a1="Y17"/>
+</command>
+<element type="point3d" label="Y16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.3" y="0.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="Y17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.3" y="0.0" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="h" a1="d_1"/>
+	<output a0="B15" a1="B14"/>
+</command>
+<element type="point3d" label="B15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="0.0" z="0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="B14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="0.0" z="-0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="s" a1="d_1"/>
+	<output a0="B16" a1="B17"/>
+</command>
+<element type="point3d" label="B16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="0.3" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="B17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="-0.3" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="i" a1="h_1"/>
+	<output a0="O14" a1="O15"/>
+</command>
+<element type="point3d" label="O14">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.3" y="-1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="O15">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.3" y="-1.0" z="0.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="l" a1="h_1"/>
+	<output a0="O16" a1="O17"/>
+</command>
+<element type="point3d" label="O16">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-1.0" z="0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<element type="point3d" label="O17">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.0" y="-1.0" z="-0.3" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Sphere">
+	<input a0="A" a1="r"/>
+	<output a0="o"/>
+</command>
+<element type="quadric" label="o">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="-1.0" A8="-1.0" A9="-1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="E" a1="r"/>
+	<output a0="u"/>
+</command>
+<element type="quadric" label="u">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="-1.0" A8="1.0" A9="-1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="C" a1="r"/>
+	<output a0="v"/>
+</command>
+<element type="quadric" label="v">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="-1.0" A8="1.0" A9="1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="F" a1="r"/>
+	<output a0="w"/>
+</command>
+<element type="quadric" label="w">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="1.0" A8="-1.0" A9="-1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="H" a1="r"/>
+	<output a0="a_1"/>
+</command>
+<element type="quadric" label="a_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="1.0" A8="-1.0" A9="1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="B" a1="r"/>
+	<output a0="b_1"/>
+</command>
+<element type="quadric" label="b_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="1.0" A8="1.0" A9="1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="G" a1="r"/>
+	<output a0="i_1"/>
+</command>
+<element type="quadric" label="i_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="1.0" A8="1.0" A9="-1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Sphere">
+	<input a0="D" a1="r"/>
+	<output a0="j_1"/>
+</command>
+<element type="quadric" label="j_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="211" g="47" b="47" alpha="0.6499999761581421"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<eigenvectors  x0="1.0" y0="0.0" z0="0.0" x1="0.0" y1="1.0" z1="0.0" x2="0.0" y2="0.0" z2="1.0"/>
+	<matrix A0="1.0" A1="1.0" A2="1.0" A3="2.91" A4="0.0" A5="0.0" A6="0.0" A7="-1.0" A8="-1.0" A9="1.0"/>
+	<eqnStyle style="specific"/>
+</element>
+<command name="Segment">
+	<input a0="G" a1="C"/>
+	<output a0="l_1"/>
+</command>
+<element type="segment3d" label="l_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="B" a1="E"/>
+	<output a0="m_1"/>
+</command>
+<element type="segment3d" label="m_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="E" a1="F"/>
+	<output a0="n_1"/>
+</command>
+<element type="segment3d" label="n_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="A" a1="G"/>
+	<output a0="p_1"/>
+</command>
+<element type="segment3d" label="p_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="G" a1="H"/>
+	<output a0="q_1"/>
+</command>
+<element type="segment3d" label="q_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="H" a1="C"/>
+	<output a0="r_1"/>
+</command>
+<element type="segment3d" label="r_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="C" a1="A"/>
+	<output a0="s_1"/>
+</command>
+<element type="segment3d" label="s_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="A" a1="H"/>
+	<output a0="t_1"/>
+</command>
+<element type="segment3d" label="t_1">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="F" a1="B"/>
+	<output a0="f_2"/>
+</command>
+<element type="segment3d" label="f_2">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="B" a1="D"/>
+	<output a0="g_2"/>
+</command>
+<element type="segment3d" label="g_2">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="D" a1="E"/>
+	<output a0="h_2"/>
+</command>
+<element type="segment3d" label="h_2">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Segment">
+	<input a0="D" a1="F"/>
+	<output a0="i_2"/>
+</command>
+<element type="segment3d" label="i_2">
+	<show object="false" label="false" ev="4"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<auxiliary val="true"/>
+	<lineStyle thickness="5" type="0" typeHidden="1"/>
+	<outlyingIntersections val="false"/>
+	<keepTypeOnTransform val="true"/>
+</element>
+<command name="Intersect">
+	<input a0="p_1" a1="i_1"/>
+	<output a0="W18" a1=""/>
+</command>
+<element type="point3d" label="W18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440357" y="-0.7878679656440357" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="q_1" a1="i_1"/>
+	<output a0="B21" a1=""/>
+</command>
+<element type="point3d" label="B21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="-0.7878679656440359" z="0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="m_1" a1="u"/>
+	<output a0="O19" a1=""/>
+</command>
+<element type="point3d" label="O19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440357" y="-1.0" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="h_2" a1="u"/>
+	<output a0="G18" a1=""/>
+</command>
+<element type="point3d" label="G18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="-0.7878679656440357" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="n_1" a1="u"/>
+	<output a0="W19" a1=""/>
+</command>
+<element type="point3d" label="W19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440359" y="-0.7878679656440359" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="l_1" a1="i_1"/>
+	<output a0="O20" a1=""/>
+</command>
+<element type="point3d" label="O20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440359" y="-1.0" z="0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="m_1" a1="b_1"/>
+	<output a0="O21" a1=""/>
+</command>
+<element type="point3d" label="O21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440359" y="-1.0" z="-0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="f_2" a1="b_1"/>
+	<output a0="B18" a1=""/>
+</command>
+<element type="point3d" label="B18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="-0.7878679656440357" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="g_2" a1="b_1"/>
+	<output a0="Y18" a1=""/>
+</command>
+<element type="point3d" label="Y18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440359" y="-0.7878679656440359" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="r_1" a1="a_1"/>
+	<output a0="Y19" a1=""/>
+</command>
+<element type="point3d" label="Y19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440359" y="0.7878679656440359" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="q_1" a1="a_1"/>
+	<output a0="B19" a1=""/>
+</command>
+<element type="point3d" label="B19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="0.7878679656440357" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="t_1" a1="a_1"/>
+	<output a0="R21" a1=""/>
+</command>
+<element type="point3d" label="R21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440357" y="1.0" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="g_2" a1="j_1"/>
+	<output a0="Y20" a1=""/>
+</command>
+<element type="point3d" label="Y20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440357" y="0.7878679656440357" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="i_2" a1="j_1"/>
+	<output a0="R20" a1=""/>
+</command>
+<element type="point3d" label="R20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440359" y="1.0" z="-0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="h_2" a1="j_1"/>
+	<output a0="G20" a1=""/>
+</command>
+<element type="point3d" label="G20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="0.7878679656440359" z="-0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="i_2" a1="w"/>
+	<output a0="R18" a1=""/>
+</command>
+<element type="point3d" label="R18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440357" y="1.0" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="f_2" a1="w"/>
+	<output a0="B20" a1=""/>
+</command>
+<element type="point3d" label="B20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="51" g="51" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-1.0" y="0.7878679656440359" z="0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="n_1" a1="w"/>
+	<output a0="W21" a1=""/>
+</command>
+<element type="point3d" label="W21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-0.7878679656440357" y="0.7878679656440357" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="s_1" a1="o"/>
+	<output a0="G19" a1=""/>
+</command>
+<element type="point3d" label="G19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="0.7878679656440357" z="0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="t_1" a1="o"/>
+	<output a0="R19" a1=""/>
+</command>
+<element type="point3d" label="R19">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440359" y="1.0" z="0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="p_1" a1="o"/>
+	<output a0="W20" a1=""/>
+</command>
+<element type="point3d" label="W20">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="224" g="224" b="224" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440359" y="0.7878679656440359" z="1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="r_1" a1="v"/>
+	<output a0="Y21" a1=""/>
+</command>
+<element type="point3d" label="Y21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="215" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440357" y="-0.7878679656440357" z="-1.0" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="s_1" a1="v"/>
+	<output a0="G21" a1=""/>
+</command>
+<element type="point3d" label="G21">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="102" g="204" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="1.0" y="-0.7878679656440359" z="-0.7878679656440359" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+<command name="Intersect">
+	<input a0="l_1" a1="v"/>
+	<output a0="O18" a1=""/>
+</command>
+<element type="point3d" label="O18">
+	<show object="true" label="false" ev="4"/>
+	<objColor r="255" g="127" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="0.7878679656440357" y="-1.0" z="-0.7878679656440357" w="1.0"/>
+	<pointSize val="5"/>
+</element>
+</construction>
+</geogebra>

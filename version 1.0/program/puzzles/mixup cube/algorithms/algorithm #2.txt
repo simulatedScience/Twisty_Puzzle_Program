@@ -1,0 +1,3 @@
+rotate front right and top back edge by 180°
+#########################
+110 * (r' t' r t)
