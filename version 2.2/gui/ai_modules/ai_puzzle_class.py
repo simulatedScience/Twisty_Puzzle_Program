@@ -1,5 +1,6 @@
 import random
 import os
+import pickle
 from math import ceil
 from copy import deepcopy
 from .twisty_puzzle_model import scramble, perform_action
@@ -123,9 +124,9 @@ class puzzle_ai():
         print("final exploration rate:", exploration_rate)
         print("final scramble moves:", max_scramble_moves)
         print(f"considered states of the puzzle:", len(self.Q_table))
-        if len(self.Q_table) > 0:
+        if num_episodes > 0:
             self.export_Q_table()
-        print("saved Q_table")
+            print("saved Q_table")
 
         return games, solved_hist, increased_difficulties, explo_rates
 
@@ -345,13 +346,14 @@ class puzzle_ai():
         """
         write the given Q-table into a file
         """
-        with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "w") as file:
-            file.write("{\n")
-            for key, value in self.Q_table.items():
-                file.write(str(key) + ":" + str(value) + ",\n")
-            file.write("}")
+        with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "pickle_Q_table"), "wb") as file:
+            pickle.dump(self.Q_table, file, protocol=4)
 
 
-    def import_q_table(self, filename="Q_table.txt"):
-        with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "r") as file:
-            self.Q_table = eval(file.read())
+    def import_q_table(self, filename="pickle_Q_table"):
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "rb") as file:
+                self.Q_table = pickle.load(file)
+        except FileNotFoundError:
+            with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "Q_table.txt"), "r") as file:
+                self.Q_table = eval(file.read())
