@@ -156,11 +156,17 @@ class Twisty_Puzzle():
         """
         self.movecreator_mode = False
         try:
+            self.canvas.unbind("mousedown", self.on_click_function)
+            del(self.on_click_function)
+        except AttributeError:
+            pass
+        try:
             for arrow in self.active_arrows: #hide all arrows showing the move
                 arrow.visible = False
             del(self.active_arrows)
         except AttributeError:
             pass
+        # save move
         self.moves[self.active_move_name] = deepcopy(self.active_move_cycles)
 
         print(f"saved move {colored(self.active_move_name, arg_color)}.")
@@ -170,6 +176,10 @@ class Twisty_Puzzle():
             self.active_move_name = self.active_move_name[:-1] \
                 if "'" == self.active_move_name[-1] else self.active_move_name + "'"
             self.end_movecreation(arg_color=arg_color, add_inverse=False) # add inverse move
+        else:
+            # cleanup temporary variables
+            del(self.active_move_cycles)
+            del(self.active_move_name)
 
 
     def inverse_cycles(self, cycle_list):
@@ -215,7 +225,8 @@ class Twisty_Puzzle():
             puzzle_name - (str) - name of the puzzle
                 must not include spaces or other invalid characters for filenames
         """
-        self.PUZZLE_NAME = puzzle_name
+        if puzzle_name != '':
+            self.PUZZLE_NAME = puzzle_name
         save_to_xml(self)
 
 
@@ -276,12 +287,17 @@ class Twisty_Puzzle():
             self.print_move(movename,
                            arg_color=arg_color)
 
+        print("\nThe following moves are availiable: ")
+        for movename in list(self.moves.keys())[:-1]:
+            print(colored(movename, arg_color), end=", ")
+        print(colored(list(self.moves.keys())[-1], arg_color))
 
     def print_move(self, move_name, arg_color="#0066ff"):
         """
         print the given move
         """
-        print(f"{colored(move_name, arg_color)} is defined by the cycles", self.moves[move_name])
+        move_str = [tuple(cycle) for cycle in self.moves[move_name]]
+        print(f"{colored(move_name, arg_color)} =", move_str)
 
 
     def train_q_learning(self, num_episodes=None, max_moves=None, learning_rate=None, discount_factor=None, base_exploration_rate=None, keep_Q_table=True):
@@ -326,7 +342,7 @@ class Twisty_Puzzle():
                 print(f"solved the puzzle after {colored(str(n), arg_color)} moves:")
                 print(f"{colored(solve_moves[:-1], arg_color)}")
                 break
-            if len(set(last_moves[-10:])) == 1:
+            if len(set(last_moves[-10:])) == 1 and len(last_moves) > 5:
                 ai_move = self.ai_q_class.choose_Q_action(tuple(ai_state), exploration_rate=0.5)
                 print("detected loop")
             else:
