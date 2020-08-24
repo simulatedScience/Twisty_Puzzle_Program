@@ -1,3 +1,5 @@
-*.pyc
 Q_table.txt
-pickle_Q_table
+
+pickle_Q_table*
+
+*.pyc

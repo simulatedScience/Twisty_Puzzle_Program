@@ -38,6 +38,8 @@ def main_interaction():
         - 'closepuzzle'                - close the current puzzle animation
         - 'sleeptime' [time]           - change the sleep time to change animation speed (default: 5e-3)
         - 'scramble' [max_moves]       - scramble the puzzle randomly
+        - 'editpoints'                 - enter point color editing mode
+        - 'endeditpoints'              - exit point color editing mode
     """
     command_color = "#ff8800"
     argument_color = "#5588ff"
@@ -72,7 +74,9 @@ def main_interaction():
                         "train_q": interface_train_Q,
                         "move_q": interface_move_Q,
                         "solve_q": interface_solve_Q,
-                        "plot": interface_plot_success}
+                        "plot": interface_plot_success,
+                        "editpoints": interface_start_point_edit,
+                        "endeditpoints": interface_end_point_edit}
 
         if validate_command(command_dict, user_input):
             run_command(command_dict, user_input, puzzle,
@@ -93,9 +97,9 @@ def validate_command(command_dict, user_input):
     """
     input_list = user_input.split(" ")
 
-    if not input_list[0].lower() in command_dict.keys():
-        return False
-    return True
+    if input_list[0].lower() in command_dict.keys():
+        return True
+    return False
 
 
 def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
@@ -125,19 +129,16 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "train_q",
                           "plot"]
     if command in commands_with_args:
-        try:
-            user_arguments = user_input[len(command)+1:]
-            print(
-                f"executing {colored(command, command_color)} {colored(user_arguments, arg_color)} ...")
-            command_dict[command](user_arguments,
-                                puzzle,
-                                command_color=command_color,
-                                arg_color=arg_color,
-                                error_color=error_color)
-        except IndexError:
-            print(
-                f"{colored('Error:', error_color)} {colored(command, command_color)} requires additional options.")
+        user_arguments = user_input[len(command)+1:]
+        print(
+            f"executing {colored(command, command_color)} {colored(user_arguments, arg_color)} ...")
+        command_dict[command](user_arguments,
+                            puzzle,
+                            command_color=command_color,
+                            arg_color=arg_color,
+                            error_color=error_color)
     else:
+        print(f"executing {colored(command, command_color)} ...")
         command_dict[command](puzzle,
                               command_color=command_color,
                               arg_color=arg_color,
@@ -231,6 +232,11 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
 
     print(f"- {colored('plot', command_color)} [{colored('batch_size', arg_color)}]          \
 - plot the success of the last q-training")
+
+    print(f"- {colored('editpoints', command_color)}                 \
+- enter point color editing mode")
+    print(f"- {colored('endeditpoints', command_color)}              \
+- exit point color editing mode")
 
 if __name__ == "__main__":
     main_interaction()

@@ -90,6 +90,8 @@ def interface_rename(user_input, puzzle, command_color="#ff8800", arg_color="#55
     -------
         user_input - (str) - two movenames, old and new seperated by a space
     """
+    if not " " in user_input:
+        print(f"{colored('Error:', error_color)} {colored('rename', command_color)} requires additional options.")
     old_name, new_name = user_input.split(" ")
     try:
         puzzle.rename_move(old_name, new_name)
@@ -101,6 +103,8 @@ def interface_delmove(move_name, puzzle, command_color="#ff8800", arg_color="#55
     """
     deletes the given move from the given puzzle object
     """
+    if move_name == "":
+        print(f"{colored('Error:', error_color)} {colored('delmove', command_color)} requires additional options.")
     try:
         puzzle.del_move(move_name)
         print(f"delted the move {colored(move_name, arg_color)}.")
@@ -116,7 +120,7 @@ def interface_sleeptime(sleep_time, puzzle, command_color="#ff8800", arg_color="
         print(puzzle.sleep_time)
         puzzle.sleep_time = float(sleep_time)
         print(puzzle.sleep_time)
-    except:
+    except ValueError:
         print(f"{colored('Error:', error_color)} Given time is not a float.")
 
 
@@ -126,8 +130,30 @@ def interface_scramble(max_moves, puzzle, command_color="#ff8800", arg_color="#5
     """
     try:
         puzzle.scramble(max_moves=int(max_moves), arg_color=arg_color)
-    except:
+    except ValueError:
         puzzle.scramble(arg_color=arg_color)
+    except IndexError: # random.choice raises an IndexError if it has to choose from an empty list
+        print(f"{colored('Error:', error_color)} Load a puzzle or define moves scrambling.")
+
+
+def interface_start_point_edit(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    starts point color editing mode
+    """
+    try:
+        puzzle.edit_points()
+    except AttributeError:
+        print(f"{colored('Error:', error_color)} Load a puzzle before trying to edit one.")
+
+
+def interface_end_point_edit(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    ends point color editing mode
+    """
+    try:
+        puzzle.end_edit_points()
+    except AttributeError:
+        print(f"{colored('Error:', error_color)} Editing mode was not enabled.")
 
 
 def interface_reset(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):

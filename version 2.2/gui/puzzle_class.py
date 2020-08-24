@@ -13,7 +13,7 @@ from .interaction_modules.colored_text import colored_text as colored
 from .interaction_modules.save_to_xml import save_to_xml
 from .interaction_modules.load_from_xml import load_puzzle
 
-from .vpython_modules.create_canvas import create_canvas
+from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
 from .vpython_modules.vpy_rotation import get_com, make_move
 from .vpython_modules.cycle_input import bind_click
 
@@ -215,6 +215,25 @@ class Twisty_Puzzle():
         del(self.moves[move_name])
 
 
+    def edit_points(self):
+        """
+        allow editing of point colors
+        """
+        if not hasattr(self, "color_list"):
+            self.color_list = []
+            for color in self.SOLVED_STATE:
+                if not color in self.color_list:
+                    self.color_list.append(color)
+        self.point_edit_method = bind_next_color(self.canvas, self.color_list)
+
+
+    def end_edit_points(self):
+        """
+        unbind and delete the point editing function to end editing mode
+        """
+        self.canvas.unbind("mousedown", self.point_edit_method)
+        del(self.point_edit_method)
+
     def save_puzzle(self, puzzle_name):
         """
         save the puzzle under the given name.
@@ -304,7 +323,7 @@ class Twisty_Puzzle():
         """
         train the Q-table for the current puzzle
         """
-        ai_state, self.ai_color_list = state_for_ai(self.SOLVED_STATE)
+        ai_state, self.color_list = state_for_ai(self.SOLVED_STATE)
         reward_dict = {"solved":1000,
                        "timeout":0,
                        "move":-1}
@@ -355,12 +374,12 @@ class Twisty_Puzzle():
 
     def get_ai_state(self):
         """
-        return the current puzzle state for the ai based on self.ai_color_list
+        return the current puzzle state for the ai based on self.color_list
         """
         ai_state = []
 
         for color in [obj.color for obj in self.vpy_objects]:
-            for i, index_color in enumerate(self.ai_color_list):
+            for i, index_color in enumerate(self.color_list):
                 if index_color == color:
                     ai_state.append(i)
 
