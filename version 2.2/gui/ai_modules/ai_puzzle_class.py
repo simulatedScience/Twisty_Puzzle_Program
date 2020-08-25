@@ -342,15 +342,18 @@ class puzzle_ai():
         return random.choice(list(self.ACTIONS_DICT.keys()))
 
 
-    def export_Q_table(self, filename="Q_table.txt"):
+    def export_Q_table(self, filename="pickle_Q_table"):
         """
-        write the given Q-table into a file
+        write the given Q-table into a file using pickle
         """
-        with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "pickle_Q_table"), "wb") as file:
+        with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.Q_table, file, protocol=4)
 
 
     def import_q_table(self, filename="pickle_Q_table"):
+        """
+        import a Q-table from a file. Try using pickle to load 'pickle_Q_table', otherwise try loading 'Q_table.txt', which should be a sufficiently small dictionary
+        """
         try:
             with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "rb") as file:
                 self.Q_table = pickle.load(file)
