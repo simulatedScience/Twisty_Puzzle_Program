@@ -22,6 +22,7 @@ from .shape_snapping import snap_to_cube, snap_to_sphere
 from .ai_modules.twisty_puzzle_model import scramble, perform_action
 from .ai_modules.ai_data_preparation import state_for_ai
 from .ai_modules.ai_puzzle_class import puzzle_ai
+from .ai_modules.nn_puzzle_class import Puzzle_Network
 
 
 class Twisty_Puzzle():
@@ -311,12 +312,27 @@ class Twisty_Puzzle():
             print(colored(movename, arg_color), end=", ")
         print(colored(list(self.moves.keys())[-1], arg_color))
 
+
     def print_move(self, move_name, arg_color="#0066ff"):
         """
         print the given move
         """
         move_str = [tuple(cycle) for cycle in self.moves[move_name]]
         print(f"{colored(move_name, arg_color)} =", move_str)
+
+
+    def get_ai_state(self):
+        """
+        return the current puzzle state for the ai based on self.color_list
+        """
+        ai_state = []
+
+        for color in [obj.color for obj in self.vpy_objects]:
+            for i, index_color in enumerate(self.color_list):
+                if index_color == color:
+                    ai_state.append(i)
+
+        return ai_state
 
 
     def train_q_learning(self, num_episodes=None, max_moves=None, learning_rate=None, discount_factor=None, base_exploration_rate=None, keep_Q_table=True):
@@ -327,7 +343,7 @@ class Twisty_Puzzle():
         reward_dict = {"solved":1000,
                        "timeout":0,
                        "move":-1}
-        if not hasattr(self, "AI_class"):
+        if not hasattr(self, "ai_q_class"):
             self.ai_q_class = puzzle_ai(deepcopy(self.moves), ai_state, reward_dict=reward_dict, name=self.PUZZLE_NAME, keep_Q_table=keep_Q_table)
         games, self.solved_hist, self.diff_increase, self.explo_rates = \
             self.ai_q_class.train_q_learning(reward_dict=reward_dict,
@@ -371,21 +387,6 @@ class Twisty_Puzzle():
             solve_moves += ai_move + ' '
 
 
-
-    def get_ai_state(self):
-        """
-        return the current puzzle state for the ai based on self.color_list
-        """
-        ai_state = []
-
-        for color in [obj.color for obj in self.vpy_objects]:
-            for i, index_color in enumerate(self.color_list):
-                if index_color == color:
-                    ai_state.append(i)
-
-        return ai_state
-
-
     def plot_q_success(self, batch_size=30):
         x_data = []
         y_data = []
@@ -401,3 +402,52 @@ class Twisty_Puzzle():
 
         plt.plot(x_data, y_data, ".")
         plt.show()
+
+
+    def train_nn(self, epochs=1000, batch_size=500):
+        """
+        train the neural network for the current puzzle
+        """
+        #load q-table and init important ai variables
+        if not hasattr(self, "ai_q_class"):
+            self.train_q_learning(num_episodes=0)
+
+        if not hasattr(self, "ai_nn_class"):
+            ai_state, _ = state_for_ai(self.SOLVED_STATE)
+
+            self.ai_nn_class = Puzzle_Network(deepcopy(self.moves), ai_state, name=self.PUZZLE_NAME)
+            self.ai_nn_class.initialize_nn()
+
+        self.ai_nn_class.train_nn(epochs=epochs, batch_size=batch_size)
+
+
+    def move_nn(self, arg_color="#0066ff"):
+        """
+        make one move based on the current Q-table of the AI
+        """
+        ai_state = self.get_ai_state()
+        ai_move = self.ai_nn_class.choose_nn_move(ai_state, self.moves)
+        self.perform_move(ai_move)
+        print(f"made move: {colored(ai_move, arg_color)}")
+
+
+    def solve_nn(self, max_moves=100, arg_color="#0066ff"):
+        """
+        solve the puzzle based on the current Q-table of the AI
+        """
+        solve_moves = ""
+        last_moves = []
+        for n in range(max_moves):
+            ai_state = self.get_ai_state()
+            if self.ai_q_class.puzzle_solved(ai_state, n, max_moves=max_moves) == "solved":
+                print(f"solved the puzzle after {colored(str(n), arg_color)} moves:")
+                print(f"{colored(solve_moves[:-1], arg_color)}")
+                break
+            if len(set(last_moves[-10:])) == 1 and len(last_moves) > 5:
+                ai_move = self.ai_nn_class.choose_nn_move(ai_state, self.moves, exploration_rate=0.5)
+                print("detected loop")
+            else:
+                ai_move = self.ai_nn_class.choose_nn_move(ai_state, self.moves, exploration_rate=0)
+            last_moves.append(ai_move)
+            self.perform_move(ai_move)
+            solve_moves += ai_move + ' '

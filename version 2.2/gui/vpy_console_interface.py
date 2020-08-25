@@ -40,6 +40,12 @@ def main_interaction():
         - 'scramble' [max_moves]       - scramble the puzzle randomly
         - 'editpoints'                 - enter point color editing mode
         - 'endeditpoints'              - exit point color editing mode
+        - 'train_q'                    - train Q-table for current puzzle
+        - 'move_q'                     - make a move based on current Q-table
+        - 'solve_q'                    - solve puzzle based on current Q-table
+        - 'train_nn'                   - train Neural Network for current puzzle
+        - 'move_nn'                    - make a move based on current Neural Network
+        - 'solve_nn'                   - solve puzzle based on current Neural Network
     """
     command_color = "#ff8800"
     argument_color = "#5588ff"
@@ -71,12 +77,15 @@ def main_interaction():
                         "sleeptime": interface_sleeptime,
                         "scramble": interface_scramble,
                         "reset": interface_reset,
+                        "editpoints": interface_start_point_edit,
+                        "endeditpoints": interface_end_point_edit,
                         "train_q": interface_train_Q,
                         "move_q": interface_move_Q,
                         "solve_q": interface_solve_Q,
                         "plot": interface_plot_success,
-                        "editpoints": interface_start_point_edit,
-                        "endeditpoints": interface_end_point_edit}
+                        "train_nn": interface_train_nn,
+                        "move_nn": interface_move_nn,
+                        "solve_nn": interface_solve_nn}
 
         if validate_command(command_dict, user_input):
             run_command(command_dict, user_input, puzzle,
@@ -127,7 +136,8 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "sleeptime",
                           "scramble",
                           "train_q",
-                          "plot"]
+                          "plot",
+                          "train_nn"]
     if command in commands_with_args:
         user_arguments = user_input[len(command)+1:]
         print(

@@ -6,7 +6,7 @@ from copy import deepcopy
 from .twisty_puzzle_model import scramble, perform_action
 
 class puzzle_ai():
-    def __init__(self, 
+    def __init__(self,
                  ACTIONS_DICT,
                  SOLVED_STATE,
                  reward_dict={"solved":10, "timeout":-1, "move":-0.2},

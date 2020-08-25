@@ -202,7 +202,7 @@ def interface_move_Q(puzzle, command_color="#ff8800", arg_color="#5588ff", error
     make one move based on the current Q-table of the AI
     """
     try:
-        puzzle.move_Q()
+        puzzle.move_Q(arg_color=arg_color)
     except AttributeError:
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
@@ -229,3 +229,47 @@ def interface_plot_success(batch_size, puzzle, command_color="#ff8800", arg_colo
         puzzle.plot_q_success(batch_size=batch_size)
     except AttributeError:
         print(f"{colored('Error:', error_color)} Train the Q-table before evalutation.")
+
+
+def interface_train_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    train neural network based on current Q-table
+    """
+    user_args = user_args.split(' ')
+    n_args = 2
+    default_args = [100, 1000]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+
+    final_args = []
+    for arg, default in zip(user_args, default_args):
+        try:
+            final_args.append(int(arg))
+        except:
+            final_args.append(default)
+    epochs, batch_size = final_args
+
+    puzzle.train_nn(epochs=epochs, batch_size=batch_size)
+
+
+def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    make a move based on the current neural network
+    """
+    try:
+        puzzle.move_nn(arg_color=arg_color)
+    except AttributeError:
+        print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
+
+
+def interface_solve_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    solve the puzzle based on the current Q-table of the AI
+    """
+    try:
+        puzzle.solve_Q(arg_color=arg_color)
+    except AttributeError:
+        print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")

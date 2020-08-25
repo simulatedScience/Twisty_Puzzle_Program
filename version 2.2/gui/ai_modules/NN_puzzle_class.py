@@ -2,10 +2,10 @@ import os
 import random
 import pickle
 import numpy as np
-import keras
-from keras import layers
+import tensorflow.keras as keras
+from tensorflow.keras import layers
 
-class puzzle_NN():
+class Puzzle_Network():
     def __init__(self, ACTIONS_DICT, SOLVED_STATE, name=None):
         """
         initialize class object for neural network training
@@ -47,7 +47,7 @@ class puzzle_NN():
         for state_action, value in self.Q_table.items() :
             state, action = state_action
 
-            inputs.append( state + self.action_to_vector(action) )
+            inputs.append( list(state) + self.action_to_vector(action) )
             outputs.append( value )
 
         return np.array(inputs), np.array(outputs)
@@ -91,14 +91,16 @@ class puzzle_NN():
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
 
-    def train_nn(self, epochs=100, batch_size=30):
-        self.initialize_nn()
+    def train_nn(self, epochs=1000, batch_size=30):
+        print("begin training")
         inputs, outputs = self.prepare_data()
-        self.train_history = model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size,
-                     use_multiprocessing=True, verbose=1)
+        print(inputs[:2], type(inputs[0][0]))
+        print(outputs[:20], type(outputs[0]))
+        self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
+        print("end training")
 
 
-    def nn_get_greedy_move(self, state, actions):
+    def get_greedy_move(self, state, actions):
         """
         get a move from the neural network
         """
@@ -113,14 +115,14 @@ class puzzle_NN():
         return random.choice(moves)
 
 
-    def nn_get_move(self, state, actions, epsilon=0):
+    def choose_nn_move(self, state, actions, epsilon=0):
         """
         get a move based on an epsilon-greedy strategy with given epsilon
         """
         if random.random() < epsilon:
             return random.choice(actions) # random move
         else:
-            return self.nn_get_greedy_move(state, actions) # greedy move
+            return self.get_greedy_move(state, actions) # greedy move
 
 
     def import_q_table(self, filename="pickle_Q_table"):
