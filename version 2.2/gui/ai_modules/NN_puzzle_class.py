@@ -31,6 +31,11 @@ class Puzzle_Network():
             self.import_q_table()
         except FileNotFoundError:
             print("cannot train without Q-table")
+        try:
+            self.load_network()
+            print("loaded existing network")
+        except:
+            pass
 
 
     def prepare_data(self):
@@ -92,12 +97,13 @@ class Puzzle_Network():
 
 
     def train_nn(self, epochs=1000, batch_size=30):
-        print("begin training")
+        print("preparing data...")
         inputs, outputs = self.prepare_data()
-        print(inputs[:2], type(inputs[0][0]))
-        print(outputs[:20], type(outputs[0]))
+        print("begin training")
         self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
         print("end training")
+        self.save_network()
+        print("saved network")
 
 
     def get_greedy_move(self, state, actions):
@@ -135,3 +141,25 @@ class Puzzle_Network():
         except FileNotFoundError:
             with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "Q_table.txt"), "r") as file:
                 self.Q_table = eval(file.read())
+
+    def save_network(self, filename="neural_network"):
+        """
+        save the neural network to puzzle folder
+        """
+        try: # create a "puzzles" folder if it doesn't exist yet
+            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles"))
+        except FileExistsError:
+            pass
+        try: # create a folder for the given puzzle if it doesn't exist yet
+            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name))
+        except FileExistsError:
+            pass
+        filepath = os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename)
+        self.model.save(filepath)
+
+    def load_network(self, filename="neural_network"):
+        """
+        load neural network from file
+        """
+        filepath = os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename)
+        self.model = keras.models.load_model(filepath)
