@@ -248,5 +248,15 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('endeditpoints', command_color)}              \
 - exit point color editing mode")
 
+    print(f"- {colored('train_nn', command_color)} [{colored('epochs', arg_color)}] [{colored('batch_size', arg_color)}]\n{' '*29}\
+- train the neural network for the puzzle with the given parameters")
+
+    print(f"- {colored('move_nn', command_color)}                    \
+- make one move based on the currentneural network of the AI")
+
+    print(f"- {colored('solve_nn', command_color)}                   \
+- solve the puzzle using the current neural network of the AI")
+
+
 if __name__ == "__main__":
     main_interaction()

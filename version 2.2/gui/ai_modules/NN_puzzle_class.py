@@ -1,9 +1,12 @@
 import os
 import random
 import pickle
+from copy import deepcopy
+import itertools
 import numpy as np
 import tensorflow.keras as keras
 from tensorflow.keras import layers
+from .twisty_puzzle_model import perform_action
 
 class Puzzle_Network():
     def __init__(self, ACTIONS_DICT, SOLVED_STATE, name=None):
@@ -24,7 +27,8 @@ class Puzzle_Network():
         self.ACTIONS_DICT = ACTIONS_DICT
         self.SOLVED_STATE = SOLVED_STATE
 
-        self.ACTION_INDEX_DICT = {action:i for i, action in enumerate(list(self.ACTIONS_DICT.keys()))}
+        self.gen_action_vector_dict()
+        self.gen_color_vector_dict()
 
         try:
             self.Q_table = dict()
@@ -38,42 +42,111 @@ class Puzzle_Network():
             pass
 
 
-    def prepare_data(self):
+    def gen_action_vector_dict(self):
+        """
+        generate a dictionary that maps every action to it's one-hot list for the NN state
+        """
+        self.ACTION_VECTOR_DICT = dict()
+        vec_len = len(self.ACTIONS_DICT)
+        for i,action in enumerate(list(self.ACTIONS_DICT.keys())):
+            self.ACTION_VECTOR_DICT[action] = [0]*i + [1] + [0]*(vec_len-i-1)
+
+
+    def gen_color_vector_dict(self):
+        """
+        generarte a dictionary that maps every color to it's one-hot list for the NN state
+        """
+        self.COLOR_VECTOR_DICT = dict()
+        vec_len = len(set(self.SOLVED_STATE))
+        for i in range(vec_len):
+            self.COLOR_VECTOR_DICT[i] = [0]*i + [1] + [0]*(vec_len-i-1)
+
+
+    def prepare_data(self, additional_data=0.1):
         """
         prepare the data given in a Q-table for passing it to the neural network
+
+        inputs:
+        -------
+            additional_data - (float) >=0 - percentage of additional data generated from inverse scrambles
 
         returns:
         --------
             (np.ndarray) - input data (state-action vectors)
             (np.ndarray) - ouput data (target Q-values)
         """
+        print(f"generating {100*additional_data:2.2}\% additional data points")
+        self.gen_inverse_scramble(additional_data=additional_data)
         inputs = []
         outputs = []
         for state_action, value in self.Q_table.items() :
             state, action = state_action
 
-            inputs.append( list(state) + self.action_to_vector(action) )
+            inputs.append( self.prepare_state(state) + self.ACTION_VECTOR_DICT[action] )
             outputs.append( value )
 
         return np.array(inputs), np.array(outputs)
 
 
-    def action_to_vector(self, action):
+    def prepare_state(self, state):
         """
-        converts an action key into the action vector that is passed to the neural network:
-            each action is assigned an index.
+        expand the state by replacing every color with a one-hot list representing the color
 
         inputs:
         -------
-            action - (str) - the key of an action in self.ACTIONS_DICT
+            state - (list) - state as list of color indices starting at 0
 
         returns:
         --------
-            (list) of ints - every entry is 0 except for that with the index assigned to the given action. That entry is 1
+            (list) of 0s and 1s - new state for the neural network input
         """
-        action_vector = [0 for _ in self.ACTIONS_DICT.keys()]
-        action_vector[self.ACTION_INDEX_DICT[action]] = 1 # write 1 to the correct index in the vector
-        return action_vector
+        return list(itertools.chain.from_iterable([self.COLOR_VECTOR_DICT[color] for color in state]))
+
+    
+    def gen_inverse_scramble(self, additional_data=0.1, max_moves=30, learning_rate=0.05, discount_factor=0.99):
+        """
+        add data to the Q-table based on inversed scambles
+        inputs:
+        -------
+            additional_data - (float) >=0 - percentage of additional data generated from inverse scrambles
+            max_moves - (int) - maximum number of moves to scramble
+            learning_rate - (float) in [0,1] - Q-table values are adjusted by += learning_rate*discount_factor**n
+            discount_factor - (float) in [0,1] - Q-table values are adjusted by += learning_rate*discount_factor**n
+        """
+        action_keys = list(self.ACTIONS_DICT.keys())
+        if not hasattr(self, "INVERSE_ACTIONS"):
+            self.gen_inverse_action_dict()
+        for _ in range(int(len(self.Q_table)*additional_data)):
+            state = deepcopy(self.SOLVED_STATE)
+            for n in range(max_moves):
+                action = random.choice(action_keys)
+                perform_action(state, self.ACTIONS_DICT[action])
+                try:
+                    self.Q_table[(tuple(state), self.INVERSE_ACTIONS[action])] += learning_rate*discount_factor**n
+                except KeyError:
+                    self.Q_table[(tuple(state), self.INVERSE_ACTIONS[action])] = learning_rate*discount_factor**n
+
+
+    def gen_inverse_action_dict(self):
+        """
+        generates a dictionary that maps every action to it'S inverse
+        """
+        self.INVERSE_ACTIONS = {action:self.get_inverse_action(action) for action in self.ACTIONS_DICT.keys()}
+
+
+    def get_inverse_action(self, action_key):
+        """
+        inputs:
+        -------
+            action_key - (str) - an action given by its name that is either its own inverse,
+                includes a ' at the end or it's inverse is given by action_key+"'"
+        """
+        if action_key[-1] == "'":
+            return action_key[:-1]
+        rev_action = action_key+"'"
+        if rev_action in self.ACTIONS_DICT:
+            return rev_action
+        return action_key #if no inverse action exists, assume the action is its own inverse
 
 
     def initialize_nn(self):
@@ -86,7 +159,7 @@ class Puzzle_Network():
             compiled using optimizer 'adam',
                            loss function 'mean_squared_error'
         """
-        input_size = len(self.SOLVED_STATE) + len(self.ACTIONS_DICT)
+        input_size = len(self.COLOR_VECTOR_DICT)*len(self.SOLVED_STATE) + len(self.ACTIONS_DICT)
         output_size = 1
         self.model = keras.Sequential()
         self.model.add(layers.Input(shape=(input_size,)))
@@ -96,9 +169,16 @@ class Puzzle_Network():
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
 
-    def train_nn(self, epochs=1000, batch_size=30):
+    def train_nn(self, epochs=1000, batch_size=30, additional_data=0.1):
+        """
+        inputs:
+        -------
+            epochs - (int) - number of training epochs for the network
+            batch_size - (int) - number of training
+            additional_data - (float) >=0 - percentage of additional data generated from inverse scrambles
+        """
         print("preparing data...")
-        inputs, outputs = self.prepare_data()
+        inputs, outputs = self.prepare_data(additional_data=additional_data)
         print("begin training")
         self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
         print("end training")

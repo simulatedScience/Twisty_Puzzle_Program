@@ -236,8 +236,9 @@ def interface_train_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5
     train neural network based on current Q-table
     """
     user_args = user_args.split(' ')
-    n_args = 2
-    default_args = [100, 1000]
+    n_args = 3
+    default_args = [100, 1000, 0.1]
+    data_types = [int, int, float]
     # make user_args the correct length (n_args)
     if len(user_args) > n_args:
         user_args = user_args[:n_args]
@@ -245,14 +246,14 @@ def interface_train_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5
         user_args += ['']*(n_args-len(user_args))
 
     final_args = []
-    for arg, default in zip(user_args, default_args):
+    for arg, default, dtype in zip(user_args, default_args, data_types):
         try:
-            final_args.append(int(arg))
-        except:
+            final_args.append(dtype(arg))
+        except ValueError:
             final_args.append(default)
-    epochs, batch_size = final_args
+    epochs, batch_size, additional_data = final_args
 
-    puzzle.train_nn(epochs=epochs, batch_size=batch_size)
+    puzzle.train_nn(epochs=epochs, batch_size=batch_size, additional_data=additional_data)
 
 
 def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):

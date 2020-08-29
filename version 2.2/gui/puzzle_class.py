@@ -404,7 +404,7 @@ class Twisty_Puzzle():
         plt.show()
 
 
-    def train_nn(self, epochs=1000, batch_size=500):
+    def train_nn(self, epochs=1000, batch_size=500, additional_data=0.1):
         """
         train the neural network for the current puzzle
         """
@@ -418,7 +418,7 @@ class Twisty_Puzzle():
             self.ai_nn_class = Puzzle_Network(deepcopy(self.moves), ai_state, name=self.PUZZLE_NAME)
             self.ai_nn_class.initialize_nn()
 
-        self.ai_nn_class.train_nn(epochs=epochs, batch_size=batch_size)
+        self.ai_nn_class.train_nn(epochs=epochs, batch_size=batch_size, additional_data=additional_data)
 
 
     def move_nn(self, arg_color="#0066ff"):
