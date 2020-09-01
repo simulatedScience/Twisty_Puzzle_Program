@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="ivy_cube_2">
+<puzzledefinition name="ivy_cube">
   <points>
     <point size="4.0">
       <coords x="-0.3464466094067262" y="0.3464466094067262" z="0.7"/>
@@ -79,17 +79,33 @@
       <cycle>3, 4, 5</cycle>
       <cycle>12, 14, 15</cycle>
     </move>
+    <move name="wrg'">
+      <cycle>5, 4, 3</cycle>
+      <cycle>15, 14, 12</cycle>
+    </move>
     <move name="wob">
       <cycle>0, 1, 2</cycle>
       <cycle>12, 16, 13</cycle>
+    </move>
+    <move name="wob'">
+      <cycle>2, 1, 0</cycle>
+      <cycle>13, 16, 12</cycle>
     </move>
     <move name="rby">
       <cycle>7, 8, 6</cycle>
       <cycle>14, 13, 17</cycle>
     </move>
+    <move name="rby'">
+      <cycle>6, 8, 7</cycle>
+      <cycle>17, 13, 14</cycle>
+    </move>
     <move name="ogy">
       <cycle>9, 10, 11</cycle>
       <cycle>16, 15, 17</cycle>
+    </move>
+    <move name="ogy'">
+      <cycle>11, 10, 9</cycle>
+      <cycle>17, 15, 16</cycle>
     </move>
   </moves>
 </puzzledefinition>

@@ -340,9 +340,9 @@ class Twisty_Puzzle():
         train the Q-table for the current puzzle
         """
         ai_state, self.color_list = state_for_ai(self.SOLVED_STATE)
-        reward_dict = {"solved":1000,
+        reward_dict = {"solved":1,
                        "timeout":0,
-                       "move":-1}
+                       "move":0}
         if not hasattr(self, "ai_q_class"):
             self.ai_q_class = puzzle_ai(deepcopy(self.moves), ai_state, reward_dict=reward_dict, name=self.PUZZLE_NAME, keep_Q_table=keep_Q_table)
         games, self.solved_hist, self.diff_increase, self.explo_rates = \

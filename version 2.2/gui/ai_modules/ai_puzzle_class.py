@@ -96,10 +96,13 @@ class puzzle_ai():
             if n%20 == 19:
                 new_max_moves = self.get_new_scramble_moves(max_scramble_moves, solved_hist, n_tests=n_tests)
                 if not new_max_moves == max_scramble_moves:
-                    n_tests += 1
+                    n_tests += 3
                     increased_difficulties.append(n)
                     x = start_x
                     exploration_rate = base_exploration_rate
+                    if max_scramble_moves > 1.3*max_moves:
+                        print("ended training after n episodes because the training goal was reached")
+                        break
                 max_scramble_moves = new_max_moves
 
             # generate a starting state
