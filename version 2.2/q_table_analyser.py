@@ -37,6 +37,7 @@ def plot_q_table(puzzle_name, max_scramble_moves=30, n_scrambles=1000):
     x_values = list(range(1, max_scramble_moves+1))
     for label, y_values in labeled_data.items():
         plt.semilogy(x_values, y_values, ".", label=label)
+    plt.grid(True)
     plt.legend()
     plt.show()
 
@@ -292,10 +293,10 @@ def get_inverse_action(action_key, ACTIONS_DICT):
     order = get_action_order(ACTIONS_DICT[action_key])
     if order == 2: #actions of order 2 are self-inverse
         return action_key
-    print(action_key, "does not have an inverse.")
+    # print(action_key, "does not have an inverse.")
     return None
 
 
 if __name__ == "__main__":
-    # plot_q_table("ivy_cube_2", max_scramble_moves=30, n_scrambles=100)
-    plot_q_table("skewb", max_scramble_moves=30, n_scrambles=1000)
+    plot_q_table("ivy_cube_3", max_scramble_moves=30, n_scrambles=100)
+    # plot_q_table("skewb", max_scramble_moves=30, n_scrambles=1000)

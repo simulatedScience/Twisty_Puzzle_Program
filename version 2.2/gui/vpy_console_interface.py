@@ -136,8 +136,10 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "sleeptime",
                           "scramble",
                           "train_q",
+                          "solve_q",
                           "plot",
-                          "train_nn"]
+                          "train_nn",
+                          "solve_nn"]
     if command in commands_with_args:
         user_arguments = user_input[len(command)+1:]
         print(
@@ -248,8 +250,9 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('endeditpoints', command_color)}              \
 - exit point color editing mode")
 
-    print(f"- {colored('train_nn', command_color)} [{colored('epochs', arg_color)}] [{colored('batch_size', arg_color)}]\n{' '*29}\
-- train the neural network for the puzzle with the given parameters")
+    print(f"- {colored('train_nn', command_color)} [{colored('epochs', arg_color)}] [{colored('batch_size', arg_color)}] [{colored('additional_data', arg_color)}]\n{' '*29}\
+- train the neural network for the puzzle with the given parameters.\n{' '*29}\
+  Generate 100*{colored('additional_data', arg_color)}% extra data from reverse scrambles.")
 
     print(f"- {colored('move_nn', command_color)}                    \
 - make one move based on the currentneural network of the AI")

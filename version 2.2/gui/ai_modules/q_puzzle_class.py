@@ -5,7 +5,7 @@ from math import ceil
 from copy import deepcopy
 from .twisty_puzzle_model import scramble, perform_action
 
-class puzzle_ai():
+class Puzzle_Q_AI():
     def __init__(self,
                  ACTIONS_DICT,
                  SOLVED_STATE,
@@ -349,6 +349,14 @@ class puzzle_ai():
         """
         write the given Q-table into a file using pickle
         """
+        try: # create a "puzzles" folder if it doesn't exist yet
+            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles"))
+        except FileExistsError:
+            pass
+        try: # create a folder for the given puzzle if it doesn't exist yet
+            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name))
+        except FileExistsError:
+            pass
         with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.Q_table, file, protocol=4)
 

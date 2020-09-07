@@ -207,12 +207,29 @@ def interface_move_Q(puzzle, command_color="#ff8800", arg_color="#5588ff", error
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_solve_Q(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_Q(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle based on the current Q-table of the AI
     """
+    user_args = user_args.split(' ')
+    n_args = 2
+    default_args = [60, 1]
+    data_types = [float, float]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+
+    final_args = []
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    max_time, WEIGHT = final_args
     try:
-        puzzle.solve_Q(arg_color=arg_color)
+        puzzle.solve_Q(max_time=max_time, WEIGHT=WEIGHT, arg_color=arg_color)
     except AttributeError:
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
@@ -237,7 +254,7 @@ def interface_train_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5
     """
     user_args = user_args.split(' ')
     n_args = 3
-    default_args = [100, 1000, 0.1]
+    default_args = [100, 1000, 0]
     data_types = [int, int, float]
     # make user_args the correct length (n_args)
     if len(user_args) > n_args:
@@ -266,11 +283,28 @@ def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", erro
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_solve_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_nn(max_time, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
-    solve the puzzle based on the current Q-table of the AI
+    solve the puzzle based on the current neural network trained for the puzzle
     """
+    user_args = user_args.split(' ')
+    n_args = 2
+    default_args = [60, 1]
+    data_types = [float, float]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+
+    final_args = []
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    max_time, WEIGHT = final_args
     try:
-        puzzle.solve_Q(arg_color=arg_color)
+        puzzle.solve_nn(max_time=max_time, WEIGHT=WEIGHT, arg_color=arg_color)
     except AttributeError:
-        print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
+        print(f"{colored('Error:', error_color)} Train the Neural Network before requesting a move.")

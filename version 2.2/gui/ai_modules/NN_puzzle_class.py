@@ -1,3 +1,8 @@
+"""
+this module implements a class for training a neural network for twisty puzzles
+requires python 3.6 or newer
+"""
+
 import os
 import random
 import pickle
@@ -9,7 +14,7 @@ from tensorflow.keras import layers
 from .twisty_puzzle_model import perform_action
 
 class Puzzle_Network():
-    def __init__(self, ACTIONS_DICT, SOLVED_STATE, name=None):
+    def __init__(self, ACTIONS_DICT, SOLVED_STATE, name=None, Q_table=None):
         """
         initialize class object for neural network training
 
@@ -30,11 +35,15 @@ class Puzzle_Network():
         self.gen_action_vector_dict()
         self.gen_color_vector_dict()
 
-        try:
-            self.Q_table = dict()
-            self.import_q_table()
-        except FileNotFoundError:
-            print("cannot train without Q-table")
+        self.old_Q_table = True #whether or not the Q-table has been changed to store states for the NN inst
+        if Q_table == None:
+            try:
+                self.Q_table = dict()
+                self.import_q_table()
+            except FileNotFoundError:
+                print("cannot train without Q-table")
+        else:
+            self.Q_table = Q_table
         try:
             self.load_network()
             print("loaded existing network")
@@ -62,7 +71,7 @@ class Puzzle_Network():
             self.COLOR_VECTOR_DICT[i] = [0]*i + [1] + [0]*(vec_len-i-1)
 
 
-    def prepare_data(self, additional_data=0.1):
+    def prepare_data(self, additional_data=0.01):
         """
         prepare the data given in a Q-table for passing it to the neural network
 
@@ -70,22 +79,25 @@ class Puzzle_Network():
         -------
             additional_data - (float) >=0 - percentage of additional data generated from inverse scrambles
 
-        returns:
-        --------
-            (np.ndarray) - input data (state-action vectors)
-            (np.ndarray) - ouput data (target Q-values)
+        # returns: None
+        # --------
+        #     (np.ndarray) - input data (state-action vectors)
+        #     (np.ndarray) - ouput data (target Q-values)
         """
         print(f"generating {100*additional_data:2.2}\% additional data points")
-        self.gen_inverse_scramble(additional_data=additional_data)
-        inputs = []
-        outputs = []
-        for state_action, value in self.Q_table.items() :
+        if additional_data > 0:
+            self.gen_inverse_scramble(additional_data=additional_data)
+        dict_length = len(self.Q_table)
+        print_i = dict_length//10
+        for i, state_action in enumerate(self.Q_table.keys()):
+            if i % print_i== 0:
+                print(f"converted {i//dict_length*100}% of the data")
+            if i == dict_length:
+                break
             state, action = state_action
+            self.Q_table[tuple(self.prepare_state(state) + self.ACTION_VECTOR_DICT[action])] = self.Q_table.pop(state_action)
 
-            inputs.append( self.prepare_state(state) + self.ACTION_VECTOR_DICT[action] )
-            outputs.append( value )
-
-        return np.array(inputs), np.array(outputs)
+        # return np.array(inputs), np.array(outputs)
 
 
     def prepare_state(self, state):
@@ -94,7 +106,7 @@ class Puzzle_Network():
 
         inputs:
         -------
-            state - (list) - state as list of color indices starting at 0
+            state - (list) or (tuple) - state as list or tuple of color indices starting at 0
 
         returns:
         --------
@@ -103,7 +115,7 @@ class Puzzle_Network():
         return list(itertools.chain.from_iterable([self.COLOR_VECTOR_DICT[color] for color in state]))
 
     
-    def gen_inverse_scramble(self, additional_data=0.1, max_moves=30, learning_rate=0.05, discount_factor=0.99):
+    def gen_inverse_scramble(self, additional_data=0.01, max_moves=30, learning_rate=0.05, discount_factor=0.99):
         """
         add data to the Q-table based on inversed scambles
         inputs:
@@ -169,7 +181,7 @@ class Puzzle_Network():
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
 
-    def train_nn(self, epochs=1000, batch_size=30, additional_data=0.1):
+    def train_nn(self, epochs=1000, batch_size=30, additional_data=0.01):
         """
         inputs:
         -------
@@ -177,20 +189,27 @@ class Puzzle_Network():
             batch_size - (int) - number of training
             additional_data - (float) >=0 - percentage of additional data generated from inverse scrambles
         """
-        print("preparing data...")
-        inputs, outputs = self.prepare_data(additional_data=additional_data)
-        print("begin training")
-        self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
-        print("end training")
-        self.save_network()
-        print("saved network")
+        if epochs > 0:
+            if self.old_Q_table:
+                print("preparing data...")
+                self.prepare_data(additional_data=additional_data)
+                self.old_Q_table = False
+            else:
+                print("data unchanged")
+            inputs = np.array(list(self.Q_table.keys()))
+            outputs = np.array(list(self.Q_table.values()))
+            print("begin training")
+            self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
+            print("end training")
+            self.save_network()
+            print("saved network")
 
 
     def get_greedy_move(self, state, actions):
         """
         get a move from the neural network
         """
-        values = [model.predict([state+self.action_to_vector(action)], use_multiprocessing=True)[0] for action in actions]
+        values = [model.predict([self.prepare_state(state)+self.ACTION_VECTOR_DICT[action]], use_multiprocessing=True)[0] for action in actions]
         print(values)
         max_value = max(values)
         moves = []
@@ -222,6 +241,7 @@ class Puzzle_Network():
             with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "Q_table.txt"), "r") as file:
                 self.Q_table = eval(file.read())
 
+
     def save_network(self, filename="neural_network"):
         """
         save the neural network to puzzle folder
@@ -236,6 +256,7 @@ class Puzzle_Network():
             pass
         filepath = os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename)
         self.model.save(filepath)
+
 
     def load_network(self, filename="neural_network"):
         """
