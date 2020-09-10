@@ -239,7 +239,7 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('move_Q', command_color)}                     \
 - make one move based on the current Q_table of the AI")
 
-    print(f"- {colored('solve_Q', command_color)}                    \
+    print(f"- {colored('solve_Q', command_color)} [{colored('max_time', arg_color)}]           \
 - solve the puzzle using the current Q_table of the AI")
 
     print(f"- {colored('plot', command_color)} [{colored('batch_size', arg_color)}]          \
@@ -257,7 +257,7 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('move_nn', command_color)}                    \
 - make one move based on the currentneural network of the AI")
 
-    print(f"- {colored('solve_nn', command_color)}                   \
+    print(f"- {colored('solve_nn', command_color)} [{colored('max_time', arg_color)}]           \
 - solve the puzzle using the current neural network of the AI")
 
 

@@ -213,7 +213,7 @@ def interface_solve_Q(user_args, puzzle, command_color="#ff8800", arg_color="#55
     """
     user_args = user_args.split(' ')
     n_args = 2
-    default_args = [60, 1]
+    default_args = [60, 0.1]
     data_types = [float, float]
     # make user_args the correct length (n_args)
     if len(user_args) > n_args:
@@ -283,13 +283,13 @@ def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", erro
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_solve_nn(max_time, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle based on the current neural network trained for the puzzle
     """
     user_args = user_args.split(' ')
     n_args = 2
-    default_args = [60, 1]
+    default_args = [60, 0.1]
     data_types = [float, float]
     # make user_args the correct length (n_args)
     if len(user_args) > n_args:

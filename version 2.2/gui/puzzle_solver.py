@@ -7,7 +7,7 @@ from .ai_modules.twisty_puzzle_model import perform_action
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.nn_puzzle_class import Puzzle_Network
 
-def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=60, WEIGHT=1):
+def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=60, WEIGHT=0.1):
     """
     inputs:
     -------
@@ -18,7 +18,7 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
             this determines what is used for the solving process
             the Q-table or neural network should already be loaded.
         max_time - (float) - maximum time (in seconds) allowed for finding the solution
-        WEIGHT - (float) - weight for weighted A* search. default: 1 for normal A*
+        WEIGHT - (float) - weight for weighted A* search. 1 for normal A*
 
     returns:
     --------
@@ -28,8 +28,15 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
 
     open_states = {():(0,starting_state)} # init starting state with value 0, no actions taken so far
     closed_states = dict()
+
+    def _get_key(key):
+        """
+        helper function for max() to get the best action from open_states
+        """
+        return open_states[key][0]
+
     while time.time() < end_time:
-        best_action_seq = max(open_states, key=lambda key: open_states[key][0])
+        best_action_seq = max(open_states, key=_get_key)
         value, puzzle_state = open_states[best_action_seq]
         solution_sequence = expand_node(best_action_seq,
                                         open_states,
@@ -39,30 +46,12 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
                                         ai_class,
                                         WEIGHT=WEIGHT)
         if solution_sequence is not None:
-            print(f"Searched {len(closed_states)} state-action pairs to find a solution.")
+            print(f"Searched {len(closed_states) + len(open_states)} state-action pairs to find a solution.")
             print(f"Maximum search depth was {len(max(open_states.keys(), key=len))} moves.")
             return " ".join(solution_sequence)
-    print(f"Searched {len(closed_states)} state-action pairs but found no solution.")
+    print(f"Searched {len(closed_states) + len(open_states)} state-action pairs but found no solution.")
     print(f"Maximum search depth was {len(max(open_states.keys(), key=len))} moves.")
     return ""
-
-
-# def get_value(*args):#open_dict, key):
-#     """
-#     return the value assigned to a set of moves (given as [key])
-
-#     inputs:
-#     -------
-#         open_dict - (dict) - dictionary containing all nodes open for further investigation
-#         key - (tuple) - a key in open_dict
-
-#     returns:
-#     --------
-#         (float) - value of the given key
-#     """
-#     print(args)
-#     return
-#     # return open_dict[key][0]
 
 
 def expand_node(action_seq,
@@ -71,7 +60,7 @@ def expand_node(action_seq,
                 ACTIONS_DICT,
                 SOLVED_STATE,
                 ai_class,
-                WEIGHT=1):
+                WEIGHT=0.1):
     """
     for all possible actions in [ACTIONS_DICT], add the action to [action_seq] and add that to open_states, unless the state resulting from that action was already visited and had a better value than it has now.
 
@@ -100,7 +89,10 @@ def expand_node(action_seq,
         new_key = action_seq + (action,)
         if puzzle_state == SOLVED_STATE:
             return new_key
+        # start_time = time.perf_counter()
         value = get_a_star_eval(action, prev_value, prev_state, ai_class, WEIGHT=WEIGHT)
+        # end_time = time.perf_counter()
+        # print(f"evaluation of state took {(end_time-start_time)*1000:5} ms.")
 
         state_tuple = tuple(puzzle_state)
         if not state_tuple in closed_states:
@@ -114,7 +106,7 @@ def expand_node(action_seq,
         closed_states[tuple(prev_state)] = prev_value
 
 
-def get_a_star_eval(action, prev_value, prev_state, ai_class, WEIGHT=1):
+def get_a_star_eval(action, prev_value, prev_state, ai_class, WEIGHT=0.1):
     """
     evaluate the current sequence of actions according to the usual formula of weighted A*:
         f(s) = lambda * g(s) + h(s)
@@ -133,27 +125,31 @@ def get_a_star_eval(action, prev_value, prev_state, ai_class, WEIGHT=1):
     --------
         (float) - representing f(s)
     """
-    return WEIGHT*prev_value-WEIGHT + get_ai_eval(prev_state, action, ai_class)
-
-
-def get_ai_eval(prev_state, action, ai_class):
-    """
-    this is the heuristic used in the A* algorithm
-    calculates the estimated value of the given state-action pair based in the Q-table or Neural Network
-
-    inputs:
-    -------
-        prev_state - (list) - 
-        action - (str) - 
-        ai_class - ()
-    """
     if isinstance(ai_class, Puzzle_Q_AI):
-        return get_q_value(tuple(prev_state), action, ai_class.Q_table)
+        return WEIGHT*prev_value-WEIGHT + get_q_value(tuple(prev_state), action, ai_class)
     if isinstance(ai_class, Puzzle_Network):
-        return get_nn_value(prev_state, action, ai_class)
+        return WEIGHT*prev_value-WEIGHT + get_nn_value(prev_state, action, ai_class)
+    # return WEIGHT*prev_value-WEIGHT + get_ai_eval(prev_state, action, ai_class)
 
 
-def get_q_value(state, action, Q_table):
+# def get_ai_eval(prev_state, action, ai_class):
+#     """
+#     this is the heuristic used in the A* algorithm
+#     calculates the estimated value of the given state-action pair based in the Q-table or Neural Network
+
+#     inputs:
+#     -------
+#         prev_state - (list) - 
+#         action - (str) - 
+#         ai_class - ()
+#     """
+#     if isinstance(ai_class, Puzzle_Q_AI):
+#         return get_q_value(tuple(prev_state), action, ai_class.Q_table)
+#     if isinstance(ai_class, Puzzle_Network):
+#         return get_nn_value(prev_state, action, ai_class)
+
+
+def get_q_value(state, action, ai_class):
     """
     calculates the q-values assigned to the given state-action pair by the given Q-table
 
@@ -169,11 +165,11 @@ def get_q_value(state, action, Q_table):
             0 if the key doesn't exist
     """
     try:
-        return Q_table[(state, action)]
+        return ai_class.Q_table[(state, action)]
     except KeyError:
         return 0
     except TypeError:
-        return Q_table[(tuple(state), action)]
+        return ai_class.Q_table[(tuple(state), action)]
 
 
 def get_nn_value(state, action, ai_class):
@@ -184,6 +180,10 @@ def get_nn_value(state, action, ai_class):
     -------
         state - (list) - the current puzzle state as a list
         action - (str) - the action of interest
-        ai_class - (Puzzle_Network) - 
+        ai_class - (Puzzle_Network) - puzzle Network class instance with trained network ai_class.model
     """
-    return ai_class.model.predict([ai_class.prepare_state(state) + ai_class.ACTION_VECTOR_DICT[action]], use_multiprocessing=True)[0]
+    start_time = time.time()
+    value = ai_class.model.predict([ai_class.prepare_state(state) + ai_class.ACTION_VECTOR_DICT[action] for action in ai_class.ACTION_VECTOR_DICT], use_multiprocessing=True)[0]
+    end_time = time.time()
+    print(f"Neural network prediction took {(end_time-start_time)*1000:5} ms.")
+    return value

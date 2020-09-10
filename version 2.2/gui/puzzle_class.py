@@ -372,7 +372,7 @@ class Twisty_Puzzle():
         print(f"move had value {value}")
 
 
-    def solve_Q(self, max_time=60, arg_color="#0066ff"):
+    def solve_Q(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
         """
         solve the puzzle based on the current Q-table of the AI
         """
@@ -381,7 +381,7 @@ class Twisty_Puzzle():
                                    self.ai_q_class.SOLVED_STATE,
                                    self.ai_q_class,
                                    max_time=max_time,
-                                   WEIGHT=1)
+                                   WEIGHT=WEIGHT)
         if not solve_moves == "":
             print(f"solved the puzzle after {colored(str(len(solve_moves.split(' '))), arg_color)} moves:")
             print(f"{colored(solve_moves, arg_color)}")
@@ -448,7 +448,7 @@ class Twisty_Puzzle():
         print(f"made move: {colored(ai_move, arg_color)}")
 
 
-    def solve_nn(self, max_time=60, arg_color="#0066ff"):
+    def solve_nn(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
         """
         solve the puzzle based on the current Q-table of the AI
         """
@@ -457,7 +457,7 @@ class Twisty_Puzzle():
                                    self.ai_q_class.SOLVED_STATE,
                                    self.ai_nn_class,
                                    max_time=max_time,
-                                   WEIGHT=1)
+                                   WEIGHT=WEIGHT)
         if not solve_moves == "":
             print(f"solved the puzzle after {colored(str(len(solve_moves.split(' '))), arg_color)} moves:")
             print(f"{colored(solve_moves, arg_color)}")

@@ -7,7 +7,6 @@ import os
 import random
 import pickle
 from copy import deepcopy
-import itertools
 import numpy as np
 import tensorflow.keras as keras
 from tensorflow.keras import layers
@@ -84,20 +83,24 @@ class Puzzle_Network():
         #     (np.ndarray) - input data (state-action vectors)
         #     (np.ndarray) - ouput data (target Q-values)
         """
-        print(f"generating {100*additional_data:2.2}\% additional data points")
+        print(f"generating {100*additional_data:4}% additional data points")
         if additional_data > 0:
             self.gen_inverse_scramble(additional_data=additional_data)
-        dict_length = len(self.Q_table)
-        print_i = dict_length//10
-        for i, state_action in enumerate(self.Q_table.keys()):
-            if i % print_i== 0:
-                print(f"converted {i//dict_length*100}% of the data")
-            if i == dict_length:
-                break
+        print_i = len(self.Q_table)//10
+        inputs = []
+        outputs = []
+        i = len(self.Q_table)
+        while i > 0:
+            if i % print_i == 0:
+                print(f"converted {100-i//print_i*10}% of the data")
+            state_action, value = self.Q_table.popitem()
             state, action = state_action
-            self.Q_table[tuple(self.prepare_state(state) + self.ACTION_VECTOR_DICT[action])] = self.Q_table.pop(state_action)
+            inputs.append(tuple(self.prepare_state(state) + self.ACTION_VECTOR_DICT[action]))
+            outputs.append(value)
+            i = len(self.Q_table)
+        print("converted 100% of the data")
 
-        # return np.array(inputs), np.array(outputs)
+        return np.array(inputs), np.array(outputs)
 
 
     def prepare_state(self, state):
@@ -112,7 +115,10 @@ class Puzzle_Network():
         --------
             (list) of 0s and 1s - new state for the neural network input
         """
-        return list(itertools.chain.from_iterable([self.COLOR_VECTOR_DICT[color] for color in state]))
+        new_state = list()
+        for color in state:
+            new_state += self.COLOR_VECTOR_DICT[color]
+        return new_state
 
     
     def gen_inverse_scramble(self, additional_data=0.01, max_moves=30, learning_rate=0.05, discount_factor=0.99):
@@ -192,14 +198,9 @@ class Puzzle_Network():
         if epochs > 0:
             if self.old_Q_table:
                 print("preparing data...")
-                self.prepare_data(additional_data=additional_data)
-                self.old_Q_table = False
-            else:
-                print("data unchanged")
-            inputs = np.array(list(self.Q_table.keys()))
-            outputs = np.array(list(self.Q_table.values()))
+                inputs, outputs = self.prepare_data(additional_data=additional_data)
             print("begin training")
-            self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True, verbose=2)
+            self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True)
             print("end training")
             self.save_network()
             print("saved network")
