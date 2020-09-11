@@ -236,11 +236,6 @@ run {colored('snap', command_color)} again to hide the snap shape\n{' '*31}\
 - train the Q-table for the puzzle with the given parameters\n{' '*31}\
 use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an existing q_table for the puzzle")
 
-    print(f"- {colored('move_Q', command_color)}                     \
-- make one move based on the current Q_table of the AI")
-
-    print(f"- {colored('solve_Q', command_color)} [{colored('max_time', arg_color)}]           \
-- solve the puzzle using the current Q_table of the AI")
 
     print(f"- {colored('plot', command_color)} [{colored('batch_size', arg_color)}]          \
 - plot the success of the last q-training")
@@ -250,6 +245,12 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('endeditpoints', command_color)}              \
 - exit point color editing mode")
 
+    print(f"- {colored('move_Q', command_color)}                     \
+- make one move based on the current Q_table of the AI")
+
+    print(f"- {colored('solve_Q', command_color)} [{colored('max_time', arg_color)}]         \
+- solve the puzzle using the current Q_table of the AI")
+
     print(f"- {colored('train_nn', command_color)} [{colored('epochs', arg_color)}] [{colored('batch_size', arg_color)}] [{colored('additional_data', arg_color)}]\n{' '*29}\
 - train the neural network for the puzzle with the given parameters.\n{' '*29}\
   Generate 100*{colored('additional_data', arg_color)}% extra data from reverse scrambles.")
@@ -257,7 +258,7 @@ use '{colored('train_Q', command_color)} {colored('0', arg_color)}' to load an e
     print(f"- {colored('move_nn', command_color)}                    \
 - make one move based on the currentneural network of the AI")
 
-    print(f"- {colored('solve_nn', command_color)} [{colored('max_time', arg_color)}]           \
+    print(f"- {colored('solve_nn', command_color)} [{colored('max_time', arg_color)}]        \
 - solve the puzzle using the current neural network of the AI")
 
 

@@ -308,11 +308,13 @@ class Twisty_Puzzle():
         for movename in self.moves.keys():
             self.print_move(movename,
                            arg_color=arg_color)
-
-        print("\nThe following moves are availiable: ")
-        for movename in list(self.moves.keys())[:-1]:
-            print(colored(movename, arg_color), end=", ")
-        print(colored(list(self.moves.keys())[-1], arg_color))
+        if len(self.moves) > 0:
+            print("\nThe following moves are availiable: ")
+            for movename in list(self.moves.keys())[:-1]:
+                print(colored(movename, arg_color), end=", ")
+            print(colored(list(self.moves.keys())[-1], arg_color))
+        else:
+            print("No moves are defined yet.")
 
 
     def print_move(self, move_name, arg_color="#0066ff"):

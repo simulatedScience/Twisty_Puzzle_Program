@@ -1,7 +1,7 @@
 # Twisty Puzzle Analysis version 2.1
 by ***Sebastian Jost*** and ***Thomas Bartscher***
 
-_mid August 2020_
+10. August 2020 to 21. August 2020
 
 ## What can it do?
 This version focusses on the 3d animation using `vpython`
@@ -17,8 +17,8 @@ It also implements a console interface to control the animation. Overall it can 
 - scramble the puzzle
 - reset the puzzle to solved state
 - train an AI using Q-Learning to learn to automatically solve any sufficiently easy puzzle. harder puzzles can be partially solved
-- plot the success of the AI during training (basic plot, no legend, acis labels or any explanation)
-- solve watch the trained AI solve the puzzle
+- plot the success of the AI during training (basic plot, no legend, axis labels or any explanation)
+- watch the trained AI solve the puzzle
 - control animation speed
 - start of an implementation for neural networks to solve more difficult puzzles. However this is not yet connected to the console interface.
 
