@@ -13,14 +13,14 @@ def draw_voronoi_3d(points_3d, pointsize=1):
 
     draw_points(points_3d, color=vpy.vec(.3,.3,.8), radius=pointsize)
     vor = Voronoi(points_3d, incremental=False)
-    print(vor.points)
-    print(vor.vertices)
+    # print(vor.points)
+    # print(vor.vertices)
     draw_points(vor.vertices, color=vpy.vec(.9,.5,0), radius=pointsize/2)
 
     vertices = [vpy.vec(*list(pos)) for pos in vor.vertices]
     faces = [ridge for ridge in vor.ridge_vertices if not -1 in ridge]
     # print(faces, len(faces))
-    poly = polyhedron(vertices, faces, color=vpy.vec(.9,.5,0), opacity=0.4)
+    poly = polyhedron(vertices, faces, color=vpy.vec(.9,.5,0), opacity=1)
     # draw_edges(vor, radius=pointsize/4)
 
 
@@ -38,7 +38,31 @@ if __name__=="__main__":
     #           (0,5,0), ( 0,-5, 0),
     #           (0,0,5), ( 0, 0,-5),
     #           (0,0,0)]
-    np.random.seed(12)
-    points = np.random.uniform(-30,30, (15, 3))
+    # # SKEWB points:
+    # points = [( 4, 4, 7), ( 4,-4, 7), (-4, 4, 7), (-4,-4, 7), ( 0, 0, 7),
+    #           ( 4, 4,-7), ( 4,-4,-7), (-4, 4,-7), (-4,-4,-7), ( 0, 0,-7),
+    #           ( 4, 7, 4), ( 4, 7,-4), (-4, 7, 4), (-4, 7,-4), ( 0, 7, 0),
+    #           ( 4,-7, 4), ( 4,-7,-4), (-4,-7, 4), (-4,-7,-4), ( 0,-7, 0),
+    #           ( 7, 4, 4), ( 7, 4,-4), ( 7,-4, 4), ( 7,-4,-4), ( 7, 0, 0),
+    #           (-7, 4, 4), (-7, 4,-4), (-7,-4, 4), (-7,-4,-4), (-7, 0, 0)]
+    # points = np.append(points, [[25,0,0], [-25,0,0], [0,25,0], [0,-25,0], [0,0,25], [0,0,-25]], axis = 0)
+    # IVY CUBE points:
+    points = [            ( 4,-4, 7), (-4, 4, 7),             ( 0, 0, 7),
+              ( 4, 4,-7),                         (-4,-4,-7), ( 0, 0,-7),
+                          ( 4, 7,-4), (-4, 7, 4),             ( 0, 7, 0),
+              ( 4,-7, 4),                         (-4,-7,-4), ( 0,-7, 0),
+                          ( 7, 4,-4), ( 7,-4, 4),             ( 7, 0, 0),
+              (-7, 4, 4),                         (-7,-4,-4), (-7, 0, 0)]
+    points = np.append(points, [[25,0,0], [-25,0,0], [0,25,0], [0,-25,0], [0,0,25], [0,0,-25]], axis = 0)
+    # # 2x2 Rubiks cube points:
+    # points = [( 4, 4, 7), ( 4,-4, 7), (-4, 4, 7), (-4,-4, 7),
+    #           ( 4, 4,-7), ( 4,-4,-7), (-4, 4,-7), (-4,-4,-7),
+    #           ( 4, 7, 4), ( 4, 7,-4), (-4, 7, 4), (-4, 7,-4),
+    #           ( 4,-7, 4), ( 4,-7,-4), (-4,-7, 4), (-4,-7,-4),
+    #           ( 7, 4, 4), ( 7, 4,-4), ( 7,-4, 4), ( 7,-4,-4),
+    #           (-7, 4, 4), (-7, 4,-4), (-7,-4, 4), (-7,-4,-4),]
+    # points = np.append(points, [[100,0,0], [-100,0,0], [0,100,0], [0,-100,0], [0,0,100], [0,0,-100]], axis = 0)
+    # np.random.seed(12)
+    # points = np.random.uniform(-30,30, (15, 3))
     # points = np.append(points, [[999,0,0], [-999,0,0], [0,999,0], [0,-999,0], [0,0,999], [0,0,-999]], axis = 0)
     draw_voronoi_3d(points)
