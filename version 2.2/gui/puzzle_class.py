@@ -5,6 +5,8 @@ import time
 import random
 from copy import deepcopy
 import matplotlib.pyplot as plt
+from sympy.combinatorics import Permutation
+from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
 
 from .ggb_import.ggb_to_vpy import draw_points, get_point_dicts
@@ -40,6 +42,46 @@ class Twisty_Puzzle():
         self.canvas = None
         self.moves = dict() # dcitionary containing all moves for the puzzle
         self.movecreator_mode = False
+        self.puzzle_group = None # sympy group for the puzzle
+
+
+    def validate_state(self):
+        """
+        using sympy permutation groups, check whether or not the current puzzle state is valid.
+        Since some information about the puzzle state can get lost in the representation if multiple stickers (points)
+            have the same color, the output is not always an integer but sometimes a float in range [0,1].
+            This float is then probability that the state is valid.
+
+        returns:
+        --------
+            (int) of (float) - if the validity can be confirmed with 100% accuracy, returns an integer 0 or 1
+                otherwise returns a float in [0,1] with the probability of state validity.
+        """
+        size = len(self.SOLVED_STATE)
+
+        # generate the solved state as for the AI
+        solved_state = []
+        for color in self.SOLVED_STATE:
+            for i, index_color in enumerate(self.color_list):
+                if index_color == color:
+                    solved_state.append(i)
+        # get the current state as for the AI
+        current_state = self._get_ai_state()
+
+        return current_state in self.puzzle_group
+
+
+    def _update_perm_group(self):
+        """
+        update the permutation group for the puzzle based on the currently defined moves
+
+        updates self.puzzle_group
+        """
+        size = len(self.SOLVED_STATE)
+        move_perms = []
+        for cycles in self.moves.values():
+            move_perms.append(Permutation(cycles), size=size)
+        self.puzzle_group = PermutationGroup(move_perms)
 
 
     def snap(self, shape):
@@ -61,7 +103,7 @@ class Twisty_Puzzle():
         except NameError: # define self.snap_obj
             self.snap_obj = None
         if shape == "r" or shape == "reset":
-            self.reset_point_positions()
+            self._reset_point_positions()
         elif shape == "c" or shape =="cube":
             if not isinstance(self.snap_obj, vpy.box):
                 self.snap_obj = snap_to_cube(self.vpy_objects, show_cube=True)
@@ -71,7 +113,7 @@ class Twisty_Puzzle():
         self.POINT_POSITIONS = [vpy.vec(obj.pos) for obj in self.vpy_objects]
 
 
-    def reset_point_positions(self):
+    def _reset_point_positions(self):
         """
         resets the point positions to their initial position
         """
@@ -175,7 +217,7 @@ class Twisty_Puzzle():
         print(f"saved move {colored(self.active_move_name, arg_color)}.")
         if add_inverse:
             # prepare for adding inverse move:
-            self.inverse_cycles(self.active_move_cycles)
+            self._inverse_cycles(self.active_move_cycles)
             self.active_move_name = self.active_move_name[:-1] \
                 if "'" == self.active_move_name[-1] else self.active_move_name + "'"
             self.end_movecreation(arg_color=arg_color, add_inverse=False) # add inverse move
@@ -185,7 +227,7 @@ class Twisty_Puzzle():
             del(self.active_move_name)
 
 
-    def inverse_cycles(self, cycle_list):
+    def _inverse_cycles(self, cycle_list):
         """
         inverts all cycles in [cycle_list]
         """
@@ -325,7 +367,7 @@ class Twisty_Puzzle():
         print(f"{colored(move_name, arg_color)} =", move_str)
 
 
-    def get_ai_state(self):
+    def _get_ai_state(self):
         """
         return the current puzzle state for the ai based on self.color_list
         """
@@ -363,7 +405,7 @@ class Twisty_Puzzle():
         """
         make one move based on the current Q-table of the AI
         """
-        ai_state = tuple(self.get_ai_state())
+        ai_state = tuple(self._get_ai_state())
         ai_move = self.ai_q_class.choose_Q_action(ai_state)
         self.perform_move(ai_move)
         print(f"made move: {colored(ai_move, arg_color)}")
@@ -378,7 +420,7 @@ class Twisty_Puzzle():
         """
         solve the puzzle based on the current Q-table of the AI
         """
-        solve_moves = solve_puzzle(self.get_ai_state(),
+        solve_moves = solve_puzzle(self._get_ai_state(),
                                    self.moves,
                                    self.ai_q_class.SOLVED_STATE,
                                    self.ai_q_class,
@@ -444,7 +486,7 @@ class Twisty_Puzzle():
         """
         make one move based on the current Q-table of the AI
         """
-        ai_state = self.get_ai_state()
+        ai_state = self._get_ai_state()
         ai_move = self.ai_nn_class.choose_nn_move(ai_state, self.moves)
         self.perform_move(ai_move)
         print(f"made move: {colored(ai_move, arg_color)}")
@@ -454,7 +496,7 @@ class Twisty_Puzzle():
         """
         solve the puzzle based on the current Q-table of the AI
         """
-        solve_moves = solve_puzzle(self.get_ai_state(),
+        solve_moves = solve_puzzle(self._get_ai_state(),
                                    self.moves,
                                    self.ai_q_class.SOLVED_STATE,
                                    self.ai_nn_class,

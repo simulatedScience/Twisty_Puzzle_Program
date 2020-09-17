@@ -3,6 +3,17 @@ by Sebastian Jost
 
 work began 22.08.2020
 
+-----
+
+## Dependecies
+non-standard library modules:
+- vpython
+- colored
+- lxml
+- sympy
+
+-----
+
 ## What can it do?
 This version focusses on the 3d animation using `vpython`
 
@@ -43,12 +54,21 @@ It also implements a console interface to control the animation. Overall it can 
 
   this way the result of $n$ scramble moves is more likely to actually require close to $n$ moves to solve, even with an optimal strategy.
 
+-----
 
-### fixed issues:
+## fixed issues:
 - fixed critical bug where cycle input lists weren't reset properly. This made it impossible or unreliable to input more than one move without closing the puzzle in between
 
 - made sure Q-tables and Networks can be saved even if the puzzle isn't saved yet. Although this is not tested thoroughly.
 
 - made memory usage more efficient for Neural Networks. Once the network is trained, the keys in the Q-table are replaced with the keys as they are required for the Network.
 
-  However this makes it impossible to 
+  However for now this makes it impossible to train the network more than once without reloading the puzzle.
+
+-----
+
+## possible improvements
+
+Train the AIs not on permutations of the color points but on permutations of the pieces instead. This doesn't decrease the state space size but it could decrease the computational cost for each applied move, decrease the size of the neural network.
+
+Both of which would accelerate the training and massivly decrease the time it takes to solve puzzles with the implemented A* algorithm.

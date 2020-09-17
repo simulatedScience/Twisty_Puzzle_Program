@@ -20,8 +20,11 @@ The standard library python module `scipy.spatial` provides a class `Voronoi` (f
 
 - There are also the attributes `vor.ridge_points`, `vor.point_region` and `vor.furthest_site` but they are not relevant for this application.
 
+-----
+
 ## TODO: 2. snap the voronoi diagram to a given shape
-this is not done yet. However we can achive an approximation of cube snapping by doing the following:
+### **Approximation:**
+However we can achive an approximation of cube snapping by doing the following:
 
 1. add a few points very far away in all cardinal directions. (i.e. (-100, 0), (100, 0), (0, -100), (0, 100))
 2. calculate the voronoi diagram including those points but ignore cells on the outside (list indices include `-1`).
@@ -34,6 +37,13 @@ This is only an approximation though and comes with a few disadvantages:
 - the shape is not really a cube, only close to a cube
 - the size of the shape is difficult to control unless all resulting points are projected back onto a smaller shape. due to the large distance between the added outside points a large voronoi diagram cannot be avoided otherwise.
 - some features of the puzzle can get lost. This is the same effect as in real life puzzle where cutting down pieces of a puzzle can reveal previously hidden pieces. This is especially noticable with some pieces being unproportionally small. (i.e. the skewb center pieces are tiny compared to the corners when using this method.)
+
+### **Actual solution:**
+We only need a fnite size of the voronoi diagram to represent the puzzles. To do that and still capture the different possible shapes of puzzles we will clip the voronoi diagram to a polyhedron.
+
+This should be an arbitrary convex polyhedron, bigger or smaller than the finite cells of the voronoi diagram.
+
+-----
 
 ## 3. creating polyhedra
 We use the python module `vpython` because it is very intuitive to use but still very efficient for 3D animation. However `vpython` does not implement polyhedra. Instead it only includes triangles and quadrilaterals to build your own shapes.
@@ -56,14 +66,27 @@ So the first triangle has vertices given by `face_indices[0]`, `face_indices[1]`
 
 However this process is not guarantied to actually fill the whole polygon. It only works if the vertices pointed to by `face_indices` are sorted either clockwise or counterclockwise around the centerpoint of the face.
 
-#### **TODO: sorting face vertices**
+#### **sorting face vertices**
 So before drawing a face we have to sort all the vertices. To do this we first calculate a point on the inside of the face as the center of mass of all face points. We call this point `face_com`.
 
 We can then sort the face points by the angle between the vector connecting each point to `face_com` and a reference vector `start_vec`.
 
 We set `start_vec = corners[face_indices[0]] - face_com`, the vector from the face center to the first corner. Now we need a function that yields the angle in a range from $[-\pi, \pi]$ or $[0, 2\pi]$.
 
-Apparently this is not working yet.
+We can calculate the angle in range $[0, \pi]$ using the formula
+$$|v_s| |v_i|\cos(\alpha) = \langle \vec v_s, \vec v_i \rangle \iff \alpha = \arccos \left(\frac{\langle \vec v_s, \vec v_i \rangle}{|\vec v_s| |\vec v_i|}\right) \in [0, \pi]$$
+
+This is implemented in the vpython function `vpy.diff_angle(v_s, v_i)`. Where $\vec v_s$ is `starting_vec` and $\vec v_i$ is the vector from the face center to the face corner `i`: `current_vec = corners[face_indices[i]] - face_com` for `i > 0`.
+
+But we want the signed angle in range $[-\pi, \pi]$. To get the sign we first calculate the face normal $\vec v_n$ as the cross product of the first two face corners ($\vec v_n = \vec v_s \times \vec v_1$).
+
+The sign of the angle is then equal to: 
+$$sign \left( \langle v_s \times v_i, \vec v_n \rangle \right)$$
+
+So to get the angle we want we use the formula:
+$$\alpha = \arccos \left(\frac{\langle \vec v_s, \vec v_i \rangle}{|\vec v_s| |\vec v_i|}\right)\cdot sign \left( \langle v_s \times v_i, \vec v_n \rangle \right)  \in [-\pi, \pi]$$
+
+Using this angle we simply sort the face corners.
 
 #### **drawing the polyhedron**
 Once all face vertices are sorted we can just loop over all faces and draw them to get the whole polyhedron.
@@ -71,3 +94,10 @@ Once all face vertices are sorted we can just loop over all faces and draw them 
 If requested we can also draw all edges of those faces by just connecting all the sorted vertices (don't forget to connect `face_indices[-1]` to `face_indices[0]`)
 
 finally we can convert all triangles to a vpython compound object so that it can be easily handled like every other vpython object.
+
+-----
+
+## 4. color the polyhedra
+We want each polyhedron to be the color of the point inside the polyhedron.
+
+Using the `vor.point_region` attribute of the `Voronoi` object we can get the index of the region associated to each input point. That way we can easily loop over the input point colors and `vor.point_ragion` to get the polyhedron and it's color.

@@ -23,7 +23,7 @@ This could probably be counteracted by calculating the order $\deg(a)$ of each m
 
 Similarly, if inverse moves exist in the puzzle, if a move $a$ is chosen $l$ times in a row, the distance from the origin should only be increased by $\max\{l, \deg(a)-l\}$ as the inverse move can achieve the same state quicker. (*)
 
-## (*) replaceing a sequence of moves with inverse moves
+## (*) replacing a sequence of moves with inverse moves
 
 Assume we are currently (time $T$) in state $S_T$ and perform action $a$ with order $n_a$ exactly $l$ times with $l \geq \frac{n_a}{2}$, arriving at timestep $T + l$ and state $S_{T+l}$.
 
