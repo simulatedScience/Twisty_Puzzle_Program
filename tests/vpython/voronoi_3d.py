@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import vpython as vpy
 from polyhedra_test import polyhedron, draw_face
+import time
 
 
 def draw_voronoi_3d(points_3d, pointsize=1):
@@ -27,6 +28,7 @@ def draw_voronoi_3d(points_3d, pointsize=1):
                 # color=vpy.vec(.9,.5,0),
                 opacity=1,
                 sort_faces=True)
+        time.sleep(2)
 
 
 def get_polyhedra(vor):
@@ -96,6 +98,7 @@ if __name__=="__main__":
     #           (-7, 4, 4), (-7, 4,-4), (-7,-4, 4), (-7,-4,-4),]
     # points = np.append(points, [[100,0,0], [-100,0,0], [0,100,0], [0,-100,0], [0,0,100], [0,0,-100]], axis = 0)
     np.random.seed(12)
-    points = np.random.uniform(-30,30, (15, 3))
-    # points = np.append(points, [[999,0,0], [-999,0,0], [0,999,0], [0,-999,0], [0,0,999], [0,0,-999]], axis = 0)
+    # points = np.random.uniform(-30,30, (15, 3))
+    points = np.random.uniform(-30,30, (30, 3))
+    points = np.append(points, [[999,0,0], [-999,0,0], [0,999,0], [0,-999,0], [0,0,999], [0,0,-999]], axis = 0)
     draw_voronoi_3d(points)

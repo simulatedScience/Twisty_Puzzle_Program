@@ -279,6 +279,7 @@ class Twisty_Puzzle():
         self.canvas.unbind("mousedown", self.point_edit_method)
         del(self.point_edit_method)
 
+
     def save_puzzle(self, puzzle_name):
         """
         save the puzzle under the given name.

@@ -18,7 +18,7 @@ More specifically we can convert the moves into permutations using `sympy.combin
 
 To check whether or not the current state of the puzzle is valid and therefor solveable, we need to convert the state into the permutation that would lead from the solved state to the current one.
 
-### Describing the problem:
+### **Describing the problem**
 The current state as well as the sovled state are only given as a list of colors where it usually happens that the same color appears more than once in that list.
 
 This means that we loose information about the puzzle state because without additional information there is no way to distinguish points with the same color.
@@ -31,7 +31,7 @@ We can distinguish pieces with a few criteria:
 3. number of different colors on each piece
 4. the exact number how often each different color appears on a piece
 
-### **Possible solutions:**
+### **Possible solutions**
 
 How to calculate the pieces is described in `automatic piece detection.md` and implemented in `piece_detection.py`. 
 
@@ -47,14 +47,34 @@ If we just save the number, how often each color appears, these pieces would be 
 
 Even with this in mind, it is still possible that two pieces are indistinguishable (i.e. two edges of the same colors on a 4x4x4 rubiks cube). In that case we would ideally consider all possible permutations and use them to calculate a probability that the state is valid.
 
-### **Actual implementation:**
-There should be a one-time check for each puzzle to determine whether or not the order of the colors on a piece matters. To do this we can use two steps:
-1. Create a dictionary for every piece that stores how often each color is on that piece.
-2. compare these dictionaries. If two dictionaries are the same, check whether or not the sets of all cyclic permutations of both pieces are equal. If so, order matters, otherwise we can keep the dictionaries.
+### **Actual implementation**
+#### **Preparations/ one-time computations**
+1. Calculate the pieces that make up the puzzle.</br>
+   **Requirements:**
+      - moves
+2. Determine, with the following steps, whether or not the order of the colors on a piece matters:</br>
+   1. generate dictionaries for every piece in the solved state to count how often each color appears per piece. (`self.solved_piece_dicts`)
+   2. generate the ordered color lists for each piece
+   3. compare these dictionaries. If two dictionaries are the same, check whether or not the sets of all cyclic permutations of both pieces are equal. If so, order matters, otherwise we can keep the dictionaries.
 
-To check whether or not a state is valid we should first count how often each color appears. If that's different from the solved state, it can't be a valid state.
+   **Requirements:**
+      - pieces
+      - solved state
 
-Next we generate dictionaries for every piece in the current state to count how often each color appears per piece. Looping over this list of dictionaries and the one generated for the solved state, we delete every pair of matching dicts. If a dictionary from the current state remains unpaired or one from the solved state is not found in the current state, the state is invalid.
+#### **Explanation for preparations**
+
+1. As described before the state itself doesn't provide enough information to reconstruct the exact permutation as it is just a list of colors. The pieces carry information about the structure of that list that is given by the moves.
+
+2. We need to check that every piece in the solved state still exists in the current state. However since at least some of the pieces have moved, we only get the pieces as a small list of colors. So we need to check if the list of pieces in the current state matches the list of pieces in the solved state. But since pieces can be rotated, the color lists of two identical pieces may not be equal.</br>
+   $\left( \begin{array}{cc} 1&0\\ 1&0\end{array} \right) =$ `[1,0,1,0]` and $\left( \begin{array}{cc} 1&1\\ 0&0\end{array} \right) =$ `[1,1,0,0]`
+
+
+#### **State validation**
+1. count how often each color appears. </br>
+   If that's different from the solved state, it can't be a valid state.
+
+2. generate dictionaries for every piece in the current state to count how often each color appears per piece.</br>
+   Looping over this list of dictionaries and the one generated for the solved state, we delete every pair of matching dicts. If a dictionary from the current state remains unpaired or one from the solved state is not found in the current state, the state is invalid.
 
 If however every piece is found, we need to calculate the permutation that transforms the solved state into the current one. To do that we first determine the permutation of the pieces and then determine the point permutations within those pieces. Together we should get the correct permutation except for cases with two identical pieces.
 
