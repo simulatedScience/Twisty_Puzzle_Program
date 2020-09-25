@@ -248,9 +248,7 @@ class Polyhedron():
             del_empties(new_poly_faces) # delete empty faces
 
         if not changed_polyhedron: # no faces of 'self' and 'other intersected'
-            if set(relation_dict) == set([True]):
-                return self # 'self' is completely inside of 'other'
-            return None # 'self' is completely outside of 'other'
+            return self # 'self' is completely inside of 'other'
 
         return poly_from_faces(new_poly_faces) # the intersection is a new polyhedron
 
@@ -454,7 +452,7 @@ if __name__ == "__main__":
     for shape in test_shapes[:-1]:
         time.sleep(1)
         intersections.append(shape & test_shapes[-1])
-        if intersections[-1] != None:
+        if intersections[-1] != None and intersections[-1] != shape:
             shape.obj.visible = False
 
     for inter in intersections:

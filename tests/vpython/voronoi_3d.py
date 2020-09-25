@@ -1,8 +1,11 @@
-from scipy.spatial import Voronoi, voronoi_plot_2d
+"""
+tests to create a 3D Voronoi diagrams and draw polyhedra for each closed cell.
+"""
+from scipy.spatial import Voronoi
 import numpy as np
 import matplotlib.pyplot as plt
 import vpython as vpy
-from polyhedra_test import polyhedron, draw_face
+from polyhedra_test import Polyhedron
 import time
 
 
@@ -21,7 +24,7 @@ def draw_voronoi_3d(points_3d, pointsize=1):
     vertices = [vpy.vec(*list(pos)) for pos in vor.vertices]
     for poly_faces in get_polyhedra(vor):
         # print(faces, len(faces))
-        poly = polyhedron(
+        poly = Polyhedron(
                 vertices,
                 poly_faces,
                 color=vpy.vec(*np.random.rand(3)),

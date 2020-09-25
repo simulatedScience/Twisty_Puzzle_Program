@@ -69,6 +69,6 @@ It also implements a console interface to control the animation. Overall it can 
 
 ## possible improvements
 
-Train the AIs not on permutations of the color points but on permutations of the pieces instead. This doesn't decrease the state space size but it could decrease the computational cost for each applied move, decrease the size of the neural network.
+Train the AIs not on permutations of the color points but on permutations of the pieces instead. This doesn't decrease the state space size but it could decrease the computational cost for each applied move and decrease the size of the neural network.
 
-Both of which would accelerate the training and massivly decrease the time it takes to solve puzzles with the implemented A* algorithm.
+Both of which would accelerate the training and massively decrease the time it takes to solve puzzles with the implemented A* algorithm.

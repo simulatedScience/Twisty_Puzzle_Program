@@ -121,7 +121,7 @@ def apply_rotation(cycle_points, rot_info_list, sleep_time=5e-3, anim_steps=45):
         for obj, rot_info in zip(cycle_points, rot_info_list):
             angle, axis, com = rot_info
             obj.rotate(angle=angle/anim_steps, axis=axis, origin=com)
-            obj.rotate(angle=angle/anim_steps, axis=-axis)
+            # obj.rotate(angle=angle/anim_steps, axis=-axis)
         time.sleep(sleep_time)
 
 

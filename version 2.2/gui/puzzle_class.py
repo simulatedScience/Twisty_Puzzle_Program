@@ -18,6 +18,9 @@ from .interaction_modules.load_from_xml import load_puzzle
 from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
 from .vpython_modules.vpy_rotation import get_com, make_move
 from .vpython_modules.cycle_input import bind_click
+from .vpython_modules.polyhedra import Polyhedron
+from .vpython_modules.piece_modeling import draw_3d_pieces
+from .vpython_modules.clip_shapes import shapes
 
 from .shape_snapping import snap_to_cube, snap_to_sphere
 from .puzzle_solver import solve_puzzle
@@ -45,43 +48,43 @@ class Twisty_Puzzle():
         self.puzzle_group = None # sympy group for the puzzle
 
 
-    def validate_state(self):
-        """
-        using sympy permutation groups, check whether or not the current puzzle state is valid.
-        Since some information about the puzzle state can get lost in the representation if multiple stickers (points)
-            have the same color, the output is not always an integer but sometimes a float in range [0,1].
-            This float is then probability that the state is valid.
+    # def validate_state(self):
+    #     """
+    #     using sympy permutation groups, check whether or not the current puzzle state is valid.
+    #     Since some information about the puzzle state can get lost in the representation if multiple stickers (points)
+    #         have the same color, the output is not always an integer but sometimes a float in range [0,1].
+    #         This float is then probability that the state is valid.
 
-        returns:
-        --------
-            (int) of (float) - if the validity can be confirmed with 100% accuracy, returns an integer 0 or 1
-                otherwise returns a float in [0,1] with the probability of state validity.
-        """
-        size = len(self.SOLVED_STATE)
+    #     returns:
+    #     --------
+    #         (int) of (float) - if the validity can be confirmed with 100% accuracy, returns an integer 0 or 1
+    #             otherwise returns a float in [0,1] with the probability of state validity.
+    #     """
+    #     size = len(self.SOLVED_STATE)
 
-        # generate the solved state as for the AI
-        solved_state = []
-        for color in self.SOLVED_STATE:
-            for i, index_color in enumerate(self.color_list):
-                if index_color == color:
-                    solved_state.append(i)
-        # get the current state as for the AI
-        current_state = self._get_ai_state()
+    #     # generate the solved state as for the AI
+    #     solved_state = []
+    #     for color in self.SOLVED_STATE:
+    #         for i, index_color in enumerate(self.color_list):
+    #             if index_color == color:
+    #                 solved_state.append(i)
+    #     # get the current state as for the AI
+    #     current_state = self._get_ai_state()
 
-        return current_state in self.puzzle_group
+    #     return current_state in self.puzzle_group
 
 
-    def _update_perm_group(self):
-        """
-        update the permutation group for the puzzle based on the currently defined moves
+    # def _update_perm_group(self):
+    #     """
+    #     update the permutation group for the puzzle based on the currently defined moves
 
-        updates self.puzzle_group
-        """
-        size = len(self.SOLVED_STATE)
-        move_perms = []
-        for cycles in self.moves.values():
-            move_perms.append(Permutation(cycles), size=size)
-        self.puzzle_group = PermutationGroup(move_perms)
+    #     updates self.puzzle_group
+    #     """
+    #     size = len(self.SOLVED_STATE)
+    #     move_perms = []
+    #     for cycles in self.moves.values():
+    #         move_perms.append(Permutation(cycles), size=size)
+    #     self.puzzle_group = PermutationGroup(move_perms)
 
 
     def snap(self, shape):
@@ -111,6 +114,50 @@ class Twisty_Puzzle():
             if not isinstance(self.snap_obj, vpy.sphere):
                 self.snap_obj = snap_to_sphere(self.vpy_objects, show_sphere=True)
         self.POINT_POSITIONS = [vpy.vec(obj.pos) for obj in self.vpy_objects]
+
+
+    def set_clip_poly(self, shape_str="cube", size=None, show_edges=True):
+        """
+        define a polyhedron to set the shape of the puzzle.
+        saves the polyhedron as self.clip_poly
+            and displays it with low opacity
+
+        inputs:
+        -------
+            shape_str - (str) - the shape of the polyhedron
+                current options:
+                    - 'cube' = 'c' (default)
+                    - 'octahedron' = 'o'
+        """
+        if hasattr(self, "clip_poly"):
+            self.clip_poly.toggle_visible(False)
+        if shape_str in ("cube", "c"):
+            if size == None:
+                size = 2*max(
+                    [max([abs(obj.pos.x), abs(obj.pos.y), abs(obj.pos.z)]) \
+                    for obj in self.vpy_objects])
+            corners, faces = shapes["cube"](sidelength=size)
+        elif shape_str in ("octahedron", "oct", "o"):
+            if size == None:
+                size = 2*max([obj.pos.mag for obj in self.vpy_objects])
+            corners, faces = shapes["octahedron"](radius=size)
+
+        self.clip_poly = Polyhedron(corners, faces,
+                opacity=.2,
+                color=vpy.vec(0.4,0,0.6),
+                show_edges=show_edges,
+                show_corners=show_edges)
+
+
+    def draw_3d_pieces(self):
+        """
+        draw 3d pieces within the already set clip polyhedron. If no clip_poly is set, clip to a cube.
+        """
+        if not hasattr(self, "clip_poly"):
+            self.set_clip_poly(shape_str="cube")
+        self.vpy_objects, self.unclipped_polys = \
+                draw_3d_pieces(self.vpy_objects, self.clip_poly, show_edges=True)
+        self.clip_poly.toggle_visible(False)
 
 
     def _reset_point_positions(self):

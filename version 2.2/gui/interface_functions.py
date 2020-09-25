@@ -29,6 +29,43 @@ def interface_snap(shape, puzzle, command_color="#ff8800", arg_color="#5588ff", 
         print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
 
 
+def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    user_args = user_args.split(' ')
+    default_args = ["cube", None, True]
+    data_types = [str, float, bool]
+    n_args = 3
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+
+    final_args = []
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        if isinstance(default, bool):
+            if arg.lower == "false":
+                final_args.append(False)
+            else:
+                final_args.append(default)
+        else:
+            try:
+                final_args.append(dtype(arg))
+            except ValueError:
+                final_args.append(default)
+    shape, size, show_edges = final_args
+
+    if not shape in ['c', 'cube', 'o', 'oct', 'octahedron']:
+        print(f"{colored('Error:', error_color)} Invalid shape specified. Try {colored('cube', command_color)} or {colored('octahedron', command_color)}")
+    if not puzzle.vpy_objects == []:
+        puzzle.set_clip_poly(shape_str=shape, size=size, show_edges=show_edges)
+    else:
+        print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
+
+
+def interface_draw_pieces(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    puzzle.draw_3d_pieces()
+
+
 def interface_newmove(movename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     if len(movename) == 0 or ' ' in movename:
         print(

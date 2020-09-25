@@ -41,11 +41,14 @@ def main_interaction():
         - 'editpoints'                 - enter point color editing mode
         - 'endeditpoints'              - exit point color editing mode
         - 'train_q'                    - train Q-table for current puzzle
+        - 'plot' [average length]      - plot the success of the Q-table over time
         - 'move_q'                     - make a move based on current Q-table
         - 'solve_q'                    - solve puzzle based on current Q-table
         - 'train_nn'                   - train Neural Network for current puzzle
         - 'move_nn'                    - make a move based on current Neural Network
         - 'solve_nn'                   - solve puzzle based on current Neural Network
+        - 'clipshape'                  - define a shape for the puzzle
+        - 'drawpieces'                 - draw 3D pieces within the clip shape
     """
     command_color = "#ff8800"
     argument_color = "#5588ff"
@@ -85,7 +88,9 @@ def main_interaction():
                         "plot": interface_plot_success,
                         "train_nn": interface_train_nn,
                         "move_nn": interface_move_nn,
-                        "solve_nn": interface_solve_nn}
+                        "solve_nn": interface_solve_nn,
+                        "clipshape": interface_clip_shape,
+                        "drawpieces": interface_draw_pieces}
 
         if validate_command(command_dict, user_input):
             run_command(command_dict, user_input, puzzle,
@@ -139,7 +144,8 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "solve_q",
                           "plot",
                           "train_nn",
-                          "solve_nn"]
+                          "solve_nn",
+                          "clipshape"]
     if command in commands_with_args:
         user_arguments = user_input[len(command)+1:]
         print(
@@ -189,6 +195,13 @@ def interface_help(puzzle, command_color="#ff8800", arg_color="#0055cc", error_c
 or '{colored('sphere', arg_color)}'='{colored('s', arg_color)}'\n{' '*31}\
 run {colored('snap', command_color)} again to hide the snap shape\n{' '*31}\
 '{colored('reset', arg_color)}'='{colored('r', arg_color)}' - resets points to inital positions")
+
+    print(f"- {colored('clipshape', command_color)} [{colored('shape', arg_color)}] [{colored('size', arg_color)}] [{colored('show_edges', arg_color)}] \n{' '*29}\
+- define a shape for the puzzle. Currently availiable: \n{' '*31}\
+'{colored('cube', arg_color)}'='{colored('c', arg_color)}', \
+'{colored('octahedron', arg_color)}'='{colored('oct', arg_color)}'='{colored('o', arg_color)}'")
+    print(f"- {colored('drawpieces', command_color)}                 \
+- draw 3D pieces within the clip shape")
 
     print(f"- {colored('newmove', command_color)} [{colored('movename', arg_color)}]         \
 - create new move with name 'movename'")
