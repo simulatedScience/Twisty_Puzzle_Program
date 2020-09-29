@@ -5,8 +5,6 @@ import time
 import random
 from copy import deepcopy
 import matplotlib.pyplot as plt
-from sympy.combinatorics import Permutation
-from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
 
 from .ggb_import.ggb_to_vpy import draw_points, get_point_dicts
@@ -14,6 +12,8 @@ from .ggb_import.ggb_to_vpy import draw_points, get_point_dicts
 from .interaction_modules.colored_text import colored_text as colored
 from .interaction_modules.save_to_xml import save_to_xml
 from .interaction_modules.load_from_xml import load_puzzle
+
+from .puzzle_analysis_modules.size_analysis import get_state_space_size, approx_int
 
 from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
 from .vpython_modules.vpy_rotation import get_com, make_move
@@ -116,7 +116,7 @@ class Twisty_Puzzle():
         self.POINT_POSITIONS = [vpy.vec(obj.pos) for obj in self.vpy_objects]
 
 
-    def set_clip_poly(self, shape_str="cube", size=None, show_edges=True):
+    def set_clip_poly(self, shape_str="cuboid", size=None, show_edges=True):
         """
         define a polyhedron to set the shape of the puzzle.
         saves the polyhedron as self.clip_poly
@@ -126,22 +126,58 @@ class Twisty_Puzzle():
         -------
             shape_str - (str) - the shape of the polyhedron
                 current options:
-                    - 'cube' = 'c' (default)
-                    - 'octahedron' = 'o'
+                    - 'cuboid' = 'c' (default)
+                    - 'cube'
+                    - 'octahedron' = 'oct'
+                    - 'tetrahedron' = 'tet'
+            size - (float) or (vpy.vector) - if shape is a cuboid,
+                this has to be a vpython vector, otherwise it needs to be a float
+
+        raises:
+        -------
+            - ValueError if the shape is not valid
+            - TypeError if the shape is not given as a string
         """
+        if not isinstance(shape_str, str):
+            raise TypeError(f"'shape_str' should be of type 'str' \
+but was of type '{type(shape_str)}'")
         if hasattr(self, "clip_poly"):
             self.clip_poly.toggle_visible(False)
-        if shape_str in ("cube", "c"):
+        if shape_str in ("cuboid", "c"):
+            if size == None:
+                xsize = max([obj.pos.x for obj in self.vpy_objects]) \
+                      + abs(min([obj.pos.x for obj in self.vpy_objects]))
+                ysize = max([obj.pos.y for obj in self.vpy_objects]) \
+                      + abs(min([obj.pos.y for obj in self.vpy_objects]))
+                zsize = max([obj.pos.z for obj in self.vpy_objects]) \
+                      + abs(min([obj.pos.z for obj in self.vpy_objects]))
+                size = vpy.vec(xsize, ysize, zsize)
+            corners, faces = shapes["cuboid"](size=size)
+
+        elif shape_str in ("tetrahedron", "tet"):
+            if size == None:
+                size = 2*max([obj.pos.mag for obj in self.vpy_objects])
+            corners, faces = shapes["tetrahedron"](radius=size)
+
+        elif shape_str in ("cube"):
             if size == None:
                 size = 2*max(
                     [max([abs(obj.pos.x), abs(obj.pos.y), abs(obj.pos.z)]) \
                     for obj in self.vpy_objects])
             corners, faces = shapes["cube"](sidelength=size)
-        elif shape_str in ("octahedron", "oct", "o"):
+
+        elif shape_str in ("octahedron", "oct"):
             if size == None:
                 size = 2*max([obj.pos.mag for obj in self.vpy_objects])
             corners, faces = shapes["octahedron"](radius=size)
-
+        elif shape_str in ("cylinder", "cyl"):
+            if size == None:
+                size = max([vpy.sqrt(obj.pos.x**2 + obj.pos.y**2) for obj in self.vpy_objects])
+            height = max([obj.pos.z for obj in self.vpy_objects]) \
+                   + abs(min([obj.pos.z for obj in self.vpy_objects]))
+            corners, faces = shapes["cylinder"](radius=size, height=height)
+        else:
+            raise ValueError(f"Invalid shape. Got {shape_str} but expected one of ['c', 'cuboid', 'tetrahedron', 'cube', 'oct', 'octahedron'].")
         self.clip_poly = Polyhedron(corners, faces,
                 opacity=.2,
                 color=vpy.vec(0.4,0,0.6),
@@ -360,6 +396,10 @@ class Twisty_Puzzle():
         self.SOLVED_STATE = [point["vpy_color"] for point in self.POINT_INFO_DICTS]
         self.COM = get_com(self.vpy_objects)
         self.PUZZLE_NAME = puzzle_name
+
+        self.state_space_size = get_state_space_size(
+                self.moves.values(), len(self.SOLVED_STATE))
+        print(f"The loaded puzzle has {approx_int(self.state_space_size)} possible states and {len(self.moves)} availiable moves.")
 
     
     def import_puzzle(self, filepath):

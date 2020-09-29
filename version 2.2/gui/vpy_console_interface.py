@@ -198,8 +198,10 @@ run {colored('snap', command_color)} again to hide the snap shape\n{' '*31}\
 
     print(f"- {colored('clipshape', command_color)} [{colored('shape', arg_color)}] [{colored('size', arg_color)}] [{colored('show_edges', arg_color)}] \n{' '*29}\
 - define a shape for the puzzle. Currently availiable: \n{' '*31}\
-'{colored('cube', arg_color)}'='{colored('c', arg_color)}', \
-'{colored('octahedron', arg_color)}'='{colored('oct', arg_color)}'='{colored('o', arg_color)}'")
+'{colored('cuboid', arg_color)}'='{colored('c', arg_color)}', \
+'{colored('tetrahedron', arg_color)}'='{colored('tet', arg_color)}', \
+'{colored('cube', arg_color)}', \
+'{colored('octahedron', arg_color)}'='{colored('oct', arg_color)}'")
     print(f"- {colored('drawpieces', command_color)}                 \
 - draw 3D pieces within the clip shape")
 

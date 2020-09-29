@@ -37,12 +37,14 @@ It also implements a console interface to control the animation. Overall it can 
 - plot the success of the AI during training (basic plot, no legend, acis labels or any explanation) (`plot`)
 - control animation speed (`sleeptime`)
 
-### Additions in version 2.1
+### Additions in version 2.2
 - implemented Neural Networks for solving puzzles (`train_nn`)
 - automatically load and save the Neural Networks before and after training (`train_nn`)
 - solve puzzles with the neural networks (`move_nn`, `solve_nn`)
 - implemented a variation of the A* algorithm to solve puzzles more reliably (`solve_q`, `solve_nn`)
 - allow visual input of a current puzzle state where the scramble moves are unknown (`editpoints`, `endeditpoints`)
+- visualize the puzzles by calculating the 3D pieces that make up the puzzle. (`clipshape`, `drawpieces`)
+- automatically calculate the number of possible states for each puzzle upon loading.
 
 ### other additions: Q-table analyser
 - added a script `q_table_analyser` to show the average Q-values for a puzzle in dependency of the scramble difficulty

@@ -140,7 +140,7 @@ class Polyhedron():
                 face_normal *= -1
             # if self.debug:
             #     vpy.arrow(axis=face_normal/face_normal.mag*5,
-                        # pos=face_com, color=vpy.vec(0, 0.8, 0))
+            #             pos=face_com, color=vpy.vec(0, 0.8, 0))
             def sort_face(vertex_index):
                 """
                 return the angle between the starting vector and 'self.vertices[vertex_index] - face_com'
@@ -291,7 +291,7 @@ class Polyhedron():
             # calculate for each point whether it's above or below the clip plane
             relation_dict = get_vertex_plane_relations(new_poly_faces, clip_normal_vec, clip_center)
             if debug:
-                debug_list = [vpy.arrow(axis=clip_normal_vec, pos=clip_center, color=color, shaftwidth=0.05, headlength=0.2, headwidth=0.2)]
+                debug_list = [vpy.arrow(axis=clip_normal_vec/clip_normal_vec.mag, pos=clip_center, color=color, shaftwidth=0.05, headlength=0.2, headwidth=0.2)]
                 debug_list += [vpy.sphere(pos=vpy.vec(*key), radius=0.05, color=vpy.vec(1-val, val, 0)) for key,val in relation_dict.items()]
             # skip calculation if this plane does not intersect the polyhedron
             relation_set = set(relation_dict.values())
@@ -319,8 +319,8 @@ class Polyhedron():
 
                     if debug:
                         edge = point_2-point_1
-                        debug_list.append(vpy.arrow(pos=point_1, axis=edge/edge.mag, shaftwidth=0.05, headlength=0.2, headwidth=0.2, color=vpy.vec(1,0,1), opacity=0.75)) #show directional debug edge
-                        # print(f"calc intersection: {bool(len(set((point_1_rel, point_2_rel)))-1)}")
+                        debug_list.append(vpy.arrow(pos=point_1, axis=edge, shaftwidth=0.05, headlength=0.2, headwidth=0.2, color=vpy.vec(1,0,1), opacity=0.75)) #show directional debug edge
+                        print(f"calc intersection: {bool(len(set((point_1_rel, point_2_rel)))-1)}")
 
                     if point_1_rel: #point_1 is below the clip face -> possibly still in the clip polyhedron
                         if not point_1 in new_face:
@@ -380,7 +380,7 @@ class Polyhedron():
                                 edge_radius=edge_radius,
                                 corner_radius=corner_radius,
                                 debug=debug)
-                # print("next")
+                print("next")
         # if not changed_polyhedron: # no faces of 'self' and 'other intersected'
         #     return self # 'self' is completely inside of 'other'
         # the intersection is a new polyhedron
@@ -538,7 +538,8 @@ def vertex_is_inside(vertex, plane_normal, plane_anchor):
             (bool) - True if vertex is below or on the plane, 
                 False if it is above the plane
         """
-        if vpy.diff_angle(vertex-plane_anchor, plane_normal) >= vpy.pi/2:
+        d_angle = vpy.diff_angle(vertex-plane_anchor, plane_normal)
+        if d_angle >= vpy.pi/2 - 1e-10:
             return True
         return False
 

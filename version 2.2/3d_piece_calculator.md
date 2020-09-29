@@ -22,7 +22,7 @@ The standard library python module `scipy.spatial` provides a class `Voronoi` (f
 
 -----
 
-## TODO: 2. snap the voronoi diagram to a given shape
+## 2. snap the voronoi diagram to a given shape
 ### **Approximation:**
 However we can achive an approximation of cube snapping by doing the following:
 
@@ -42,6 +42,25 @@ This is only an approximation though and comes with a few disadvantages:
 We only need a fnite size of the voronoi diagram to represent the puzzles. To do that and still capture the different possible shapes of puzzles we will clip the voronoi diagram to a polyhedron.
 
 This should be an arbitrary convex polyhedron, bigger or smaller than the finite cells of the voronoi diagram.
+
+Similar to the approximation described above I first add six far points to the actual points. That way the final pieces of the puzzle are all already closed voronoi cells, so we don't have to deal with the faces extending to infinity.
+
+Then we can clip each voronoi cell (convex polyhedra) to the outer shape, from now on called the clip polyhedron (`clip_poly`). We want to calculate the intersection of each voronoi cell and the clip polyhedron.
+
+To do that, I implemented a 3D variant of the [Sutherland-Hodgman-Algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm) vor polygon clipping. Looping over each face (`clip_plane`) of the clip polyhedron I calculate for each point in the voronoi cell whether or not it is above or below the clip plane. Then we get three possible cases:
+
+1. If all points are above (outside) the clip plane, the intersection is empty and we are done.
+2. If all points are below or on the clip plane, this clip plane doesn't change the intersection and we can continue with the nect clip face.
+3. Otherwise there are edges which intersect the clip plane.
+
+In the third case I loop over all faces of the voronoi cell. Any point of a face which is above (outside) of the clip plane gets deleted, the others get added to a new face list. if an edge connected an inside and outside point, the intersection point with the clip plane is added to the new face.
+This operation preserves the order of the face points, which is very important.
+
+Additionally we save a list of all points that were an intersection with the clip_plane. These will form a new face that is entirely in the clip_plane. However this list is not necessarily ordered correctly. So we need to sort the points of that new face before adding it to the current polyhedron. The direction of sorting (clockwise or counterclockwise) doesn't matter. It just needs to be sorted in order to loop over the edges of a face later.
+
+Repeating this process for all clip faces yields a new polyhedron which is entirely within the clip polyhedron.
+
+This process for intersections only works for convex polyhedra. For non-convex polyhedra the voronoi cells are cut down too much.
 
 -----
 

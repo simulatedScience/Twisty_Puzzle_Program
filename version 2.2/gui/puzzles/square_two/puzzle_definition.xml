@@ -260,23 +260,6 @@
       <cycle>1, 12</cycle>
       <cycle>50, 51</cycle>
     </move>
-    <move name="s'">
-      <cycle>36, 33</cycle>
-      <cycle>37, 34</cycle>
-      <cycle>35, 38</cycle>
-      <cycle>39, 24</cycle>
-      <cycle>25, 40</cycle>
-      <cycle>26, 41</cycle>
-      <cycle>22, 10</cycle>
-      <cycle>23, 11</cycle>
-      <cycle>52, 49</cycle>
-      <cycle>53, 48</cycle>
-      <cycle>3, 15</cycle>
-      <cycle>2, 14</cycle>
-      <cycle>13, 0</cycle>
-      <cycle>12, 1</cycle>
-      <cycle>51, 50</cycle>
-    </move>
     <move name="t">
       <cycle>11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 1</cycle>
       <cycle>34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 35</cycle>

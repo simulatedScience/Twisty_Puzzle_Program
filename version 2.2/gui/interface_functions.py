@@ -31,7 +31,7 @@ def interface_snap(shape, puzzle, command_color="#ff8800", arg_color="#5588ff", 
 
 def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     user_args = user_args.split(' ')
-    default_args = ["cube", None, True]
+    default_args = ["cuboid", None, True]
     data_types = [str, float, bool]
     n_args = 3
     # make user_args the correct length (n_args)
@@ -54,10 +54,11 @@ def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="
                 final_args.append(default)
     shape, size, show_edges = final_args
 
-    if not shape in ['c', 'cube', 'o', 'oct', 'octahedron']:
-        print(f"{colored('Error:', error_color)} Invalid shape specified. Try {colored('cube', command_color)} or {colored('octahedron', command_color)}")
     if not puzzle.vpy_objects == []:
-        puzzle.set_clip_poly(shape_str=shape, size=size, show_edges=show_edges)
+        try:
+            puzzle.set_clip_poly(shape_str=shape, size=size, show_edges=show_edges)
+        except ValueError:
+            print(f"{colored('Error:', error_color)} Invalid shape specified. Try {colored('cube', command_color)} or {colored('octahedron', command_color)}")
     else:
         print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
 
