@@ -10,7 +10,7 @@ import vpython as vpy
 from .polyhedra import Polyhedron, vpy_vec_tuple
 
 
-def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0,0,0)):
+def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0,0,0), debug=False):
     """
     draw one polyhedron for each object in vpy_objects
 
@@ -27,9 +27,10 @@ def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0
     polyhedra = draw_voronoi_3d(vpy_objects)
     pieces = list()
     for i, poly in enumerate(polyhedra):
-        # poly.draw_faces()
-        # poly.draw_all_edges()
-        # poly.visible=True
+        if debug:
+            poly.draw_faces()
+            poly.draw_all_edges()
+            poly.toggle_visible(True)
         pieces.append(poly.intersect(
                 clip_poly,
                 color=poly.color,
@@ -37,11 +38,12 @@ def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0
                 show_edges=show_edges,
                 show_corners=show_edges,
                 edge_color=edge_color,
-                edge_radius=poly.edge_radius/2,
+                edge_radius=poly.edge_radius,
                 corner_radius=poly.edge_radius,
-                debug=False))
-        # poly.toggle_visible(True)
-        # poly.toggle_visible(False)
+                pos = vpy_objects[i].pos,
+                debug=debug))
+        if debug:
+            poly.toggle_visible(False)
         if pieces[i] == None: # replace pieces that were completely cut away
             obj = vpy_objects[i]
             pieces[i] = vpy.sphere(
@@ -50,7 +52,8 @@ def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0
                     color=obj.color,
                     radius=poly.edge_radius)
         else:
-            pieces[i].pos = vpy_objects[i].pos
+            pieces[i] = pieces[i].obj
+            # pieces[i].pos = vpy_objects[i].pos
             # print(pieces[i], pieces[i].color)
             # pieces[i].toggle_visible(False)
     for obj in vpy_objects: # hide given objects

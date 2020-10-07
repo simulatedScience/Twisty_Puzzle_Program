@@ -145,7 +145,8 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "plot",
                           "train_nn",
                           "solve_nn",
-                          "clipshape"]
+                          "clipshape",
+                          "drawpieces"]
     if command in commands_with_args:
         user_arguments = user_input[len(command)+1:]
         print(

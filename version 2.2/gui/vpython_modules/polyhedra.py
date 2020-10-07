@@ -60,6 +60,7 @@ class Polyhedron():
             >>> R = P & Q
         """
         self.debug = debug
+        self.eps = 1e-10 # rounding accuracy to counteract floating point errors
         self.visible = False
         self.color = color
         self.edge_color = edge_color
@@ -91,10 +92,17 @@ class Polyhedron():
             self.visible = True
         # if self.debug:
         #     self.show_faces()
-        # if len(self._objects) > 0:
-        #     self.obj = vpy.compound(self._objects)
-        #     for obj in self._objects:
-        #         obj.visible = 0
+        if len(self._objects) > 0 and show_faces:
+            # if debug:
+            #     print(f"number of vertices:", sum(isinstance(obj, vpy.vertex)for obj in self._objects))
+            #     print(f"number of corners:", sum(isinstance(obj, vpy.sphere)for obj in self._objects))
+            #     print(f"number of edges:", sum(isinstance(obj, vpy.cylinder)for obj in self._objects))
+            #     print(f"number of triangles:", sum(isinstance(obj, vpy.triangle)for obj in self._objects))
+            self.obj = vpy.compound(self._objects[len(self.vertices):], origin=self.pos, color=self.color) #, pos=self.pos, color=self.color
+            while self._objects != []:
+                # if not isinstance(self._objects[0], vpy.vertex):
+                self._objects[0].visible = False
+                del(self._objects[0])
         # else: #calculate an invisible bounding box if no other objects are drawn
         #     max_x = max([vec.pos.x for vec in self.vertices])
         #     min_x = min([vec.pos.x for vec in self.vertices])
@@ -247,17 +255,9 @@ class Polyhedron():
 
 
     def intersect(self, other,
+                  debug=False,
                   color=None,
-                  opacity=1,
-                  show_faces=True,
-                  show_edges=True,
-                  show_corners=True,
-                  sort_faces=True,
-                  edge_color=vpy.vec(0,0,0),
-                  corner_color=None,
-                  edge_radius=0.025,
-                  corner_radius=None,
-                  debug=False):
+                  **poly_properties):
         """
         define intersection of two polyhedra 
         equal to the intersection of the sets of all points inside the polyhedra
@@ -274,12 +274,15 @@ class Polyhedron():
         --------
             (NoneType) or (Polyhedron) - None if the intersection is empty,
                 otherwise return a new Polyhedron object
+        
+        raises:
+        -------
+            TypeError - if 'other' is not a Polyhedron object.
         """
-        # self.toggle_visible(False)
-        # if not isinstance(other, Polyhedron):
-        #     raise TypeError(f"second object should be of type 'Polyhedron' but is of type {type(other)}.")
+        if not isinstance(other, Polyhedron):
+            raise TypeError(f"second object should be of type 'Polyhedron' but is of type {type(other)}.")
+        # # check for bounding box overlap. This is very quick and can eliminate many cases with empty intersections
         # dist_vec = other.obj.pos - self.obj.pos
-        # # check for bounding box overlap. This is very quick and can eliminate lots of cases with empty intersections
         # if abs(dist_vec.x) > other.obj.size.x/2 + self.obj.size.x/2 \
         #         and abs(dist_vec.y) > other.obj.size.y/2 + self.obj.size.y/2 \
         #         and abs(dist_vec.z) > other.obj.size.z/2 + self.obj.size.z/2:
@@ -294,9 +297,9 @@ class Polyhedron():
             clip_vec_0 = other.vertices[clip_face[0]].pos - clip_center
             clip_vec_1 = other.vertices[clip_face[1]].pos - clip_center
             clip_normal_vec = vpy.cross(clip_vec_0, clip_vec_1)
-            del(clip_vec_0, clip_vec_1) #cleanup
+            del(clip_vec_0, clip_vec_1, clip_face) #cleanup
             # calculate for each point whether it's above or below the clip plane
-            relation_dict = get_vertex_plane_relations(new_poly_faces, clip_normal_vec, clip_center)
+            relation_dict = get_vertex_plane_relations(new_poly_faces, clip_normal_vec, clip_center, eps=self.eps)
             if debug:
                 debug_list = [vpy.arrow(axis=clip_normal_vec/clip_normal_vec.mag, pos=clip_center, color=color, shaftwidth=0.05, headlength=0.2, headwidth=0.2)]
                 debug_list += [vpy.sphere(pos=vpy.vec(*key), radius=0.05, color=vpy.vec(1-val, val, 0)) for key,val in relation_dict.items()]
@@ -335,11 +338,21 @@ class Polyhedron():
                     if point_1_rel != point_2_rel:
                         # if one point is above and the other below, calculate the intersection point:
                         edge_vec = point_2 - point_1
+                        # counteract numerical errors:
+                        if abs(vpy.diff_angle(clip_normal_vec, edge_vec) - vpy.pi/2) < 1e-5:
+                            # edge on clip plane
+                            continue
                         div = vpy.dot(edge_vec, clip_normal_vec)
                         if div != 0:
                             t = vpy.dot(clip_center-point_1, clip_normal_vec) / div
-                            # if abs(t) <= 1:
-                            intersect_point = r_vec(point_1 + t*edge_vec)
+                            # try to prevent numerical errors:
+                            if abs(t) < 1e-5: # point_1 on clip plane
+                                intersect_point = point_1
+                            elif abs(t-1) < 1e-5: # point 2 on clip plane
+                                intersect_point = point_2
+                            else: # normal intersection calculation
+                                intersect_point = r_vec(point_1 + t*edge_vec)
+                            # process intersection point
                             if not intersect_point in new_face:
                                 new_face.append(intersect_point)
                             if not intersect_point in intersected_vertices:
@@ -376,17 +389,18 @@ class Polyhedron():
                 except UnboundLocalError:
                     pass
                 temp = poly_from_faces(new_poly_faces,
+                                debug=debug,
                                 color=color,
                                 opacity=0.5,
                                 show_faces=True,
                                 show_edges=True,
                                 show_corners=False,
                                 sort_faces=True,
-                                edge_color=edge_color,
-                                corner_color=corner_color,
-                                edge_radius=edge_radius,
-                                corner_radius=corner_radius,
-                                debug=debug)
+                                edge_color=poly_properties["edge_color"],
+                                corner_color=poly_properties["corner_color"],
+                                edge_radius=poly_properties["edge_radius"],
+                                corner_radius=poly_properties["corner_radius"],
+                                pos=poly_properties["pos"])
                 print("next")
         # if not changed_polyhedron: # no faces of 'self' and 'other intersected'
         #     return self # 'self' is completely inside of 'other'
@@ -394,17 +408,9 @@ class Polyhedron():
         if len(new_poly_faces) == 0:
             return None
         return poly_from_faces(new_poly_faces,
+                               debug=debug,
                                color=color,
-                               opacity=opacity,
-                               show_faces=show_faces,
-                               show_edges=show_edges,
-                               show_corners=show_corners,
-                               sort_faces=sort_faces,
-                               edge_color=edge_color,
-                               corner_color=corner_color,
-                               edge_radius=edge_radius,
-                               corner_radius=corner_radius,
-                               debug=debug)
+                               **poly_properties)
 
 
     def __and__(self, other):
@@ -454,12 +460,14 @@ class Polyhedron():
         toggle visibility of the polyhedron
         """
         if visible == None:
-            self.visible = False if self.visible else False
-            for obj in self._objects:
-                if not isinstance(obj, vpy.vertex):
-                    obj.visible = self.visible
+            self.visible = True if self.visible else False
         elif visible != self.visible:
-            self.toggle_visible()
+            self.visible = visible
+        for obj in self._objects:
+            if not isinstance(obj, vpy.vertex):
+                obj.visible = self.visible
+        if hasattr(self, "obj"):
+            self.obj.visible = self.visible
 
 
 def sign(n):
@@ -511,7 +519,7 @@ def del_empties(array, dtype=list):
         del(array[i])
 
 
-def get_vertex_plane_relations(faces, plane_normal, plane_anchor):
+def get_vertex_plane_relations(faces, plane_normal, plane_anchor, eps=1e-10):
     """
     given a plane in normal form, calculate a dictionary,
         that stores whether or not each vertex is above (False) or below (True) or on (True) the plane.
@@ -523,7 +531,7 @@ def get_vertex_plane_relations(faces, plane_normal, plane_anchor):
         for corner in face:
             vec = vpy_vec_tuple(corner)
             if not vec in relation_dict:
-                relation_dict[vec] = vertex_is_inside(corner, plane_normal, plane_anchor)
+                relation_dict[vec] = vertex_is_inside(corner, plane_normal, plane_anchor, eps=eps)
                 # debug_list.append(vpy.sphere(pos=corner, radius=0.4, color=vpy.vec(relation_dict[vec],1-relation_dict[vec],0)))
     # print()
     # for s in debug_list:
@@ -531,7 +539,7 @@ def get_vertex_plane_relations(faces, plane_normal, plane_anchor):
     return relation_dict
 
 
-def vertex_is_inside(vertex, plane_normal, plane_anchor):
+def vertex_is_inside(vertex, plane_normal, plane_anchor, eps=1e-10):
         """
         Checks whether or not a given vertex is below (True) or above (False) a given plane.
         The planes normal vector points towards the 'above' side of the plane.
@@ -549,7 +557,7 @@ def vertex_is_inside(vertex, plane_normal, plane_anchor):
                 False if it is above the plane
         """
         d_angle = vpy.diff_angle(vertex-plane_anchor, plane_normal)
-        if d_angle >= vpy.pi/2 - 1e-10:
+        if d_angle >= vpy.pi/2 - eps:
             return True
         return False
 
@@ -571,11 +579,6 @@ def get_vec_com(vpy_vecs):
         com += vec
     com /= len(vpy_vecs)
     return com
-
-
-# def get_piece_com(face_vertices):
-#     """
-#     """
 
 
 def sort_new_face(face_vertices):#, piece_center):
@@ -605,16 +608,7 @@ def sort_new_face(face_vertices):#, piece_center):
 
 def poly_from_faces(faces,
                     color=None,
-                    opacity=1,
-                    show_faces=True,
-                    show_edges=True,
-                    show_corners=True,
-                    sort_faces=True,
-                    edge_color=vpy.vec(0,0,0),
-                    corner_color=None,
-                    edge_radius=0.025,
-                    corner_radius=None,
-                    debug=False):
+                    **poly_properties):
     """
     create a Polyhedron object with the given faces and the implicitely given corners
 
@@ -644,16 +638,7 @@ def poly_from_faces(faces,
 
     return Polyhedron(new_corners, new_faces,
                       color=color,
-                      opacity=opacity,
-                      show_faces=show_faces,
-                      show_edges=show_edges,
-                      show_corners=show_corners,
-                      sort_faces=sort_faces,
-                      edge_color=edge_color,
-                      corner_color=corner_color,
-                      edge_radius=edge_radius,
-                      corner_radius=corner_radius,
-                      debug=debug)
+                      **poly_properties)
 
 
 if __name__ == "__main__":
@@ -715,6 +700,6 @@ if __name__ == "__main__":
         if ans.lower() == "y":
             angle = vpy.pi/2
             for _ in range(int(angle/vpy.pi*180)):
-                test_shapes[-1].rotate(axis=vpy.vec(0,0,1), angle=vpy.pi/180)
-                time.sleep(0.01)
+                test_shapes[-1].obj.rotate(axis=vpy.vec(0,0,1), angle=vpy.pi/180)
+                time.sleep(0.005)
             print("finished rotation")

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="geared_mixup">
+<puzzledefinition name="geared_mixup" state_space_size="9699071911351805795895009607680000">
   <points>
     <point size="4.0">
       <coords x="-0.8585786437626903" y="-0.8585786437626903" z="1.0"/>

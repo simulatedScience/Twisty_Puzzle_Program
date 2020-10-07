@@ -142,7 +142,10 @@ class Twisty_Puzzle():
             raise TypeError(f"'shape_str' should be of type 'str' \
 but was of type '{type(shape_str)}'")
         if hasattr(self, "clip_poly"):
-            self.clip_poly.toggle_visible(False)
+            self.clip_poly.obj.visible = False
+            # if isinstance(self.clip_poly, Polyhedron):
+            #     self.clip_poly.toggle_visible(False)
+            # else:
         if shape_str in ("cuboid", "c"):
             if size == None:
                 xsize = max([obj.pos.x for obj in self.vpy_objects]) \
@@ -185,16 +188,19 @@ but was of type '{type(shape_str)}'")
                 show_corners=show_edges)
 
 
-    def draw_3d_pieces(self):
+    def draw_3d_pieces(self, debug=False):
         """
         draw 3d pieces within the already set clip polyhedron. If no clip_poly is set, clip to a cube.
         """
         if not hasattr(self, "clip_poly"):
             self.set_clip_poly(shape_str="cube")
         self.vpy_objects, self.unclipped_polys = \
-                draw_3d_pieces(self.vpy_objects, self.clip_poly, show_edges=True)
-        self.clip_poly.toggle_visible(False)
-
+                draw_3d_pieces(self.vpy_objects, self.clip_poly, show_edges=True, debug=debug)
+        self.clip_poly.obj.visible = False
+        # if isinstance(self.clip_poly, Polyhedron):
+        #     self.clip_poly.toggle_visible(False)
+        # else:
+    
 
     def _reset_point_positions(self):
         """
@@ -418,7 +424,8 @@ but was of type '{type(shape_str)}'")
             self.POINT_INFO_DICTS = get_point_dicts(filepath)
         except FileNotFoundError:
             self.POINT_INFO_DICTS = get_point_dicts(filepath+".ggb")
-        self.canvas = create_canvas()
+        if not hasattr(self, "canvas") or self.canvas == None:
+            self.canvas = create_canvas()
         # draw_points also converts coords in dictionaries to vpython vectors
         self.vpy_objects = draw_points(self.POINT_INFO_DICTS)
         self.COM = get_com(self.vpy_objects)

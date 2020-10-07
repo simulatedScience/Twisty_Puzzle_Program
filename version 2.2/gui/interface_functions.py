@@ -63,8 +63,11 @@ def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="
         print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
 
 
-def interface_draw_pieces(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
-    puzzle.draw_3d_pieces()
+def interface_draw_pieces(debug, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    if debug.lower() in ["t", "true"]:
+        puzzle.draw_3d_pieces(debug=True)
+    else:
+        puzzle.draw_3d_pieces(debug=False)
 
 
 def interface_newmove(movename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
@@ -95,14 +98,14 @@ def interface_printmove(movename, puzzle, command_color="#ff8800", arg_color="#5
 
 
 def interface_savepuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
-    # try:
-        if not ' ' in puzzlename:
-            puzzle.save_puzzle(puzzlename)
-            print(f"saved puzzle as {colored(puzzlename, arg_color)}")
-        else:
-            raise ValueError("invalid puzzle name")
-    # except:
-        # print(f"{colored('Error:', error_color)} invalid puzzle name. Name must not include spaces or other invalid characters for filenames.")
+    if puzzlename == '' and puzzle.PUZZLE_NAME != None:
+        puzzle.save_puzzle(puzzle.PUZZLE_NAME)
+        print(f"saved puzzle as {colored(puzzle.PUZZLE_NAME, arg_color)}")
+    elif not ' ' in puzzlename:
+        puzzle.save_puzzle(puzzlename)
+        print(f"saved puzzle as {colored(puzzlename, arg_color)}")
+    else:
+        print(f"{colored('Error:', error_color)} invalid puzzle name. Name must not include spaces or other invalid characters for filenames.")
 
 
 def interface_loadpuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):

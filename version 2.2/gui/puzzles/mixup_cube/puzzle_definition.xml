@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="mixup_cube">
+<puzzledefinition name="mixup_cube" state_space_size="19398143822703611591790019215360000">
   <points>
     <point size="4.0">
       <coords x="-0.8585786437626903" y="-0.8585786437626903" z="1.0"/>
