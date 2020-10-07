@@ -2,6 +2,7 @@
 This module provides methods to load points
     from a .ggb file and display them in vpython
 """
+import os
 import vpython as vpy
 from . import ggb_to_python as ggb_py
 from . import xml_point_info as xml_point
@@ -21,8 +22,10 @@ def get_point_dicts(filepath, new_path = "."):
         (list) of dicts - containing information for each
             loaded point
     """
-    new_path = ggb_py.copy_rename(filepath, new_path = new_path)
+    # new_path = ggb_py.copy_rename(filepath, new_path = new_path)
+    new_path = os.path.join(os.path.dirname(__file__), "..", "ggb_files", filepath)
     tree = ggb_py.get_tree_from_folder(new_path)
+    # tree = ggb_py.get_tree_from_folder(filepath)
     points = ggb_py.points_from_xml_tree(tree)
     # delete auxiliary and invisible points
     points = ggb_py.filter_points(points)

@@ -23,8 +23,9 @@ def load_puzzle(puzzlename):
         puzzle_tree = ET.parse(puzzle_file)
     point_dicts = get_points(puzzle_tree)
     moves_dict = get_moves(puzzle_tree)
+    state_space_size = get_size(puzzle_tree)
 
-    return point_dicts, moves_dict
+    return point_dicts, moves_dict, state_space_size
 
 
 def get_points(puzzle_tree):
@@ -115,3 +116,13 @@ def get_cycles(move_elem):
         cycle_int_list = [int(i) for i in cycle_str_list]
         cycle_list.append(cycle_int_list)
     return cycle_list
+
+
+def get_size(puzzle_tree):
+    """
+    return the state space size of a given puzzle, if it is defined. Otherwise return None
+    """
+    size = puzzle_tree.getroot().get("state_space_size")
+    if size == None:
+        return None
+    return int(size)

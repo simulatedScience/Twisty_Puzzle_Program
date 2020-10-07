@@ -51,11 +51,13 @@ def get_tree_from_folder(folder_path):
     with zipfile.ZipFile(folder_path, "r") as zip_file:
         #access zipped file
         geogebra_xml = zip_file.extract("geogebra.xml")
-        return ET.parse(geogebra_xml)
+        tree = ET.parse(geogebra_xml)
+        os.remove("geogebra.xml")
+        return tree
 
 
 def points_from_xml_tree(xml_tree):
-    """ TODO
+    """
     get all points from a given xml tree
     inputs:
     -------
@@ -71,6 +73,11 @@ def points_from_xml_tree(xml_tree):
         if elem.get("type") == "point3d":
             points.append(elem)
     print(f"{__name__}:\tfound {len(points)} 3d points")
+    if len(points) == 0:
+        for elem in elements:
+            if elem.get("type") == "point":
+                points.append(elem)
+        print(f"{__name__}:\tfound {len(points)} 2d points instead")
     return points
 
 def filter_aux_points(points):

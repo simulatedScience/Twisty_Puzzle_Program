@@ -4,7 +4,10 @@ more specifically the main goal is to create polyhedra and maybe also surface se
 """
 import time
 import vpython as vpy
-from .vpy_rotation import get_com
+if __name__ != "__main__":
+    from .vpy_rotation import get_com
+else:
+    from vpy_rotation import get_com
 
 
 class Polyhedron():
@@ -24,6 +27,7 @@ class Polyhedron():
                  corner_color=None,
                  edge_radius=0.025,
                  corner_radius=None,
+                 pos="auto",
                  debug=False):
         """
         inputs:
@@ -67,7 +71,10 @@ class Polyhedron():
             pos=corner, color=self.color, opacity=opacity) for corner in corners]
         self._objects = self.vertices[:]
         # self.vertices = [vpy.vertex(pos=corner, color=corner, opacity=opacity) for corner in corners]
-        self.pos = get_com(self.vertices)
+        if isinstance(pos, vpy.vector):
+            self.pos = pos
+        else:
+            self.pos = get_com(self.vertices)
 
         self.faces = faces
         self.face_centers = self._get_face_centers()
@@ -435,8 +442,11 @@ class Polyhedron():
         """
         implement the rotation method that all vpython objects have
         """
+        if not "origin" in kwargs:
+            kwargs["origin"] = self.pos
         for obj in self._objects:
-            obj.rotate(**kwargs)
+            if not isinstance(obj, vpy.triangle):
+                obj.rotate(**kwargs)
 
 
     def toggle_visible(self, visible=None):
@@ -695,7 +705,16 @@ if __name__ == "__main__":
 
     intersections = list()
     for shape in test_shapes[:-1]:
-        time.sleep(1)
+        time.sleep(.1)
         intersections.append(shape & test_shapes[-1])
         if intersections[-1] != None and intersections[-1] != shape:
             shape.toggle_visible(False)
+    ans = "y"
+    while ans.lower() == "y":
+        ans = input("rotate? (y,n) ")
+        if ans.lower() == "y":
+            angle = vpy.pi/2
+            for _ in range(int(angle/vpy.pi*180)):
+                test_shapes[-1].rotate(axis=vpy.vec(0,0,1), angle=vpy.pi/180)
+                time.sleep(0.01)
+            print("finished rotation")

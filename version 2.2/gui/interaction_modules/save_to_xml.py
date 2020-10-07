@@ -30,6 +30,8 @@ def save_to_xml(puzzle):
     """
     puzzle_name = puzzle.PUZZLE_NAME
     root_elem = let.Element("puzzledefinition", name=puzzle_name)
+    if hasattr(puzzle, "state_space_size"):
+        root_elem.set("state_space_size", str(puzzle.state_space_size))
     root_elem.tail = "\n\t"
     save_points(root_elem, puzzle.POINT_INFO_DICTS)
     try:

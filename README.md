@@ -1,8 +1,10 @@
 # Twisty_Puzzle_Program
 A Program to digitalize twisty puzzles, save algorithms as well as solving strategies for them and solve them with an AI based on Q-Learning and Neural Networks.
 
-An Overview of all implemented and many planned features can be found in the following document:
-https://docs.google.com/spreadsheets/d/1wllITKTaytmOBHMQu9dV0tIj7YtT3UqvB0RRak2qMqk/edit?usp=sharing
+An overview of all implemented and many planned features can be found in the following document:
+[feature overview](https://docs.google.com/spreadsheets/d/1wllITKTaytmOBHMQu9dV0tIj7YtT3UqvB0RRak2qMqk/edit?usp=sharing)
+
+An overview of known issues, planned features and what's currently being worked on can be found on meistertask: [meistertask-twisty-puzzle-analysis](https://www.meistertask.com/app/project/yy5iFYIE/twisty-puzzle-analysis)
 
 # Requirements
 The program requires `python 3.x`. It is written and tested in python version `3.8.5`. Backwards compatibility is not guarantied.

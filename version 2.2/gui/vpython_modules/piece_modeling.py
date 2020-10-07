@@ -49,8 +49,8 @@ def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0
                     opacity=0.05,
                     color=obj.color,
                     radius=poly.edge_radius)
-        # else:
-            # pieces[i] = pieces[i]
+        else:
+            pieces[i].pos = vpy_objects[i].pos
             # print(pieces[i], pieces[i].color)
             # pieces[i].toggle_visible(False)
     for obj in vpy_objects: # hide given objects

@@ -388,7 +388,7 @@ but was of type '{type(shape_str)}'")
             puzzle_name - (str) - name of the puzzle
                 must not include spaces or other invalid characters for filenames
         """
-        self.POINT_INFO_DICTS, self.moves = load_puzzle(puzzle_name)
+        self.POINT_INFO_DICTS, self.moves, state_space_size = load_puzzle(puzzle_name)
         self.canvas = create_canvas()
         self.vpy_objects = draw_points(self.POINT_INFO_DICTS)
 
@@ -397,8 +397,11 @@ but was of type '{type(shape_str)}'")
         self.COM = get_com(self.vpy_objects)
         self.PUZZLE_NAME = puzzle_name
 
-        self.state_space_size = get_state_space_size(
-                self.moves.values(), len(self.SOLVED_STATE))
+        if state_space_size == None:
+            self.state_space_size = get_state_space_size(
+                    self.moves.values(), len(self.SOLVED_STATE))
+        else:
+            self.state_space_size = state_space_size
         print(f"The loaded puzzle has {approx_int(self.state_space_size)} possible states and {len(self.moves)} availiable moves.")
 
     
