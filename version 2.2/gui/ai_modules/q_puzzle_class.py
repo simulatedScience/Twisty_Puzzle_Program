@@ -1,7 +1,8 @@
 import random
 import os
 import pickle
-from math import ceil
+import time
+from math import ceil, log10
 from copy import deepcopy
 from .twisty_puzzle_model import scramble, perform_action
 
@@ -81,7 +82,6 @@ class Puzzle_Q_AI():
                     action_history - list of movenames
         """
         self.update_settings(reward_dict=reward_dict, learning_rate=learning_rate, discount_factor=discount_factor, base_exploration_rate=base_exploration_rate, keep_Q_table=keep_Q_table)
-
         games = []
         scramble_hist = []
         solved_hist = []
@@ -92,44 +92,53 @@ class Puzzle_Q_AI():
         x = start_x
         max_scramble_moves = 1
         exploration_rate = base_exploration_rate
-        for n in range(num_episodes):
-            if n%20 == 19:
-                new_max_moves = self.get_new_scramble_moves(max_scramble_moves, solved_hist, n_tests=n_tests)
-                if not new_max_moves == max_scramble_moves:
-                    n_tests += 3
-                    increased_difficulties.append(n)
-                    x = start_x
-                    exploration_rate = base_exploration_rate
-                    if max_scramble_moves > 1.3*max_moves:
-                        print(f"ended training after {n} episodes because the training goal was reached")
-                        break
-                max_scramble_moves = new_max_moves
+        if num_episodes <= 0:
+            print("considered state-action pairs of the puzzle:", len(self.Q_table))
+            return games, solved_hist, increased_difficulties, explo_rates
+        # progress indicator variables:
+        print_interval = min(25_000, num_episodes)
+        start_time = time.time()
+        for k in range(num_episodes//print_interval):
+            for n in range(print_interval*k, print_interval*(k+1)):
+                if n%20 == 19:
+                    new_max_moves = self.get_new_scramble_moves(max_scramble_moves, solved_hist, n_tests=n_tests)
+                    if not new_max_moves == max_scramble_moves:
+                        n_tests += 3
+                        increased_difficulties.append(n)
+                        x = start_x
+                        exploration_rate = base_exploration_rate
+                        if max_scramble_moves > 1.3*max_moves:
+                            print(f"ended training after {n} episodes because the training goal was reached")
+                            break
+                    max_scramble_moves = new_max_moves
 
-            # generate a starting state
-            start_state = deepcopy(self.SOLVED_STATE)
-            scramble_hist.append(scramble(start_state, self.ACTIONS_DICT, max_moves=max_scramble_moves))
-            # play episode
-            state_hist, action_hist = self.play_episode(start_state, max_moves=max_moves, exploration_rate=exploration_rate)
+                # generate a starting state
+                start_state = deepcopy(self.SOLVED_STATE)
+                scramble_hist.append(scramble(start_state, self.ACTIONS_DICT, max_moves=max_scramble_moves))
+                # play episode
+                state_hist, action_hist = self.play_episode(start_state, max_moves=max_moves, exploration_rate=exploration_rate)
 
-            if state_hist[-1] == tuple(self.SOLVED_STATE):
-                solved_hist.append(True)
-                x -= 0.2 * (exploration_rate)
-            else:
-                solved_hist.append(False)
-                x += 0.2 * (base_exploration_rate - exploration_rate)
-            exploration_rate = base_exploration_rate * self.sigmoid(x)# * (0.999**(n-increased_difficulties[-1]))
+                if state_hist[-1] == tuple(self.SOLVED_STATE):
+                    solved_hist.append(True)
+                    x -= 0.2 * (exploration_rate)
+                else:
+                    solved_hist.append(False)
+                    x += 0.2 * (base_exploration_rate - exploration_rate)
+                exploration_rate = base_exploration_rate * self.sigmoid(x)# * (0.999**(n-increased_difficulties[-1]))
 
-            # save results and prepare for next episode
-            games.append((scramble_hist[-1], state_hist, action_hist))
-            # exploration_rate = self.get_new_exploration_rate(exploration_rate, n, num_episodes)
-            explo_rates.append(exploration_rate)
+                # save results and prepare for next episode
+                games.append((scramble_hist[-1], state_hist, action_hist))
+                # exploration_rate = self.get_new_exploration_rate(exploration_rate, n, num_episodes)
+                explo_rates.append(exploration_rate)
+            print(f"completed {n+1:{ceil(log10(num_episodes))}} episodes of training after {round(time.time() - start_time,0)} s.\n\
+    Explored {len(self.Q_table)} state-action pairs. Current Difficulty: {max_scramble_moves}")
 
+        print(f"completed training after {round(time.time() - start_time,0)} s")
         print("final exploration rate:", exploration_rate)
         print("final scramble moves:", max_scramble_moves)
-        print(f"considered states of the puzzle:", len(self.Q_table))
-        if num_episodes > 0:
-            self.export_Q_table()
-            print("saved Q_table")
+        print("considered state-action pairs of the puzzle:", len(self.Q_table))
+        self.export_Q_table()
+        print("saved Q_table")
 
         return games, solved_hist, increased_difficulties, explo_rates
 

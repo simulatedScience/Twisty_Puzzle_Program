@@ -5,6 +5,8 @@ import time
 import random
 from copy import deepcopy
 import matplotlib.pyplot as plt
+from sympy.combinatorics import Permutation
+from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
 
 from .ggb_import.ggb_to_vpy import draw_points, get_point_dicts
@@ -14,6 +16,8 @@ from .interaction_modules.save_to_xml import save_to_xml
 from .interaction_modules.load_from_xml import load_puzzle
 
 from .puzzle_analysis_modules.size_analysis import get_state_space_size, approx_int
+from .puzzle_analysis_modules.piece_detection import detect_pieces
+from .puzzle_analysis_modules.state_validation import State_Validator
 
 from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
 from .vpython_modules.vpy_rotation import get_com, make_move
@@ -45,46 +49,42 @@ class Twisty_Puzzle():
         self.canvas = None
         self.moves = dict() # dcitionary containing all moves for the puzzle
         self.movecreator_mode = False
-        self.puzzle_group = None # sympy group for the puzzle
+        self.moves_changed = False
 
 
-    # def validate_state(self):
-    #     """
-    #     using sympy permutation groups, check whether or not the current puzzle state is valid.
-    #     Since some information about the puzzle state can get lost in the representation if multiple stickers (points)
-    #         have the same color, the output is not always an integer but sometimes a float in range [0,1].
-    #         This float is then probability that the state is valid.
+    def validate_state(self):
+        """
+        using sympy permutation groups, check whether or not the current puzzle state is valid.
+        Since some information about the puzzle state can get lost in the representation if multiple stickers (points)
+            have the same color, the output is not always an integer but sometimes a float in range [0,1].
+            This float is the probability that the state is valid.
 
-    #     returns:
-    #     --------
-    #         (int) of (float) - if the validity can be confirmed with 100% accuracy, returns an integer 0 or 1
-    #             otherwise returns a float in [0,1] with the probability of state validity.
-    #     """
-    #     size = len(self.SOLVED_STATE)
-
-    #     # generate the solved state as for the AI
-    #     solved_state = []
-    #     for color in self.SOLVED_STATE:
-    #         for i, index_color in enumerate(self.color_list):
-    #             if index_color == color:
-    #                 solved_state.append(i)
-    #     # get the current state as for the AI
-    #     current_state = self._get_ai_state()
-
-    #     return current_state in self.puzzle_group
+        returns:
+        --------
+            (int) of (float) - if the validity can be confirmed with 100% accuracy, returns an integer 0 or 1
+                otherwise returns a float in [0,1] with the probability of state validity.
+        """
+        return self.state_validator.validate_state(self._get_ai_state())
 
 
-    # def _update_perm_group(self):
-    #     """
-    #     update the permutation group for the puzzle based on the currently defined moves
+    def _update_perm_group(self):
+        """
+        update the permutation group for the puzzle based on the currently defined moves
 
-    #     updates self.puzzle_group
-    #     """
-    #     size = len(self.SOLVED_STATE)
-    #     move_perms = []
-    #     for cycles in self.moves.values():
-    #         move_perms.append(Permutation(cycles), size=size)
-    #     self.puzzle_group = PermutationGroup(move_perms)
+        also updates the state validator with the new group
+        """
+        size = len(self.SOLVED_STATE)
+        move_perms = []
+        for cycles in self.moves.values():
+            move_perms.append(Permutation(cycles), size=size)
+        puzzle_group = PermutationGroup(move_perms)
+        try:
+            self.state_validator.puzzle_group = puzzle_group
+        except AttributeError:
+            self.state_validator = State_Validator(
+                    self.SOLVED_STATE,
+                    self.pieces,
+                    puzzle_group)
 
 
     def snap(self, shape):
@@ -272,6 +272,7 @@ but was of type '{type(shape_str)}'")
             movename - (str) - the name of the new move
                 must not include spaces
         """
+        self.moves_changed = True
         if self.movecreator_mode:
             self.end_movecreation(arg_color=arg_color)
         self.movecreator_mode = True
@@ -288,6 +289,7 @@ but was of type '{type(shape_str)}'")
         """
         exit movecreator mode and save the last move
         """
+        self.moves_changed = True
         self.movecreator_mode = False
         try:
             self.canvas.unbind("mousedown", self.on_click_function)
@@ -334,6 +336,7 @@ but was of type '{type(shape_str)}'")
             old_name - (str) - name of the move to be renamed
             new_name - (str) - new name for that move
         """
+        self.moves_changed = True
         self.moves[new_name] = self.moves[old_name]
         del(self.moves[old_name])
 
@@ -346,6 +349,7 @@ but was of type '{type(shape_str)}'")
         -------
             move_name - (str) - name of the move to be deleted
         """
+        self.moves_changed = True
         del(self.moves[move_name])
 
 
@@ -402,15 +406,19 @@ but was of type '{type(shape_str)}'")
         self.SOLVED_STATE = [point["vpy_color"] for point in self.POINT_INFO_DICTS]
         self.COM = get_com(self.vpy_objects)
         self.PUZZLE_NAME = puzzle_name
-
+        # load or calculate the state space size
         if state_space_size == None:
             self.state_space_size = get_state_space_size(
                     self.moves.values(), len(self.SOLVED_STATE))
         else:
             self.state_space_size = state_space_size
         print(f"The loaded puzzle has {approx_int(self.state_space_size)} possible states and {len(self.moves)} availiable moves.")
+        # calculate the number of pieces in the puzzle
+        self.pieces = detect_pieces(self.moves, len(self.SOLVED_STATE))
+        print(f"The loaded puzzle has {len(self.pieces)} pieces:\n", *self.pieces)
+        self.moves_changed = False
 
-    
+
     def import_puzzle(self, filepath):
         """
         imports a puzzle from a given .ggb (Geogebra) file
@@ -436,7 +444,8 @@ but was of type '{type(shape_str)}'")
                 point_dict["coords"] -= self.COM
 
         self.POINT_POSITIONS = [point["coords"] for point in self.POINT_INFO_DICTS]
-        self.SOLVED_STATE = [point["color"] for point in self.POINT_INFO_DICTS]
+        self.SOLVED_STATE = [point["vpy_color"] for point in self.POINT_INFO_DICTS]
+        self.moves_changed = False
 
 
     def listmoves(self, arg_color="#0066ff"):

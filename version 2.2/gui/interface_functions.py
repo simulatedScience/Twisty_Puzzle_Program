@@ -228,6 +228,8 @@ def interface_train_Q(user_args, puzzle, command_color="#ff8800", arg_color="#55
         keep_Q = True
 
     num_episodes, max_moves = int_args
+    if num_episodes == None:
+        num_episodes = 0
     learning_rate, discount_factor, exploration_rate = float_args
 
     puzzle.train_q_learning(num_episodes=num_episodes,

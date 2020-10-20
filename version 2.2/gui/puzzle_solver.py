@@ -129,24 +129,6 @@ def get_a_star_eval(action, prev_value, prev_state, ai_class, WEIGHT=0.1):
         return WEIGHT*prev_value-WEIGHT + get_q_value(tuple(prev_state), action, ai_class)
     if isinstance(ai_class, Puzzle_Network):
         return WEIGHT*prev_value-WEIGHT + get_nn_value(prev_state, action, ai_class)
-    # return WEIGHT*prev_value-WEIGHT + get_ai_eval(prev_state, action, ai_class)
-
-
-# def get_ai_eval(prev_state, action, ai_class):
-#     """
-#     this is the heuristic used in the A* algorithm
-#     calculates the estimated value of the given state-action pair based in the Q-table or Neural Network
-
-#     inputs:
-#     -------
-#         prev_state - (list) - 
-#         action - (str) - 
-#         ai_class - ()
-#     """
-#     if isinstance(ai_class, Puzzle_Q_AI):
-#         return get_q_value(tuple(prev_state), action, ai_class.Q_table)
-#     if isinstance(ai_class, Puzzle_Network):
-#         return get_nn_value(prev_state, action, ai_class)
 
 
 def get_q_value(state, action, ai_class):
@@ -182,8 +164,9 @@ def get_nn_value(state, action, ai_class):
         action - (str) - the action of interest
         ai_class - (Puzzle_Network) - puzzle Network class instance with trained network ai_class.model
     """
-    start_time = time.time()
-    value = ai_class.model.predict([ai_class.prepare_state(state) + ai_class.ACTION_VECTOR_DICT[action] for action in ai_class.ACTION_VECTOR_DICT], use_multiprocessing=True)[0]
-    end_time = time.time()
-    print(f"Neural network prediction took {(end_time-start_time)*1000:5} ms.")
+    # start_time = time.time()
+    # value = ai_class.model.predict([ai_class.prepare_state(state) + ai_class.ACTION_VECTOR_DICT[action] for action in ai_class.ACTION_VECTOR_DICT], use_multiprocessing=True)[0]
+    value = ai_class.model.predict([ai_class.prepare_state(state) + ai_class.ACTION_VECTOR_DICT[action]], use_multiprocessing=False)[0]
+    # end_time = time.time()
+    # print(f"Neural network prediction took {(end_time-start_time)*1000:5} ms.")
     return value

@@ -106,3 +106,23 @@ If the piece contains at least three points, we loop over all cycles and calcula
 If this intersection has at least two elements but is not the whole piece, the piece gets split up.
 
 Similar to above the intersection is added to the list of pieces and the current piece is shortend accordingly.
+
+# problem
+The above algorithm does not work for all puzzles. One example is the square two. Currently only seperations occurring after one move can be detected. However it is possible for seperable pieces to remain together for a larger number of moves before they can be seperated.
+
+The maximum number of moves required to seperate two points can be calculated though:
+
+Let a puzzle have $N \in \mathbb{N}$ moves. We order these moves such that the first $n$ moves are not an inverse of oneanother ($\implies 1 \leq n \leq N$).
+Let each move $m_i$ have the order $k_i$.
+
+Then the maximum number of moves required to seperate two points should be:
+
+$\eta_{\max} = \sum\limits_{i=1}^{n} a_i \quad$ where $\quad a_i = \begin{cases}k_i & \text{if move } i \text{ has no inverse} \\ \lceil k_i / 2 \rceil & \text{if move } i \text{ has an inverse} \end{cases}$
+
+If there are no inverse moves ($\implies n = N$), this simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N} k_i$. If every move has an inverse, it simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N/2} \lceil k_i/2 \rceil$.
+
+### the variables in programming
+In the implementation we could get the variables as:
+- $m_i =$ `move` 
+- $k_i =$ `lcm([len(cycle) for cycle in move])`
+- $N =$ `len(moves)`

@@ -660,11 +660,11 @@ if __name__ == "__main__":
     test_shapes.append(Polyhedron(corners, faces, opacity=0.8, show_edges=True, show_faces=True))
 
     # regular cube
-    test_shapes.append(Polyhedron(*cube(1, vpy.vec(2,2,0)), opacity=0.8, show_edges=True, show_faces=True))
+    test_shapes.append(Polyhedron(*cube(1, vpy.vec(2,-1.5,0)), opacity=0.8, show_edges=True, show_faces=True))
     test_shapes.append(Polyhedron(*cube(.5, vpy.vec(-2,-2,0)), opacity=0.8, show_edges=True, show_faces=True))
 
     # regular octahedron
-    test_shapes.append(Polyhedron(*octahedron(.5, vpy.vec(.25,.25,1.5)), opacity=0.8, show_edges=True, show_faces=True))
+    test_shapes.append(Polyhedron(*octahedron(.5, vpy.vec(.25,-1.5,1.5)), opacity=0.8, show_edges=True, show_faces=True))
 
     # heptagonal prism
     # center = vpy.vec(0,-.5,-1.3)
@@ -687,6 +687,7 @@ if __name__ == "__main__":
              ]
     # time.sleep(1)
     test_shapes.append(Polyhedron(corners, faces, opacity=0.2, show_edges=True, show_faces=True, sort_faces=True))
+    test_shapes.append(Polyhedron(*cube(1.5, vpy.vec(-2.5,-2.5,0)), opacity=0.8, show_edges=True, show_faces=True))
 
     intersections = list()
     for shape in test_shapes[:-1]:
@@ -694,12 +695,15 @@ if __name__ == "__main__":
         intersections.append(shape & test_shapes[-1])
         if intersections[-1] != None and intersections[-1] != shape:
             shape.toggle_visible(False)
-    ans = "y"
-    while ans.lower() == "y":
-        ans = input("rotate? (y,n) ")
-        if ans.lower() == "y":
-            angle = vpy.pi/2
-            for _ in range(int(angle/vpy.pi*180)):
-                test_shapes[-1].obj.rotate(axis=vpy.vec(0,0,1), angle=vpy.pi/180)
-                time.sleep(0.005)
-            print("finished rotation")
+    # ans = "y"
+    # while ans.lower() == "y":
+    #     ans = input("rotate? (y,n) ")
+    #     if ans.lower() == "y":
+    # angle = 2*vpy.pi
+    # for _ in range(int(angle/vpy.pi*180)):
+    #     test_shapes[-1].obj.rotate(axis=vpy.vec(0,0,1), angle=vpy.pi/180)
+    #     time.sleep(0.00001)
+    # print("finished rotation")
+    for test_obj in test_shapes[-1].vertices:
+        test_obj.color = vpy.vec(0,1,0)
+        test_obj.visible = True

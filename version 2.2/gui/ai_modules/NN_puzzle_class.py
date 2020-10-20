@@ -70,7 +70,7 @@ class Puzzle_Network():
             self.COLOR_VECTOR_DICT[i] = [0]*i + [1] + [0]*(vec_len-i-1)
 
 
-    def prepare_data(self, additional_data=0.01):
+    def prepare_data(self, additional_data=0):
         """
         prepare the data given in a Q-table for passing it to the neural network
 
@@ -83,6 +83,7 @@ class Puzzle_Network():
         #     (np.ndarray) - input data (state-action vectors)
         #     (np.ndarray) - ouput data (target Q-values)
         """
+        self.old_Q_table = False
         print(f"generating {100*additional_data:4}% additional data points")
         if additional_data > 0:
             self.gen_inverse_scramble(additional_data=additional_data)
@@ -121,7 +122,7 @@ class Puzzle_Network():
         return new_state
 
     
-    def gen_inverse_scramble(self, additional_data=0.01, max_moves=30, learning_rate=0.05, discount_factor=0.99):
+    def gen_inverse_scramble(self, additional_data=0, max_moves=30, learning_rate=0.05, discount_factor=0.99):
         """
         add data to the Q-table based on inversed scambles
         inputs:
@@ -187,7 +188,7 @@ class Puzzle_Network():
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
 
-    def train_nn(self, epochs=1000, batch_size=30, additional_data=0.01):
+    def train_nn(self, epochs=1000, batch_size=30, additional_data=0):
         """
         inputs:
         -------
@@ -198,9 +199,9 @@ class Puzzle_Network():
         if epochs > 0:
             if self.old_Q_table:
                 print("preparing data...")
-                inputs, outputs = self.prepare_data(additional_data=additional_data)
+                self.inputs, self.outputs = self.prepare_data(additional_data=additional_data)
             print("begin training")
-            self.train_history = self.model.fit(inputs, outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True)
+            self.train_history = self.model.fit(self.inputs, self.outputs, epochs=epochs, batch_size=batch_size, use_multiprocessing=True)
             print("end training")
             self.save_network()
             print("saved network")

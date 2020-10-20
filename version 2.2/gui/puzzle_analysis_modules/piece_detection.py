@@ -14,22 +14,27 @@ def detect_pieces(moves, n_points):
     """
     pieces = [{n for n in range(n_points)}] #initialize whole puzzle as one piece
 
-    # move_lists = list(moves.values())
-    move_lists = moves
+    if isinstance(moves, dict):
+        move_lists = list(moves.values())
+    elif isinstance(moves, (list, tuple)):
+        move_lists = moves
     move_sets, cycle_sets = get_move_sets(move_lists)
 
-    # changed_pieces = True
+    changed_pieces = True
+    loops = 0
     # comps, intersections = 0, 0
-    # while changed_pieces:
+    while changed_pieces:
         # changed_pieces, n_comps, n_intersections = split_pieces(move_sets, pieces)
-        # changed_pieces = split_pieces(move_sets, pieces)
         # comps += n_comps
         # intersections += n_intersections
-    changed_pieces = split_pieces(move_sets, cycle_sets, pieces)
+        changed_pieces = split_pieces(move_sets, cycle_sets, pieces)
+        loops += 1
 
+    print(f"finished calculation after {loops} loops.")
     # print(f"calculated {intersections:3} intersections using {comps:3} comparisons.")
     # print(f"arrived at {len(pieces)} pieces:\n{pieces}")
     return pieces
+
 
 def get_move_sets(move_lists):
     """
@@ -52,8 +57,6 @@ def get_move_sets(move_lists):
             cycle_sets.add(frozenset(cycle))
         move_sets.append(move_set)
     return move_sets, cycle_sets
-
-
 
 
 def split_pieces(move_sets, cycle_sets, pieces):

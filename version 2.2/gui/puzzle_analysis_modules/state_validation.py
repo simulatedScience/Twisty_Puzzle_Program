@@ -44,7 +44,7 @@ class State_Validator():
 
         inputs:
         -------
-            state - 
+            state - (list) - list of color indices representing the current puzzle state
 
         returns:
         --------

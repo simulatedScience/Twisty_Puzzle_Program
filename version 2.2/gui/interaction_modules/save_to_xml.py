@@ -28,9 +28,12 @@ def save_to_xml(puzzle):
         creates a folder 'puzzlename' and in it a file 'puzzledefinition.xml'
             containing all important puzzle information
     """
-    puzzle_name = puzzle.PUZZLE_NAME
+    if puzzle.PUZZLE_NAME != None:
+        puzzle_name = puzzle.PUZZLE_NAME
+    else:
+        puzzle_name = "test_puzzle"
     root_elem = let.Element("puzzledefinition", name=puzzle_name)
-    if hasattr(puzzle, "state_space_size"):
+    if hasattr(puzzle, "state_space_size") and not puzzle.moves_changed:
         root_elem.set("state_space_size", str(puzzle.state_space_size))
     root_elem.tail = "\n\t"
     save_points(root_elem, puzzle.POINT_INFO_DICTS)
