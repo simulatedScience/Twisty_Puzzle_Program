@@ -66,8 +66,9 @@ def split_pieces(move_sets, cycle_sets, pieces):
     inputs:
     -------
         moves - (dict) - dictionary with all possible moves
-        pieces - (list) of sets of ints - list of all currently detected pieces
-            as sets of indices of all points in that piece
+        pieces - (list) of (set)s of (int)s - list of all currently detected pieces
+            as sets of indices of all points in that piece.
+            This list will be changed in-place.
 
     returns:
     --------
@@ -77,8 +78,32 @@ def split_pieces(move_sets, cycle_sets, pieces):
     --------
         [pieces] will be changed in-place
     """
+    changed_pieces = False
+    changed_pieces = split_static(pieces, move_sets, changed_pieces)
+    changed_pieces = split_gears(pieces, cycle_sets, changed_pieces)
+    return changed_pieces#, n_comps, n_intersections
+
+
+def split_static(pieces, move_sets, changed_pieces=False):
+    """
+    split 
+
+    inputs:
+    -------
+        pieces - (list) of (set)s of (int)s - list of all current pieces.
+            This list will be changed in-place.
+        move_sets - (iter) any iterable of (set)s of (int)s - iterable of all moves
+            as sets or frozensets of point indices affected by each move.
+            For performance optimisation no set should be included twice.
+        changed_pieces - (bool) - a variable to keep track of whether or not
+            pieces were changed. If it is given as True, it will always remain True.
+
+    returns:
+    --------
+        (bool) - whether or not pieces were changed. If changed_pieces was given as True,
+            return True.
+    """
     # Algorithm 1
-    added_pieces = False
     i = 0
     n_pieces = len(pieces)
     empty_set = set()
@@ -96,26 +121,55 @@ def split_pieces(move_sets, cycle_sets, pieces):
                     pieces.append(intersect)
                     pieces[i] -= intersect
                     n_pieces += 1
-                    added_pieces = True
+                    changed_pieces = True
         i += 1
+    return changed_pieces
+
+
+def split_gears(pieces, cycle_sets, changed_pieces=False):
+    """
+    Detect points on a piece that are moving relative to other points on the same piece.
+        If any move includes a cycle, that only affects points on one piece but not
+        the whole piece, then that cycle must be a seperate piece.
+    In the documentation this is the implementation of rule 2.
+
+    inputs:
+    -------
+        pieces - (list) of (set)s of (int)s - list of all current pieces.
+            This list will be changed in-place.
+        cycle_sets - (iter) any iterable of (set)s of (int)s - iterable of all cycles
+            as sets or frozensets of point indices affected by each cycle.
+            For performance optimisation no set should be included twice.
+        changed_pieces - (bool) - a variable to keep track of whether or not
+            pieces were changed. If it is given as True, it will always remain True.
+
+    returns:
+    --------
+        (bool) - whether or not pieces were changed. If changed_pieces was given as True,
+            return True.
+    """
     # Algorithm 2
+    n_pieces = len(pieces)
     i = 0
     while i != n_pieces:
         # n_comps += 2
         if len(pieces[i]) >= 3:
             for cycle in cycle_sets:
-                intersect = cycle & pieces[i]
-                # n_intersections += 1
-                # n_comps += 1
-                if intersect != pieces[i]:
+                if cycle < pieces[i]:
+                    intersect = cycle & pieces[i]
+                    # n_intersections += 1
                     # n_comps += 1
-                    if len(intersect) > 2:
+                    # if intersect != pieces[i]:
+                        # n_comps += 1
+                    if i+1 == n_pieces:
                         pieces.append(intersect)
-                        pieces[i] -= intersect
                         n_pieces += 1
-                        added_pieces = True
+                    else:
+                        pieces[i+1] |= intersect
+                    pieces[i] -= intersect
+                    changed_pieces = True
         i += 1
-    return added_pieces#, n_comps, n_intersections
+    return changed_pieces
 
 
 if __name__ == "__main__":

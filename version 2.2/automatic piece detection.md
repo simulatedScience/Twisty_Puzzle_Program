@@ -34,6 +34,12 @@ This second rule only needs to be checked for pieces with at least three points 
 
 Most puzzles don't require the second rule but some geared puzzles do.
 
+3. ***Two points are not on the same piece if there exists a sequence of moves such that the last move only moves one of them.***
+
+This is a computationally expensive but necessary rule. It is possible that seperable pieces can only be seperated with a sequence of moves, not with a single one.
+
+This sequence can definitely be as long as the sum of all orders of all moves.
+
 -----
 
 ## Additional Thoughts
@@ -50,7 +56,7 @@ _This case is left up to the user because it is not clear how to handle it:_
 
 This problem would require additional computational effort while not necessarily providing expected behavior in all cases. If the point $P$ should rotate with the other points, the user can simply add bandaging to do that.
 
-### b)
+### b) _(covered by rule 2)_
 Points are also not on the same piece if within any move that moves both points, their cycles have different orders.
 
 However this rule is not required as all cases where it would be useful are also covered by the second rule mentioned above.
@@ -107,7 +113,9 @@ If this intersection has at least two elements but is not the whole piece, the p
 
 Similar to above the intersection is added to the list of pieces and the current piece is shortend accordingly.
 
-# problem
+-----
+
+## Implementation of rule 3
 The above algorithm does not work for all puzzles. One example is the square two. Currently only seperations occurring after one move can be detected. However it is possible for seperable pieces to remain together for a larger number of moves before they can be seperated.
 
 The maximum number of moves required to seperate two points can be calculated though:

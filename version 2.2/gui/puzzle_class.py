@@ -16,7 +16,7 @@ from .interaction_modules.save_to_xml import save_to_xml
 from .interaction_modules.load_from_xml import load_puzzle
 
 from .puzzle_analysis_modules.size_analysis import get_state_space_size, approx_int
-from .puzzle_analysis_modules.piece_detection import detect_pieces
+from .puzzle_analysis_modules.piece_detection_v2 import detect_pieces
 from .puzzle_analysis_modules.state_validation import State_Validator
 
 from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
