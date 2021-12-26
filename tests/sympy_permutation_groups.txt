@@ -1,0 +1,271 @@
+Python 3.8.5 (tags/v3.8.5:580fbb0, Jul 20 2020, 15:57:54) [MSC v.1924 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> from symps.combinatorics import Permutation
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    from symps.combinatorics import Permutation
+ModuleNotFoundError: No module named 'symps'
+>>> from sympy.combinatorics import Permutation
+Traceback (most recent call last):
+  File "<pyshell#1>", line 1, in <module>
+    from sympy.combinatorics import Permutation
+ModuleNotFoundError: No module named 'sympy'
+>>> from sympy.combinatorics import Permutation
+>>> p = Permutation([0,1], [0,1,2,3,4])
+Traceback (most recent call last):
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\compatibility.py", line 373, in as_int
+    return operator.index(n)
+TypeError: 'list' object cannot be interpreted as an integer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<pyshell#3>", line 1, in <module>
+    p = Permutation([0,1], [0,1,2,3,4])
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 890, in __new__
+    return cls._af_new(Cycle(*args).list(size))
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 448, in __init__
+    args = [as_int(a) for a in args]
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 448, in <listcomp>
+    args = [as_int(a) for a in args]
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\compatibility.py", line 375, in as_int
+    raise ValueError('%s is not an integer' % (n,))
+ValueError: [0, 1] is not an integer
+>>> p = Permutation([[0,1], [0,1,2,3,4]])
+>>> p
+Permutation(0, 2, 3, 4)
+>>> p.size
+5
+>>> p.cardinality
+120
+>>> p = Permutation([0,1,2], [0,1,2,3,4])
+Traceback (most recent call last):
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\compatibility.py", line 373, in as_int
+    return operator.index(n)
+TypeError: 'list' object cannot be interpreted as an integer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<pyshell#8>", line 1, in <module>
+    p = Permutation([0,1,2], [0,1,2,3,4])
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 890, in __new__
+    return cls._af_new(Cycle(*args).list(size))
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 448, in __init__
+    args = [as_int(a) for a in args]
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\permutations.py", line 448, in <listcomp>
+    args = [as_int(a) for a in args]
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\compatibility.py", line 375, in as_int
+    raise ValueError('%s is not an integer' % (n,))
+ValueError: [0, 1, 2] is not an integer
+>>> p = Permutation([[0,1,2], [0,1,2,3,4]])
+>>> p.size
+5
+>>> p.cardinality
+120
+>>> p = Permutation([[0,1,2,3,4]])
+>>> p.size
+5
+>>> p.cardinality
+120
+>>> p
+Permutation(0, 1, 2, 3, 4)
+>>> p = Permutation([[0,1,2]])
+>>> p.size
+3
+>>> p.cardinality
+6
+>>> p.rank
+<bound method Permutation.rank of Permutation(0, 1, 2)>
+>>> p.rank()
+3
+>>> p.count
+<bound method Basic.count of Permutation(0, 1, 2)>
+>>> p.count()
+Traceback (most recent call last):
+  File "<pyshell#22>", line 1, in <module>
+    p.count()
+TypeError: count() missing 1 required positional argument: 'query'
+>>> p.count(1)
+0
+>>> p.count(0)
+0
+>>> p.count(2)
+0
+>>> p.count(10)
+0
+>>> p.count('a')
+Traceback (most recent call last):
+  File "<pyshell#27>", line 1, in <module>
+    p.count('a')
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\basic.py", line 1561, in count
+    return sum(bool(query(sub)) for sub in preorder_traversal(self))
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\core\basic.py", line 1561, in <genexpr>
+    return sum(bool(query(sub)) for sub in preorder_traversal(self))
+TypeError: 'str' object is not callable
+>>> p.count(5)
+0
+>>> p.is_extended_real
+>>> p.is_extended_real()
+Traceback (most recent call last):
+  File "<pyshell#30>", line 1, in <module>
+    p.is_extended_real()
+TypeError: 'NoneType' object is not callable
+>>> p.is_extended_real
+>>> p.is_number
+False
+>>> p.cycles
+1
+>>> p = Permutation([[0,1], [2,4]])
+>>> p.cycles
+3
+>>> p.size
+5
+>>> p.cardinality
+120
+>>> p.subs
+<bound method Basic.subs of Permutation(0, 1)(2, 4)>
+>>> p.transpositions
+<bound method Permutation.transpositions of Permutation(0, 1)(2, 4)>
+>>> p.transpositions()
+[(0, 1), (2, 4)]
+>>> p.unrank_nonlex
+<bound method Permutation.unrank_nonlex of <class 'sympy.combinatorics.permutations.Permutation'>>
+>>> p.unrank_nonlex()
+Traceback (most recent call last):
+  File "<pyshell#42>", line 1, in <module>
+    p.unrank_nonlex()
+TypeError: unrank_nonlex() missing 2 required positional arguments: 'n' and 'r'
+>>> import perms
+Traceback (most recent call last):
+  File "<pyshell#43>", line 1, in <module>
+    import perms
+ModuleNotFoundError: No module named 'perms'
+>>> from sympy.combinatorics.perm_groups import PermutationGroup
+>>> PermutationGroup([0,1], [0,1,2,3,4])
+Traceback (most recent call last):
+  File "<pyshell#45>", line 1, in <module>
+    PermutationGroup([0,1], [0,1,2,3,4])
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\perm_groups.py", line 133, in __new__
+    if has_variety(a.size for a in args):
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\utilities\iterables.py", line 2091, in has_variety
+    for i, s in enumerate(seq):
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\perm_groups.py", line 133, in <genexpr>
+    if has_variety(a.size for a in args):
+AttributeError: 'int' object has no attribute 'size'
+>>> P1 = Permutation(0,1)
+>>> p1
+Traceback (most recent call last):
+  File "<pyshell#47>", line 1, in <module>
+    p1
+NameError: name 'p1' is not defined
+>>> P1
+Permutation(0, 1)
+>>> P2 = Permutation(0,1,2,3,4)
+>>> PermutationGroup(P1,P2)
+PermutationGroup([
+    (4)(0 1),
+    (0 1 2 3 4)])
+>>> S = PermutationGroup(P1,P2)
+>>> S.order()
+120
+>>> S = PermutationGroup(P1)
+>>> S.order
+<bound method PermutationGroup.order of PermutationGroup([
+    (0 1)])>
+>>> S.order()
+2
+>>> S = PermutationGroup(P2)
+>>> S.order()
+5
+>>> P3 = Permutation(0,2)
+>>> S = PermutationGroup(P1, P3)
+>>> S.order()
+6
+>>> S
+PermutationGroup([
+    (2)(0 1),
+    (0 2)])
+>>> S = PermutationGroup(P1, P2, P3)
+>>> S.order()
+120
+>>> P4 = Permutation(0,1,2)
+>>> S = PermutationGroup(P2, P4)
+>>> S.order()
+60
+>>> Permutation(0,1,3) in S
+False
+>>> P5 = Permutation(0,1,3)
+>>> P5 in S
+False
+>>> S.has(P5)
+False
+>>> S.center()
+PermutationGroup([
+    (4)])
+>>> S.is_cyclic()
+Traceback (most recent call last):
+  File "<pyshell#72>", line 1, in <module>
+    S.is_cyclic()
+TypeError: 'bool' object is not callable
+>>> S.is_cyclic
+False
+>>> S.is_abelian
+False
+>>> S
+PermutationGroup([
+    (0 1 2 3 4),
+    (4)(0 1 2)])
+>>> S.strong_gens()
+Traceback (most recent call last):
+  File "<pyshell#76>", line 1, in <module>
+    S.strong_gens()
+TypeError: 'list' object is not callable
+>>> S.strong_gens
+[Permutation(0, 1, 2, 3, 4), Permutation(4)(0, 1, 2), Permutation(2, 4, 3), Permutation(4)(1, 3, 2), Permutation(1, 4, 3)]
+>>> S.has(1)
+False
+>>> S.sylow_subgroup(3)
+PermutationGroup([
+    (4)(0 1 2)])
+>>> H = PermutationGroup(P5)
+>>> S
+PermutationGroup([
+    (0 1 2 3 4),
+    (4)(0 1 2)])
+>>> H
+PermutationGroup([
+    (0 1 3)])
+>>> S.order()
+60
+>>> H.order()
+3
+>>> H.is_subgroup(S)
+False
+>>> P5.is_even
+True
+>>> S.is_group
+True
+>>> H.is_group
+True
+>>> S = PermutationGroup(P1, P2)
+>>> S
+PermutationGroup([
+    (4)(0 1),
+    (0 1 2 3 4)])
+>>> H.is_subgroup(S)
+False
+>>> H = PermutationGroup(P5, size=5)
+Traceback (most recent call last):
+  File "<pyshell#93>", line 1, in <module>
+    H = PermutationGroup(P5, size=5)
+  File "C:\Users\sebas\AppData\Local\Programs\Python\Python38\lib\site-packages\sympy\combinatorics\perm_groups.py", line 144, in __new__
+    obj = Basic.__new__(cls, *args, **kwargs)
+TypeError: __new__() got an unexpected keyword argument 'size'
+>>> P5 = Permutation(0,1,3, size=5)
+>>> H = PermutationGroup(P5)
+>>> H.is_subgroup(S)
+True
+>>> P5 in S
+True
+>>> 

@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="floppy_cube">
+  <points>
+    <point size="5">
+      <coords x="1.0" y="1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="1.0" y="0.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="1.0" y="-1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="-1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="-1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="0.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="1.0" y="-1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="1.0" y="0.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="1.0" y="1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="1.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="0.0" z="0.35"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="0.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="0.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="-1.0" y="-1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="0.0" y="-1.0" z="-0.35"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.0" y="-1.35" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="0.0" y="-1.35" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="-1.0" y="-1.35" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.35" y="0.9999999999999999" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.35" y="-8.266365894244634e-17" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.35" y="-1.0" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="-0.9999999999999998" y="1.35" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.6532731788489269e-16" y="1.35" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="4">
+      <coords x="1.0" y="1.35" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="4">
+      <coords x="-1.35" y="-0.9999999999999997" z="0.0"/>
+      <color r="1.0" g="0.6" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="-1.35" y="2.4799097682733903e-16" z="0.0"/>
+      <color r="1.0" g="0.6" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="-1.35" y="1.0" z="0.0"/>
+      <color r="1.0" g="0.6" b="0.0"/>
+    </point>
+  </points>
+  <moves>
+    <move name="f">
+      <cycle>20, 18</cycle>
+      <cycle>4, 7</cycle>
+      <cycle>16, 2</cycle>
+      <cycle>27, 23</cycle>
+      <cycle>17, 3</cycle>
+    </move>
+    <move name="r">
+      <cycle>2, 9</cycle>
+      <cycle>7, 0</cycle>
+      <cycle>18, 26</cycle>
+      <cycle>1, 8</cycle>
+      <cycle>23, 21</cycle>
+    </move>
+    <move name="b">
+      <cycle>26, 24</cycle>
+      <cycle>21, 29</cycle>
+      <cycle>9, 6</cycle>
+      <cycle>0, 12</cycle>
+      <cycle>11, 10</cycle>
+    </move>
+    <move name="l">
+      <cycle>16, 6</cycle>
+      <cycle>12, 4</cycle>
+      <cycle>15, 5</cycle>
+      <cycle>27, 29</cycle>
+      <cycle>20, 24</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	

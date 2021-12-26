@@ -1,0 +1,11 @@
+*.pyc
+__pycache__
+Q_table.txt
+pickle_*_table*
+neural_network*
+*param_hist_*
+saved_model.pb
+keras_metadata.pb
+tests/state compression tests/*
+!tests/state compression tests/*.py
+*.mp4
