@@ -1,0 +1,974 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="super_5x5" state_space_size="60841651070857274980961989891455530671144808858623227918551693131776000000000000000">
+  <points>
+    <point size="8.0">
+      <coords x="1.6" y="0.0" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.0" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.0" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.0" z="0.0"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="1.0" z="0.0"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.0" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="2.0" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="1.0" z="0.0"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.8" z="0.0"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.8" z="0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="1.0" z="0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.0" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.0" z="0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="1.0" z="0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-0.8" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.0" z="1.0"/>
+      <color r="0.6274509803921569" g="0.6274509803921569" b="0.6274509803921569"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-1.0" z="0.0"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.0" z="0.0"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="-0.8" z="0.0"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="-0.8" z="0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.8" z="-0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="0.0" z="-0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="1.0" z="0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="1.0" z="0.0"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="1.0" z="-0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="1.0" z="-0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="1.0" z="-0.8"/>
+      <color r="0.0" g="0.39215686274509803" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.0" y="-0.8" z="-0.8"/>
+      <color r="0.8" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.0" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.0" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.0" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.8" z="-1.0"/>
+      <color r="0.8" g="0.6" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-1.0" z="0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-1.0" z="0.0"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-1.0" z="0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-1.0" z="0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-1.0" z="0.0"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-1.0" z="-0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-1.0" z="-0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-1.0" z="-0.8"/>
+      <color r="0.0" g="0.4" b="0.6"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.8" z="0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.8" z="0.0"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.8" z="-0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.0" z="-0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="0.0" z="0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="-0.8" z="0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="-0.8" z="0.0"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.0" y="-0.8" z="-0.8"/>
+      <color r="0.8" g="0.4" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.0" z="1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="1.6" z="1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="1.6" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="2.0" z="1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="2.0" z="1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="2.0" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="2.0" z="1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="2.0" z="0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="2.0" z="0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="2.0" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="2.0" z="0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="1.6" z="0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.8" z="0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.8" z="1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.0" z="0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.8" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.0" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.0" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="0.0" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-0.8" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-1.6" z="2.0"/>
+      <color r="1.0" g="1.0" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="2.0" z="1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="2.0" z="1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="2.0" z="0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="2.0" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="2.0" z="0.0"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="2.0" z="0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="2.0" z="-0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="2.0" z="-1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="2.0" z="-0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="2.0" z="-1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="2.0" z="-0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="2.0" z="-1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="2.0" z="-0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="2.0" z="-1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="2.0" z="-0.8"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="2.0" z="-1.6"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-0.8" z="1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-1.6" z="1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-0.8" z="0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-1.6" z="0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-0.8" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-1.6" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="1.6" z="-0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="1.6" z="-1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.8" z="-0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.8" z="-1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.0" z="-0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="0.0" z="-1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-0.8" z="-0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-0.8" z="-1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-1.6" z="-0.8"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="2.0" y="-1.6" z="-1.6"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="0.8" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="1.6" z="-2.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-1.6" z="1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-0.8" z="1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.0" z="1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.8" z="1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="1.6" z="1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="1.6" z="0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.8" z="0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.0" z="0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-0.8" z="0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-1.6" z="0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-1.6" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-0.8" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.8" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="1.6" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="1.6" z="-0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.8" z="-0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.0" z="-0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-0.8" z="-0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-1.6" z="-0.8"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-1.6" z="-1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="-0.8" z="-1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.0" z="-1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="0.8" z="-1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-2.0" y="1.6" z="-1.6"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-2.0" z="1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-2.0" z="1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-2.0" z="1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-2.0" z="1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-2.0" z="1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-2.0" z="0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-2.0" z="0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-2.0" z="0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-2.0" z="0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-2.0" z="0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-2.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-2.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-2.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-2.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-2.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-2.0" z="-0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-2.0" z="-0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-2.0" z="-0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-2.0" z="-0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-2.0" z="-0.8"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="1.6" y="-2.0" z="-1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.8" y="-2.0" z="-1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="0.0" y="-2.0" z="-1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-0.8" y="-2.0" z="-1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+    <point size="8.0">
+      <coords x="-1.6" y="-2.0" z="-1.6"/>
+      <color r="0.0" g="0.6" b="1.0"/>
+    </point>
+  </points>
+  <moves>
+    <move name="r">
+      <cycle>80, 158, 133, 120</cycle>
+      <cycle>79, 159, 138, 119</cycle>
+      <cycle>76, 168, 143, 60</cycle>
+      <cycle>81, 169, 148, 69</cycle>
+      <cycle>82, 178, 153, 59</cycle>
+      <cycle>62, 98, 112, 104</cycle>
+      <cycle>64, 102, 110, 103</cycle>
+      <cycle>61, 101, 108, 63</cycle>
+      <cycle>97, 111, 106, 68</cycle>
+      <cycle>65, 99, 109, 105</cycle>
+      <cycle>66, 100, 107, 67</cycle>
+    </move>
+    <move name="r'">
+      <cycle>120, 133, 158, 80</cycle>
+      <cycle>119, 138, 159, 79</cycle>
+      <cycle>60, 143, 168, 76</cycle>
+      <cycle>69, 148, 169, 81</cycle>
+      <cycle>59, 153, 178, 82</cycle>
+      <cycle>104, 112, 98, 62</cycle>
+      <cycle>103, 110, 102, 64</cycle>
+      <cycle>63, 108, 101, 61</cycle>
+      <cycle>68, 106, 111, 97</cycle>
+      <cycle>105, 109, 99, 65</cycle>
+      <cycle>67, 107, 100, 66</cycle>
+    </move>
+    <move name="rs">
+      <cycle>11, 50, 41, 25</cycle>
+      <cycle>13, 51, 40, 8</cycle>
+      <cycle>16, 52, 39, 9</cycle>
+      <cycle>10, 27, 31, 29</cycle>
+      <cycle>15, 28, 30, 7</cycle>
+      <cycle>78, 157, 132, 122</cycle>
+      <cycle>77, 160, 137, 121</cycle>
+      <cycle>75, 167, 142, 73</cycle>
+      <cycle>83, 170, 147, 70</cycle>
+      <cycle>84, 177, 152, 71</cycle>
+    </move>
+    <move name="rs'">
+      <cycle>25, 41, 50, 11</cycle>
+      <cycle>8, 40, 51, 13</cycle>
+      <cycle>9, 39, 52, 16</cycle>
+      <cycle>29, 31, 27, 10</cycle>
+      <cycle>7, 30, 28, 15</cycle>
+      <cycle>122, 132, 157, 78</cycle>
+      <cycle>121, 137, 160, 77</cycle>
+      <cycle>73, 142, 167, 75</cycle>
+      <cycle>70, 147, 170, 83</cycle>
+      <cycle>71, 152, 177, 84</cycle>
+    </move>
+    <move name="t">
+      <cycle>154, 98, 59, 179</cycle>
+      <cycle>155, 97, 71, 180</cycle>
+      <cycle>156, 61, 58, 181</cycle>
+      <cycle>157, 64, 113, 182</cycle>
+      <cycle>158, 62, 114, 183</cycle>
+      <cycle>82, 80, 88, 96</cycle>
+      <cycle>95, 81, 78, 90</cycle>
+      <cycle>86, 76, 0, 92</cycle>
+      <cycle>84, 79, 87, 94</cycle>
+      <cycle>93, 83, 77, 89</cycle>
+      <cycle>75, 74, 91, 85</cycle>
+    </move>
+    <move name="t'">
+      <cycle>179, 59, 98, 154</cycle>
+      <cycle>180, 71, 97, 155</cycle>
+      <cycle>181, 58, 61, 156</cycle>
+      <cycle>182, 113, 64, 157</cycle>
+      <cycle>183, 114, 62, 158</cycle>
+      <cycle>96, 88, 80, 82</cycle>
+      <cycle>90, 78, 81, 95</cycle>
+      <cycle>92, 0, 76, 86</cycle>
+      <cycle>94, 87, 79, 84</cycle>
+      <cycle>89, 77, 83, 93</cycle>
+      <cycle>85, 91, 74, 75</cycle>
+    </move>
+    <move name="ts">
+      <cycle>45, 55, 27, 9</cycle>
+      <cycle>42, 50, 10, 24</cycle>
+      <cycle>54, 15, 14, 44</cycle>
+      <cycle>18, 16, 11, 17</cycle>
+      <cycle>19, 20, 13, 12</cycle>
+      <cycle>163, 102, 69, 188</cycle>
+      <cycle>162, 99, 70, 187</cycle>
+      <cycle>161, 66, 72, 186</cycle>
+      <cycle>160, 65, 115, 185</cycle>
+      <cycle>159, 68, 116, 184</cycle>
+    </move>
+    <move name="ts'">
+      <cycle>9, 27, 55, 45</cycle>
+      <cycle>24, 10, 50, 42</cycle>
+      <cycle>44, 14, 15, 54</cycle>
+      <cycle>17, 11, 16, 18</cycle>
+      <cycle>12, 13, 20, 19</cycle>
+      <cycle>188, 69, 102, 163</cycle>
+      <cycle>187, 70, 99, 162</cycle>
+      <cycle>186, 72, 66, 161</cycle>
+      <cycle>185, 115, 65, 160</cycle>
+      <cycle>184, 116, 68, 159</cycle>
+    </move>
+    <move name="fs">
+      <cycle>17, 10, 39, 47</cycle>
+      <cycle>12, 7, 38, 46</cycle>
+      <cycle>11, 29, 37, 45</cycle>
+      <cycle>24, 9, 25, 32</cycle>
+      <cycle>14, 8, 26, 23</cycle>
+      <cycle>90, 64, 148, 200</cycle>
+      <cycle>89, 65, 147, 197</cycle>
+      <cycle>74, 67, 146, 190</cycle>
+      <cycle>77, 105, 145, 187</cycle>
+      <cycle>79, 106, 144, 180</cycle>
+    </move>
+    <move name="fs'">
+      <cycle>47, 39, 10, 17</cycle>
+      <cycle>46, 38, 7, 12</cycle>
+      <cycle>45, 37, 29, 11</cycle>
+      <cycle>32, 25, 9, 24</cycle>
+      <cycle>23, 26, 8, 14</cycle>
+      <cycle>200, 148, 64, 90</cycle>
+      <cycle>197, 147, 65, 89</cycle>
+      <cycle>190, 146, 67, 74</cycle>
+      <cycle>187, 145, 105, 77</cycle>
+      <cycle>180, 144, 106, 79</cycle>
+    </move>
+    <move name="f">
+      <cycle>88, 62, 153, 199</cycle>
+      <cycle>87, 68, 152, 198</cycle>
+      <cycle>0, 63, 151, 189</cycle>
+      <cycle>78, 103, 150, 188</cycle>
+      <cycle>80, 104, 149, 179</cycle>
+      <cycle>114, 59, 120, 128</cycle>
+      <cycle>113, 69, 122, 127</cycle>
+      <cycle>58, 60, 124, 118</cycle>
+      <cycle>71, 119, 126, 116</cycle>
+      <cycle>115, 70, 121, 125</cycle>
+      <cycle>72, 73, 123, 117</cycle>
+    </move>
+    <move name="f'">
+      <cycle>199, 153, 62, 88</cycle>
+      <cycle>198, 152, 68, 87</cycle>
+      <cycle>189, 151, 63, 0</cycle>
+      <cycle>188, 150, 103, 78</cycle>
+      <cycle>179, 149, 104, 80</cycle>
+      <cycle>128, 120, 59, 114</cycle>
+      <cycle>127, 122, 69, 113</cycle>
+      <cycle>118, 124, 60, 58</cycle>
+      <cycle>116, 126, 119, 71</cycle>
+      <cycle>125, 121, 70, 115</cycle>
+      <cycle>117, 123, 73, 72</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	

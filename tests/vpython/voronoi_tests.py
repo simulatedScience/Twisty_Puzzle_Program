@@ -2,28 +2,29 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 import numpy as np
 import matplotlib.pyplot as plt
 import vpython as vpy
-from polyhedra_test import polyhedron
+# from polyhedra_test import polyhedron
 
 
 def draw_voronoi(points_3d, pointsize=1):
     """
     points_3d - (iter) - any iterable of numpy.ndarrays
     """
-    canvas = vpy.canvas(width=1280, height=720, background=vpy.vec(0.7,0.7,0.7))
+    canvas = vpy.canvas(width=1280, height=720,
+                        background=vpy.vec(0.7, 0.7, 0.7))
 
-    draw_points(points_3d, color=vpy.vec(.3,.3,.8), radius=pointsize)
+    draw_points(points_3d, color=vpy.vec(.3, .3, .8), radius=pointsize)
     vor = Voronoi(points_3d, incremental=False)
     if len(vor.vertices[0]) == 2:
         points = []
         for point in vor.vertices:
             points.append(np.append(point, 0))
         vor.vertices = points
-    draw_points(vor.vertices, color=vpy.vec(.9,.5,0), radius=pointsize/2)
+    draw_points(vor.vertices, color=vpy.vec(.9, .5, 0), radius=pointsize/2)
 
     draw_edges(vor, radius=pointsize/4)
 
 
-def draw_points(points_3d, color=vpy.vec(.3,.3,.8), radius=1):
+def draw_points(points_3d, color=vpy.vec(.3, .3, .8), radius=1):
     if len(points_3d[0]) == 2:
         points = []
         for point in points_3d:
@@ -34,7 +35,7 @@ def draw_points(points_3d, color=vpy.vec(.3,.3,.8), radius=1):
         vpy.sphere(pos=coords, color=color, radius=radius)
 
 
-def draw_edges(vor, color=vpy.vec(.2,.2,.2), radius=0.25):
+def draw_edges(vor, color=vpy.vec(.2, .2, .2), radius=0.25):
     """
     inputs:
     -------
@@ -52,15 +53,25 @@ def draw_edges(vor, color=vpy.vec(.2,.2,.2), radius=0.25):
         n = len(points)
         for i in range(n-1):
             A = vpy.vec(*vor.vertices[points[i]])
-            B = vpy.vec(*vor.vertices[points[(i+1)%n]])
+            B = vpy.vec(*vor.vertices[points[(i+1) % n]])
             if not -1 in points[i:i+2]:
                 vpy.cylinder(pos=A, axis=B-A, color=color, radius=radius)
 
 
-if __name__=="__main__":
+def gen_grid(n=7):
+    points = np.ndarray(shape=(n**2, 2))
+    for x in range(n):
+        for y in range(n):
+            points[x+n*y, :] = (np.array([x, y]) - n/2)*15
+    return points
+
+
+if __name__ == "__main__":
     np.random.seed(6)
-    points = np.random.uniform(-30,30, (15, 2))
-    points = np.append(points, [[999,0], [-999,0], [0,999], [0,-999]], axis = 0)
+    points = np.random.uniform(-30, 30, (15, 2))
+    points = gen_grid(n=5)
+    points = np.append(
+        points, [[999, 0], [-999, 0], [0, 999], [0, -999]], axis=0)
     # np.random.seed(12)
     # points = np.random.uniform(-30,30, (15, 3))
     # points = np.append(points, [[999,0,0], [-999,0,0], [0,999,0], [0,-999,0], [0,0,999], [0,0,-999]], axis = 0)
@@ -85,7 +96,6 @@ if __name__=="__main__":
 
     # child = fig.get_children()[1]
     # child.set_aspect(1)
-
 
     # # colorize
     # for region in vor.regions:

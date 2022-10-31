@@ -56,7 +56,7 @@ Our Q-values are in the range $[0,1]$ where close to $1$ is good and close to $0
 _____
 
 ## Reevaluating states visited before
-It is possible to reach the same state with different moves. In that case, if the current way to reach that state is better than a previous way, the following states are also evaluated suboptimally. Therefor it's beneficial to re-add that state to the *open list* in order to increase the chance of finding an (optimal) solution.
+It is possible to reach the same state with different moves. In that case, if the current way to reach that state is better than a previous way, the following states are also evaluated suboptimally. Therefore it is beneficial to re-add that state to the *open list* in order to increase the chance of finding an optimal solution.
 
 This can also help to find any solution. To understand how, consider the following example:
 

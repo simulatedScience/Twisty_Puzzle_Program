@@ -11,6 +11,12 @@ The program requires `python 3.x`. It is written and tested in python version `3
 
 Additionally some libraries are required. Those are:
 - `vpython` - for 3D visualisation
+  - requires older version of `txaio` and `autobahn`. Some working versions are:
+    - autobahn v. 20.7.1
+    - txaio v. 20.4.1
+    latest working versions:
+    - autobahn 22.3.2
+    - txaio 22.2.1
 - `colored` - for colored console output
 - `lxml` - for saving and loading the puzzles
 - `sympy` - for some automatic analysis of puzzles

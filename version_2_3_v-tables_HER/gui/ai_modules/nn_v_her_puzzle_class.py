@@ -17,7 +17,7 @@ class Puzzle_NN_V_HER_AI():
     def __init__(self,
                  ACTIONS_DICT,
                  SOLVED_STATE,
-                 reward_dict={"solved":1, "timeout":0, "move":-0.01},
+                 reward_dict={"solved":1, "timeout":0, "move":0},
                  name=None,
                  learning_rate=0.02,
                  discount_factor=0.95,

@@ -532,7 +532,8 @@ but was of type '{type(shape_str)}'")
                 keep_q_table=keep_q_table
                 )
         ps = pstats.Stats(profile)
-        ps.print_stats()
+        ps.sort_stats(("tottime"))
+        ps.print_stats(10)
 
 
     def move_Q(self, arg_color="#0066ff"):
@@ -632,7 +633,8 @@ but was of type '{type(shape_str)}'")
                 num_episodes=num_episodes,
                 keep_v_table=keep_v_table)
         ps = pstats.Stats(profile)
-        ps.print_stats()
+        ps.sort_stats(("tottime"))
+        ps.print_stats(10)
         # self.v_param_history = \
         #     self.ai_v_class.train_v_learning(
         #             # reward_dict=reward_dict,
@@ -713,7 +715,8 @@ but was of type '{type(shape_str)}'")
         #         keep_nn=keep_nn,
         #         k_for_her=k_for_her)
         # ps = pstats.Stats(profile)
-        # ps.print_stats()
+        # ps.sort_stats(("tottime"))
+        # ps.print_stats(10)
         self.ai_nn_class.train_nn_her(
                 num_episodes=num_episodes,
                 max_moves=max_moves,
