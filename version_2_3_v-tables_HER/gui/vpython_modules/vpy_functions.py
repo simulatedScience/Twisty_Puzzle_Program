@@ -10,10 +10,11 @@ def create_canvas():
                         width=1280,
                         height=720)
     canvas.lights = []
-    canvas.ambient = vpy.vec(1,1,1)*0.3
-    vpy.distant_light(direction = vpy.vector( 1, 1, 1), color = vpy.vector(0.7,0.7,0.7))
-    vpy.distant_light(direction = vpy.vector(-1,-1,-1), color = vpy.vector(0.7,0.7,0.7))
-
+    canvas.ambient = vpy.vec(1, 1, 1) * 0.7
+    # Front light
+    vpy.distant_light(direction = vpy.vector(1, 1, 1), color = vpy.vector(0.4, 0.4, 0.4))
+    # Back light
+    vpy.distant_light(direction = vpy.vector(-1, -1, -1), color = vpy.vector(0.4, 0.4, 0.4))
     return canvas
 
 

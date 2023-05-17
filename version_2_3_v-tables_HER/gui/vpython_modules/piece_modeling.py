@@ -12,7 +12,12 @@ from .polyhedra import Polyhedron, vpy_vec_tuple
 
 def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0,0,0), debug=False):
     """
-    draw one polyhedron for each object in vpy_objects
+    This function visualizes polyhedral pieces of a 3D twisty puzzle based on provided vpython objects. 
+    Each vpython object represents a point, akin to a colored sticker on the puzzle. 
+    A 3D Voronoi diagram is computed from these points, with each Voronoi cell representing
+        the rough shape of a puzzle piece.
+    These Voronoi cells are then intersected with a provided 'clip_poly' polyhedron to generate
+        the final shapes of the puzzle pieces.
 
     inputs:
     -------
@@ -66,7 +71,17 @@ def draw_3d_pieces(vpy_objects, clip_poly, show_edges=True, edge_color=vpy.vec(0
 
 def draw_voronoi_3d(vpy_objects):
     """
-    points_3d - (iter) - any iterable of numpy.ndarrays
+    Draws the Voronoi diagram of the given 3D points using VPython.
+
+    inputs:
+    -------
+        vpy_objects (list): A list of VPython objects representing the 3D points.
+
+    returns:
+    --------
+        (tuple): A tuple containing two lists:
+            The first list contains the VPython objects representing the Voronoi vertices, and
+            the second list contains the VPython objects representing the Voronoi polyhedra.
     """
     vpy_points = [obj.pos for obj in vpy_objects]
     # calculate points far away from all given objects

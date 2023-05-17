@@ -196,7 +196,6 @@ class Polyhedron():
             )
 
 
-
     def draw_faces(self):
         """
         create triangles for every given face
@@ -444,15 +443,15 @@ class Polyhedron():
         return info
 
 
-    def rotate(self, **kwargs):
-        """
-        implement the rotation method that all vpython objects have
-        """
-        if not "origin" in kwargs:
-            kwargs["origin"] = self.pos
-        for obj in self._objects:
-            if not isinstance(obj, vpy.triangle):
-                obj.rotate(**kwargs)
+    # def rotate(self, **kwargs):
+    #     """
+    #     implement the rotation method that all vpython objects have
+    #     """
+    #     if not "origin" in kwargs:
+    #         kwargs["origin"] = self.pos
+    #     for obj in self._objects:
+    #         if not isinstance(obj, vpy.triangle):
+    #             obj.rotate(**kwargs)
 
 
     def toggle_visible(self, visible=None):
