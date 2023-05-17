@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 # from sympy.combinatorics import Permutation
 # from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
+from sympy import factorint
 
 from .smart_scramble import smart_scramble
 
@@ -432,6 +433,8 @@ but was of type '{type(shape_str)}'")
         else:
             self.state_space_size = state_space_size
         print(f"The loaded puzzle has {approx_int(self.state_space_size)} possible states and {len(self.moves)} availiable moves.")
+        print(f"Exact number of states: {self.state_space_size}")
+        print(f"prime factors: {factorint(self.state_space_size)}")
         # calculate the number of pieces in the puzzle
         if len(self.moves) > 0:
             self.pieces = detect_pieces(self.moves, len(self.SOLVED_STATE))

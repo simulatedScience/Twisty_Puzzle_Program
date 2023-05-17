@@ -20,10 +20,27 @@ def make_move(points, cycles, POINT_POS, PUZZLE_COM, sleep_time=5e-3, anim_steps
     """
     move_points = []
     rot_info_list = []
+    avg_rotation_axis = vpy.vec(0, 0, 0)
     for cycle in cycles:
         cycle_points, rot_info = calc_rotate_cycle(points, cycle, POINT_POS, PUZZLE_COM=PUZZLE_COM)
         move_points += cycle_points
         rot_info_list += rot_info
+        if len(cycle) > 2:
+            avg_rotation_axis += rot_info[0][1]
+    # flip rotation axis of 2-cycles if necessary
+    rot_info_index = 0
+    for cycle in cycles:
+        if len(cycle) > 2:
+            rot_info_index += len(cycle)
+            continue
+        for _ in range(len(cycle)):
+            rot_info = rot_info_list[rot_info_index]
+            if vpy.dot(avg_rotation_axis, rot_info[1]) < 0:
+                rot_info_list[rot_info_index] = (
+                    rot_info[0], -rot_info[1], rot_info[2]
+                )
+            rot_info_index += 1
+                
     
     apply_rotation(move_points, rot_info_list, sleep_time=sleep_time, anim_steps=anim_steps)
 
