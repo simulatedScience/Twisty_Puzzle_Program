@@ -39,7 +39,7 @@ from .ai_modules.ai_data_preparation import state_for_ai
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.v_puzzle_class import Puzzle_V_AI
 # from .ai_modules.nn_puzzle_class import Puzzle_Network
-from .ai_modules.nn_v_her_puzzle_class import Puzzle_NN_V_HER_AI
+# from .ai_modules.nn_v_her_puzzle_class import Puzzle_NN_V_HER_AI
 
 
 
@@ -696,7 +696,7 @@ but was of type '{type(shape_str)}'")
         # #load q-table and init important ai variables
         # if not hasattr(self, "ai_q_class"):
         #     self.train_q_learning(num_episodes=0)
-
+        raise NotImplementedError("NNs are currently disabled.")
         if not hasattr(self, "ai_nn_class"):
             ai_state, _ = state_for_ai(self.SOLVED_STATE)
 

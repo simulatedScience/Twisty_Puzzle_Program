@@ -38,7 +38,7 @@ Most puzzles don't require the second rule but some geared puzzles do.
 
 This is a computationally expensive but necessary rule. It is possible that seperable pieces can only be seperated with a sequence of moves, not with a single one.
 
-This sequence can definitely be as long as the sum of all orders of all moves.
+This sequence can definitely be as long as the sum of the orders of all moves.
 
 -----
 

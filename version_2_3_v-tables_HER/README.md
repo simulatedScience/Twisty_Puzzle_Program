@@ -6,9 +6,12 @@ work began 28.07.2021
 -----
 
 ## Dependecies
+Python 3.9
 non-standard library modules:
 - vpython (3d-visualisation)
-- colored (colored terminal outputs)
+  - autobahn==22.3.2
+  - txaio==22.2.1
+- colored==1.4.4 (colored terminal outputs)
 - lxml (read/write xml files)
 - sympy ()
 - scipy (combinatorics)

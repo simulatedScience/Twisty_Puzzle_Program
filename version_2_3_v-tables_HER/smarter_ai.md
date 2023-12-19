@@ -2,19 +2,21 @@
 
 ## current AI
 Currently the AI gets the state of the puzzle as an input and outputs a single move, that was previously defined by the user.
-To learn the AI tries to solve different scrambles fo the puzzle and assigns values to valid state-move pairs via Q-Learning.
+To learn, the AI tries to solve different scrambles of the puzzle and assigns values to valid state-move pairs via Q-Learning. Currently, these Q-values are stored in a Q-table.
 
 This usually leads to very short solutions but there knowledge of how to solve one state doesn't generalize well to other states.
 
 ## How humans solve a twisty puzzle
-Humans solve twisty puzzles in a very different way: We develop algorithms (= sequences of moves) that do certain permutations on a small number of pieces, usually without affecting a many other pieces.
+Humans solve twisty puzzles in a very different way: We develop algorithms (= sequences of moves) that do certain permutations on a small number of pieces, usually without affecting many other pieces.
 
-The development of algorithms is quite difficult and it is very difficult to quantify "small number of pieces" as that can vary drastically depending on the puzzle.
+The development of algorithms is quite difficult and it is very difficult to quantify "small number of pieces" as that can vary drastically depending on the puzzle. (e.g. gear cubes)
 
 But once a sufficient set of algorithms is known, it is quite easy to solve the puzzle from any state. There are three common approaches:
 1. solve the puzzle layer by layer. This only works for cuboid shaped puzzles though.
 2. solving the puzzle one color at a time.
 3. solving the puzzle one piece type at a time. (i.e. first corners, then edges)
+
+Once humans know one algorithm, we can easily exploit symmetries to use it to permute many similar pieces. This generalization is also very difficult for current AIs.
 
 # A better AI
 
@@ -60,18 +62,25 @@ But this automatic algorithm creation is dificult:
 
 We assume every twisty puzzle has a finite state space size.
 
-If that is the case, every sequence of moves can be repeated and the initial state is always reached again. So once we have chosen a sequence of moves we can repeat it until we get an algorithm that satisfies some conditions we will have to come up with.
+If that is the case, every sequence of moves has a finite order, i.e. repeating it often enough will always lead to the initial state again. So once we have chosen a sequence of moves we can repeat it until we get an algorithm that satisfies some conditions we will have to come up with.
 Therefor we can choose any sequence of moves. We can even try an exhaustive search starting with all algorithms consisting out of two moves, then search all algorithms with three moves and so on.
 
+If the move sequence order $n$ is not prime, but has a factor $q$, we can repeat the move sequence $q$ or $n/q$ times to get a new algorithm of order $n/q$ or $q$ respectively. These may affect fewer pieces than the original algorithm.
 
 ## 2. Requirements for an algorithm
 
 We want algorithms to be ...
-1. ... not too short or too long. Usually algorithms should include 4 to 50 moves. The shorter the better.
+1. ... not too short or too long. Usually algorithms should include 4 to 50 base moves. The shorter the better.
 2. ... changing few pieces. Ideally an algorithm only changes 2 to 4 pieces.
 3. ... of low order. We want them to both include a small number of turns and have a low order. Usual orders are 2, 3, 4 and 6, as these often represent simple cycles of just a few pieces.
 
-The exact numbers will need to be tested to see which yield the best results.
+The exact numbers will need to be tested to see which yield the best results. This depends on the puzzle.
+
+### 2. evaluate algorithms with RLHF
+The requirements for algorithms in 2. are quite subjective and difficult to quantify and generalize. Solution idea:
+1. write an approximate evaluation function manually
+2. train a NN to approximate the evaluation function
+3. Use RLHF to fine-tune the NN evaluation function (this likely requires hundreds or thousands of tuning steps)
 
 
 ## 3. When to stop searching for algorithms
@@ -83,6 +92,8 @@ Since algorithms are also just permutations, we can do the same for algorithms. 
 However for large puzzles the computation of this group may be too timeconsuming itself. As of now I don't understand how these groups are calculated well enough to know the limitations of this method.
 
 There is also the problem that very often it is better to prepare the puzzle for an algorithm or to do single "trivial" moves. But by including the standard moves the criterium doesn't work anymore as it is always fulfilled.
+
+Solution: find algorithms that can solve the puzzle without the base moves, but allow the actor to also use base moves.
 
 
 ## 4. How to use the algorithms
@@ -104,3 +115,13 @@ Here it could be helpful to save relations between $A$ and $B$, or in more compl
 As discussed before we would optimally solve the puzzle through a combination of single preparation moves and algorithms.
 
 Assume we want to apply an algorithm $A$ to the puzzle. To do that we need a certain sequence of preparation moves $M$. What we then actually do to the puzzle would be: $M \circ A \circ M^{-1}$. That way we still get the result from algorithm A but don't make any other changes by reversing the setup moves $M$.
+
+
+## Problems:
+We have two (ML) systems:
+1. An actor that solves the puzzle.
+2. An algorithm designer that finds algorithms for the actor.
+
+Adding new algorithms to a NN-based actor is difficult. We would need to retrain the NN every time we add a new algorithm, or find a way to add new neurons to the NN without destroying the old knowledge.  
+To give the actor a chance at efficient adaptation to new available algorithms, it should also get new inputs, not just new outputs. I do not yet know of any sensible method to communicate what an algorithm does to the neural network though.
+Solutions may require a major redesign of the NNs architecture and inputs.

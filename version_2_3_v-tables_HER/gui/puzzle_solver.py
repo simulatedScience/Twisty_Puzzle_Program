@@ -9,7 +9,7 @@ import numpy as np
 from .ai_modules.twisty_puzzle_model import perform_action
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.v_puzzle_class import Puzzle_V_AI
-from .ai_modules.nn_puzzle_class import Puzzle_Network
+# from .ai_modules.nn_puzzle_class import Puzzle_Network
 
 def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=60, WEIGHT=0.1):
     """
