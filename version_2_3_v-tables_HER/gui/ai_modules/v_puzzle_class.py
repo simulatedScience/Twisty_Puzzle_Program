@@ -1,3 +1,4 @@
+from typing import List, Tuple, Dict
 import os
 import time
 import random
@@ -285,18 +286,20 @@ class Puzzle_V_AI():
 
 
     def update_v_table(self,
-                       state_history,
-                       n_moves=0,
-                       max_moves=500):
+                       state_history: List[List[int]],
+                       n_moves: int = 0,
+                       max_moves: int = 500) -> None:
         """
         update the last state in the V-table
-        returns:
-            None
+
+        inputs:
+        -------
+            state_history - (list) of (tuples) - the state history of the last episode
+            n_moves - (int) - current number of moves performed
+            max_moves - (int) - maximum allowed number of moves before timeout
         """
         updated_states = set()
         next_reward = 0
-        # print("init reward:", self.get_reward(next_state, n_moves, max_moves=max_moves))
-        # print("init reward:", self.puzzle_solved(next_state, n_moves, max_moves=max_moves))
         for state in reversed(state_history):
             if state in updated_states: # only update states according to the last visit.
                 continue
@@ -307,65 +310,34 @@ class Puzzle_V_AI():
                 self.v_table[state] = 0
             # update V-value
             step_reward = self.get_reward(state_list, n_moves, max_moves)
-            # change = self.learning_rate * \
-            #     (step_reward + self.discount_factor * next_reward - old_reward)
-            # print("dv =", change)
-            # self.v_table[state] += change
             self.v_table[state] += self.learning_rate * \
                 (step_reward + self.discount_factor * next_reward - self.v_table[state])
             next_reward = self.v_table[state]
             n_moves -= 1
-            # for action in self.ACTIONS_DICT.values():
-            #     next_state = deepcopy(state)
-            #     perform_action(next_state, action)
-            #     if next_state in self.v_table:
-            #         next_rewards.append(self.v_table[next_state])
-            #     else:
-            #         # next_rewards.append(0)
-            #         next_rewards.append(sigmoid(-(state-end_pos).mag()))
-        ### old q-update, slighly tweaked but still wrong ###
-        # prev_state = state_history[-2] # S = state
-        # prev_action = action_history[-2] # A = action
-        # state = state_history[-1] # S' = next state after action A
-
-        # reward = self.get_reward(list(state), n_moves, max_moves=max_moves) # R = Reward
-        # next_rewards = list() # V(S') for all actions a'
-        # for action in self.ACTIONS_DICT:
-        #     try:
-        #         next_rewards.append(self.v_table[state])
-        #     except KeyError:
-        #         # initialize V-values
-        #         self.v_table[state] = 0
-        #         next_rewards.append(0)
-
-        # if not action in self.v_table.keys():
-        #     self.v_table[prev_state] = 0
-        # # actually update the V-value of the considered move
-        # # V(S) += alpha*(R + gamma * max(S') - V(S))
-        # self.v_table[prev_state] += self.learning_rate*(reward + self.discount_factor * max(next_rewards, default=0) - self.v_table[prev_state])
-        # # self.N_table[(prev_state, prev_action)] += 1
-
 
     def get_reward(self,
-                state,
-                n_moves,
-                max_moves=500):
+                state: List[int],
+                n_moves: int,
+                max_moves: int = 500) -> float:
         """
         return the reward for the given state and possible actions
+
         inputs:
         -------
-            state - (tuple) or (list) - the state as a tuple or list
+            state - (list[int]) - the state as a tuple or list
             n_moves - (int) - current number of moves performed
             max_moves - (int) - maximum allowed number of moves before timeout
+
+        returns:
+        --------
+            (float) - reward for the given state
         """
         puzzle_state = self.puzzle_solved(state,
                                     n_moves,
                                     max_moves=max_moves)
-        if puzzle_state == "solved": #draw
-            # print("solved reward")
+        if puzzle_state == "solved":
             reward = self.reward_dict["solved"]
         elif puzzle_state == "timeout":
-            # print("timeout")
             reward = self.reward_dict["timeout"]
         else:
             reward = self.reward_dict["move"]
@@ -373,11 +345,17 @@ class Puzzle_V_AI():
 
 
     def puzzle_solved(self,
-                      state,
-                      n_moves,
-                      max_moves=500):
+                      state: List[int],
+                      n_moves: int,
+                      max_moves: int = 500) -> str:
         """
         determine the current puzzle state:
+        inputs:
+        -------
+            state - (tuple) or (list) - the state as a tuple or list
+            n_moves - (int) - current number of moves performed
+            max_moves - (int) - maximum allowed number of moves before timeout
+
         returns:
         --------
             (str) - 'solved' if the puzzle is solved according to SOLVED_STATE
@@ -389,7 +367,7 @@ class Puzzle_V_AI():
             return "timeout"
 
 
-    def choose_v_action(self, state, exploration_rate=0):
+    def choose_v_action(self, state: List[int], exploration_rate: float = 0) -> str:
         """
         choose an action based on the possible actions, the current V-table and the current exploration rate
 
@@ -399,6 +377,10 @@ class Puzzle_V_AI():
         -------
             state - (tuple) - the state as a tuple
             exploration_rate - (float) in [0,1] - probability of choosing exploration rather than exploitation
+
+        returns:
+        --------
+            (str) - the name of the chosen action
         """
         if random.random() < exploration_rate:
             # explore environment through random move
@@ -428,14 +410,6 @@ class Puzzle_V_AI():
                     max_value = 0
                     best_actions[0] = action_key
                     best_action_len = 1
-                # action_values.append(0) # initialize all values as 0
-        # choose a random action with maximum value
-        # max_value = np.amax(action_values)
-        # best_actions = list()
-        # for action_key, value in zip(self.ACTIONS_DICT.keys(), action_values):
-        #     if value == max_value:
-        #         best_actions.append(action_key)
-        # return random action with maximum expected reward
         return random.choice(best_actions[:best_action_len])
 
 

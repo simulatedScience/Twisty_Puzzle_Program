@@ -30,7 +30,7 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
     """
     end_time = time.time() + max_time
 
-    open_states = {():(0,starting_state)} # init starting state with value 0, no actions taken so far
+    open_states = {():(0, starting_state)} # init starting state with value 0, no actions taken so far
     closed_states = dict()
 
     def _get_key(key):

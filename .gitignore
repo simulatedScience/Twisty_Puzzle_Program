@@ -1,11 +1,18 @@
+# ignore cache files
 *.pyc
 __pycache__
+.venv
+*ipynb_checkpoints
+
+# ignore rl-model files
 Q_table.txt
 pickle_*_table*
 neural_network*
 *param_hist_*
 saved_model.pb
 keras_metadata.pb
+# ignore test files
 tests/state compression tests/*
 !tests/state compression tests/*.py
+# ignore videos (demonstrations)
 *.mp4

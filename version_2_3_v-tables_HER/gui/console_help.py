@@ -73,8 +73,8 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "train_v": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "reuse_V-table"],
                     "Train the V-table for the puzzle with the given parameters"),
         "move_v": ([], "Make a single move based on current V-table"),
-        "solve_v": (["max_time"], "Solve the puzzle based on the current V-table and an A* algorithm. " +
-                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s"),
+        "solve_v": (["max_time", "weight"], "Solve the puzzle based on the current V-table using weighted A* search. " +
+                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
         "train_nn": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "k_for_HER", "keep_nn"],
                      "Train a neural network to solve the puzzle. Use HER to enhance training  " +
                      "(Hindsight Experience Replay) and use the given parameters."),
