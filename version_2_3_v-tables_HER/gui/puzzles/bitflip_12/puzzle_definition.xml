@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="bitflip_12" state_space_size="4096">
+  <points>
+    <point size="7.0">
+      <coords x="-5.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-4.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-3.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-2.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-1.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-0.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="0.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="1.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="2.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="3.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="4.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="5.5" y="3.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="7.0">
+      <coords x="-5.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="-4.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="-3.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="-2.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="-1.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="-0.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="0.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="1.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="2.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="3.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="4.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="7.0">
+      <coords x="5.5" y="-3.0" z="0.0"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+  </points>
+  <moves>
+    <move name="1">
+      <cycle>12, 0</cycle>
+    </move>
+    <move name="2">
+      <cycle>13, 1</cycle>
+    </move>
+    <move name="3">
+      <cycle>14, 2</cycle>
+    </move>
+    <move name="4">
+      <cycle>3, 15</cycle>
+    </move>
+    <move name="5">
+      <cycle>16, 4</cycle>
+    </move>
+    <move name="6">
+      <cycle>17, 5</cycle>
+    </move>
+    <move name="7">
+      <cycle>18, 6</cycle>
+    </move>
+    <move name="8">
+      <cycle>19, 7</cycle>
+    </move>
+    <move name="9">
+      <cycle>8, 20</cycle>
+    </move>
+    <move name="10">
+      <cycle>21, 9</cycle>
+    </move>
+    <move name="11">
+      <cycle>22, 10</cycle>
+    </move>
+    <move name="12">
+      <cycle>23, 11</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	

@@ -1,0 +1,244 @@
+<puzzledefinition>
+    <points>
+        <point size="7.0">
+            <coords x="0.0" y="-2.5" z="-2.5" />
+            <color r="0" g="1" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-1.5" z="-2.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-0.5" z="-2.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="0.5" z="-2.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="1.5" z="-2.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-2.5" z="-1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-1.5" z="-1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-0.5" z="-1.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="0.5" z="-1.5" />
+            <color r="1" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="1.5" z="-1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-2.5" z="-0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-1.5" z="-0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-0.5" z="-0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="0.5" z="-0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="1.5" z="-0.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-2.5" z="0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-1.5" z="0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-0.5" z="0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="0.5" z="0.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="1.5" z="0.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-2.5" z="1.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-1.5" z="1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="-0.5" z="1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="0.5" z="1.5" />
+            <color r="1" g="1" b="1" />
+        </point>
+        <point size="7.0">
+            <coords x="0.0" y="1.5" z="1.5" />
+            <color r="0" g="0" b="0" />
+        </point>
+    </points>
+    <moves>
+        <move name="v0_0">
+            <cycle>0, 5</cycle>
+        </move>
+        <move name="h0_0">
+            <cycle>0, 1</cycle>
+        </move>
+        <move name="v0_1">
+            <cycle>1, 6</cycle>
+        </move>
+        <move name="h0_1">
+            <cycle>1, 0</cycle>
+        </move>
+        <move name="v1_0">
+            <cycle>5, 0</cycle>
+        </move>
+        <move name="v1_0">
+            <cycle>5, 10</cycle>
+        </move>
+        <move name="h1_0">
+            <cycle>5, 6</cycle>
+        </move>
+        <move name="v1_1">
+            <cycle>6, 1</cycle>
+        </move>
+        <move name="v1_1">
+            <cycle>6, 11</cycle>
+        </move>
+        <move name="h1_1">
+            <cycle>6, 5</cycle>
+        </move>
+        <move name="v1_3">
+            <cycle>8, 13</cycle>
+        </move>
+        <move name="h1_3">
+            <cycle>8, 9</cycle>
+        </move>
+        <move name="h1_4">
+            <cycle>9, 8</cycle>
+        </move>
+        <move name="v2_0">
+            <cycle>10, 5</cycle>
+        </move>
+        <move name="v2_0">
+            <cycle>10, 15</cycle>
+        </move>
+        <move name="h2_0">
+            <cycle>10, 11</cycle>
+        </move>
+        <move name="v2_1">
+            <cycle>11, 6</cycle>
+        </move>
+        <move name="v2_1">
+            <cycle>11, 16</cycle>
+        </move>
+        <move name="h2_1">
+            <cycle>11, 10</cycle>
+        </move>
+        <move name="h2_1">
+            <cycle>11, 12</cycle>
+        </move>
+        <move name="v2_2">
+            <cycle>12, 17</cycle>
+        </move>
+        <move name="h2_2">
+            <cycle>12, 11</cycle>
+        </move>
+        <move name="h2_2">
+            <cycle>12, 13</cycle>
+        </move>
+        <move name="v2_3">
+            <cycle>13, 8</cycle>
+        </move>
+        <move name="v2_3">
+            <cycle>13, 18</cycle>
+        </move>
+        <move name="h2_3">
+            <cycle>13, 12</cycle>
+        </move>
+        <move name="v3_0">
+            <cycle>15, 10</cycle>
+        </move>
+        <move name="h3_0">
+            <cycle>15, 16</cycle>
+        </move>
+        <move name="v3_1">
+            <cycle>16, 11</cycle>
+        </move>
+        <move name="v3_1">
+            <cycle>16, 21</cycle>
+        </move>
+        <move name="h3_1">
+            <cycle>16, 15</cycle>
+        </move>
+        <move name="h3_1">
+            <cycle>16, 17</cycle>
+        </move>
+        <move name="v3_2">
+            <cycle>17, 12</cycle>
+        </move>
+        <move name="v3_2">
+            <cycle>17, 22</cycle>
+        </move>
+        <move name="h3_2">
+            <cycle>17, 16</cycle>
+        </move>
+        <move name="h3_2">
+            <cycle>17, 18</cycle>
+        </move>
+        <move name="v3_3">
+            <cycle>18, 13</cycle>
+        </move>
+        <move name="v3_3">
+            <cycle>18, 23</cycle>
+        </move>
+        <move name="h3_3">
+            <cycle>18, 17</cycle>
+        </move>
+        <move name="v4_1">
+            <cycle>21, 16</cycle>
+        </move>
+        <move name="h4_1">
+            <cycle>21, 22</cycle>
+        </move>
+        <move name="v4_2">
+            <cycle>22, 17</cycle>
+        </move>
+        <move name="h4_2">
+            <cycle>22, 21</cycle>
+        </move>
+        <move name="h4_2">
+            <cycle>22, 23</cycle>
+        </move>
+        <move name="v4_3">
+            <cycle>23, 18</cycle>
+        </move>
+        <move name="h4_3">
+            <cycle>23, 22</cycle>
+        </move>
+    </moves>
+</puzzledefinition>

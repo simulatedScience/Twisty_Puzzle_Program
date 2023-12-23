@@ -1,4 +1,6 @@
 import random
+import time
+
 from copy import deepcopy
 from numpy import lcm
 from .ai_modules.twisty_puzzle_model import perform_action
@@ -25,7 +27,7 @@ def get_action_orders(ACTIONS_DICT) -> dict[str, int]:
     return {action_name:get_action_order(action) for action_name, action in ACTIONS_DICT.items()}
 
 
-def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders) -> list[str]:
+def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders, max_time: float = 60) -> list[str]:
     """
     scrambles the puzzle such that the result state is approximately [n_moves] away from the solved state
 
@@ -44,7 +46,11 @@ def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders) -> list[str]:
     scramble_hist = [] #list of moves
     state_hist = [tuple(SOLVED_STATE)]
     state = deepcopy(SOLVED_STATE)
+    start_time = time.time()
     while len(scramble_hist) < n_moves:
+        if time.time() - start_time > max_time:
+            print("scramble generation timed out. Returning current scramble.")
+            break
         action = random.choice(action_keys)
         perform_action(state, ACTIONS_DICT[action])
         state_tuple = tuple(state)
