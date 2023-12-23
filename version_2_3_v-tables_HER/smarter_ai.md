@@ -49,13 +49,23 @@ The current approach requires huge amounts of computation power, memory and time
 ## Idea of how to improve the AI
 Humans have been able to build and solve 17x17x17 cubes, whose state space size is so large, the approach described before would never be able to solve it. So we need to make the AI smarter. We will do this once again by mimicing humans.
 
-We want the AI to develop its own algorithms and then apply them to solve the puzzle more efficiently.
+### AI Algorithm development
+We want the AI to develop its own algorithms (move sequences) and then apply them to solve the puzzle more efficiently.
 
 But this automatic algorithm creation is dificult:
 1. What moves do we choose for an algorithm?
 2. How can we tell if an algorithm is worth saving?
 3. How can we tell if the found algorithms are sufficient to solve the puzzle completely?
 4. How can we use the algorithms efficiently without running into the same problems the previous version had?
+
+### Additional improvements
+- Instead of online curriculum learning, learn by observing reverse scrambles as shown to be effective in the [Efficientcube paper](https://openreview.net/pdf?id=bnBeNFB27b).
+  - improve this technique through scramble shortening  
+    measure the effect of scramble shortening to show the importance of quality over quantity of training data
+- Improbe Search used to solve the puzzle
+  - Parallelize search
+  - Use better search algorithms (test Beam search instead of A*)
+- Empirically test different reward functions and NN architectures on a range of puzzles 
 
 
 ## 1. Generating algorithms

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="3_rings_8">
+  <points>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="1.0" g="0.0" b="0.2"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="5">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+    <point size="4">
+      <coords x="nan" y="nan" z="nan"/>
+      <color r="0.0" g="0.6" b="0.8"/>
+    </point>
+  </points>
+  <moves/>
+</puzzledefinition>
+	

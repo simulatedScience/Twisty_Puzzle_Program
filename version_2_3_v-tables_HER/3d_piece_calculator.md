@@ -1,9 +1,9 @@
 # calculating 3D puzzle pieces
 
-Up until now all twisty puzzles were only represented via a few points in 3D space. But there is a way to give volume to those puzzles, make them proper 3D shapes like they are in real life. THis Document explain how this is done in a few steps:
+Up until now all twisty puzzles were only represented via a few points in 3D space. But there is a way to give volume to those puzzles, make them proper 3D shapes like they are in real life. This Document explains how this is done in a few steps:
 
 #### 1. calculate a 3D voronoi diagram around the puzzle points
-#### 2. snap the voronoi diagram to a given shape (_cube, sphere, other platonic solids, ..._)
+#### 2. clamp the voronoi diagram to a given shape (_cube, sphere, other platonic solids, ..._)
 #### 3. create polyhedra for each cell in the voronoi diagram
 #### 4. color those polyhedra the same as the puzzle point in that cell
 _____
@@ -13,9 +13,9 @@ The standard library python module `scipy.spatial` provides a class `Voronoi` (f
 - `vor.vertices` are the intersection points where the boundries of three or more voronoi cells meet.
 - `vor.ridge_vertices` is a list of lists of indices of `vor.vertices`. Each sub-list contains the indices of the vertices that form a cell boundry. 
 
-    In 2D the ridges are lines and therefor each sublist contains exactly two vertex indices: start and end of these lines.
+    In 2D the ridges are lines, so each sublist contains exactly two vertex indices: start and end of these lines.
 
-    In 3D the ridges are faces or more precisely: polygons. Therefor each sublist contains the vertex indices for each corner of the polygon.
+    In 3D the ridges are faces or more precisely: polygons. So each sublist contains the vertex indices for each corner of the polygon (ordered?).
 - `vor.regions` is another list of lists of indices of `vor.vertices`. But this time each sublist represents one voronoi cell, not just one ridge as in `vor.ridge_vertices`. The goal is to find all faces that belong to each region and create the voronoi cell from those faces as one 3D polyhedron.
 
 - There are also the attributes `vor.ridge_points`, `vor.point_region` and `vor.furthest_site` but they are not relevant for this application.
@@ -24,13 +24,15 @@ The standard library python module `scipy.spatial` provides a class `Voronoi` (f
 
 ## 2. snap the voronoi diagram to a given shape
 ### **Approximation:**
-However we can achive an approximation of cube snapping by doing the following:
+By default, the outer voronoi cells go on to infinity. We want a finite shape, so we need to cut off the voronoi diagram at some point.
+
+However we can achive a simple approximation of cube by doing the following:
 
 1. add a few points very far away in all cardinal directions. (i.e. (-100, 0), (100, 0), (0, -100), (0, 100))
 2. calculate the voronoi diagram including those points but ignore cells on the outside (list indices include `-1`).
 
 ### Why does this work?
-if the added points are sufficiently far away the resulting point setup can be approximated as one point in the center and the additional points around that. This setup results in a square (2D), cube(3D), hypercube(4D) and so on.
+if the added points are sufficiently far away the resulting point setup can be approximated as one point in the center and the additional, far away points around that. This setup results in a square (2D), cube(3D), hypercube(4D) and so on.
 
 ### Disadvantages
 This is only an approximation though and comes with a few disadvantages:
@@ -39,13 +41,13 @@ This is only an approximation though and comes with a few disadvantages:
 - some features of the puzzle can get lost. This is the same effect as in real life puzzle where cutting down pieces of a puzzle can reveal previously hidden pieces. This is especially noticable with some pieces being unproportionally small. (i.e. the skewb center pieces are tiny compared to the corners when using this method.)
 
 ### **Actual solution:**
-We only need a fnite size of the voronoi diagram to represent the puzzles. To do that and still capture the different possible shapes of puzzles we will clip the voronoi diagram to a polyhedron.
+We only need a finite size of the voronoi diagram to represent the puzzles. To do that and still capture the different possible shapes of puzzles we will clip the voronoi diagram to a polyhedron.
 
 This should be an arbitrary convex polyhedron, bigger or smaller than the finite cells of the voronoi diagram.
 
-Similar to the approximation described above I first add six far points to the actual points. That way the final pieces of the puzzle are all already closed voronoi cells, so we don't have to deal with the faces extending to infinity.
+Similar to the approximation described above we first add six far points to the actual points. That way the final pieces of the puzzle are all already closed voronoi cells, so we don't have to deal with the faces extending to infinity.
 
-Then we can clip each voronoi cell (convex polyhedra) to the outer shape, from now on called the clip polyhedron (`clip_poly`). We want to calculate the intersection of each voronoi cell and the clip polyhedron.
+Then we can clip each voronoi cell (convex polyhedra) to the outer shape, from now on called the clip polyhedron (`clip_poly`). We want to calculate the intersection of each voronoi cell and the clip polyhedron. (We calculate the intersection of 3D polyhedra/ meshes.)
 
 To do that, I implemented a 3D variant of the [Sutherland-Hodgman-Algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm) vor polygon clipping. Looping over each face (`clip_plane`) of the clip polyhedron I calculate for each point in the voronoi cell whether or not it is above or below the clip plane. Then we get three possible cases:
 
@@ -65,9 +67,7 @@ This process for intersections only works for convex polyhedra. For non-convex p
 -----
 
 ## 3. creating polyhedra
-We use the python module `vpython` because it is very intuitive to use but still very efficient for 3D animation. However `vpython` does not implement polyhedra. Instead it only includes triangles and quadrilaterals to build your own shapes.
-
-So I defined my own polyhedra by doing the following:
+We use the python module `vpython` because it is very intuitive to use but still efficient for 3D animation. However `vpython` does not implement polyhedra but only a few basic shapes like cuboids, spheres and cylinders. It also includes triangles and quadrilaterals to build your own shapes though, so that's what we use here.
 
 ### 3D Polyhedra class `polyhedron`:
 #### **Inputs:**

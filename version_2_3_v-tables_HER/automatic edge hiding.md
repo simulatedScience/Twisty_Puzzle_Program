@@ -8,7 +8,7 @@ So it would be beneficial if only the edges are shown, that:
 2. are part of an edge of the clip shape
 
 ## Detecting in-piece edges
-We have already discussed how we can automatically detect pieces by performing moves until they no longer seperate any pieces.
+In `automatic_piece_detection.md` we have already discussed how we can automatically detect pieces by performing moves until they no longer seperate any pieces.
 
 Let point A and B be two points on the same piece.
 

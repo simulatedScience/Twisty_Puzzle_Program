@@ -4,16 +4,28 @@ from numpy import lcm
 from .ai_modules.twisty_puzzle_model import perform_action
 
 def smart_scramble(SOLVED_STATE, ACTIONS_DICT, n_moves):
-    ACTION_ORDERS = {name:get_action_order(action) for name, action in ACTIONS_DICT.items()}
     scramble_moves = scramble_n(
             SOLVED_STATE,
             ACTIONS_DICT,
             n_moves,
-            ACTION_ORDERS)
+            get_action_orders(ACTIONS_DICT))
     return scramble_moves
 
 
-def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, ACTION_ORDERS):
+def get_action_orders(ACTIONS_DICT) -> dict[str, int]:
+    """
+    inputs:
+    -------
+        ACTIONS_DICT - (dict) - dictionary with all possible action names and cycle representations
+
+    returns:
+    --------
+        (dict[str, int]) - dictionary mapping each action name to its order
+    """
+    return {action_name:get_action_order(action) for action_name, action in ACTIONS_DICT.items()}
+
+
+def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders) -> list[str]:
     """
     scrambles the puzzle such that the result state is approximately [n_moves] away from the solved state
 
@@ -26,7 +38,7 @@ def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, ACTION_ORDERS):
 
     returns:
     --------
-        (list) - state history excluding the solved state
+        (list[str]) - state history excluding the solved state
     """
     action_keys = list(ACTIONS_DICT.keys())
     scramble_hist = [] #list of moves
@@ -47,7 +59,7 @@ def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, ACTION_ORDERS):
             state_hist.append(state_tuple)
         if len(scramble_hist) == n_moves:
             # print("\nprevious:   " , " ".join(scramble_hist))
-            shorten_scramble(scramble_hist, state_hist, ACTION_ORDERS, ACTIONS_DICT)
+            shorten_scramble(scramble_hist, state_hist, action_orders, ACTIONS_DICT)
             # print("shortened:  ", " ".join(scramble_hist))
 
     return scramble_hist

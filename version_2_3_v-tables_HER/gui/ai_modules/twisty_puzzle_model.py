@@ -1,6 +1,9 @@
 import random
 
-def scramble(state, actions, max_moves=30):
+def scramble(
+        state: list[int],
+        actions: dict[str, list[list[int]]],
+        max_moves: int = 30) -> list[str]:
     """
     scramble the puzzle starting at the given state by randomly applying [max_moves] actions
 
@@ -9,13 +12,13 @@ def scramble(state, actions, max_moves=30):
     inputs:
     -------
         state - (list) of ints - list representing the initial state of the puzzle
-        actions - (dict) - a dictionary of all possible actions with unique names as keys
+        actions - (dict[str, list[list[int]]]) - a dictionary of all possible actions with unique names as keys
             - the values must be actions represented as lists of cycles
             - cycles are lists of state indices for permutations
 
     returns:
     --------
-        (list) - scramble described as a list of actions
+        (list[str]) - scramble described as a list of actions
     """
     scramble = []
     for _ in range(max_moves):
@@ -25,7 +28,9 @@ def scramble(state, actions, max_moves=30):
     return scramble
 
 
-def perform_action(state, action):
+def perform_action(
+        state: list[int],
+        action: list[list[int]]) -> list[int]:
     """
     perform the given action on the given state in-place
     for twisty puzzles this means applying the permutations of a move
@@ -35,6 +40,10 @@ def perform_action(state, action):
         state - (list) of (int) - list representing the state
         action - (list) of (list) of (int) - list representing an action, here as a list of cycles
             cycles are lists of list indices of the state list.
+            
+    returns:
+    --------
+        (list[int]) - the new state
     """
     for cycle in action: # loop over all cycles in the move
         j = cycle[0]

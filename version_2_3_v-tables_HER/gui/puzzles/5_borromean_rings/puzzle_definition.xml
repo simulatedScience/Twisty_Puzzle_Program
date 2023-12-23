@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="test_puzzle">
+<puzzledefinition name="5_borromean_rings">
   <points>
     <point size="5">
       <coords x="0.1988249522580409" y="0.06460214309120495" z="0.0"/>

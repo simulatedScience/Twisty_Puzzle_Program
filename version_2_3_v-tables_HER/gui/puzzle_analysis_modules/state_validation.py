@@ -1,8 +1,9 @@
 """
 module implementing a class to check whether or not twisty puzzle states are valid or not
+
+Author: Sebastian Jost
 """
 
-from copy import deepcopy
 from sympy.combinatorics import Permutation
 from sympy.combinatorics.perm_groups import PermutationGroup
 
