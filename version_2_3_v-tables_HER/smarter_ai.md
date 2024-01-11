@@ -62,7 +62,7 @@ But this automatic algorithm creation is dificult:
 - Instead of online curriculum learning, learn by observing reverse scrambles as shown to be effective in the [Efficientcube paper](https://openreview.net/pdf?id=bnBeNFB27b).
   - improve this technique through scramble shortening  
     measure the effect of scramble shortening to show the importance of quality over quantity of training data
-- Improbe Search used to solve the puzzle
+- Improve Search used to solve the puzzle
   - Parallelize search
   - Use better search algorithms (test Beam search instead of A*)
 - Empirically test different reward functions and NN architectures on a range of puzzles 

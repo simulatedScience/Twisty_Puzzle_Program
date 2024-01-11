@@ -21,12 +21,13 @@ A piece is a collection of points representing one physical object. Points of on
 -----
 
 ## How to detect pieces
+Idea: Start by treating the entire puzzle as one piece, then find contradictions that force us to split existing pieces into smaller ones. For that, we use the following rules:
 
 1. ***Two points are not part of the same piece if there exists a move that moves just one of them.***
 
 This first rule alone results in a problem for gear cubes:
 
-The rotating edge pieces sit on top of the inner edge pieces and can therefor never move completely independently. But they can move relative to the other color stickers on the same piece. This issue can be resolved with the second rule:
+The rotating edge pieces sit on top of the inner edge pieces and can therefore never move completely independently. But they can move relative to the other color stickers on the same piece. This issue can be resolved with the second rule:
 
 2. ***Two points are not on the same piece if there exists a cycle in a move, that contains at least two but not all of the points on that piece.***
 
@@ -120,17 +121,19 @@ The above algorithm does not work for all puzzles. One example is the square two
 
 The maximum number of moves required to seperate two points can be calculated though:
 
-Let a puzzle have $N \in \mathbb{N}$ moves. We order these moves such that the first $n$ moves are not an inverse of oneanother ($\implies 1 \leq n \leq N$).
-Let each move $m_i$ have the order $k_i$.
+Let a puzzle have $N \in \mathbb{N}$ moves: $m_1, ..., m_N$. We order these moves such that the first $n$ moves are not an inverse of oneanother ($\implies 1 \leq n \leq N$).
+Let each move $m_i$ have the order $k_i$ ($i\in\{1, ..., N\}$).
 
-Then the maximum number of moves required to seperate two points should be:
+Then the maximum number of moves required to seperate two points should be:  
+___TODO: double check & explain___
 
 $\eta_{\max} = \sum\limits_{i=1}^{n} a_i \quad$ where $\quad a_i = \begin{cases}k_i & \text{if move } i \text{ has no inverse} \\ \lceil k_i / 2 \rceil & \text{if move } i \text{ has an inverse} \end{cases}$
 
-If there are no inverse moves ($\implies n = N$), this simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N} k_i$. If every move has an inverse, it simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N/2} \lceil k_i/2 \rceil$.
+If there are no inverse moves ($\implies n = N$), this simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N} k_i$.  
+If every move has an inverse, it simplifies to $\eta_{\max} = \sum\limits_{i=1}^{N/2} \lceil k_i/2 \rceil$.
 
 ### the variables in programming
-In the implementation we could get the variables as:
+In the implementation we can get the variables using:
 - $m_i =$ `move` 
 - $k_i =$ `lcm([len(cycle) for cycle in move])`
 - $N =$ `len(moves)`
