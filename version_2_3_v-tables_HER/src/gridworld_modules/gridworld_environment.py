@@ -153,9 +153,9 @@ class GridworldEnvironment(RLProblem):
         for i in range(self.size):
             for j in range(self.size):
                 cell_value = self.initial_world[i][j]
-                if (i, j) == tuple(np.array(self.size * self.start_state, dtype=int)):
+                if (i, j) == tuple(np.array((self.size-1) * self.start_state, dtype=int)):
                     cell_value = 2  # Start
-                elif (i, j) == tuple(np.array(self.size * self.goal, dtype=int)):
+                elif (i, j) == tuple(np.array((self.size-1) * self.goal, dtype=int)):
                     cell_value = 3  # Goal
 
                 color = self.get_color(cell_value)
@@ -202,11 +202,18 @@ class GridworldEnvironment(RLProblem):
 
 if __name__ == "__main__":
   import os
-  n = 5
+  random_seed: int = 88
+  # random_seed: int = np.random.randint(0, 1000)
+  # for random_seed in range(100):
+  print(f"random seed: {random_seed}")
+  np.random.seed(random_seed)
+  n = 10
   env = GridworldEnvironment(
     size = n,
     goal_type="random",
+    wall_percentage=0.6,
+    path_eps=0.6,
   )
   print(env)
-  print(env)
-  env.convert_to_twisty_puzzle_xml(f"gui/puzzles/gridworld_{n}x{n}/puzzle_definition.xml")
+  # print(env)
+  env.convert_to_twisty_puzzle_xml(f"src/puzzles/gridworld_{n}x{n}/puzzle_definition.xml")

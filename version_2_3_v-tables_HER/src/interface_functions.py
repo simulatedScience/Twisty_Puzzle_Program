@@ -178,14 +178,14 @@ def interface_delmove(move_name, puzzle, command_color="#ff8800", arg_color="#55
         print(f"{colored('Error:', error_color)} Move {colored(move_name, arg_color)} does not exist.")
 
 
-def interface_sleeptime(sleep_time, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_animtime(animation_time, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     updates the sleep time in the active puzzle
     """
     try:
-        print(puzzle.sleep_time)
-        puzzle.sleep_time = float(sleep_time)
-        print(puzzle.sleep_time)
+        print(puzzle.animation_time)
+        puzzle.animation_time = float(animation_time)
+        print(puzzle.animation_time)
     except ValueError:
         print(f"{colored('Error:', error_color)} Given time is not a float.")
 

@@ -4,7 +4,7 @@ methods to perform and animate rotations on a list of points
 import vpython as vpy
 import time
 
-def make_move(points, cycles, POINT_POS, PUZZLE_COM, sleep_time=5e-3, anim_steps=45):
+def make_move(points, cycles, POINT_POS, PUZZLE_COM, animation_time=0.25, target_fps=60):
     """
     applies a move given as several cycles to the given points
 
@@ -41,7 +41,7 @@ def make_move(points, cycles, POINT_POS, PUZZLE_COM, sleep_time=5e-3, anim_steps
                 )
             rot_info_index += 1
     # apply rotations to points displayed in 3D
-    apply_rotation(move_points, rot_info_list, sleep_time=sleep_time, anim_steps=anim_steps)
+    apply_rotation(move_points, rot_info_list, animation_time=animation_time, target_fps=target_fps)
     # apply permutations to internal list of points
     for cycle in cycles:
         apply_cycle(points, cycle)
@@ -112,7 +112,7 @@ def calc_rotate_pair(point_A, point_B, com, PUZZLE_COM=vpy.vec(0, 0, 0)):
     return angle, axis, com
 
 
-def apply_rotation(cycle_points, rot_info_list, sleep_time=5e-3, anim_steps=45):
+def apply_rotation(cycle_points, rot_info_list, animation_time=0.25, target_fps=60):
     """
     animate the rotation of all points in 'cycle_points' as specified in 'rot_info_list'.
         the animation contains 'anim_steps' frames
@@ -122,7 +122,8 @@ def apply_rotation(cycle_points, rot_info_list, sleep_time=5e-3, anim_steps=45):
         cycle_points - (list) - list of vpython objects that shall be rotated
         rot_info_list - (list) - list with rotation information triples:
             ('angle', 'axis', 'origin') of rotation for each object
-        anim_steps - (int) - number of frames for the animation
+        animation_time - (float) - time in seconds for the animation
+        target_fps - (int) - target frames per second for the animation
 
     returns:
     --------
@@ -133,12 +134,18 @@ def apply_rotation(cycle_points, rot_info_list, sleep_time=5e-3, anim_steps=45):
         changes the position of every object in cycle_points by rotation
             as specified in 'rot_info_list'
     """
-    for _ in range(anim_steps):
+    # calculate steps for 60 fps given animation time
+    anim_steps: int = int(target_fps*animation_time)
+    anim_steps: int = max(1, anim_steps)
+    start_time = time.time()
+    for step in range(anim_steps):
+        # rotate each object individually
         for obj, rot_info in zip(cycle_points, rot_info_list):
             angle, axis, com = rot_info
             obj.rotate(angle=angle/anim_steps, axis=axis, origin=com)
             # obj.rotate(angle=angle/anim_steps, axis=-axis)
-        time.sleep(sleep_time)
+        sleep_until = start_time + (step+1)*animation_time/anim_steps
+        time.sleep(max(0, sleep_until - time.time()))
 
 
 def apply_cycle(points, cycle):

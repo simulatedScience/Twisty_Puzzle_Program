@@ -52,7 +52,7 @@ class Twisty_Puzzle():
         self.POINT_INFO_DICTS = []
         self.COM = None # vpython vector - center of mass of 3d points
         self.vpy_objects = [] # list of vpython objects - current state of the puzzle in animation
-        self.sleep_time = 5e-3
+        self.animation_time = 0.25
         self.canvas = None
         self.moves = dict() # dcitionary containing all moves for the puzzle
         self.movecreator_mode = False
@@ -268,15 +268,15 @@ but was of type '{type(shape_str)}'")
         if ' ' in moves:
             for move in moves.split(' '):
                 self.perform_move(move)
-                # time.sleep(50*self.sleep_time)
+                # time.sleep(self.animation_time)
         else:
             # make_move also permutes the vpy_objects
             make_move(self.vpy_objects,
                       self.moves[moves],
                       self.POINT_POSITIONS,
                       self.COM,
-                      sleep_time=self.sleep_time,
-                      anim_steps=45)
+                      animation_time=self.animation_time,
+                      target_fps=60) # TODO: get monitor refresh rate
 
 
     def newmove(self, movename, arg_color="#0066ff"):

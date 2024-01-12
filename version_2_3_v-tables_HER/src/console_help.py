@@ -58,7 +58,7 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "rename": (["oldname", "newname"], "Rename an existing move"),
         "delmove": (["movename"], "Delete an existing move"),
         "closepuzzle": ([], "Close the currently loaded puzzle. Unsaved changes can get lost."),
-        "sleeptime": (["time"], "Change pause length between animation steps to control animation speed. (default: 5e-3s)"),
+        "animtime": (["time"], "Change the length each move animation takes. (default: 0.25s)"),
         "scramble": (["num_moves"], "Scramble the puzzle by the given number of semi-random moves. " +
                      "The scrambling algorithm tries to prevent redundant moves."),
         "reset": ([], "Reset the puzzle to a solved state. Only works properly in the point-view."), # TODO: fix resetting for 3D pieces mode

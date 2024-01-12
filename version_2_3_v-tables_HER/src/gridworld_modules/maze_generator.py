@@ -49,7 +49,7 @@ def generate_path(start_pos: np.ndarray, goal_pos: np.ndarray, maze: np.ndarray,
   epsilon: float = 0.4):
   """
   generate a random path from start to goal by using an epsilon-greedy policy and manhattan distance to the goal.
-  choode random action with probability `epsilon`, otherwise choose random action that maximizes manhattan reward to goal.
+  choode random action with probability `epsilon/2`, a random action that minimizes manhattan reward to goal with probability `epsilon/2` otherwise choose random action that maximizes manhattan reward to goal.
 
   Args:
       start_pos (np.ndarray): start position
@@ -65,18 +65,23 @@ def generate_path(start_pos: np.ndarray, goal_pos: np.ndarray, maze: np.ndarray,
   # generate path
   while np.any(current_pos != goal_pos):
     # choose random action with probability epsilon
-    if np.random.random() < epsilon:
+    r = np.random.random()
+    if r < epsilon/2:
       action = np.random.choice([0, 1, 2, 3])
       path.append(get_new_pos(current_pos, action, maze))
       current_pos = path[-1]
-    # otherwise choose random action that maximizes manhattan reward for goal
+    manhattan_distances = np.zeros(4, dtype=np.int32)
+    new_positions = np.zeros((4, 2), dtype=np.int32)
+    # get manhattan distances for all actions
+    for action in range(4):
+      new_pos = get_new_pos(current_pos, action, maze, ignore_walls=True)
+      new_positions[action, :] = new_pos
+      manhattan_distances[action] = reward_manhattan(new_pos, goal_pos)
+    # choose random action with minimum reward
+    if r < epsilon:
+      action = np.random.choice(np.where(manhattan_distances == manhattan_distances.min())[0])
+    # choose random action that maximizes manhattan reward for goal
     else:
-      manhattan_distances = np.zeros(4, dtype=np.int32)
-      new_positions = np.zeros((4, 2), dtype=np.int32)
-      for action in range(4):
-        new_pos = get_new_pos(current_pos, action, maze, ignore_walls=True)
-        new_positions[action, :] = new_pos
-        manhattan_distances[action] = reward_manhattan(new_pos, goal_pos)
       # choose random action with max reward
       action = np.random.choice(np.where(manhattan_distances == manhattan_distances.max())[0])
       path.append(new_positions[action, :])
@@ -184,9 +189,14 @@ def reward_manhattan(state: np.ndarray, goal: np.ndarray):
   return -np.sum(np.abs(state - goal))
 
 if __name__ == "__main__":
-  maze, start_pos, goal_pos = generate_maze(20, 35, wall_percentage=0.5, epsilon=0.5)
+  random_seed: int = 9
+  # random_seed: int = np.random.randint(0, 1000)
+  print(f"random seed: {random_seed}")
+  np.random.seed(random_seed)
+  # maze, start_pos, goal_pos = generate_maze(20, 35, wall_percentage=0.45, epsilon=0.4)
+  maze, start_pos, goal_pos = generate_maze(9, 16, wall_percentage=0.45, epsilon=0.4)
   maze[start_pos[0], start_pos[1]] = 2
   if maze[goal_pos[0], goal_pos[1]] == 1:
     print("Warning: Goal position is a wall.")
   maze[goal_pos[0], goal_pos[1]] = 3
-  print_maze(maze)
+  # print_maze(maze)

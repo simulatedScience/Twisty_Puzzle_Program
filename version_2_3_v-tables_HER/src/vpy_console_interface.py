@@ -38,7 +38,7 @@ def main_interaction():
         - 'rename' [oldname] [newname] - rename a move
         - 'delmove' [movename]         - delete the given move
         - 'closepuzzle'                - close the current puzzle animation
-        - 'sleeptime' [time]           - change the sleep time to change animation speed (default: 5e-3)
+        - 'animtime' [time]           - change the sleep time to change animation speed (default: 5e-3)
         - 'scramble' [max_moves]       - scramble the puzzle randomly
         - 'editpoints'                 - enter point color editing mode
         - 'endeditpoints'              - exit point color editing mode
@@ -80,7 +80,7 @@ def main_interaction():
                         "rename": interface_rename,
                         "delmove": interface_delmove,
                         "closepuzzle": interface_closepuzzle,
-                        "sleeptime": interface_sleeptime,
+                        "animtime": interface_animtime,
                         "scramble": interface_scramble,
                         "reset": interface_reset,
                         "editpoints": interface_start_point_edit,
@@ -146,7 +146,7 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "printmove",
                           "savepuzzle",
                           "loadpuzzle",
-                          "sleeptime",
+                          "animtime",
                           "scramble",
                           "train_q",
                           "solve_q",
@@ -255,7 +255,7 @@ def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", 
 #     print(f"- {colored('closepuzzle', command_color)}                \
 # - close the current animation window")
 
-#     print(f"- {colored('sleeptime', command_color)} [{colored('time', arg_color)}]           \
+#     print(f"- {colored('animtime', command_color)} [{colored('time', arg_color)}]           \
 # - change the sleep time to change animation speed (default: 5e-3)")
 
 #     print(f"- {colored('reset', command_color)}                      \
