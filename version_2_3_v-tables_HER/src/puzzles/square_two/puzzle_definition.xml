@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="square_two">
+<puzzledefinition name="square_two" state_space_size="1240896803466478878720000">
   <points>
     <point size="4.0">
       <coords x="0.0" y="1.0" z="0.8"/>

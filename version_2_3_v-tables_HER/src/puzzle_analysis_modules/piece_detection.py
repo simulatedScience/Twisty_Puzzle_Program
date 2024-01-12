@@ -76,7 +76,7 @@ def split_pieces(move_sets, cycle_sets, pieces):
 
     outputs:
     --------
-        [pieces] will be changed in-place
+        `pieces` will be changed in-place
     """
     changed_pieces = False
     changed_pieces = split_static(pieces, move_sets, changed_pieces)
@@ -174,19 +174,24 @@ def split_gears(pieces, cycle_sets, changed_pieces=False):
 
 if __name__ == "__main__":
     # define Skewb for testing
-    wbr = [(0, 8, 7), (24, 25, 26), (4, 17, 10), (5, 15, 11), (6, 16, 9)]
-    wbr2 = [(7, 8, 0), (26, 25, 24), (10, 17, 4), (11, 15, 5), (9, 16, 6)]
-    wgo = [(1, 2, 3), (24, 27, 28), (9, 22, 5), (11, 21, 4), (10, 23, 6)]
-    wgo2 = [(3, 2, 1), (28, 27, 24), (5, 22, 9), (4, 21, 11), (6, 23, 10)]
-    ryg = [(13, 12, 14), (26, 29, 27), (16, 23, 11), (17, 21, 9), (15, 22, 10)]
-    ryg2 = [(14, 12, 13), (27, 29, 26), (11, 23, 16), (9, 21, 17), (10, 22, 15)]
-    oyb = [(19, 20, 18), (28, 29, 25), (21, 15, 6), (5, 23, 17), (4, 22, 16)]
-    oyb2 = [(18, 20, 19), (25, 29, 28), (6, 15, 21), (17, 23, 5), (16, 22, 4)]
+    # wbr = [(0, 8, 7), (24, 25, 26), (4, 17, 10), (5, 15, 11), (6, 16, 9)]
+    # wbr2 = [(7, 8, 0), (26, 25, 24), (10, 17, 4), (11, 15, 5), (9, 16, 6)]
+    # wgo = [(1, 2, 3), (24, 27, 28), (9, 22, 5), (11, 21, 4), (10, 23, 6)]
+    # wgo2 = [(3, 2, 1), (28, 27, 24), (5, 22, 9), (4, 21, 11), (6, 23, 10)]
+    # ryg = [(13, 12, 14), (26, 29, 27), (16, 23, 11), (17, 21, 9), (15, 22, 10)]
+    # ryg2 = [(14, 12, 13), (27, 29, 26), (11, 23, 16), (9, 21, 17), (10, 22, 15)]
+    # oyb = [(19, 20, 18), (28, 29, 25), (21, 15, 6), (5, 23, 17), (4, 22, 16)]
+    # oyb2 = [(18, 20, 19), (25, 29, 28), (6, 15, 21), (17, 23, 5), (16, 22, 4)]
 
-    # skewb_moves = [wbr2, wgo, wgo2, ryg, ryg2, oyb, oyb2, wbr]
-    skewb_moves = [wgo, ryg, oyb, wbr]
+    # # skewb_moves = [wbr2, wgo, wgo2, ryg, ryg2, oyb, oyb2, wbr]
+    # skewb_moves = [wgo, ryg, oyb, wbr]
     # print(detect_pieces(skewb_moves, 30))
-    def f():
-        detect_pieces(skewb_moves, 30)
-    from timeit import timeit
-    print(timeit(f, number=100000))
+    # def f():
+    #     detect_pieces(skewb_moves, 30)
+    # from timeit import timeit
+    # print(timeit(f, number=100000))
+    
+    example_move = [[1, 2], [3, 4, 5], [6, 7, 0]]
+    example_puzzle_moves = [example_move]
+    print(detect_pieces(example_puzzle_moves, 8))
+    
