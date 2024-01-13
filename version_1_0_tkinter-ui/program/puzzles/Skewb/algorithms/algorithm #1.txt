@@ -1,3 +1,0 @@
-swap two pairs of (moving) corners
-#########################
-3*(R' L' R L)

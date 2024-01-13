@@ -1,5 +1,0 @@
-rotate three corners to the right
-corners fixed in space are left, right front, right top, right bottom
-the left bottom corner remains unchanged
-#########################
-3*(3*(R' L' R L) L')
