@@ -396,14 +396,10 @@ class Puzzle_Q_AI():
         """
         write the given Q-table into a file using pickle
         """
-        try: # create a "puzzles" folder if it doesn't exist yet
-            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles"))
-        except FileExistsError:
-            pass
-        try: # create a folder for the given puzzle if it doesn't exist yet
-            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name))
-        except FileExistsError:
-            pass
+        # create a folder for the given puzzle if it doesn't exist yet
+        os.makedirs(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name), exist_ok=True)
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
         with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.q_table, file, protocol=4)
 
@@ -416,6 +412,13 @@ class Puzzle_Q_AI():
             with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "rb") as file:
                 self.q_table = pickle.load(file)
         except FileNotFoundError:
+            pass
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "rb") as file:
+                self.q_table = pickle.load(file)
+        except FileNotFoundError:
             with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, "q_table.txt"), "r") as file:
                 self.q_table = eval(file.read())
 
@@ -424,16 +427,12 @@ class Puzzle_Q_AI():
         save information about the training process and settings used in a file using pickle. The filename will be 'q_param_hist_{save time}'.
         """
         puzzlespath = os.path.join(os.path.dirname(__file__), "..", "puzzles")
-        try: # create a "puzzles" folder if it doesn't exist yet
-            os.mkdir(puzzlespath)
-        except FileExistsError:
-            pass
-        try: # create a folder for the given puzzle if it doesn't exist yet
-            os.mkdir(os.path.join(puzzlespath, self.name))
-        except FileExistsError:
-            pass
+        # create a folder for the given puzzle if it doesn't exist yet
+        os.makedirs(os.path.join(puzzlespath, self.name), exist_ok=True)
         if filename is None:
             filename = f'q_param_hist_{time.strftime("%Y%m%d_%H%M%S")}'
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
         with open(os.path.join(puzzlespath, self.name, filename), "wb") as file:
             pickle.dump(training_data, file, protocol=4)
 

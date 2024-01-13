@@ -417,14 +417,10 @@ class Puzzle_V_AI():
         """
         write the given V-table into a file using pickle
         """
-        try: # create a "puzzles" folder if it doesn't exist yet
-            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles"))
-        except FileExistsError:
-            pass
-        try: # create a folder for the given puzzle if it doesn't exist yet
-            os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name))
-        except FileExistsError:
-            pass
+        # create a folder for the given puzzle if it doesn't exist yet
+        os.makedirs(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name), exist_ok=True)
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
         with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.v_table, file, protocol=4)
 
@@ -438,6 +434,14 @@ class Puzzle_V_AI():
             with open(path, "rb") as file:
                 self.v_table = pickle.load(file)
         except FileNotFoundError:
+            pass
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
+        path = os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename)
+        try:
+            with open(path, "rb") as file:
+                self.v_table = pickle.load(file)
+        except FileNotFoundError:
             return f'File "{filename}" not found at {path}'
 
     def export_param_hist(self, training_data, filename=None):
@@ -445,16 +449,12 @@ class Puzzle_V_AI():
         save information about the training process and settings used in a file using pickle. The filename will be 'v_param_hist_{save time}'.
         """
         puzzlespath = os.path.join(os.path.dirname(__file__), "..", "puzzles")
-        try: # create a "puzzles" folder if it doesn't exist yet
-            os.mkdir(puzzlespath)
-        except FileExistsError:
-            pass
-        try: # create a folder for the given puzzle if it doesn't exist yet
-            os.mkdir(os.path.join(puzzlespath, self.name))
-        except FileExistsError:
-            pass
+        # create a folder for the given puzzle if it doesn't exist yet
+        os.makedirs(os.path.join(puzzlespath, self.name), exist_ok=True)
         if filename is None:
             filename = f'v_param_hist_{time.strftime("%Y%m%d_%H%M%S")}'
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
         with open(os.path.join(puzzlespath, self.name, filename), "wb") as file:
             pickle.dump(training_data, file, protocol=4)
 
