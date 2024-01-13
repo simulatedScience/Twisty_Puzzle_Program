@@ -261,7 +261,7 @@ class Puzzle_Q_AI():
             state_history.append(state_tuple)
 
             #choose next action based on an epsilon-greedy strategy with epsilon=exploration_rate
-            action = self.choose_Q_action(state_tuple, exploration_rate=exploration_rate**(n_moves+1))
+            action = self.choose_q_action(state_tuple, exploration_rate=exploration_rate**(n_moves+1))
             action_history.append(action)
 
             if len(state_history) > 1:
@@ -363,7 +363,7 @@ class Puzzle_Q_AI():
             return "timeout"
 
 
-    def choose_Q_action(self, state, exploration_rate=0):
+    def choose_q_action(self, state, exploration_rate=0):
         """
         choose an action based on the possible actions, the current Q-table and the current exploration rate
         inputs:

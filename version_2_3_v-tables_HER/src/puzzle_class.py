@@ -544,7 +544,7 @@ but was of type '{type(shape_str)}'")
         make one move based on the current Q-table of the AI
         """
         ai_state = tuple(self._get_ai_state())
-        ai_move = self.ai_q_class.choose_Q_action(ai_state)
+        ai_move = self.ai_q_class.choose_q_action(ai_state)
         self.perform_move(ai_move)
         print(f"made move: {colored(ai_move, arg_color)}")
         try:
