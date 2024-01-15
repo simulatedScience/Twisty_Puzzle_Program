@@ -12,6 +12,14 @@ Each sticker's color is one-hot encoded.
 
 e.g. a Rubiks 3x3 has 54 stickers (9 stickers/face * 6 faces), so 54*6 = 324 neurons getting 0-1 values for each color.
 
+**Advantages:**
+- very discrete input, easy to learn for NNs
+- easy to implement & understand
+
+**Disadvantages:**
+- very large input size
+- no information about the puzzle's structure
+
 ## 2. piece information
 **Idea:** Use permutations of pieces instead of permutations of stickers:
 

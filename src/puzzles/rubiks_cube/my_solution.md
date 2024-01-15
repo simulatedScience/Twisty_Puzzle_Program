@@ -1,3 +1,4 @@
+# Solution strategy and Algorithms for the 3x3x3 Rubik's Cube
 
 ## Algorithms
 

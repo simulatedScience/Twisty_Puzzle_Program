@@ -108,19 +108,19 @@ Solution: find algorithms that can solve the puzzle without the base moves, but 
 
 ## 4. How to use the algorithms
 
-Saving algorithms directly as a sequence of moves isn't necessarily good. As humans we would consider a move sequence $R T R' T'$ to be the same as $F T F' T'$ (on a standard rubiks cube). Yet if we only save the algorithm as the exact move sequence, those would be two completely different algorithms.
+Saving algorithms directly as a sequence of moves isn't necessarily good. As humans we would consider a move sequence $R T R' T'$ to be the same algorithm as $F T F' T'$ (on a standard rubiks cube), just mirrored to act on different pieces. Yet if we only save the algorithm as the exact move sequence, those would be two completely different algorithms.
 
-An alternative approach would be to save *algorithm patterns*. That way we would store the pattern as $A B A' B'$ and then replace $A$ and $B$ with some other moves.
-
-This raises another problem: we need to prevent a scenario like $L R L' R'$, where the order of the algorithm changes.
-Here it could be helpful to save relations between $A$ and $B$, or in more complex cases, also between $A$-$C$, and $B$-$C$ and so on. These relations could be:
+An alternative approach would be to save *algorithm patterns*. That way we would store the pattern as $A B A' B'$ and then replace $A$ and $B$ with some other moves.  
+This raises another problem though: we need to prevent a scenario, where the order of the algorithm changes because of the chosen moves to replace $A$ and $B$ with. For example on a standard rubiks cube, we might get the algorithm $L R L' R'$ with the same pattern as $F T F' T'$, but L and R are disjoint moves, while F and T are not. Therefore $L R L' R'$ is the identity, while $F T F' T'$ is not.  
+Here it could be helpful to save relations between moves in the pattern (e.g. relation $A$-$B$), or in more complex algorithms, also between a third move like $A$-$C$, and $B$-$C$ and so on. These relations could be:
 
 1. order of the whole algorithm
-2. order of $A$ and $B$
-3. piece types affected by $A$ and $B$
-4. number of points affected by both moves
-5. number of points affected by $A$ but not by $B$
-6. number of points affected by $B$ but not by $A$
+2. order of each move ($A$ and $B$)
+3. piece signatures affected by each move ($A$ and $B$)
+4. number of points affected by each move
+5. number of points affected by $A$ and $B$
+6. number of points affected by $A$ but not by $B$
+7. number of points affected by $B$ but not by $A$
 
 As discussed before we would optimally solve the puzzle through a combination of single preparation moves and algorithms.
 
