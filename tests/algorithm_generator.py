@@ -64,10 +64,11 @@ def user_test_algorithms(
         user_input_algorithms.items(),
         key=lambda x: x[1]["n_reps"] * len(x[1]["base_sequence"].split(" ")),
         reverse=True))
-
-    print("Available algorithms:")
-    for alg_nbr, alg in user_input_algorithms.items():
-        print(f"{alg_nbr}: {alg['n_reps']}*({alg['base_sequence']})")
+    def list_algs():
+        print("Available algorithms:")
+        for alg_nbr, alg in user_input_algorithms.items():
+            print(f"{alg_nbr}: {alg['n_reps']}*({alg['base_sequence']})")
+    list_algs()
 
     user_input: str = ""
     while user_input.lower() != "exit":
@@ -75,6 +76,9 @@ def user_test_algorithms(
         if user_input.lower() == "reset":
             puzzle.reset()
             print("Puzzle reset.")
+            continue
+        if user_input.lower() == "list":
+            list_algs()
         else:
             try:
                 alg_nbr: int = int(user_input)
@@ -98,9 +102,28 @@ def show_algorithm(puzzle: Twisty_Puzzle, sympy_moves: dict, alg: dict, alg_nbr:
     
     # show algorithm on puzzle
     puzzle.reset_to_solved()
-    puzzle.perform_move(alg["alg_moves"])
+    show_algorithm_on_puzzle(puzzle, alg_permutation, alg, alg_nbr)
+    # puzzle.perform_move(alg["alg_moves"])
     print(f"Algorithm {alg_nbr} applied.")
 
+def show_algorithm_on_puzzle(puzzle: Twisty_Puzzle, alg_permutation, alg: dict, alg_nbr: int):
+    """
+    Show a given algorithm on the puzzle.
+
+    Args:
+        puzzle (Twisty_Puzzle): puzzle to show the algorithm on
+        alg (dict): algorithm to show
+        alg_nbr (int): number of the algorithm
+    """
+    puzzle.animation_time = 1
+    # define algorithm as new move in puzzle
+    alg_name = f"alg{alg_nbr}"
+    # calculate move cycles
+    move_cycles: list[tuple[int]] = alg_permutation.cyclic_form
+    puzzle._add_move_direct(alg_name, move_cycles)
+    puzzle.perform_move(alg_name)
+    puzzle.del_move(alg_name)
+    
 
 def get_alg_order(move_sequence, sympy_moves):
     """

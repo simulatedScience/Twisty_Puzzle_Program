@@ -337,6 +337,14 @@ but was of type '{type(shape_str)}'")
             del(self.active_move_cycles)
             del(self.active_move_name)
 
+    def _add_move_direct(self, move_name: str, move_cycles: list[tuple[int]], arg_color="#0066ff"):
+        """
+        add a move directly to the puzzle without using the movecreator mode
+        """
+        if move_name in self.moves:
+            raise ValueError(f"Move {move_name} already exists.")
+        self.moves[move_name] = deepcopy(move_cycles)
+        print(f"saved move {colored(move_name, arg_color)}.")
 
     def _inverse_cycles(self, cycle_list):
         """

@@ -1,12 +1,20 @@
 # Solution strategy and Algorithms for the Geared Mixup puzzle
 
-### flip 4 edges 180° in-place
+### turn four centers 180° in-place
+turn all but the top and bottom centers in-place by 180°.
 
-6*(r r t r' r' t r r t t r' r' t' t')  
-= 6*(r2 t r'2 t r2 t2 r'2 t'2)
+4*(f b' b' f' l b' f t)
 
-Order: 2
-6*14 = 84 moves
+order: 2
+4*8 = 32 moves
+
+### flip four edge in-place
+Flip all top and bottom edges on the two side faces by 180° in-place.
+
+12*(b' r l f)
+
+order: 2
+12*4 = 48 moves
 
 ### cycle 2 sets of three edges
 2 3-cycles of edges:  
@@ -66,6 +74,7 @@ order: 2
 24*8 = 192 moves
 
 ### cycle one center and 4 edges
+
 
 16*(b' f d b' d r f)
 
