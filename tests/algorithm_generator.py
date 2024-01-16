@@ -13,15 +13,20 @@ import algorithm_analysis as alg_ana
 def generate_algorithms(
         puzzle,
         sympy_moves,
-        max_move_sequence_length=10,
-        find_n_algorithms=20):
+        max_base_sequence_length=16,
+        find_n_algorithms=10,
+        max_pieces_affected=6,
+        max_order=6,
+        max_move_sequence_order=100,
+        max_algorithm_length=150,
+        ) -> dict[tuple[str, int], str]:
     """
     Generate a list of algorithms that can be used to scramble the puzzle.
     """
     found_algorithms: dict[tuple[str, int], str] = dict()
     while len(found_algorithms) < find_n_algorithms:
         # choose random sequence length
-        sequence_length: int = random.randint(2, max_move_sequence_length)
+        sequence_length: int = random.randint(2, max_base_sequence_length)
         algorithm_base: list[str] = smart_scramble(
                 puzzle.SOLVED_STATE,
                 puzzle.moves,
@@ -31,11 +36,13 @@ def generate_algorithms(
             algorithm_base_str ,
             sympy_moves,
             puzzle.pieces,
-            max_pieces=6,
-            max_order=5,
-            max_move_sequence_order=300,
+            max_pieces=max_pieces_affected,
+            max_order=max_order,
+            max_move_sequence_order=max_move_sequence_order,
         )
         for alg_key, alg_moves in new_algorithms.items():
+            if len(alg_moves.split(" ")) > max_algorithm_length:
+                continue
             found_algorithms[alg_key] = alg_moves
     return found_algorithms
 
@@ -52,8 +59,8 @@ def user_test_algorithms(
         sympy_moves (dict): dictionary of sympy moves for the puzzle
         puzzle_algorithms (dict): dictionary of generated algorithms
     """
-    if draw_pieces:
-        puzzle.draw_3d_pieces()
+    # if draw_pieces:
+    #     puzzle.draw_3d_pieces()
     user_input_algorithms = dict()
     for alg_nbr, (key, alg_moves) in enumerate(puzzle_algorithms.items()):
         alg_nbr += 1
@@ -80,7 +87,7 @@ def user_test_algorithms(
             print("Exiting program.")
             break
         if user_input.lower() == "reset":
-            puzzle.reset()
+            puzzle.reset_to_solved()
             print("Puzzle reset.")
             continue
         if user_input.lower() == "list":
@@ -95,6 +102,8 @@ def user_test_algorithms(
                     alg_nbr)
             except ValueError as e:
                 print(f"Invalid input. {e}")
+            except KeyError as e:
+                print(f"Unknown algorithm. {e}")
     # close program
     exit()
 

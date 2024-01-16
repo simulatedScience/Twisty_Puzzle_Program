@@ -73,18 +73,19 @@ But this automatic algorithm creation is dificult:
 We assume every twisty puzzle has a finite state space size.
 
 If that is the case, every sequence of moves has a finite order, i.e. repeating it often enough will always lead to the initial state again. So once we have chosen a sequence of moves we can repeat it until we get an algorithm that satisfies some conditions we will have to come up with.
-Therefor we can choose any sequence of moves. We can even try an exhaustive search starting with all algorithms consisting out of two moves, then search all algorithms with three moves and so on.
+Therefore we can choose any sequence of moves as a potential algorithm. We can even try an exhaustive search starting with all algorithms consisting out of two moves, then search all algorithms with three moves and so on.
 
-If the move sequence order $n$ is not prime, but has a factor $q$, we can repeat the move sequence $q$ or $n/q$ times to get a new algorithm of order $n/q$ or $q$ respectively. These may affect fewer pieces than the original algorithm.
+If the move sequence order $n$ is not prime, but has a factor $q$, we can repeat the move sequence $q$ or $n/q$ times to get a new algorithm of order $n/q$ or $q$ respectively. These may affect fewer pieces than the original move sequence. This way we find algorithms that affect only a few pieces, causing only small changes to the puzzle. This makes it easier to solve the puzzle.
 
 ## 2. Requirements for an algorithm
 
 We want algorithms to be ...
 1. ... not too short or too long. Usually algorithms should include 4 to 50 base moves. The shorter the better.
-2. ... changing few pieces. Ideally an algorithm only changes 2 to 4 pieces.
+2. ... changing few pieces. Ideally an algorithm only changes 2 to 4 pieces. (exceptions for geared puzzles)
 3. ... of low order. We want them to both include a small number of turns and have a low order. Usual orders are 2, 3, 4 and 6, as these often represent simple cycles of just a few pieces.
 
-The exact numbers will need to be tested to see which yield the best results. This depends on the puzzle.
+The exact numbers will need to be tested to see which yield the best results. This depends on the puzzle.  
+For example on  a gear cube, some useful algorithms affect 8 pieces, which would be almost useless on a 2x2 rubiks cube that only has 8 pieces.
 
 ### 2. evaluate algorithms with RLHF
 The requirements for algorithms in 2. are quite subjective and difficult to quantify and generalize. Solution idea:

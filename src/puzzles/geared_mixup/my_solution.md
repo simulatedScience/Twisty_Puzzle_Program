@@ -8,7 +8,19 @@ turn all but the top and bottom centers in-place by 180°.
 order: 2
 4*8 = 32 moves
 
-### flip four edge in-place
+### cycle 3 edges
+cacle front right -> left back -> front bottom edges
+
+8*(d' l' r r b l' r' d b t)  
+= 8*(d' l' r2 b l' r' d b t)
+
+order: 3
+8*10 = 80 moves
+
+When preparing this algorithm with (l' l'), all cycled edges are on the front face:
+(front right -> front left -> front top) edges cycled counterclockwise.
+
+### flip four edges in-place
 Flip all top and bottom edges on the two side faces by 180° in-place.
 
 12*(b' r l f)
@@ -88,3 +100,7 @@ One 3-cycle includes 3 edges, the other 2 edges and one center.
 
 order: 3
 20*5 = 100 moves
+
+
+analogous to turning the cube around up axis by 180° and then applying the following algorithm:  
+20*(d' t' f' d' l)
