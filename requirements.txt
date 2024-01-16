@@ -1,0 +1,9 @@
+vpython # 3d-visualisation
+autobahn==22.3.2 # 3d-visualisation for vpython
+txaio==22.2.1 # 3d-visualisation for vpython
+colored==1.4.4 # colored terminal outputs
+lxml # read/write xml files
+sympy # to calculate number of states of a puzzle
+scipy # combinatorics
+# keras # neural networks
+matplotlib # plotting of training progress
