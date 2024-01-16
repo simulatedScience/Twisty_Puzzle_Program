@@ -48,3 +48,34 @@ order: 5
 
 order: 4
 99*8 = 792 moves
+
+### swap two centers with adjacent edges, flip one edge
+
+210*(f f f r t)  
+= 210*(f3 r t)
+
+order: 2
+210*5 = 1050 moves
+
+### flip two edges, (& turn two centers 180°?)
+Flip left top and left bottom edges 180°. Other changes are not visible.
+
+24*(f t t r f' t' t' r')
+
+order: 2
+24*8 = 192 moves
+
+### cycle one center and 4 edges
+
+16*(b' f d b' d r f)
+
+order: 5
+16*7 = 112 moves
+
+### cycle one center with two edges and 3 edges
+One 3-cycle includes 3 edges, the other 2 edges and one center.
+
+20*(d' t' b' d' r)
+
+order: 3
+20*5 = 100 moves

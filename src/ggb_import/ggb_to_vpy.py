@@ -126,7 +126,7 @@ def dict_to_vpy(point_dict):
         point_dict["vpy_color"] = vpy.vector(*point_dict["vpy_color"])
 
 
-def draw_cones(point_dicts, PUZZLE_COM=vpy.vec(0,0,0)):
+def draw_cones(point_dicts, PUZZLE_COM=(0,0,0)):
     """
     draw a vpython cone for every point in point_dicts
 
@@ -140,13 +140,15 @@ def draw_cones(point_dicts, PUZZLE_COM=vpy.vec(0,0,0)):
     --------
         (list) - list of all vpython objects created
     """
+    if PUZZLE_COM == (0, 0, 0):
+        PUZZLE_COM = vpy.vec(0,0,0)
     objects = []
     for point_dict in point_dicts:
         objects.append(draw_cone(point_dict, PUZZLE_COM=PUZZLE_COM))
     return objects
 
 
-def draw_cone(point_dict, radius=None, PUZZLE_COM=vpy.vec(0,0,0)):
+def draw_cone(point_dict, radius=None, PUZZLE_COM=(0,0,0)):
     """
     draw a vpython cone for the given point information
 
@@ -166,6 +168,9 @@ def draw_cone(point_dict, radius=None, PUZZLE_COM=vpy.vec(0,0,0)):
     --------
         draws a vpython cone for the given point
     """
+    if PUZZLE_COM == (0, 0, 0):
+        PUZZLE_COM = vpy.vec(0,0,0)
+        
     if radius == None:
         radius = point_dict["size"]/50
 

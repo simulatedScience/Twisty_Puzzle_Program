@@ -259,7 +259,7 @@ but was of type '{type(shape_str)}'")
     def perform_move(self, moves):
         """
         perform the given move on the puzzle self
-        if multiple moves are given, they are all executed
+        if multiple moves are given (seperated by spaces), they are all executed
 
         inputs:
         -------
@@ -471,15 +471,17 @@ but was of type '{type(shape_str)}'")
         self.moves_changed = False
 
 
-    def listmoves(self, arg_color="#0066ff"):
+    def listmoves(self, arg_color="#0066ff", print_perms=True):
         """
         print all availiable moves for this puzzle
         if every move has an inverse: don't print the inverse moves
         """
         print(f"the puzzle {colored(self.PUZZLE_NAME, arg_color)} is defined with the following moves:")
-        for movename in self.moves.keys():
-            self.print_move(movename,
-                           arg_color=arg_color)
+        if print_perms:
+            for movename in self.moves.keys():
+                self.print_move(
+                    movename,
+                    arg_color=arg_color)
         if len(self.moves) > 0:
             print("\nThe following moves are availiable: ")
             for movename in list(self.moves.keys())[:-1]:
