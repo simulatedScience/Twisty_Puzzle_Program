@@ -42,7 +42,8 @@ def generate_algorithms(
 def user_test_algorithms(
         puzzle: Twisty_Puzzle,
         sympy_moves: dict,
-        puzzle_algorithms: dict):
+        puzzle_algorithms: dict,
+        draw_pieces: bool = True):
     """
     Given a dict of generated algorithms and a puzzle, allow the user to test and view the algorithms.
 
@@ -51,6 +52,8 @@ def user_test_algorithms(
         sympy_moves (dict): dictionary of sympy moves for the puzzle
         puzzle_algorithms (dict): dictionary of generated algorithms
     """
+    if draw_pieces:
+        puzzle.draw_3d_pieces()
     user_input_algorithms = dict()
     for alg_nbr, (key, alg_moves) in enumerate(puzzle_algorithms.items()):
         alg_nbr += 1
@@ -73,6 +76,9 @@ def user_test_algorithms(
     user_input: str = ""
     while user_input.lower() != "exit":
         user_input = input("Enter an algorithm number to show or 'exit' to quit the program:\n ")
+        if user_input.lower() == "exit":
+            print("Exiting program.")
+            break
         if user_input.lower() == "reset":
             puzzle.reset()
             print("Puzzle reset.")
@@ -87,9 +93,10 @@ def user_test_algorithms(
                     sympy_moves,
                     user_input_algorithms[alg_nbr],
                     alg_nbr)
-            except BaseException as e:
-                print("Error:", e)
-                print("Likely invalid input.")
+            except ValueError as e:
+                print(f"Invalid input. {e}")
+    # close program
+    exit()
 
 def show_algorithm(puzzle: Twisty_Puzzle, sympy_moves: dict, alg: dict, alg_nbr: int):
     # show basic algorithm info
@@ -152,8 +159,8 @@ def main():
     print(f"Enter 'exit' to quit the program.")
 
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
-    # puzzle_name = input("Enter a puzzle name: ")
-    puzzle_name = "geared_mixup"
+    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = "geared_mixup"
     puzzle.load_puzzle(puzzle_name)
     n = puzzle.state_space_size
     sympy_moves = alg_ana.get_sympy_dict(puzzle)

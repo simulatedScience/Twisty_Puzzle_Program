@@ -10,7 +10,7 @@ else:
     from vpy_rotation import get_com
 
 
-class Polyhedron():
+class Polyhedron(vpy.baseObj):
     """
     class implementing convex 3D polyhedra using vpython triangle objects
     this is not guaranteed to work for non-convex polyhedra but if they are not too extreme cases, it certainly works too
@@ -59,6 +59,7 @@ class Polyhedron():
             # intersection of two polyhedra P and Q:
             >>> R = P & Q
         """
+        super().__init__()
         self.debug = debug
         self.eps = 1e-10 # rounding accuracy to counteract floating point errors
         self.visible = False
