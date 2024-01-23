@@ -2,7 +2,7 @@
 Every twisty puzzle will require some basic information to be stored.
 There are also quite a few functions that would make sense as puzzle-specific methods.
 
-Therefor we will create a class that represents a given puzzle.
+Therefore we will create a class that represents a given puzzle.
 
 # Requirements
 the different tasks require different sets of information.
@@ -19,7 +19,7 @@ We want to show the puzzle using vpython and allow all kinds of interaction.
 ### Minimum information
 #### Variables
   - dictionary of all possible moves
-  - center of mass of the 3d points - _used to calculate rotation axis_
+  - center of mass of the puzzle's 3d points - _used to calculate rotation axes_
   - correct position of the 3d points - _used to prevent numerical errors during animation_
   - (temporary storage for functions assigned to clickevents)
   - (list of displayed vpython objects)
