@@ -16,3 +16,5 @@ tests/state compression tests/*
 !tests/state compression tests/*.py
 # ignore videos (demonstrations)
 *.mp4
+# ignore colelcted literature
+research/*
