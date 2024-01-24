@@ -1,6 +1,6 @@
 # A* algorithm used for solving the puzzles
 
-## Availiable information
+## Available information
 Using Q-Learning we assign a value ($Q(s,a) \in \mathbb{R}$) to each visited state-action pair $(s,a)$. A high value (currently $1$) means that the action is considered to be good in the given state, a low value (currently $0$) represents bad actions.
 
 In older Q-tables (before 31.08.2020) the maximum high and low values are still very different.
