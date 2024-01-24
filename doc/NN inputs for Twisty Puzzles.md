@@ -186,3 +186,12 @@ Using RL for fine-tuning after some supervised training could still improve perf
 - language models are very large and trained on text that is very different from the group notation we would use here. This could make it difficult to fine-tune the model to solve twisty puzzles.
 - Models may have learnt internall state representations that are not useful for twisty puzzles, making it difficult to fine-tune the model to solve twisty puzzles.
 - Models may have learnt a ton of information that is completely useless for twisty puzzles, increasing the size of the model a lot with no benefit for twisty puzzles.
+
+### F. Use search to enhance success rate during training
+**Idea:** Just like MCTS was used during training of AlphaZero, we can use NN-guided search to enhance the twisty puzzle solver during training, leading to stronger reward signals and faster learning.
+
+**Advantages:**
+- Using search enhances data quality for the agent, getting more rewards, leading to faster learning.
+
+**Disadvantages:**
+- Search is computationally expensive, so it would slow down training a lot. Considerations: Quality of episodes vs. number of episodes.
