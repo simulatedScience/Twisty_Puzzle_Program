@@ -4,6 +4,8 @@ We plan to implement a two-step approach for solving twisty puzzles:
 1. Generate algorithms (move sequences) that only change a few pieces at a time. (algorithm generator)
 2. Learn to use these algorithms to solve the puzzle. (actor)
 
+A motivation for these steps can be found in `doc/smarter_ai.md`.
+
 With these steps we have two fundamental options:
 1. First generate all algorithms we need, then learn solving the puzzle with a static action set.  
    Here, the main difficulty lies in determining, when we have reached a sufficient set of good algorithms, which could take a long time.
