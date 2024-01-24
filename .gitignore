@@ -17,4 +17,4 @@ tests/state compression tests/*
 # ignore videos (demonstrations)
 *.mp4
 # ignore colelcted literature
-research/*
+local_research/*
