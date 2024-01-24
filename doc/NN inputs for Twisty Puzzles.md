@@ -100,7 +100,7 @@ Importantly, we want to convey information about what each action does to the pu
 - adding actions would require adding more input neurons
 
 
-### 2. text output for move/ algorithm names
+### 2.* text output for move/ algorithm names
 **Idea:** Use text output for move/ algorithm names. This turns the actions space into a set of strings made up of characters from a given alphabet (a.g. `a-z`, `-`, `_` and `'` for inverse moves)
 
 **Output shape:** output sequence: $n_{alph}$ neurons representing each character of the alphabet, including an `end` token. The output is a sequence of characters.
@@ -173,3 +173,14 @@ Using RL for fine-tuning after some supervised training could still improve perf
 - Learning from reverse scrambles has been shown to be much faster than RL for twisty puzzles. [see here](https://arxiv.org/pdf/1805.07470.pdf)
 
 
+### E. Instead of training a NN from scratch, use a pretrained Transformer
+**Idea:** Fine tune a pretrained language model (Transformer) to solve twisty puzzles. We can cut down the action space of the language model to only include valid characters for twisty puzzle moves to reduce the size.
+
+**Advantages:**
+- pretrained transformers are very powerful and can be fine-tuned to solve many different problems, possible including twisty puzzles
+- learning about fine-tuning transformers could be an immensely useful skill in the near future
+
+**Disadvantages:**
+- language models are very large and trained on text that is very different from the group notation we would use here. This could make it difficult to fine-tune the model to solve twisty puzzles.
+- Models may have learnt internall state representations that are not useful for twisty puzzles, making it difficult to fine-tune the model to solve twisty puzzles.
+- Models may have learnt a ton of information that is completely useless for twisty puzzles, increasing the size of the model a lot with no benefit for twisty puzzles.
