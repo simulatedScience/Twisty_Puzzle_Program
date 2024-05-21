@@ -149,7 +149,13 @@ def get_divisors(n):
     return divs
 
 
-def main():
+def main(
+        puzzle_name="geared_mixup",
+        max_pieces=6,
+        max_order=5,
+        max_move_sequence_order=300,
+        clipshape="sphere",
+        drawpieces=False):
     import os,sys,inspect
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parentdir = os.path.dirname(currentdir)
@@ -159,8 +165,6 @@ def main():
     print(f"Enter 'exit' to quit the program.")
 
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
-    # puzzle_name = input("Enter a puzzle name: ")
-    puzzle_name = "geared_mixup"
     puzzle.load_puzzle(puzzle_name)
     n = puzzle.state_space_size
     sympy_dict = get_sympy_dict(puzzle)
@@ -169,6 +173,11 @@ def main():
     puzzle.animation_time = 0.1
 
     puzzle.listmoves(print_perms=False)
+    
+    if not drawpieces and clipshape != "":
+        puzzle.snap(clipshape)
+    elif drawpieces:
+        puzzle.draw_3d_pieces()
 
     user_input = str()
     while user_input.lower() != "exit":
@@ -192,7 +201,13 @@ def main():
             continue
 
         try:
-            new_algorithms = analyse_alg(user_input, sympy_dict, puzzle.pieces)
+            new_algorithms = analyse_alg(
+                user_input,
+                sympy_dict,
+                puzzle.pieces,
+                max_pieces=max_pieces,
+                max_order=max_order,
+                max_move_sequence_order=max_move_sequence_order)
             current_algorithms: dict[int, str] = dict()
             for i, alg_value in enumerate(new_algorithms.values()):
                 current_algorithms[i+1] = alg_value
@@ -203,7 +218,20 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    
+    # puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = "geared_mixup"
+    puzzle_name = "rubiks_2x2_ai"
+    main(
+        puzzle_name=puzzle_name,
+        max_pieces=3,
+        max_order=5,
+        max_move_sequence_order=300,
+        clipshape="cube",
+        drawpieces=True)
+    
+    
+    
     ### sympy tests ###
     # P1 = Permutation([(1,2)], n=4)
     # P1.cyclic_form.flatten()
