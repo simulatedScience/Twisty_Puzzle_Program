@@ -192,8 +192,8 @@ def main():
     # dodecahedron points
     X = dodecahedron_vertices()
     # test_find_plane_intersection(plane_1, plane_2)
-    plot_penalty_function()
-    # test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=2)
+    # plot_penalty_function()
+    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=2)
     # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
 
 def dodecahedron_vertices():

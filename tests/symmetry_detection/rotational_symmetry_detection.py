@@ -124,6 +124,10 @@ def find_rotational_symmetries(
             continue # planes are parallel (should never happen here)
         axis_support, axis = intersection
         rotation_angle: float = 2*intersection_angle
+        
+        rotation_angle = rotation_angle % (2*np.pi)
+        if rotation_angle > np.pi:
+            rotation_angle -= 2*np.pi
         # translate X by line_support
         X_translated: np.ndarray = X - axis_support
         score = rotation_symmetry_measure(X_translated, rotation=(rotation_angle, axis), alpha=alpha)
