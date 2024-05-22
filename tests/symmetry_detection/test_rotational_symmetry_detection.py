@@ -27,7 +27,7 @@ def test_find_plane_intersection(plane_1: tuple[np.ndarray, np.ndarray], plane_2
     return intersection
 
 def plot_penalty_function():
-    x = np.linspace(-np.pi, np.pi, 10000)
+    x = np.linspace(-4*np.pi, 4*np.pi, 10000)
     # x = np.linspace(0.925, 1, 10000)
     # x = np.linspace(0.8, 1, 10000)
     y = penalty(x, alpha=.1)#, min_angle=np.deg2rad(15), max_angle=np.deg2rad(21.5))

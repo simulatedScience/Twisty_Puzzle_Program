@@ -162,9 +162,9 @@ def penalty(angle, min_angle=np.pi/25, max_angle=np.pi/13, alpha: float = 0.1):
     """
     if isinstance(angle, np.ndarray):
         return np.array([penalty(a, min_angle, max_angle, alpha) for a in angle])
-    # map angle to [-pi, pi]
-    angle %= 2*np.pi
-    angle -= np.pi
+    angle = angle % (2*np.pi)
+    if angle > np.pi:
+        angle -= 2*np.pi
     if abs(angle) > max_angle:
         return 1
     else:
