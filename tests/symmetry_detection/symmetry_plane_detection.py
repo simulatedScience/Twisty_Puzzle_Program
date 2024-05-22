@@ -37,7 +37,23 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
             found_planes.append((midpoint, normal))
     return found_planes
 
-def symmetry_measure(X: np.ndarray, plane: tuple[np.ndarray, np.ndarray], alpha: float) -> float:
+
+def dist_similarity_function(dist: float, alpha: float = 15) -> float:
+    """
+    measure the similarity of two points based on their distance and an `alpha` parameter.
+    If alpha * distance > 2.6, the similarity is 0.
+
+    Args:
+        l (float): distance between two points
+        alpha (float): parameter to control the similarity function
+    Returns:
+        float: similarity between two points
+    """
+    value = (1 - 1 / 2.6 * alpha * dist)**5 * \
+            (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
+    return np.where(alpha * dist <= 2.6, value, 0)
+
+def reflect_symmetry_measure(X: np.ndarray, plane: tuple[np.ndarray, np.ndarray], alpha: float) -> float:
     """
     Compute the symmetry measure for a set of points X reflected across a plane defined by a midpoint and normal vector.
     Higher symmetry measure indicates higher symmetry.
@@ -50,27 +66,13 @@ def symmetry_measure(X: np.ndarray, plane: tuple[np.ndarray, np.ndarray], alpha:
     Returns:
         float: symmetry measure in range [0, inf)   (see (Hruda et. al.) Eq. (2))
     """
-    def similarity_function(l, alpha):
-        """
-        measure the similarity of two points based on their distance and the alpha parameter.
-        If alpha * distance > 2.6, the similarity is 0.
-
-        Args:
-            l (float): distance between two points
-            alpha (float): parameter to control the similarity function
-        Returns:
-            float: similarity between two points
-        """
-        value = (1 - l / 2.6 * alpha * l)**5 * (8 * (1 / 2.6 * alpha * l)**2 + 5 * (1 / 2.6 * alpha * l) + 1)
-        return np.where(alpha * l <= 2.6, value, 0)
-
     n: int = X.shape[0] # number of points
     transformed_X = reflect_points_across_plane(X, plane[0], plane[1])
     similarity_measure = 0
     for i in range(n):
         for j in range(n):
             distance = np.linalg.norm(transformed_X[i] - X[j])
-            similarity_measure += similarity_function(distance, alpha)
+            similarity_measure += dist_similarity_function(distance, alpha)
     return similarity_measure
 
 def find_symmetry_planes(
@@ -98,7 +100,7 @@ def find_symmetry_planes(
     best_scores = []
     # choose planes with best symmetry measure
     for plane in planes:
-        score = symmetry_measure(X, plane, alpha)
+        score = reflect_symmetry_measure(X, plane, alpha)
         if len(best_scores) < S or score > min(best_scores):
             if len(best_scores) >= S:
                 min_index = np.argmin(best_scores)
@@ -112,10 +114,12 @@ def find_symmetry_planes(
         support: np.ndarray = plane_components[:3]
         normal: np.ndarray = plane_components[3:]
         plane = (support, normal)
-        return -symmetry_measure(X, plane, alpha)
+        return -reflect_symmetry_measure(X, plane, alpha)
+    symmetry_planes = []
     for plane in best_planes:
-        minimize(objective, np.concatenate(plane), method="L-BFGS-B")
-    return best_planes
+        result = minimize(objective, np.concatenate(plane), method="L-BFGS-B")
+        symmetry_planes.append((result.x[:3], result.x[3:]))
+    return symmetry_planes
 
 def reflect_points_across_plane(X: np.ndarray, support: np.ndarray, normal: np.ndarray):
     """

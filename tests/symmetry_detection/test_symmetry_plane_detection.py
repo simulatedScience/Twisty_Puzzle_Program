@@ -4,7 +4,7 @@ author: Sebastian Jost
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from symmetry_plane_detection import init_planes, symmetry_measure, reflect_points_across_plane, find_symmetry_planes
+from symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes
 
 def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1) -> list[tuple[np.ndarray, np.ndarray]]:
     """
@@ -29,6 +29,7 @@ def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1)
     for i, (p, n) in enumerate(planes):
         # plot the plane
         draw_plane(ax, p, n, show_normal=False)
+    ax.set_box_aspect([1,1,1])
     plt.title("Initial planes for symmetry detection")
     plt.show()
     return planes
@@ -100,9 +101,10 @@ def test_find_symmetry_planes(
     # plot the best planes
     for i, (p, n) in enumerate(best_planes):
         # plot the plane
-        symmetry = symmetry_measure(X, (p, n), alpha)
+        symmetry = reflect_symmetry_measure(X, (p, n), alpha)
         print(f"Symmetry measure for plane {i}: {symmetry}")
         draw_plane(ax, p, n, show_normal=False)
+    ax.set_box_aspect([1,1,1])
     plt.title("Best planes for symmetry detection")
     plt.show()
     return best_planes
@@ -113,6 +115,7 @@ def draw_plane(
         ax: plt.Axes,
         p: np.ndarray,
         n: np.ndarray,
+        size: float = 1,
         show_normal: bool = True):
     """
     Draw a plane in 3D given a point p and a normal vector n.
@@ -123,7 +126,7 @@ def draw_plane(
         n (np.ndarray): normal vector of the plane
     """
     # Define a grid in the plane
-    d = np.linspace(-1, 1, 10)
+    d = np.linspace(-size, size, 10)
     D1, D2 = np.meshgrid(d, d)
     
     # Find a third vector perpendicular to the normal vector
@@ -154,17 +157,25 @@ def main():
     #     [ 0, 0, 1],
     #     [ 0, 0, 0],
     # ])
-    # Example: corners of a cube
+    
+    # regular tetrahedron
     X = np.array([
-        [ 1, 1, 1],
-        [ 1, 1,-1],
-        [ 1,-1, 1],
-        [ 1,-1,-1],
-        [-1, 1, 1],
-        [-1, 1,-1],
-        [-1,-1, 1],
-        [-1,-1,-1],
+        [ 0, 0, 0],
+        [ 1, 1, 0],
+        [ 1, 0, 1],
+        [ 0, 1, 1],
     ])
+    # # Example: corners of a cube
+    # X = np.array([
+    #     [ 1, 1, 1],
+    #     [ 1, 1,-1],
+    #     [ 1,-1, 1],
+    #     [ 1,-1,-1],
+    #     [-1, 1, 1],
+    #     [-1, 1,-1],
+    #     [-1,-1, 1],
+    #     [-1,-1,-1],
+    # ])
     test_init_planes(X, num_planes=50, threshold=0.1)
     
     # symmetry plane
@@ -174,7 +185,7 @@ def main():
     support: np.ndarray = np.array([0, -2, 0])
     normal: np.ndarray = np.array([1, -1, 3])
     normal = normal / np.linalg.norm(normal)
-    symmetry: float = symmetry_measure(X, (support, normal), alpha=1.0)
+    symmetry: float = reflect_symmetry_measure(X, (support, normal), alpha=1.0)
     print(f"Symmetry measure: {symmetry}")
     test_reflect_points_across_plane(X, support, normal)
     
