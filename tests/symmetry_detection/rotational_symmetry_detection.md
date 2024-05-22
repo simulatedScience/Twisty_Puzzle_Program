@@ -36,6 +36,7 @@ Set $\alpha = \frac{15}{l_{avg}}$ with $l_{avg}$ the average distance between a 
 6. end for
 7. Choose $S=5$ best planes by their symmetry measure
 8. Find local maximum of symmetry measure $s_X(T)$ by optimizing over $p$ e.g. using L-BFGS (quasi-Newtown). $T$ are the reflections about the $S$ best planes
+9. Only accept planes with symmetry measure >70% (adjust as needed) of best plane's measure.
 
 
 ### Algorithm for Rotational symmetry detection
@@ -66,3 +67,4 @@ In similarity function $s_X(T)$, set $\alpha = \frac{\textbf{20}}{l_{avg}}$ with
 2.  For each intersection line, choose the point $s$ on the line that is closest to the centroid of $X$.
 3.  (Optimization) prune similar rotations (see [ROT] Sec. 2.3)
 4.  Start optimization of $Q, s$ with $s_X(Q, s)$ as objective function.
+5.  Search around found rotation axes to detect lowest/ all angles of circular symmetries (see [ROT] Sec. 2.5)
