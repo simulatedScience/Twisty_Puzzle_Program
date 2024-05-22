@@ -27,7 +27,7 @@ def test_find_plane_intersection(plane_1: tuple[np.ndarray, np.ndarray], plane_2
     return intersection
 
 def plot_penalty_function():
-    x = np.linspace(0, np.pi, 10000)
+    x = np.linspace(-np.pi, np.pi, 10000)
     # x = np.linspace(0.925, 1, 10000)
     # x = np.linspace(0.8, 1, 10000)
     y = penalty(x, alpha=.1)#, min_angle=np.deg2rad(15), max_angle=np.deg2rad(21.5))
@@ -161,10 +161,9 @@ def draw_line(ax: plt, point: np.ndarray, direction: np.ndarray, length: float =
 
 def main():
     # # Example Usage
-    # plane_1 = (np.array([0, 0, 0], dtype=np.float32), np.array([1, 1, 0], dtype=np.float32))
-    # # plane_2 = (np.array([0, 1, 0], dtype=np.float32), np.array([0, 1, 1], dtype=np.float32))
+    plane_1 = (np.array([0, 0, 0], dtype=np.float32), np.array([1, 1, 0], dtype=np.float32))
+    plane_2 = (np.array([0, 1, 0], dtype=np.float32), np.array([0, 1, 1], dtype=np.float32))
     # plane_2 = (np.array([0, 1, 1], dtype=np.float32), np.array([-1, 2, 1], dtype=np.float32))
-    # test_find_plane_intersection(plane_1, plane_2)
     # tetrahedron corners
     # X = np.array([
     #     [ 1, 0, 0],
@@ -192,7 +191,9 @@ def main():
     # ])
     # dodecahedron points
     X = dodecahedron_vertices()
-    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=2)
+    # test_find_plane_intersection(plane_1, plane_2)
+    plot_penalty_function()
+    # test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=2)
     # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
 
 def dodecahedron_vertices():
@@ -217,5 +218,4 @@ def dodecahedron_vertices():
     return vertices
 
 if __name__ == "__main__":
-    # plot_penalty_function()
     main()

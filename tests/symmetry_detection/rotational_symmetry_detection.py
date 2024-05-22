@@ -162,7 +162,10 @@ def penalty(angle, min_angle=np.pi/25, max_angle=np.pi/13, alpha: float = 0.1):
     """
     if isinstance(angle, np.ndarray):
         return np.array([penalty(a, min_angle, max_angle, alpha) for a in angle])
-    if angle > max_angle:
+    # map angle to [-pi, pi]
+    angle %= 2*np.pi
+    angle -= np.pi
+    if abs(angle) > max_angle:
         return 1
     else:
         return dist_similarity_function(alpha * ((abs(angle) - max_angle) * 2.6 / (min_angle - max_angle)))
