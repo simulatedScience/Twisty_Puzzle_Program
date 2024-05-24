@@ -82,7 +82,7 @@ def user_test_algorithms(
 
     user_input: str = ""
     while user_input.lower() != "exit":
-        user_input = input("Enter an algorithm number to show or 'exit' to quit the program:\n ")
+        user_input = input("Enter an algorithm number to show or\n 'list' to list available ones or\n 'exit' to quit the program:\n ")
         if user_input.lower() == "exit":
             print("Exiting program.")
             break
@@ -105,7 +105,7 @@ def user_test_algorithms(
             except KeyError as e:
                 print(f"Unknown algorithm. {e}")
     # close program
-    exit()
+    sys.exit()
 
 def show_algorithm(puzzle: Twisty_Puzzle, sympy_moves: dict, alg: dict, alg_nbr: int):
     # show basic algorithm info
@@ -180,7 +180,12 @@ def main():
     # generate algorithms
     puzzle_algorithms = generate_algorithms(
         puzzle,
-        sympy_moves)
+        sympy_moves,
+        find_n_algorithms=16,
+        max_pieces_affected=16,
+        max_order=6,
+        max_algorithm_length=30,
+        )
 
     user_test_algorithms(puzzle, sympy_moves, puzzle_algorithms)
 
