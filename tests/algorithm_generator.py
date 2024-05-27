@@ -59,8 +59,8 @@ def user_test_algorithms(
         sympy_moves (dict): dictionary of sympy moves for the puzzle
         puzzle_algorithms (dict): dictionary of generated algorithms
     """
-    # if draw_pieces:
-    #     puzzle.draw_3d_pieces()
+    if draw_pieces:
+        puzzle.draw_3d_pieces()
     user_input_algorithms = dict()
     for alg_nbr, (key, alg_moves) in enumerate(puzzle_algorithms.items()):
         alg_nbr += 1
