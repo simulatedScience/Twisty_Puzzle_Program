@@ -14,7 +14,7 @@
       - No solver
 - **Ruwix** online puzzle simulator
   - https://ruwix.com/online-puzzle-simulators/
-  - no solver
+  - No solver
 
 - **Permuzzle/ Gelatinbrain** puzzle simulator
   - Written in Java
@@ -24,8 +24,29 @@
     - text input to perform moves
     - No solver
 
+- **Twizzle Explorer** (?)
+  - Written in TypeScript
+  - compatible with ksolve, twsearch, GAP
+  - [website](https://alpha.twizzle.net/explore/help.html)
+
 ## Twisty Puzzle Solvers
 
+### classical solvers
+Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle or a given state in the fewest moves possible.
+- **ksolve+/ ksolve++**  
+  cumbersome text-only interface for puzzle definitions and moves with custom interpreter
+  - [website ksolve+](https://mzrg.com/rubik/ksolve+/)
+  - [(deleted) reddit thread](https://www.reddit.com/r/Cubers/comments/873vzw/ksolve_a_new_fast_general_puzzle_solving_program/)
+  - [website ksolve++](https://benwh1.github.io/web/software/ksolve++/index.html)
+- **Cube Explorer**  
+  only supports 3x3 rubiks cube
+  - [website](https://kociemba.org/cube.htm)
+- **Trangium Batch Solver**
+  - [website](https://trangium.github.io/BatchSolver/)
+- **nissy**  
+  - [website](https://nissy.tronto.net/)
+
+### RL based solvers
 - **DeepCubeA** - Solving the Rubik's Cube with Deep Reinforcement Learning and Search
   - [code (latest)](https://github.com/forestagostinelli/DeepCubeA)
   - [code (original)](https://codeocean.com/capsule/5723040/tree)
@@ -42,24 +63,78 @@
   - [code](https://github.com/kyo-takano/efficientcube)
   - [paper](https://openreview.net/pdf?id=bnBeNFB27b)
   - Solve the Rubik's cube, sliding tile puzzles, and other combinatorial puzzles using a combination of deep reinforcement learning from reverse scrambles and Beam search.
+  ```BibTex
+  @article{
+  takano2023selfsupervision,
+  title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
+  author={Kyo Takano},
+  journal={Transactions on Machine Learning Research},
+  issn={2835-8856},
+  year={2023},
+  url={https://openreview.net/forum?id=bnBeNFB27b},
+  note={}
+  }
+  ```
 
 - **MultiH layer-wise solver** - Solving the Rubik's Cube with Deep Reinforcement Learning and Using Multi-Headed Models
   - [paper](https://cs229.stanford.edu/proj2021spr/report2/81889605.pdf)
   - Solve a Rubik's cube layer-wise using a multi-head DNN. Use dynamic scramble length to train the network (increases when 25% of recent episodes were successful).
+  ```BibTex
+  @article{
+
+  title={Solving the Rubik's Cube with Deep Reinforcement Learning and Using Multi-Headed Models},
+  author={WenXin Dong, Hanson Hao, George Nakayama},
+  journal={
+  issn={
+  year={2021}
+  url={https://cs229.stanford.edu/proj2021spr/report2/81889605.pdf},
+  note={
+  }
+  ```
+
 
 ## Useful Techniques for RL
 - **Learning Options** - Learning Options in Reinforcement Learning
   - [paper](https://www.cs.cmu.edu/~mstoll/pubs/stolle2002learning.pdf)
   - Learn a set of options (sub-policies) that can be used to solve a task. Options are learned using Q-learning and a pseudo-reward function. In the context of twisty puzzles, every move and algortihm would be considered an option. The problem of finding options is equivalent to finding useful algorithms.
+  ```Bibtex
+  @inproceedings{inproceedings,
+  author = {Stolle, Martin and Precup, Doina},
+  year = {2002},
+  month = {08},
+  pages = {212-223},
+  title = {Learning Options in Reinforcement Learning},
+  volume = {2371},
+  isbn = {978-3-540-43941-7},
+  journal = {Lecture Notes in Computer Science},
+  doi = {10.1007/3-540-45622-8_16}
+  }
+  ```
 
 - **HER** - Hindsight Experience Replay
   - [paper](https://proceedings.neurips.cc/paper_files/paper/2017/file/453fadbd8a1a3af50a9df4df899537b5-Paper.pdf) ([preprint](https://arxiv.org/pdf/1707.01495.pdf))
   - Use hindsight to learn from failed episodes by adding a goal to the inputs. This allows the agent to learn more efficiently from failed episodes and is particularly useful for sparse reward multi-goal environments. Experiments have shown benefits in single-goal environments as well.
+  ```BibTex
+  @article{article,
+  author = {Andrychowicz, Marcin and Wolski, Filip and Ray, Alex and Schneider, Jonas and Fong, Rachel and Welinder, Peter and McGrew, Bob and Tobin, Josh and Abbeel, Pieter and Zaremba, Wojciech},
+  year = {2017},
+  month = {07},
+  pages = {},
+  title = {Hindsight Experience Replay}
+  }
+  ```
 
 - **Voyager with Skill Library** - Voyager: An Open-Ended Embodied Agent with Large Language Models
   - [code](https://github.com/MineDojo/Voyager)
   - [paper](https://voyager.minedojo.org/assets/documents/voyager.pdf)
   - [website](https://voyager.minedojo.org/)
   - Use automatic LLM prompting to generate a library of skills (sub-policies) that can be used to solve a task.
-
+  ```BibTex
+  @article{wang2023voyager,
+    title   = {Voyager: An Open-Ended Embodied Agent with Large Language Models},
+    author  = {Guanzhi Wang and Yuqi Xie and Yunfan Jiang and Ajay Mandlekar and Chaowei Xiao and Yuke Zhu and Linxi Fan and Anima Anandkumar},
+    year    = {2023},
+    journal = {arXiv preprint arXiv: Arxiv-2305.16291}
+  }
+  ```
 
