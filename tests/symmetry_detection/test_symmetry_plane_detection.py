@@ -4,7 +4,7 @@ author: Sebastian Jost
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes
+from symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes, plane_point_normal2standard_form
 
 def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1) -> list[tuple[np.ndarray, np.ndarray]]:
     """
@@ -26,9 +26,10 @@ def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1)
     # plot the points
     ax.scatter(X[:, 0], X[:, 1], X[:, 2], c='b', marker='o')
     # plot the planes
-    for i, (p, n) in enumerate(planes):
+    for i, plane in enumerate(planes):
         # plot the plane
-        draw_plane(ax, p, n, show_normal=False)
+        draw_plane(ax, plane, show_normal=False)
+        # draw_plane(ax, p, n, show_normal=False)
     ax.set_box_aspect([1,1,1])
     plt.title("Initial planes for symmetry detection")
     plt.show()
@@ -40,7 +41,7 @@ def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1)
 #     Given a set of points X, a transformation T and an alpha parameter, test the symmetry_measure function.
 #     """
 
-def test_reflect_points_across_plane(X: np.ndarray, p: np.ndarray, n: np.ndarray) -> np.ndarray:
+def test_reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     """
     Given a set of points X, a point p and a normal vector n, test the reflect_points_across_plane function.
     plot the points (blue) and the reflected points (red) in 3D.
@@ -53,7 +54,7 @@ def test_reflect_points_across_plane(X: np.ndarray, p: np.ndarray, n: np.ndarray
     Returns:
         np.ndarray: reflected points (output of reflect_points_across_plane())
     """
-    refkected_X = reflect_points_across_plane(X, p, n)
+    refkected_X = reflect_points_across_plane(X, plane)
     # create a 3D plot
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -62,7 +63,8 @@ def test_reflect_points_across_plane(X: np.ndarray, p: np.ndarray, n: np.ndarray
     # plot the reflected points
     ax.scatter(refkected_X[:, 0], refkected_X[:, 1], refkected_X[:, 2], c='r', marker='o', label='reflected X')
     # plot the plane
-    draw_plane(ax, p, n, show_normal=True)
+    draw_plane(ax, plane, show_normal=True)
+    # draw_plane(ax, p, n, show_normal=True)
     # configure plot
     ax.set_box_aspect([1,1,1])
     plt.title("Reflection of points across a plane")
@@ -109,44 +111,97 @@ def test_find_symmetry_planes(
     plt.show()
     return best_planes
 
-
-
 def draw_plane(
         ax: plt.Axes,
-        p: np.ndarray,
-        n: np.ndarray,
+        plane: np.ndarray,
         size: float = 1,
         show_normal: bool = True):
     """
-    Draw a plane in 3D given a point p and a normal vector n.
-
+    Draw a plane in 3D given in standard form (a, b, c, d) (ax + by + cz + d = 0).
+    
     Args:
         ax (plt.Axes): matplotlib axis to plot on
-        p (np.ndarray): point on the plane
-        n (np.ndarray): normal vector of the plane
+        plane (np.ndarray): plane in standard form (a, b, c, d)
+        size (float): size of the plane to draw
+        show_normal (bool): whether to plot the normal vector
     """
+    # Extract plane coefficients
+    a, b, c, d = plane
+    
+    # Normal vector of the plane
+    normal = np.array([a, b, c])
+    
+    # Ensure the normal vector is a unit vector
+    normal = normal / np.linalg.norm(normal)
+    
+    # Find a support vector (a point on the plane)
+    # We choose the point (x0, 0, 0) if a != 0
+    if a != 0:
+        support = np.array([-d / a, 0, 0])
+    elif b != 0:
+        support = np.array([0, -d / b, 0])
+    elif c != 0:
+        support = np.array([0, 0, -d / c])
+    else:
+        raise ValueError("Invalid plane coefficients. At least one of a, b, c must be non-zero.")
+    
     # Define a grid in the plane
     d = np.linspace(-size, size, 10)
     D1, D2 = np.meshgrid(d, d)
     
     # Find a third vector perpendicular to the normal vector
     n1 = np.array([1, 0, 0])
-    if np.allclose(n, n1) or np.allclose(n, -n1):
+    if np.allclose(normal, n1) or np.allclose(normal, -n1):
         n1 = np.array([0, 1, 0])
-    v1 = np.cross(n, n1)
+    v1 = np.cross(normal, n1)
     v1 /= np.linalg.norm(v1)
     
     # Find another vector in the plane
-    v2 = np.cross(n, v1)
+    v2 = np.cross(normal, v1)
     v2 /= np.linalg.norm(v2)
     
     # Plane points
-    plane_points = p + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
+    plane_points = support + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
     ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=0.5, rstride=100, cstride=100)
+    
 
-    if show_normal:
-        # plot the normal vector
-        ax.quiver(p[0], p[1], p[2], n[0], n[1], n[2], color='r')
+
+# def draw_plane(
+#         ax: plt.Axes,
+#         p: np.ndarray,
+#         n: np.ndarray,
+#         size: float = 1,
+#         show_normal: bool = True):
+#     """
+#     Draw a plane in 3D given a point p and a normal vector n.
+
+#     Args:
+#         ax (plt.Axes): matplotlib axis to plot on
+#         p (np.ndarray): point on the plane
+#         n (np.ndarray): normal vector of the plane
+#     """
+#     # Define a grid in the plane
+#     d = np.linspace(-size, size, 10)
+#     D1, D2 = np.meshgrid(d, d)
+    
+#     # Find a third vector perpendicular to the normal vector
+#     n1 = np.array([1, 0, 0])
+#     if np.allclose(n, n1) or np.allclose(n, -n1):
+#         n1 = np.array([0, 1, 0])
+#     v1 = np.cross(n, n1)
+#     v1 /= np.linalg.norm(v1)
+    
+#     # Find another vector in the plane
+#     v2 = np.cross(n, v1)
+#     v2 /= np.linalg.norm(v2)
+    
+#     # Plane points
+#     plane_points = p + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
+#     ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=0.5, rstride=100, cstride=100)
+
+#     if show_normal:
+#         # plot the normal vector
+#         ax.quiver(p[0], p[1], p[2], n[0], n[1], n[2], color='r')
 
 
 def main():
@@ -159,37 +214,39 @@ def main():
     # ])
     
     # regular tetrahedron
-    X = np.array([
-        [ 0, 0, 0],
-        [ 1, 1, 0],
-        [ 1, 0, 1],
-        [ 0, 1, 1],
-    ])
-    # # Example: corners of a cube
     # X = np.array([
-    #     [ 1, 1, 1],
-    #     [ 1, 1,-1],
-    #     [ 1,-1, 1],
-    #     [ 1,-1,-1],
-    #     [-1, 1, 1],
-    #     [-1, 1,-1],
-    #     [-1,-1, 1],
-    #     [-1,-1,-1],
+    #     [ 0, 0, 0],
+    #     [ 1, 1, 0],
+    #     [ 1, 0, 1],
+    #     [ 0, 1, 1],
     # ])
-    test_init_planes(X, num_planes=50, threshold=0.1)
+    # # Example: corners of a cube
+    X = np.array([
+        [ 1, 1, 1],
+        [ 1, 1,-1],
+        [ 1,-1, 1],
+        [ 1,-1,-1],
+        [-1, 1, 1],
+        [-1, 1,-1],
+        [-1,-1, 1],
+        [-1,-1,-1],
+    ])
+    test_init_planes(X, num_planes=3, threshold=1)
     
     # symmetry plane
     # support: np.ndarray = np.array([0, 0, 0])
     # normal: np.ndarray = np.array([1, -1, 0])
     # non-symmetry plane
-    support: np.ndarray = np.array([0, -2, 0])
+    support: np.ndarray = np.array([.5, -2, 0])
     normal: np.ndarray = np.array([1, -1, 3])
     normal = normal / np.linalg.norm(normal)
-    symmetry: float = reflect_symmetry_measure(X, (support, normal), alpha=1.0)
+    plane = plane_point_normal2standard_form(support, normal)
+    symmetry: float = reflect_symmetry_measure(X, plane, alpha=1.0)
+    # symmetry: float = reflect_symmetry_measure(X, (support, normal), alpha=1.0)
     print(f"Symmetry measure: {symmetry}")
-    test_reflect_points_across_plane(X, support, normal)
+    test_reflect_points_across_plane(X, plane)
     
-    test_find_symmetry_planes(X, num_planes=1000, threshold=0.1, alpha=1.0, S=9)
+    # test_find_symmetry_planes(X, num_planes=1000, threshold=0.1, alpha=1.0, S=9)
 
 if __name__ == "__main__":
     main()

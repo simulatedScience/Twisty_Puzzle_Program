@@ -1,6 +1,10 @@
 """
-Detect reflectional symmetries in a 3D point cloud. Implemented Algorithm based on (Hruda et. al.)[https://doi.org/10.1007/s00371-020-02034-w]
+Detect reflectional symmetries in a 3D point cloud. Implemented Algorithm based on [1]
+
 author: Sebastian Jost
+
+References:
+[1] (Hruda et. al.)[https://doi.org/10.1007/s00371-020-02034-w]
 """
 import numpy as np
 from scipy.optimize import minimize
@@ -9,14 +13,14 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
     """
     Generate a set of random planes for symmetry detection by choosing two random points from X and computing the normal vector of the plane spanned by these points. The plane passes through the midpoint between these two points. Repeat `num_planes` times and only keep planes that are not too similar to the existing planes.
     """
-    def plane_distance(plane1, plane2):
-        """
-        Compute the distance between two planes defined by a support point and a normal vector.
-        Here, we define distance as the angle between the normal vectors of the planes.
-        """
-        return np.arccos(np.dot(plane1[1], plane2[1]))
+    # def plane_distance(plane1, plane2):
+    #     """
+    #     Compute the distance between two planes defined by a support point and a normal vector.
+    #     Here, we define distance as the angle between the normal vectors of the planes.
+    #     """
+    #     return np.arccos(np.dot(plane1[1], plane2[1]))
     n: int = X.shape[0]
-    found_planes = []
+    found_planes: dict[tuple(float, float, float, float), tuple[np.ndarray, int]] = {}
     for _ in range(num_planes):
         # choose two random points
         idx1: int = np.random.randint(0, n-1)
@@ -28,15 +32,87 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
         # compute midpoint
         midpoint: np.ndarray = p1 + diff_vector / 2
         # TODO: check if plane is not too similar to existing planes
-        new_plane = (midpoint, normal)
-        for plane in found_planes:
+        new_plane = plane_point_normal2standard_form((midpoint, normal))
+        new_plane_key = tuple(new_plane)
+        # plane_key = 4-tuple describing the plane
+        # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
+        for plane_key, (plane, num) in list(found_planes.items()):
             # print(f"{plane_distance(new_plane, plane) = }")
             if plane_distance(new_plane, plane) < threshold:
-                break
+                avg_plane: np.ndarray = average_planes(new_plane, plane)
+                avg_plane_key: tuple[float] = tuple(avg_plane)
+                found_planes[avg_plane_key] = (avg_plane, num + 1)
+                if not np.all(avg_plane == plane):
+                    del found_planes[plane_key]
         else:
-            found_planes.append((midpoint, normal))
-    return found_planes
+            found_planes[new_plane_key] = (new_plane, 1)
+    return [plane for plane, _ in found_planes.values()] # extract planes in standard form
 
+def average_planes(plane_1: np.ndarray, plane_2: np.ndarray):
+    """
+    Average two planes in standard form by adding their coefficients.
+    Given two planes in standard form 0=<(a,b,c,d),(x,y,z,1)>, we add the coefficients to get the average plane.
+    If the angle between the planes normal vectors (a,b,c) is greater than 90 degrees, we subtract the coefficients to get a new plane that is closer to both planes.
+
+    Args:
+        plane_1 (np.ndarray): plane in standard form (a,b,c,d)
+        plane_2 (np.ndarray): plane in standard form (a,b,c,d)
+
+    Returns:
+        np.ndarray: average plane in standard form (a,b,c,d)
+    """
+    print(f"averaging {plane_1} and {plane_2}")
+    if np.dot(plane_1[:3], plane_2[:3]) >= 0:
+        return plane_1 + plane_2
+    return plane_1 - plane_2
+
+def plane_distance(plane_1: np.ndarray, plane_2: np.ndarray, l_avrg=1) -> float:
+    """
+    Given two planes in standard form 0=<(a,b,c,d),(x,y,z,1)>, compute the distance between them as described in [1] Eq. 4.:
+    D(p_1, p_2) = ||p_1 - p_2|| if <n_1, n_2> >=0 or ||p_1 + p_2|| otherwise.
+    """
+    normal_1: np.ndarray = plane_1[:3]
+    normal_2: np.ndarray = plane_2[:3]
+    if np.dot(normal_1, normal_2) >= 0:
+        return np.linalg.norm(plane_1 - plane_2)
+    else:
+        return np.linalg.norm(plane_1 + plane_2)
+# def plane_distance(plane_1: tuple[np.ndarray, np.ndarray], plane_2: tuple[np.ndarray, np.ndarray], l_avrg=1) -> float:
+#     """
+#     Compute the distance between two planes defined by a support point and a normal vector as in [1] Eq. 4.
+#     To compute distance, convert each plane into standard form 0=<(a,b,c,d),(x,y,z,1)>. With these coefficients, define the plane p as the vector (a,b,c,d/l_avrg). Then we calculate the euclidean distance ||p_1-p_2|| if <n_1, n_2> >=0 or ||p_1+p_2|| otherwise.
+
+#     Args:
+#         plane_1 (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
+#         plane_2 (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
+#         l_avrg (float): average distance between points in the point cloud
+
+#     Returns:
+#         float: distance between two planes
+#     """
+#     support_1, normal_1 = plane_1
+#     support_2, normal_2 = plane_2
+#     plane_1_standard = plane_point_normal2standard_form(plane_1, l_avrg)
+#     plane_2_standard = plane_point_normal2standard_form(plane_2, l_avrg)
+#     if np.dot(normal_1, normal_2) >= 0:
+#         return np.linalg.norm(plane_1_standard - plane_2_standard)
+#     else:
+#         return np.linalg.norm(plane_1_standard + plane_2_standard)
+
+def plane_point_normal2standard_form(plane: tuple[np.ndarray, np.ndarray], l_avrg=1) -> np.ndarray:
+    """
+    Convert a plane defined by a support point q_p and a normal vector n_p into standard form 0=<(a,b,c,-d),(x,y,z,1)>.
+    With these coefficients, define the plane p as the vector (a,b,c,d/l_avrg).
+    
+    Args:
+        plane (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
+        l_avrg (float): average distance between points in the point cloud
+
+    Returns:
+        np.ndarray: plane in standard form (a,b,c,-d/l_avrg) / ||n_p||
+    """
+    standard_plane = np.append(plane[1], np.dot(plane[1], plane[0]) / l_avrg)
+    return standard_plane / np.linalg.norm(plane[1])
 
 def dist_similarity_function(dist: float, alpha: float = 15) -> float:
     """
@@ -64,10 +140,11 @@ def reflect_symmetry_measure(X: np.ndarray, plane: tuple[np.ndarray, np.ndarray]
         alpha (float): parameter to control the similarity function
 
     Returns:
-        float: symmetry measure in range [0, inf)   (see (Hruda et. al.) Eq. (2))
+        float: symmetry measure in range [0, inf)   (see Ref.[1] Eq. (2))
     """
     n: int = X.shape[0] # number of points
-    transformed_X = reflect_points_across_plane(X, plane[0], plane[1])
+    transformed_X = reflect_points_across_plane(X, plane)
+    # transformed_X = reflect_points_across_plane(X, plane[0], plane[1])
     similarity_measure = 0
     for i in range(n):
         for j in range(n):
@@ -121,27 +198,69 @@ def find_symmetry_planes(
         symmetry_planes.append((result.x[:3], result.x[3:]))
     return symmetry_planes
 
-def reflect_points_across_plane(X: np.ndarray, support: np.ndarray, normal: np.ndarray):
+def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     """
-    Given a plane defined by a point `support` and normal vector `normal`, reflect a set of points `X` across the plane.
+    Reflect a set of points X across a plane given in standard form (a,b,c,d) (s.t. ax + by + cz + d = 0)
 
     Args:
         X (np.ndarray): set of points to be reflected across the plane
-        support (np.ndarray): point on the plane
-        normal (np.ndarray): normal vector of the plane (normalized)
+        plane (np.ndarray): plane in standard form (a,b,c,d)
 
     Returns:
         np.ndarray: set of reflected points
     """
+    a, b, c, d = plane
+    # Normal vector of the plane
+    normal = np.array([a, b, c])
+    
     # Ensure the normal vector is a unit vector
     normal = normal / np.linalg.norm(normal)
+    
+    # Find a support vector (a point on the plane)
+    # We choose the point (x0, 0, 0) if a != 0
+    if a != 0:
+        support = np.array([-d / a, 0, 0])
+    elif b != 0:
+        support = np.array([0, -d / b, 0])
+    elif c != 0:
+        support = np.array([0, 0, -d / c])
+    else:
+        raise ValueError("Invalid plane coefficients. At least one of a, b, c must be non-zero.")
+    
     # Calculate the vector from point p to each point in X
     X_minus_p = X - support
+    
     # Project X_minus_p onto the normal vector n
     projection = np.dot(X_minus_p, normal)[:, np.newaxis] * normal
+    
     # Reflect X across the plane
     X_reflected = X - 2 * projection
+    
     return X_reflected
+    # a, b, c, d = plane
+    # return X - 2 * (np.dot(X, np.array([a, b, c])) + d)[:, np.newaxis] * np.array([a, b, c])
+
+# def reflect_points_across_plane(X: np.ndarray, support: np.ndarray, normal: np.ndarray):
+#     """
+#     Given a plane defined by a point `support` and normal vector `normal`, reflect a set of points `X` across the plane.
+
+#     Args:
+#         X (np.ndarray): set of points to be reflected across the plane
+#         support (np.ndarray): point on the plane
+#         normal (np.ndarray): normal vector of the plane (normalized)
+
+#     Returns:
+#         np.ndarray: set of reflected points
+#     """
+#     # Ensure the normal vector is a unit vector
+#     normal = normal / np.linalg.norm(normal)
+#     # Calculate the vector from point p to each point in X
+#     X_minus_p = X - support
+#     # Project X_minus_p onto the normal vector n
+#     projection = np.dot(X_minus_p, normal)[:, np.newaxis] * normal
+#     # Reflect X across the plane
+#     X_reflected = X - 2 * projection
+#     return X_reflected
 
 def calculate_centroid(X: np.ndarray) -> np.ndarray:
     """
