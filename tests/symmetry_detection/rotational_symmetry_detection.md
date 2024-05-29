@@ -1,3 +1,13 @@
+Given a cube with colored sides, we want to automatically find rotations (axis & angle) such that given any initial position (front face and top face color), we can reach any other position (front face and top face color) by applying a single rotation.
+
+This is possible for a regular cube and may also be possible for all other shapes. A position 
+
+# Algorithm for Rotational Symmetry Detection according to Hruda et al. 2021 [2]
+- [1] [reflection symmetry detection](https://doi.org/10.1007/s00371-020-02034-w)  
+- [2] [rotational symmetry detection](https://doi.org/10.1016/j.cagd.2022.102138)
+
+---
+
 - 3D point $x \in \mathbb{R}^3$
 - plane $p \subset \mathbb{R}^3$
 - reflections $r(p_1, x)$, $r(p_2, x)$ for non-parallel planes $p_1$, $p_2$
@@ -23,7 +33,7 @@ Set $\alpha = \frac{15}{l_{avg}}$ with $l_{avg}$ the average distance between a 
 
 ***Optimization:*** check distance with a cell structure first (cell-size $\frac{2.6}{\alpha}$).
 
-### Algorithm for Symmetry plane detection
+## Algorithm for Symmetry plane detection
 1. Create set of initial symmetry planes $P$ (e.g. 1000 random planes) 
    1. choose symmetry plane between two arbitrary points in $X$.
    2. Check distance $\delta$ of plane to all other plane candidates in $P$ (see Sec. 4.1.1, Eq. 4, 5)
@@ -39,7 +49,7 @@ Set $\alpha = \frac{15}{l_{avg}}$ with $l_{avg}$ the average distance between a 
 9. Only accept planes with symmetry measure >70% (adjust as needed) of best plane's measure.
 
 
-### Algorithm for Rotational symmetry detection
+## Algorithm for Rotational symmetry detection
 Given a quarternion $Q$ and a point $s \in \mathbb{R}^3$ we define a new symmetry measure:
 
 $$s_X(Q, s) = \left( \sum_{i=1}^n\sum_{j=1}^n \varphi(||\text{rot}(Q, s, x_i)-x_j||) \right) \text{Pen}(Q)$$
