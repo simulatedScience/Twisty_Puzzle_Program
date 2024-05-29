@@ -22,6 +22,16 @@ def generate_algorithms(
         ) -> dict[tuple[str, int], str]:
     """
     Generate a list of algorithms that can be used to scramble the puzzle.
+    
+    Args:
+        puzzle (Twisty_Puzzle): puzzle to generate algorithms for
+        sympy_moves (dict): dictionary of sympy moves for the puzzle
+        max_base_sequence_length (int): maximum length of the base sequence
+        find_n_algorithms (int): number of algorithms to find
+        max_pieces_affected (int): maximum number of pieces affected by the algorithm
+        max_order (int): maximum order of the algorithm
+        max_move_sequence_order (int): maximum order of the move sequence
+        max_algorithm_length (int): maximum length of the algorithm
     """
     found_algorithms: dict[tuple[str, int], str] = dict()
     while len(found_algorithms) < find_n_algorithms:
@@ -31,6 +41,7 @@ def generate_algorithms(
                 puzzle.SOLVED_STATE,
                 puzzle.moves,
                 sequence_length)
+        algorithm_base = ["t", "t", "d'", "d'", "f", "b'"]
         algorithm_base_str = " ".join(algorithm_base)
         new_algorithms = alg_ana.analyse_alg(
             algorithm_base_str ,
@@ -117,7 +128,7 @@ def show_algorithm(puzzle: Twisty_Puzzle, sympy_moves: dict, alg: dict, alg_nbr:
     print(f"Alg. affects {len(affected_pieces)} pieces:\n {affected_pieces}")
     
     # show algorithm on puzzle
-    puzzle.reset_to_solved()
+    # puzzle.reset_to_solved()
     show_algorithm_on_puzzle(puzzle, alg_permutation, alg, alg_nbr)
     # puzzle.perform_move(alg["alg_moves"])
     print(f"Algorithm {alg_nbr} applied.")
@@ -168,7 +179,8 @@ def main():
     print(f"Enter 'exit' to quit the program.")
 
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
-    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = input("Enter a puzzle name: ")
+    puzzle_name = "rubiks_2x2"
     # puzzle_name = "geared_mixup"
     puzzle.load_puzzle(puzzle_name)
     n = puzzle.state_space_size
@@ -181,13 +193,21 @@ def main():
     puzzle_algorithms = generate_algorithms(
         puzzle,
         sympy_moves,
-        find_n_algorithms=16,
-        max_pieces_affected=16,
-        max_order=6,
-        max_algorithm_length=30,
+        find_n_algorithms=1,
+        max_pieces_affected=8,
+        max_order=2,
+        max_algorithm_length=6,
         )
+    # puzzle_algorithms = generate_algorithms(
+    #     puzzle,
+    #     sympy_moves,
+    #     find_n_algorithms=16,
+    #     max_pieces_affected=16,
+    #     max_order=6,
+    #     max_algorithm_length=30,
+    #     )
 
-    user_test_algorithms(puzzle, sympy_moves, puzzle_algorithms)
+    user_test_algorithms(puzzle, sympy_moves, puzzle_algorithms, draw_pieces=True)
 
 if __name__ == "__main__":
     main()

@@ -221,10 +221,10 @@ if __name__ == "__main__":
     
     # puzzle_name = input("Enter a puzzle name: ")
     # puzzle_name = "geared_mixup"
-    puzzle_name = "rubiks_2x2_ai"
+    puzzle_name = "rubiks_2x2"
     main(
         puzzle_name=puzzle_name,
-        max_pieces=3,
+        max_pieces=8,
         max_order=5,
         max_move_sequence_order=300,
         clipshape="cube",
