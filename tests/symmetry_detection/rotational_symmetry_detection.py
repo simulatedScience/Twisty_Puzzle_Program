@@ -10,37 +10,81 @@ from scipy.spatial.transform import Rotation
 
 from symmetry_plane_detection import find_symmetry_planes, dist_similarity_function
 
-def find_plane_intersection(plane_1: tuple[np.ndarray, np.ndarray], plane_2: tuple[np.ndarray, np.ndarray], tol=1e-15) -> tuple[np.ndarray, np.ndarray]:
+def find_plane_intersection(
+        plane_1: np.ndarray,
+        plane_2: np.ndarray,
+        tol=1e-15) -> tuple[np.ndarray, np.ndarray]:
     """
-    Given two planes, find their intersection line. If the planes are parallel, return None.
+    Given two planes defined by coefficients (a, b, c, d), find their intersection line.
+    If the planes are parallel, return None.
 
     Args:
-        plane_1 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
-        plane_2 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
+        plane_1 (np.ndarray): coefficients of the first plane equation (a, b, c, d)
+        plane_2 (np.ndarray): coefficients of the second plane equation (a, b, c, d)
         tol (float, optional): tolerance for detecting parallel planes. Defaults to 1e-15.
 
     Returns:
         tuple[np.ndarray, np.ndarray]: intersection line defined by a point and a direction vector
     """
-    point1, normal1 = plane_1
-    point2, normal2 = plane_2
-    # 1. Calculate the direction vector of the line (cross product of normals)
+    # Extract plane coefficients
+    a1, b1, c1, d1 = plane_1
+    a2, b2, c2, d2 = plane_2
+    # Normal vectors of the planes
+    normal1 = plane_1[:3]
+    normal2 = plane_2[:3]
+    # Ensure the normal vectors are unit vectors
+    normal1 = normal1 / np.linalg.norm(normal1)
+    normal2 = normal2 / np.linalg.norm(normal2)
+    # Calculate the direction vector of the line (cross product of normals)
     direction = np.cross(normal1, normal2)
     norm = np.linalg.norm(direction)
-    # if np.abs(norm - 1) > tol:
-    direction = direction / norm
-
-    # 2. Find a point on the line
-    A = np.array([normal1, normal2])  # Use both normal vectors
-    b = np.array([np.dot(normal1, point1), np.dot(normal2, point2)])
-
-    # If the planes are parallel
-    if np.linalg.norm(direction) < tol:
+    if norm < tol:
+        # If the direction vector is nearly zero, the planes are parallel
         return None
+    direction = direction / norm
+    # To find a point on the line, solve the system of equations
+    # a1*x + b1*y + c1*z + d1 = 0
+    # a2*x + b2*y + c2*z + d2 = 0
+    A = np.array([[a1, b1, c1], [a2, b2, c2]])
+    b = np.array([-d1, -d2])
+    # Find a particular solution using least squares (there are infinitely many solutions)
+    point = np.linalg.lstsq(A, b, rcond=None)[0]
 
-    # Solve for a particular solution (there are infinitely many on the line)
-    point = np.linalg.lstsq(A, b, rcond=None)[0] 
     return point, direction
+# def find_plane_intersection(
+#         plane_1: tuple[np.ndarray, np.ndarray],
+#         plane_2: tuple[np.ndarray, np.ndarray],
+#         tol=1e-15) -> tuple[np.ndarray, np.ndarray]:
+#     """
+#     Given two planes, find their intersection line. If the planes are parallel, return None.
+
+#     Args:
+#         plane_1 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
+#         plane_2 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
+#         tol (float, optional): tolerance for detecting parallel planes. Defaults to 1e-15.
+
+#     Returns:
+#         tuple[np.ndarray, np.ndarray]: intersection line defined by a point and a direction vector
+#     """
+#     point1, normal1 = plane_1
+#     point2, normal2 = plane_2
+#     # 1. Calculate the direction vector of the line (cross product of normals)
+#     direction = np.cross(normal1, normal2)
+#     norm = np.linalg.norm(direction)
+#     # if np.abs(norm - 1) > tol:
+#     direction = direction / norm
+
+#     # 2. Find a point on the line
+#     A = np.array([normal1, normal2])  # Use both normal vectors
+#     b = np.array([np.dot(normal1, point1), np.dot(normal2, point2)])
+
+#     # If the planes are parallel
+#     if np.linalg.norm(direction) < tol:
+#         return None
+
+#     # Solve for a particular solution (there are infinitely many on the line)
+#     point = np.linalg.lstsq(A, b, rcond=None)[0] 
+#     return point, direction
 
 def closest_point_on_line(ref_point, line_point, line_direction):
     """Finds the closest point on a line to a reference point.
@@ -115,7 +159,7 @@ def find_rotational_symmetries(
         plane_1 = planes[idx_1]
         plane_2 = planes[idx_2]
         # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
-        intersection_angle: float = np.arccos(np.dot(plane_1[1], plane_2[1]))  # angle between normals
+        intersection_angle: float = np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle between normals
         # reject planes that are too similar (small rotation angle)
         if intersection_angle < min_angle/2:
             continue
@@ -124,7 +168,7 @@ def find_rotational_symmetries(
             continue # planes are parallel (should never happen here)
         axis_support, axis = intersection
         rotation_angle: float = 2*intersection_angle
-        
+        # make sure rotation_angle is in [-pi, pi]
         rotation_angle = rotation_angle % (2*np.pi)
         if rotation_angle > np.pi:
             rotation_angle -= 2*np.pi

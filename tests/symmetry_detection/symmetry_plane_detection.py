@@ -4,7 +4,7 @@ Detect reflectional symmetries in a 3D point cloud. Implemented Algorithm based 
 author: Sebastian Jost
 
 References:
-[1] (Hruda et. al.)[https://doi.org/10.1007/s00371-020-02034-w]
+[1] [Hruda et. al.](https://doi.org/10.1007/s00371-020-02034-w)
 """
 import numpy as np
 from scipy.optimize import minimize
@@ -20,7 +20,7 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
     #     """
     #     return np.arccos(np.dot(plane1[1], plane2[1]))
     n: int = X.shape[0]
-    found_planes: dict[tuple(float, float, float, float), tuple[np.ndarray, int]] = {}
+    found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
     for _ in range(num_planes):
         # choose two random points
         idx1: int = np.random.randint(0, n-1)
@@ -36,15 +36,19 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
         new_plane_key = tuple(new_plane)
         # plane_key = 4-tuple describing the plane
         # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
+        add_new_plane: bool = True
         for plane_key, (plane, num) in list(found_planes.items()):
             # print(f"{plane_distance(new_plane, plane) = }")
             if plane_distance(new_plane, plane) < threshold:
                 avg_plane: np.ndarray = average_planes(new_plane, plane)
                 avg_plane_key: tuple[float] = tuple(avg_plane)
                 found_planes[avg_plane_key] = (avg_plane, num + 1)
-                if not np.all(avg_plane == plane):
+                if not avg_plane_key == plane_key:
                     del found_planes[plane_key]
-        else:
+                new_plane_key = avg_plane_key
+                new_plane = avg_plane
+                add_new_plane: bool = False
+        if add_new_plane:
             found_planes[new_plane_key] = (new_plane, 1)
     return [plane for plane, _ in found_planes.values()] # extract planes in standard form
 
@@ -61,10 +65,16 @@ def average_planes(plane_1: np.ndarray, plane_2: np.ndarray):
     Returns:
         np.ndarray: average plane in standard form (a,b,c,d)
     """
-    print(f"averaging {plane_1} and {plane_2}")
+    # print(f"averaging {plane_1} and {plane_2}")
     if np.dot(plane_1[:3], plane_2[:3]) >= 0:
-        return plane_1 + plane_2
-    return plane_1 - plane_2
+        new_plane = plane_1 + plane_2
+        # normalize first three components
+        new_plane[:3] = new_plane[:3] / np.linalg.norm(new_plane[:3])
+        return new_plane
+    new_plane = plane_1 - plane_2
+    # normalize first three components
+    new_plane[:3] = new_plane[:3] / np.linalg.norm(new_plane[:3])
+    return new_plane
 
 def plane_distance(plane_1: np.ndarray, plane_2: np.ndarray, l_avrg=1) -> float:
     """
@@ -103,7 +113,7 @@ def plane_point_normal2standard_form(plane: tuple[np.ndarray, np.ndarray], l_avr
     """
     Convert a plane defined by a support point q_p and a normal vector n_p into standard form 0=<(a,b,c,-d),(x,y,z,1)>.
     With these coefficients, define the plane p as the vector (a,b,c,d/l_avrg).
-    
+
     Args:
         plane (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
         l_avrg (float): average distance between points in the point cloud
@@ -129,14 +139,14 @@ def dist_similarity_function(dist: float, alpha: float = 15) -> float:
             (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
     return np.where(alpha * dist <= 2.6, value, 0)
 
-def reflect_symmetry_measure(X: np.ndarray, plane: tuple[np.ndarray, np.ndarray], alpha: float) -> float:
+def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> float:
     """
     Compute the symmetry measure for a set of points X reflected across a plane defined by a midpoint and normal vector.
     Higher symmetry measure indicates higher symmetry.
 
     Args:
         X (np.ndarray): set of points
-        plane (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
+        plane (np.ndarray): plane defined by a midpoint and normal vector
         alpha (float): parameter to control the similarity function
 
     Returns:
@@ -187,15 +197,15 @@ def find_symmetry_planes(
                 best_scores.append(score)
                 best_planes.append(plane)
     # optimize with the best planes as starting points
-    def objective(plane_components):
-        support: np.ndarray = plane_components[:3]
-        normal: np.ndarray = plane_components[3:]
-        plane = (support, normal)
+    def objective(plane):
+        # support: np.ndarray = plane_components[:3]
+        # normal: np.ndarray = plane_components[3:]
+        # plane = (support, normal)
         return -reflect_symmetry_measure(X, plane, alpha)
     symmetry_planes = []
     for plane in best_planes:
-        result = minimize(objective, np.concatenate(plane), method="L-BFGS-B")
-        symmetry_planes.append((result.x[:3], result.x[3:]))
+        result = minimize(objective, plane, method="L-BFGS-B")
+        symmetry_planes.append(result.x)
     return symmetry_planes
 
 def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:

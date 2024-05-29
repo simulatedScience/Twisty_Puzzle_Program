@@ -165,36 +165,45 @@ def main():
     plane_2 = (np.array([0, 1, 0], dtype=np.float32), np.array([0, 1, 1], dtype=np.float32))
     # plane_2 = (np.array([0, 1, 1], dtype=np.float32), np.array([-1, 2, 1], dtype=np.float32))
     # tetrahedron corners
-    # X = np.array([
-    #     [ 1, 0, 0],
-    #     [ 0, 1, 0],
-    #     [ 0, 0, 1],
-    #     [ 0, 0, 0],
-    # ])
+    # X = axis_tetragedron_vertices()
     # regular tetrahedron
-    X = np.array([
+    # X = tetrahedron_vertices()
+    # cube corners
+    X = cube_vertices()
+    # dodecahedron points
+    # X = dodecahedron_vertices()
+    # test_find_plane_intersection(plane_1, plane_2)
+    # plot_penalty_function()
+    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=1)
+    # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
+
+def axis_tetragedron_vertices():
+    return np.array([
+        [ 1, 0, 0],
+        [ 0, 1, 0],
+        [ 0, 0, 1],
+        [ 0, 0, 0],
+    ])
+
+def tetrahedron_vertices():
+    return np.array([
         [ 0, 0, 0],
         [ 1, 1, 0],
         [ 1, 0, 1],
         [ 0, 1, 1],
     ])
-    # cube corners
-    # X = np.array([
-    #     [ 1, 1, 1],
-    #     [ 1, 1,-1],
-    #     [ 1,-1, 1],
-    #     [ 1,-1,-1],
-    #     [-1, 1, 1],
-    #     [-1, 1,-1],
-    #     [-1,-1, 1],
-    #     [-1,-1,-1],
-    # ])
-    # dodecahedron points
-    X = dodecahedron_vertices()
-    # test_find_plane_intersection(plane_1, plane_2)
-    # plot_penalty_function()
-    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=2)
-    # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
+
+def cube_vertices():
+    return np.array([
+        [ 1, 1, 1],
+        [ 1, 1,-1],
+        [ 1,-1, 1],
+        [ 1,-1,-1],
+        [-1, 1, 1],
+        [-1, 1,-1],
+        [-1,-1, 1],
+        [-1,-1,-1],
+    ])
 
 def dodecahedron_vertices():
     """
