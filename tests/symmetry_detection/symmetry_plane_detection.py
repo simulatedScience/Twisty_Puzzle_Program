@@ -13,12 +13,6 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
     """
     Generate a set of random planes for symmetry detection by choosing two random points from X and computing the normal vector of the plane spanned by these points. The plane passes through the midpoint between these two points. Repeat `num_planes` times and only keep planes that are not too similar to the existing planes.
     """
-    # def plane_distance(plane1, plane2):
-    #     """
-    #     Compute the distance between two planes defined by a support point and a normal vector.
-    #     Here, we define distance as the angle between the normal vectors of the planes.
-    #     """
-    #     return np.arccos(np.dot(plane1[1], plane2[1]))
     n: int = X.shape[0]
     found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
     for _ in range(num_planes):
@@ -87,27 +81,6 @@ def plane_distance(plane_1: np.ndarray, plane_2: np.ndarray, l_avrg=1) -> float:
         return np.linalg.norm(plane_1 - plane_2)
     else:
         return np.linalg.norm(plane_1 + plane_2)
-# def plane_distance(plane_1: tuple[np.ndarray, np.ndarray], plane_2: tuple[np.ndarray, np.ndarray], l_avrg=1) -> float:
-#     """
-#     Compute the distance between two planes defined by a support point and a normal vector as in [1] Eq. 4.
-#     To compute distance, convert each plane into standard form 0=<(a,b,c,d),(x,y,z,1)>. With these coefficients, define the plane p as the vector (a,b,c,d/l_avrg). Then we calculate the euclidean distance ||p_1-p_2|| if <n_1, n_2> >=0 or ||p_1+p_2|| otherwise.
-
-#     Args:
-#         plane_1 (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
-#         plane_2 (tuple[np.ndarray, np.ndarray]): plane defined by a support point and a normal vector
-#         l_avrg (float): average distance between points in the point cloud
-
-#     Returns:
-#         float: distance between two planes
-#     """
-#     support_1, normal_1 = plane_1
-#     support_2, normal_2 = plane_2
-#     plane_1_standard = plane_point_normal2standard_form(plane_1, l_avrg)
-#     plane_2_standard = plane_point_normal2standard_form(plane_2, l_avrg)
-#     if np.dot(normal_1, normal_2) >= 0:
-#         return np.linalg.norm(plane_1_standard - plane_2_standard)
-#     else:
-#         return np.linalg.norm(plane_1_standard + plane_2_standard)
 
 def plane_point_normal2standard_form(plane: tuple[np.ndarray, np.ndarray], l_avrg=1) -> np.ndarray:
     """
@@ -198,9 +171,6 @@ def find_symmetry_planes(
                 best_planes.append(plane)
     # optimize with the best planes as starting points
     def objective(plane):
-        # support: np.ndarray = plane_components[:3]
-        # normal: np.ndarray = plane_components[3:]
-        # plane = (support, normal)
         return -reflect_symmetry_measure(X, plane, alpha)
     symmetry_planes = []
     for plane in best_planes:
@@ -250,27 +220,6 @@ def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     # a, b, c, d = plane
     # return X - 2 * (np.dot(X, np.array([a, b, c])) + d)[:, np.newaxis] * np.array([a, b, c])
 
-# def reflect_points_across_plane(X: np.ndarray, support: np.ndarray, normal: np.ndarray):
-#     """
-#     Given a plane defined by a point `support` and normal vector `normal`, reflect a set of points `X` across the plane.
-
-#     Args:
-#         X (np.ndarray): set of points to be reflected across the plane
-#         support (np.ndarray): point on the plane
-#         normal (np.ndarray): normal vector of the plane (normalized)
-
-#     Returns:
-#         np.ndarray: set of reflected points
-#     """
-#     # Ensure the normal vector is a unit vector
-#     normal = normal / np.linalg.norm(normal)
-#     # Calculate the vector from point p to each point in X
-#     X_minus_p = X - support
-#     # Project X_minus_p onto the normal vector n
-#     projection = np.dot(X_minus_p, normal)[:, np.newaxis] * normal
-#     # Reflect X across the plane
-#     X_reflected = X - 2 * projection
-#     return X_reflected
 
 def calculate_centroid(X: np.ndarray) -> np.ndarray:
     """

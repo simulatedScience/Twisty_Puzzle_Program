@@ -51,40 +51,6 @@ def find_plane_intersection(
     point = np.linalg.lstsq(A, b, rcond=None)[0]
 
     return point, direction
-# def find_plane_intersection(
-#         plane_1: tuple[np.ndarray, np.ndarray],
-#         plane_2: tuple[np.ndarray, np.ndarray],
-#         tol=1e-15) -> tuple[np.ndarray, np.ndarray]:
-#     """
-#     Given two planes, find their intersection line. If the planes are parallel, return None.
-
-#     Args:
-#         plane_1 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
-#         plane_2 (tuple[np.ndarray, np.ndarray]): plane defined by a midpoint and normal vector
-#         tol (float, optional): tolerance for detecting parallel planes. Defaults to 1e-15.
-
-#     Returns:
-#         tuple[np.ndarray, np.ndarray]: intersection line defined by a point and a direction vector
-#     """
-#     point1, normal1 = plane_1
-#     point2, normal2 = plane_2
-#     # 1. Calculate the direction vector of the line (cross product of normals)
-#     direction = np.cross(normal1, normal2)
-#     norm = np.linalg.norm(direction)
-#     # if np.abs(norm - 1) > tol:
-#     direction = direction / norm
-
-#     # 2. Find a point on the line
-#     A = np.array([normal1, normal2])  # Use both normal vectors
-#     b = np.array([np.dot(normal1, point1), np.dot(normal2, point2)])
-
-#     # If the planes are parallel
-#     if np.linalg.norm(direction) < tol:
-#         return None
-
-#     # Solve for a particular solution (there are infinitely many on the line)
-#     point = np.linalg.lstsq(A, b, rcond=None)[0] 
-#     return point, direction
 
 def closest_point_on_line(ref_point, line_point, line_direction):
     """Finds the closest point on a line to a reference point.
@@ -217,19 +183,6 @@ def penalty(angle, min_angle=np.pi/25, max_angle=np.pi/13, alpha: float = 0.1):
         return 1
     else:
         return dist_similarity_function(alpha * ((abs(angle) - max_angle) * 2.6 / (min_angle - max_angle)))
-    # # Ensure angle is a NumPy array for consistent calculations
-    # angle = np.asarray(angle)
-    # # Calculate normalized distance from max_angle
-    # normalized_distance = alpha * (np.abs(angle) - max_angle / (min_angle - max_angle))
-    # # Apply distance similarity function (assuming it's a function you've defined)
-    # penalty_values = dist_similarity_function(normalized_distance)
-    # # Set penalty to 1 if angle exceeds max_angle
-    # penalty_values[angle > max_angle] = 1
-    # # Return the penalty value(s)
-    # if angle.size == 1:  # If the input was a single value, return a single value
-    #     return penalty_values[0]
-    # else:  # If the input was an array, return an array of the same shape
-    #     return penalty_values
 
 def rotate_points(X: np.ndarray, angle: float, axis: np.ndarray, tol: float = 1e-15) -> np.ndarray:
     """
