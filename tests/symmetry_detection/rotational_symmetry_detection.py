@@ -9,7 +9,7 @@ from scipy.optimize import minimize
 from scipy.spatial.transform import Rotation as R
 from scipy.spatial.transform import Slerp
 
-from symmetry_plane_detection import find_symmetry_planes, dist_similarity_function
+from symmetry_plane_detection import find_symmetry_planes, dist_similarity_function, centroid
 
 def find_plane_intersection(
         plane_1: np.ndarray,
@@ -123,6 +123,9 @@ def find_rotational_symmetries(
     Returns:
         list[tuple[np.ndarray, float]]: list of rotational symmetries (axis, angle) detected
     """
+    # Step 0: center point cloud around origin
+    X_shift = centroid(X)
+    X = X - X_shift
     # Step 1: Find reflectional symmetry planes
     planes = find_symmetry_planes(X, num_planes, threshold, S=num_candidate_rotations)
 
@@ -145,10 +148,10 @@ def find_rotational_symmetries(
         if intersection is None:
             continue # planes are parallel (should never happen here)
         axis_support, axis = intersection
-        # make sure rotation_angle is in [-pi, pi]
+        # make sure rotation_angle is in [min_angle, pi]
         rotation_angle = rotation_angle % (2*np.pi)
         if rotation_angle > np.pi:
-            rotation_angle -= 2*np.pi
+            rotation_angle = 2*np.pi - rotation_angle
         # Step 2.2: Prune rotation candidates if they are too similar to existing ones
         quaternion = R.from_rotvec(rotation_angle * axis).as_quat()
         # candidate: (quaternion, axis_support) = (Q,s) in paper [1]
@@ -194,15 +197,19 @@ def find_rotational_symmetries(
     def objective(rotation_components):
         angle: float = rotation_components[0]
         axis: np.ndarray = rotation_components[1:4]
-        axis_support: np.ndarray = rotation_components[4:]
+        # axis_support: np.ndarray = rotation_components[4:]
         X_translated: np.ndarray = X - axis_support
         return -rotation_symmetry_measure(X_translated, (angle, axis), alpha)
     def concat_rotation(rotation):
-        return np.array([rotation[0], *rotation[1], *rotation[2]])
+        # return np.array([rotation[0], *rotation[1], *rotation[2]])
+        return np.array([rotation[0], *rotation[1]])
     symmetry_rotations = []
     for rotation in best_rotations:
         result = minimize(objective, concat_rotation(rotation), method="L-BFGS-B")
-        symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
+        # symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
+        symmetry_rotations.append((result.x[0], result.x[1:4], np.zeros(3)))
+    # Step 5: Shift back to original coordinates
+    symmetry_rotations = [(angle, axis, axis_support + X_shift) for angle, axis, axis_support in symmetry_rotations]
     return symmetry_rotations
 
 def penalty(angle, min_angle=np.pi/25, max_angle=np.pi/13, alpha: float = 0.1):

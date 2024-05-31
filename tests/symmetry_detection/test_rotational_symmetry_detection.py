@@ -48,6 +48,7 @@ def test_find_rotational_symmetries(
         anim_time: float = 1,
         anim_steps: int = 60,
         anim_pause: float = 2,
+        edges: np.ndarray = None,
     ) -> list[tuple[np.ndarray, float]]:
     rotations = find_rotational_symmetries(
         X=X,
@@ -63,12 +64,29 @@ def test_find_rotational_symmetries(
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     # show point cloud X
-    ax.scatter(X[:, 0], X[:, 1], X[:, 2])
-    # for rotation in rotations:
-    #     # draw rotation axis
-    #     draw_line(ax, rotation[2], rotation[1], length=2)
-    # plt.show()
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], s=200)
     plt.ion()
+    # show edges if available
+    if edges is not None:
+        for edge in edges:
+            draw_edge(
+                ax,
+                X[edge[0]],
+                X[edge[1]],
+                color="#000",
+            )
+    plt.pause(anim_pause)
+    # show all rotation axes. Wait for user confirmation
+    rot_axes = []
+    for rotation in rotations:
+        # draw rotation axis
+        rot_axes.append(draw_line(ax, rotation[2], rotation[1], length=4)[0])
+    plt.pause(anim_pause)
+    input("Press Enter to show individual rotations.")
+    for line in rot_axes:
+        line.remove()
+    # plt.show()
+    
     # show rotations one after the other. Wait for user confirmation
     i = 0
     while i < len(rotations):
@@ -114,9 +132,9 @@ def show_rotation(
     # print(f"Rotating by {np.rad2deg(angle):.2f}° around axis {axis}.")
     rotation = Rotation.from_rotvec(axis * angle/anim_steps)
     # draw rotation axis
-    rot_axis_line = draw_line(ax, axis_support, axis, length=2)
+    rot_axis_line = draw_line(ax, axis_support, axis, length=4)
     # draw copy of point cloud X_translated
-    rotation_points = ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="r")
+    rotation_points = ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="r", s=150)
     start_time = time.time()
     for i in range(anim_steps):
         # print(f"rotating by {np.rad2deg(angle/anim_steps):.2f}°. Step {i+1}/{anim_steps}.")
@@ -125,7 +143,7 @@ def show_rotation(
         # update plot
         rotation_points.remove()
         X_rotated = X_translated + axis_support
-        rotation_points = ax.scatter(X_rotated[:, 0], X_rotated[:, 1], X_rotated[:, 2], c="r")
+        rotation_points = ax.scatter(X_rotated[:, 0], X_rotated[:, 1], X_rotated[:, 2], c="r", s=150)
         # wait for remaining time to next step
         remaining_time = anim_time - time.time() + start_time
         pause_time = max(remaining_time / (anim_steps - i), 0.01)
@@ -139,7 +157,7 @@ def show_rotation(
     for line in rot_axis_line:
         line.remove()
 
-def draw_line(ax: plt, point: np.ndarray, direction: np.ndarray, length: float = 2):
+def draw_line(ax: plt.Axes, point: np.ndarray, direction: np.ndarray, length: float = 2, color: str = "#f85"):
     """
     Draw a line in 3D. going `direction*length/2` in either direction of `point`.
     
@@ -157,44 +175,72 @@ def draw_line(ax: plt, point: np.ndarray, direction: np.ndarray, length: float =
     return ax.plot([endpoint1[0], endpoint2[0]], 
             [endpoint1[1], endpoint2[1]], 
             [endpoint1[2], endpoint2[2]], 
-            'r-')
+            linestyle='-',
+            color=color,)
 
-def main():
+def draw_edge(ax: plt.Axes, point1: np.ndarray, point2:np.ndarray, color: str = "#000", linewidth: float = 3.0):
+    """
+    Draw a line connecting two points in 3D.
+
+    Args:
+        ax (plt.Axes): matplotlib axis
+        point1 (np.ndarray): first point
+        point2 (np.ndarray): second point
+        color (str, optional): line color. Defaults to "#000".
+    return:
+        (list[Line3D]): list of lines representing the edge
+    """
+    return ax.plot(
+        [point1[0], point2[0]],
+        [point1[1], point2[1]],
+        [point1[2], point2[2]],
+        linestyle='-',
+        linewidth=linewidth,
+        color=color,
+    )
+
+def main(X, edges=None):
     # # Example Usage
     plane_1 = (np.array([0, 0, 0], dtype=np.float32), np.array([1, 1, 0], dtype=np.float32))
     plane_2 = (np.array([0, 1, 0], dtype=np.float32), np.array([0, 1, 1], dtype=np.float32))
     # plane_2 = (np.array([0, 1, 1], dtype=np.float32), np.array([-1, 2, 1], dtype=np.float32))
-    # tetrahedron corners
-    # X = axis_tetragedron_vertices()
-    # regular tetrahedron
-    # X = tetrahedron_vertices()
-    # cube corners
-    X = cube_vertices()
-    # dodecahedron points
-    # X = dodecahedron_vertices()
     # test_find_plane_intersection(plane_1, plane_2)
     # plot_penalty_function()
-    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=1)
+    test_find_rotational_symmetries(X, anim_time=1, anim_steps=40, anim_pause=0.5, edges=edges)
     # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
 
 def axis_tetragedron_vertices():
-    return np.array([
+    vertices = np.array([
         [ 1, 0, 0],
         [ 0, 1, 0],
         [ 0, 0, 1],
         [ 0, 0, 0],
     ])
+    vertices = vertices - np.mean(vertices, axis=0)
+    edges = np.array([
+        (0, 1), (0, 2), (0, 3),
+        (1, 2), (1, 3),
+        (2, 3)
+    ])
+    return vertices, edges
 
 def tetrahedron_vertices():
-    return np.array([
+    vertices = np.array([
         [ 0, 0, 0],
         [ 1, 1, 0],
         [ 1, 0, 1],
         [ 0, 1, 1],
     ])
+    # vertices = vertices - np.mean(vertices, axis=0)
+    edges = np.array([
+        (0, 1), (0, 2), (0, 3),
+        (1, 2), (1, 3),
+        (2, 3)
+    ])
+    return vertices, edges
 
 def cube_vertices():
-    return np.array([
+    vertices = np.array([
         [ 1, 1, 1],
         [ 1, 1,-1],
         [ 1,-1, 1],
@@ -204,6 +250,16 @@ def cube_vertices():
         [-1,-1, 1],
         [-1,-1,-1],
     ])
+    edges = np.array([
+        (0, 1), (0, 2), (0, 4),
+        (1, 3), (1, 5),
+        (2, 3), (2, 6),
+        (3, 7),
+        (4, 5), (4, 6),
+        (5, 7),
+        (6, 7)
+    ])
+    return vertices, edges
 
 def dodecahedron_vertices():
     """
@@ -223,8 +279,33 @@ def dodecahedron_vertices():
         (1/phi, 0, phi), (1/phi, 0, -phi), (-1/phi, 0, phi), (-1/phi, 0, -phi),
         (phi, 1/phi, 0), (phi, -1/phi, 0), (-phi, 1/phi, 0), (-phi, -1/phi, 0)
     ])
+    edges = np.array([
+        (0, 8), (0, 12), (0, 16),
+        (1, 9), (1, 13), (1, 16),
+        (2, 10), (2, 12), (2, 17),
+        (3, 11), (3, 13), (3, 17),
+        (4, 8), (4, 14), (4, 18),
+        (5, 9), (5, 15), (5, 18),
+        (6, 10), (6, 14), (6, 19),
+        (7, 11), (7, 15), (7, 19),
+        (8, 9),
+        (10, 11),
+        (12, 14),
+        (13, 15),
+        (16, 17),
+        (18, 19),
+        ])
 
-    return vertices
+    return vertices, edges
 
 if __name__ == "__main__":
-    main()
+    # tetrahedron corners
+    # X, edges = axis_tetragedron_vertices()
+    # regular tetrahedron
+    X, edges = tetrahedron_vertices()
+    # cube corners
+    # X, edges = cube_vertices()
+    # dodecahedron points
+    # X, edges = dodecahedron_vertices()
+    X = X
+    main(X, edges)

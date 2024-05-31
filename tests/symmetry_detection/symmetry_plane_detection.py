@@ -221,7 +221,7 @@ def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     # return X - 2 * (np.dot(X, np.array([a, b, c])) + d)[:, np.newaxis] * np.array([a, b, c])
 
 
-def calculate_centroid(X: np.ndarray) -> np.ndarray:
+def centroid(X: np.ndarray) -> np.ndarray:
     """
     Calculate the centroid of a set of points.
 
