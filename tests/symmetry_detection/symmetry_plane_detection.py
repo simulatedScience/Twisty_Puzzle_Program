@@ -33,7 +33,10 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
         add_new_plane: bool = True
         for plane_key, (plane, num) in list(found_planes.items()):
             # print(f"{plane_distance(new_plane, plane) = }")
-            if plane_distance(new_plane, plane) < threshold:
+            if (dist := plane_distance(new_plane, plane)) < threshold:
+                if dist < threshold/10: # planes are almost identical, no furhter averaging needed
+                    # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
+                    break
                 avg_plane: np.ndarray = average_planes(new_plane, plane)
                 avg_plane_key: tuple[float] = tuple(avg_plane)
                 found_planes[avg_plane_key] = (avg_plane, num + 1)
@@ -109,8 +112,14 @@ def dist_similarity_function(dist: float, alpha: float = 15) -> float:
         float: similarity between two points
     """
     value = (1 - 1 / 2.6 * alpha * dist)**5 * \
-            (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
+        (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
     return np.where(alpha * dist <= 2.6, value, 0)
+    # if alpha * dist > 2.6:
+    #     return 0
+    # else:
+    #     value = (1 - 1 / 2.6 * alpha * dist)**5 * \
+    #         (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
+    #     return value
 
 def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> float:
     """
@@ -128,11 +137,12 @@ def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> 
     n: int = X.shape[0] # number of points
     transformed_X = reflect_points_across_plane(X, plane)
     # transformed_X = reflect_points_across_plane(X, plane[0], plane[1])
-    similarity_measure = 0
-    for i in range(n):
-        for j in range(n):
-            distance = np.linalg.norm(transformed_X[i] - X[j])
-            similarity_measure += dist_similarity_function(distance, alpha)
+    # similarity_measure = 0
+    pairwise_distances = np.linalg.norm(transformed_X[:, np.newaxis] - X, axis=2)
+    # Apply the distance similarity function to all distances
+    similarity_measures = dist_similarity_function(pairwise_distances, alpha)
+    # Sum all the similarity measures
+    similarity_measure = np.sum(similarity_measures)
     return similarity_measure
 
 def find_symmetry_planes(
@@ -171,11 +181,15 @@ def find_symmetry_planes(
                 best_planes.append(plane)
     # optimize with the best planes as starting points
     def objective(plane):
+        # normalize the normal vector
+        plane[:3] = plane[:3] / np.linalg.norm(plane[:3])
         return -reflect_symmetry_measure(X, plane, alpha)
     symmetry_planes = []
     for plane in best_planes:
         result = minimize(objective, plane, method="L-BFGS-B")
         symmetry_planes.append(result.x)
+        # normalize the normal vector
+        symmetry_planes[-1][:3] = symmetry_planes[-1][:3] / np.linalg.norm(symmetry_planes[-1][:3])
     return symmetry_planes
 
 def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
@@ -184,7 +198,7 @@ def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
 
     Args:
         X (np.ndarray): set of points to be reflected across the plane
-        plane (np.ndarray): plane in standard form (a,b,c,d)
+        plane (np.ndarray): plane in standard form (a,b,c,d) with normalized normal ||(a,b,c)||_2 = 1
 
     Returns:
         np.ndarray: set of reflected points
@@ -194,7 +208,13 @@ def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     normal = np.array([a, b, c])
     
     # Ensure the normal vector is a unit vector
-    normal = normal / np.linalg.norm(normal)
+    # if abs(norm := np.linalg.norm(normal)) - 1 > 1e-5:
+    #     normal = normal / norm
+    #     print(f"Normal vector had length {norm}.")
+    # norm = np.linalg.norm(normal)
+    # if abs(norm - 1) > 1e-2:
+    #     print(f"Normal vector length: {norm}")
+    # normal = normal / norm
     
     # Find a support vector (a point on the plane)
     # We choose the point (x0, 0, 0) if a != 0

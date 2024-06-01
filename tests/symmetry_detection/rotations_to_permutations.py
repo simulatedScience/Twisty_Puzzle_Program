@@ -1,6 +1,9 @@
 """
 This module aims to complete the automatic symmetry detection by converting the rotational symmetries detected for the points of a puzzle into permutations of the puzzle's pieces.
 """
+import cProfile
+import pstats
+
 import numpy as np
 from scipy.spatial.transform import Rotation
 
@@ -95,10 +98,26 @@ def load_puzzle_points(puzzle_name: str) -> tuple[np.ndarray, np.ndarray]:
 
 
 if __name__ == "__main__":
-    points, colors = load_puzzle_points("rubiks_2x2")
-    rotations = find_rotational_symmetries(
+    # points, colors = load_puzzle_points("rubiks_2x2")
+    # points, colors = load_puzzle_points("rubiks_cube")
+    points, colors = load_puzzle_points("gear_cube")
+    # rotations = find_rotational_symmetries(
+    #     X=points,
+    #     num_planes=300,
+    #     min_angle=np.pi/4,)
+    profile = cProfile.Profile()
+    rotations = profile.runcall(
+        find_rotational_symmetries,
         X=points,
-        num_planes=300,
-        min_angle=np.pi/4,)
+        num_planes = 3000,
+        num_candidate_rotations = 5000,
+        threshold = 0.1,
+        min_angle = np.pi / 12.5,
+        num_best_rotations = 40,
+        alpha = 1.0,)
+    print(f"Found {len(rotations)} rotational symmetries.")
+    ps = pstats.Stats(profile)
+    ps.sort_stats(("tottime"))
+    ps.print_stats(10)
     for rotation in rotations:
         print(rotation_to_permutation(points, rotation))

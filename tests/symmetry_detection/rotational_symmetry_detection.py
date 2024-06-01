@@ -85,11 +85,22 @@ def rotation_symmetry_measure(X: np.ndarray, rotation: tuple[float, np.ndarray],
     # TODO: Optimize by exploiting the locality of the symmetry measure (use cell-list or similar data structure)
     n: int = X.shape[0]  # number of points
     transformed_X = rotate_points(X, rotation[0], rotation[1])
-    similarity_measure = 0
-    for i in range(n):
-        for j in range(n):
-            distance = np.linalg.norm(transformed_X[i] - X[j])
-            similarity_measure += dist_similarity_function(distance, alpha)
+    
+    pairwise_distances = np.linalg.norm(transformed_X[:, np.newaxis] - X, axis=2)
+    # Apply the distance similarity function to all distances
+    similarity_measures = dist_similarity_function(pairwise_distances, alpha)
+    # Sum all the similarity measures
+    similarity_measure = np.sum(similarity_measures)
+    
+    # similarity_measure = 0
+    # for i in range(n):
+    #     distances = np.linalg.norm(transformed_X[i] - X, axis=1)
+    #     similarity_measures = dist_similarity_function(distances, alpha)
+    #     similarity_measure += np.sum(similarity_measures)
+    
+        # for j in range(n):
+        #     distance = np.linalg.norm(transformed_X[i] - X[j])
+        #     similarity_measure += dist_similarity_function(distance, alpha)
     # small angle penalization
     similarity_measure *= penalty(rotation[0])
     return similarity_measure
@@ -148,6 +159,12 @@ def find_rotational_symmetries(
         if intersection is None:
             continue # planes are parallel (should never happen here)
         axis_support, axis = intersection
+        if not rotation_angle or np.isnan(rotation_angle):
+            print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
+            print(f"plane_1 normal: {tuple(plane_1[:3])}")
+            print(f"plane_2 normal: {tuple(plane_2[:3])}")
+            print(f"Encountered invalid rotation_angle: {rotation_angle}")
+            print()
         # make sure rotation_angle is in [min_angle, pi]
         rotation_angle = rotation_angle % (2*np.pi)
         if rotation_angle > np.pi:
@@ -166,16 +183,30 @@ def find_rotational_symmetries(
                 key_rots = R.from_quat([Q_i, quaternion])
                 slerp = Slerp([0, 1], key_rots)
                 Q_new = slerp(1 / new_weight).as_quat()
+                # check norm of quaternion
+                # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
+                #     print(f"Encountered Q_avg with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
+                #     continue
                 pruned_candidates[i] = (Q_new, s_new, new_weight)
                 break
         else:
+            # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
+            #     print(f"Encountered Q_new with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
+            #     quaternion = quaternion / np.linalg.norm(quaternion[:3])
+            # if float("nan") in quaternion:
+            #     print(f"Encountered nan in quaternion: {quaternion}")
+            # if np.nan in quaternion:
+            #     print(f"Encountered nan in quaternion: {quaternion}")
+            # # else:
+            # axis2 = R.from_quat(quaternion)
             pruned_candidates.append((quaternion, axis_support, 1)) # (Q, s, w(Q, s))
 
     # Step 3: Evaluate candidate rotations and find best ones
     best_rotations = []
     best_scores = []
     for Q, s, _ in pruned_candidates: # weights (w(Q, s)) are no longer needed
-        axis = R.from_quat(Q).as_rotvec()
+        axis = R.from_quat(Q)
+        axis = axis.as_rotvec()
         rotation_angle = np.linalg.norm(axis)
         axis /= rotation_angle
         X_translated = X - s

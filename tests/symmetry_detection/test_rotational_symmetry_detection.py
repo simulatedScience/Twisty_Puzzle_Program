@@ -1,4 +1,7 @@
+import cProfile
+import pstats
 import time
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -40,26 +43,31 @@ def plot_penalty_function():
 def test_find_rotational_symmetries(
         X: np.ndarray,
         num_planes: int = 3000,
-        num_candidate_rotations: int = 30,
+        num_candidate_rotations: int = 5000,
         threshold: float = 0.1,
         min_angle: float = np.pi / 12.5,
-        num_best_rotations: int = 30,
+        num_best_rotations: int = 40,
         alpha: float = 1.0,
         anim_time: float = 1,
         anim_steps: int = 60,
         anim_pause: float = 2,
         edges: np.ndarray = None,
     ) -> list[tuple[np.ndarray, float]]:
-    rotations = find_rotational_symmetries(
-        X=X,
-        num_planes=num_planes,
-        num_candidate_rotations=num_candidate_rotations,
-        threshold=threshold,
-        min_angle=min_angle,
-        num_best_rotations=num_best_rotations,
-        alpha=alpha,
+    profile = cProfile.Profile()
+    rotations = profile.runcall(
+        find_rotational_symmetries,
+            X=X,
+            num_planes=num_planes,
+            num_candidate_rotations=num_candidate_rotations,
+            threshold=threshold,
+            min_angle=min_angle,
+            num_best_rotations=num_best_rotations,
+            alpha=alpha,
     )
     print(f"Found {len(rotations)} rotational symmetries.")
+    ps = pstats.Stats(profile)
+    ps.sort_stats(("tottime"))
+    ps.print_stats(10)
     # create 3D plot
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -302,10 +310,10 @@ if __name__ == "__main__":
     # tetrahedron corners
     # X, edges = axis_tetragedron_vertices()
     # regular tetrahedron
-    X, edges = tetrahedron_vertices()
+    # X, edges = tetrahedron_vertices()
     # cube corners
     # X, edges = cube_vertices()
     # dodecahedron points
-    # X, edges = dodecahedron_vertices()
-    X = X
+    X, edges = dodecahedron_vertices()
+    # X = X
     main(X, edges)
