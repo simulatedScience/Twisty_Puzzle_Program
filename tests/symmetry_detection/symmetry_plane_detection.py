@@ -98,7 +98,9 @@ def plane_point_normal2standard_form(plane: tuple[np.ndarray, np.ndarray], l_avr
         np.ndarray: plane in standard form (a,b,c,-d/l_avrg) / ||n_p||
     """
     standard_plane = np.append(plane[1], np.dot(plane[1], plane[0]) / l_avrg)
-    return standard_plane / np.linalg.norm(plane[1])
+    # normalize the normal vector
+    standard_plane[:3] = standard_plane[:3] / np.linalg.norm(standard_plane[:3])
+    return standard_plane
 
 def dist_similarity_function(dist: float, alpha: float = 15) -> float:
     """

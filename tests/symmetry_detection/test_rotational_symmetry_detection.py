@@ -9,7 +9,7 @@ from scipy.spatial.transform import Rotation
 
 from rotational_symmetry_detection import find_plane_intersection, penalty, find_rotational_symmetries, rotation_symmetry_measure
 from symmetry_plane_detection import dist_similarity_function
-from test_symmetry_plane_detection import draw_plane
+from test_symmetry_plane_detection import draw_plane, set_equal_aspect_3d
 
 def test_find_plane_intersection(plane_1: tuple[np.ndarray, np.ndarray], plane_2: tuple[np.ndarray, np.ndarray]) -> tuple[np.ndarray, np.ndarray]:
     """
@@ -26,6 +26,7 @@ def test_find_plane_intersection(plane_1: tuple[np.ndarray, np.ndarray], plane_2
     draw_plane(ax, *plane_1, show_normal=False, size=3)
     draw_plane(ax, *plane_2, show_normal=False, size=3)
     draw_line(ax, point, direction, length=3)
+    set_equal_aspect_3d(ax)
     plt.show()
     return intersection
 
@@ -73,6 +74,7 @@ def test_find_rotational_symmetries(
     ax = fig.add_subplot(111, projection='3d')
     # show point cloud X
     ax.scatter(X[:, 0], X[:, 1], X[:, 2], s=200)
+    set_equal_aspect_3d(ax)
     plt.ion()
     # show edges if available
     if edges is not None:

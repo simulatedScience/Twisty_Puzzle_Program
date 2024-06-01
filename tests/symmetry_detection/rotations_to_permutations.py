@@ -98,9 +98,9 @@ def load_puzzle_points(puzzle_name: str) -> tuple[np.ndarray, np.ndarray]:
 
 
 if __name__ == "__main__":
-    # points, colors = load_puzzle_points("rubiks_2x2")
+    points, colors = load_puzzle_points("rubiks_2x2")
     # points, colors = load_puzzle_points("rubiks_cube")
-    points, colors = load_puzzle_points("gear_cube")
+    # points, colors = load_puzzle_points("gear_cube")
     # rotations = find_rotational_symmetries(
     #     X=points,
     #     num_planes=300,

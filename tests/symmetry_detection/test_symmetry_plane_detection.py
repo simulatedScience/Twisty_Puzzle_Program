@@ -68,7 +68,7 @@ def test_reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.nda
     draw_plane(ax, plane, show_normal=True)
     # draw_plane(ax, p, n, show_normal=True)
     # configure plot
-    ax.set_box_aspect([1,1,1])
+    set_equal_aspect_3d(ax)
     plt.title("Reflection of points across a plane")
     plt.legend(loc='upper center', ncol=2)
     plt.show()
@@ -108,7 +108,7 @@ def test_find_symmetry_planes(
         symmetry = reflect_symmetry_measure(X, plane, alpha)
         print(f"Symmetry measure for plane {i}: {symmetry}")
         draw_plane(ax, plane, show_normal=False)
-    ax.set_box_aspect([1,1,1])
+    set_equal_aspect_3d(ax)
     plt.title("Best planes for symmetry detection")
     plt.show()
     return best_planes
@@ -117,7 +117,9 @@ def draw_plane(
         ax: plt.Axes,
         plane: np.ndarray,
         size: float = 1,
-        show_normal: bool = True):
+        show_normal: bool = True,
+        transparency: float = 0.9,
+        ):
     """
     Draw a plane in 3D given in standard form (a, b, c, d) (ax + by + cz + d = 0).
     
@@ -164,12 +166,36 @@ def draw_plane(
     
     # Plane points
     plane_points = support + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
-    ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=0.5, rstride=100, cstride=100)
+    ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=transparency, rstride=100, cstride=100)
     
     if show_normal:
         # plot the normal vector
         ax.quiver(support[0], support[1], support[2], normal[0], normal[1], normal[2], color='r')
 
+def set_equal_aspect_3d(ax):
+    """
+    Sets equal scaling for all three axes of a 3D plot.
+
+    Parameters:
+    ax (Axes3D): A Matplotlib 3D Axes object.
+    """
+    # Get the current limits
+    x_limits = ax.get_xlim()
+    y_limits = ax.get_ylim()
+    z_limits = ax.get_zlim()
+
+    # Determine the new limits that make the axes scaled equally
+    all_limits = np.array([x_limits, y_limits, z_limits])
+    min_limit = all_limits[:, 0].min()
+    max_limit = all_limits[:, 1].max()
+
+    # Set the new limits
+    ax.set_xlim([min_limit, max_limit])
+    ax.set_ylim([min_limit, max_limit])
+    ax.set_zlim([min_limit, max_limit])
+
+    # Set the same scale for all axes
+    ax.set_box_aspect([1, 1, 1])  # aspect ratio is 1:1:1
 
 def main():
     # # tetrahedron corners
