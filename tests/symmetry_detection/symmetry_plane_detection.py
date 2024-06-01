@@ -173,14 +173,13 @@ def find_symmetry_planes(
     # choose planes with best symmetry measure
     for plane in planes:
         score = reflect_symmetry_measure(X, plane, alpha)
-        if len(best_scores) < S or score > min(best_scores):
-            if len(best_scores) >= S:
-                min_index = np.argmin(best_scores)
-                best_scores[min_index] = score
-                best_planes[min_index] = plane
-            else:
-                best_scores.append(score)
-                best_planes.append(plane)
+        if len(best_scores) < S:
+            best_scores.append(score)
+            best_planes.append(plane)
+        elif score > min(best_scores):
+            min_index = np.argmin(best_scores)
+            best_scores[min_index] = score
+            best_planes[min_index] = plane
     # optimize with the best planes as starting points
     def objective(plane):
         # normalize the normal vector
