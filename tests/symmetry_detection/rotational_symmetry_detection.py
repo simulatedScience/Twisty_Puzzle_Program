@@ -139,68 +139,75 @@ def find_rotational_symmetries(
     X = X - X_shift
     # Step 1: Find reflectional symmetry planes
     planes = find_symmetry_planes(X, num_planes, threshold, S=num_candidate_rotations)
+    print(f"Found {len(planes)} symmetry planes.")
+    print(f"Searching {((len(planes)-1)**2+len(planes)-1)//2} rotation candidates.")
 
     # Step 2: Find rotation candidates
     #   2.1 find intersections of pairs of planes
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = []
-    for _ in range(num_planes//10):
+    # for _ in range(num_planes//10):
         # Step 2.1: Select two planes and find their intersection
-        idx_1: int = np.random.randint(len(planes) - 1)
-        idx_2: int = np.random.randint(idx_1 + 1, len(planes))
-        plane_1 = planes[idx_1]
-        plane_2 = planes[idx_2]
-        # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
-        rotation_angle: float = 2*np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle of rotation = 2*angle between normals
-        # reject planes that are too similar (small rotation angle)
-        if rotation_angle < min_angle:
-            continue
-        intersection = find_plane_intersection(plane_1, plane_2)
-        if intersection is None:
-            continue # planes are parallel (should never happen here)
-        axis_support, axis = intersection
-        if not rotation_angle or np.isnan(rotation_angle):
-            print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
-            print(f"plane_1 normal: {tuple(plane_1[:3])}")
-            print(f"plane_2 normal: {tuple(plane_2[:3])}")
-            print(f"Encountered invalid rotation_angle: {rotation_angle}")
-            print()
-        # make sure rotation_angle is in [min_angle, pi]
-        rotation_angle = rotation_angle % (2*np.pi)
-        if rotation_angle > np.pi:
-            rotation_angle = 2*np.pi - rotation_angle
-        # Step 2.2: Prune rotation candidates if they are too similar to existing ones
-        quaternion = R.from_rotvec(rotation_angle * axis).as_quat()
-        # candidate: (quaternion, axis_support) = (Q,s) in paper [1]
-        for i, (Q_i, s_i, w_i) in enumerate(pruned_candidates):
-            if (np.linalg.norm(quaternion - Q_i * np.sign(np.dot(quaternion, Q_i))) < epsilon_Q and
-                    np.linalg.norm(axis_support - s_i) < epsilon_s):
-                # Merge the candidates
-                new_weight = w_i + 1 # w(quarternion, axis_support) := 1
-                s_new = (w_i * s_i + axis_support) / new_weight
-                
-                # Use Slerp for quaternion interpolation
-                key_rots = R.from_quat([Q_i, quaternion])
-                slerp = Slerp([0, 1], key_rots)
-                Q_new = slerp(1 / new_weight).as_quat()
-                # check norm of quaternion
+        # idx_1: int = np.random.randint(len(planes) - 1)
+        # idx_2: int = np.random.randint(idx_1 + 1, len(planes))
+        # plane_1 = planes[idx_1]
+        # plane_2 = planes[idx_2]
+    k = 0
+    for idx_1, plane_1 in enumerate(planes[:-1]):
+        for idx_2, plane_2 in enumerate(planes[idx_1 + 1:]):
+            k += 1
+            # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
+            rotation_angle: float = 2*np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle of rotation = 2*angle between normals
+            # reject planes that are too similar (small rotation angle)
+            if rotation_angle < min_angle:
+                # print("Skipping due to low angle")
+                continue
+            intersection = find_plane_intersection(plane_1, plane_2)
+            if intersection is None:
+                # print("Skipping due to parallel planes")
+                continue # planes are parallel (should never happen here)
+            axis_support, axis = intersection
+            if not rotation_angle or np.isnan(rotation_angle):
+                print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
+                print(f"plane_1 normal: {tuple(plane_1[:3])}")
+                print(f"plane_2 normal: {tuple(plane_2[:3])}")
+                print(f"Encountered invalid rotation_angle: {rotation_angle}")
+                print()
+            # make sure rotation_angle is in [min_angle, pi]
+            rotation_angle = rotation_angle % (2*np.pi)
+            if rotation_angle > np.pi:
+                rotation_angle = 2*np.pi - rotation_angle
+            # Step 2.2: Prune rotation candidates if they are too similar to existing ones
+            quaternion = R.from_rotvec(rotation_angle * axis).as_quat()
+            # candidate: (quaternion, axis_support) = (Q,s) in paper [1]
+            for i, (Q_i, s_i, w_i) in enumerate(pruned_candidates):
+                if (np.linalg.norm(quaternion - Q_i * np.sign(np.dot(quaternion, Q_i))) < epsilon_Q and
+                        np.linalg.norm(axis_support - s_i) < epsilon_s):
+                    # Merge the candidates
+                    new_weight = w_i + 1 # w(quarternion, axis_support) := 1
+                    s_new = (w_i * s_i + axis_support) / new_weight
+                    
+                    # Use Slerp for quaternion interpolation
+                    key_rots = R.from_quat([Q_i, quaternion])
+                    slerp = Slerp([0, 1], key_rots)
+                    Q_new = slerp(1 / new_weight).as_quat()
+                    # check norm of quaternion
+                    # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
+                    #     print(f"Encountered Q_avg with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
+                    #     continue
+                    pruned_candidates[i] = (Q_new, s_new, new_weight)
+                    break
+            else:
                 # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
-                #     print(f"Encountered Q_avg with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
-                #     continue
-                pruned_candidates[i] = (Q_new, s_new, new_weight)
-                break
-        else:
-            # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
-            #     print(f"Encountered Q_new with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
-            #     quaternion = quaternion / np.linalg.norm(quaternion[:3])
-            # if float("nan") in quaternion:
-            #     print(f"Encountered nan in quaternion: {quaternion}")
-            # if np.nan in quaternion:
-            #     print(f"Encountered nan in quaternion: {quaternion}")
-            # # else:
-            # axis2 = R.from_quat(quaternion)
-            pruned_candidates.append((quaternion, axis_support, 1)) # (Q, s, w(Q, s))
-
+                #     print(f"Encountered Q_new with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
+                #     quaternion = quaternion / np.linalg.norm(quaternion[:3])
+                # if float("nan") in quaternion:
+                #     print(f"Encountered nan in quaternion: {quaternion}")
+                # if np.nan in quaternion:
+                #     print(f"Encountered nan in quaternion: {quaternion}")
+                # # else:
+                # axis2 = R.from_quat(quaternion)
+                pruned_candidates.append((quaternion, axis_support, 1)) # (Q, s, w(Q, s))
     # Step 3: Evaluate candidate rotations and find best ones
     best_rotations = []
     best_scores = []

@@ -314,8 +314,8 @@ if __name__ == "__main__":
     # regular tetrahedron
     # X, edges = tetrahedron_vertices()
     # cube corners
-    # X, edges = cube_vertices()
+    X, edges = cube_vertices()
     # dodecahedron points
-    X, edges = dodecahedron_vertices()
+    # X, edges = dodecahedron_vertices()
     # X = X
     main(X, edges)
