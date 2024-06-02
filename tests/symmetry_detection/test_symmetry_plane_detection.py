@@ -118,7 +118,7 @@ def draw_plane(
         plane: np.ndarray,
         size: float = 1,
         show_normal: bool = True,
-        transparency: float = 0.9,
+        transparency: float = 1.0,
         ):
     """
     Draw a plane in 3D given in standard form (a, b, c, d) (ax + by + cz + d = 0).
@@ -197,6 +197,43 @@ def set_equal_aspect_3d(ax):
     # Set the same scale for all axes
     ax.set_box_aspect([1, 1, 1])  # aspect ratio is 1:1:1
 
+def dodecahedron_vertices():
+    """
+    Calculates the vertices of a regular dodecahedron centered at the origin 
+    and with edge length 2.
+    
+    Returns:
+        np.ndarray: A (20, 3) array where each row represents a vertex (x, y, z).
+    """
+
+    phi = (1 + np.sqrt(5)) / 2  # Golden ratio
+
+    vertices = np.array([
+        (1, 1, 1), (1, 1, -1), (1, -1, 1), (1, -1, -1),
+        (-1, 1, 1), (-1, 1, -1), (-1, -1, 1), (-1, -1, -1),
+        (0, phi, 1/phi), (0, phi, -1/phi), (0, -phi, 1/phi), (0, -phi, -1/phi),
+        (1/phi, 0, phi), (1/phi, 0, -phi), (-1/phi, 0, phi), (-1/phi, 0, -phi),
+        (phi, 1/phi, 0), (phi, -1/phi, 0), (-phi, 1/phi, 0), (-phi, -1/phi, 0)
+    ])
+    edges = np.array([
+        (0, 8), (0, 12), (0, 16),
+        (1, 9), (1, 13), (1, 16),
+        (2, 10), (2, 12), (2, 17),
+        (3, 11), (3, 13), (3, 17),
+        (4, 8), (4, 14), (4, 18),
+        (5, 9), (5, 15), (5, 18),
+        (6, 10), (6, 14), (6, 19),
+        (7, 11), (7, 15), (7, 19),
+        (8, 9),
+        (10, 11),
+        (12, 14),
+        (13, 15),
+        (16, 17),
+        (18, 19),
+        ])
+
+    return vertices, edges
+
 def main():
     # # tetrahedron corners
     # X = np.array([
@@ -214,16 +251,17 @@ def main():
     #     [ 0, 1, 1],
     # ])
     # # Example: corners of a cube
-    X = np.array([
-        [ 1, 1, 1],
-        [ 1, 1,-1],
-        [ 1,-1, 1],
-        [ 1,-1,-1],
-        [-1, 1, 1],
-        [-1, 1,-1],
-        [-1,-1, 1],
-        [-1,-1,-1],
-    ])
+    # X = np.array([
+    #     [ 1, 1, 1],
+    #     [ 1, 1,-1],
+    #     [ 1,-1, 1],
+    #     [ 1,-1,-1],
+    #     [-1, 1, 1],
+    #     [-1, 1,-1],
+    #     [-1,-1, 1],
+    #     [-1,-1,-1],
+    # ])
+    X, edges = dodecahedron_vertices()
     # test_init_planes(X, num_planes=10, threshold=.01)
     
     # symmetry plane
@@ -237,9 +275,9 @@ def main():
     symmetry: float = reflect_symmetry_measure(X, plane, alpha=1.0)
     # symmetry: float = reflect_symmetry_measure(X, (support, normal), alpha=1.0)
     print(f"Symmetry measure: {symmetry}")
-    test_reflect_points_across_plane(X, plane)
+    # test_reflect_points_across_plane(X, plane)
     
-    test_find_symmetry_planes(X, num_planes=1000, threshold=0.1, alpha=1.0, S=9)
+    test_find_symmetry_planes(X, num_planes=5000, threshold=0.1, alpha=1.0, S=200)
 
 if __name__ == "__main__":
     main()
