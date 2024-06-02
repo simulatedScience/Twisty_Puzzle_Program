@@ -153,6 +153,7 @@ def find_symmetry_planes(
         threshold: float = 0.1,
         alpha: float = 1.0,
         S: int = 5,
+        min_score_ratio: float = 0.95,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
     """
     Find the best symmetry planes and optimize over them.
@@ -180,6 +181,9 @@ def find_symmetry_planes(
             min_index = np.argmin(best_scores)
             best_scores[min_index] = score
             best_planes[min_index] = plane
+    best_score = max(best_scores)
+    best_planes = [plane for plane, score in zip(best_planes, best_scores) if score >= best_score * min_score_ratio]
+    del best_scores # free memory, this list is no longer accurate or needed.
     # optimize with the best planes as starting points
     def objective(plane):
         # normalize the normal vector
