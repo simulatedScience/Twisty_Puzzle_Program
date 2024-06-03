@@ -15,39 +15,42 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
     """
     n: int = X.shape[0]
     found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
+    # for idx_1, p1 in enumerate(X[:-1]):
+    #     for p2 in X[idx_1+1:]:
     for _ in range(num_planes):
-        # choose two random points
-        idx1: int = np.random.randint(0, n-1)
-        idx2: int = np.random.randint(idx1 + 1, n)
-        # compute normal vector of plane across which one point is reflected to the other
-        p1, p2 = X[idx1], X[idx2]
-        diff_vector: np.ndarray = p2 - p1
-        normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
-        # compute midpoint
-        midpoint: np.ndarray = p1 + diff_vector / 2
-        # TODO: check if plane is not too similar to existing planes
-        new_plane = plane_point_normal2standard_form((midpoint, normal))
-        new_plane_key = tuple(new_plane)
-        # plane_key = 4-tuple describing the plane
-        # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
-        add_new_plane: bool = True
-        for plane_key, (plane, num) in list(found_planes.items()):
-            # print(f"{plane_distance(new_plane, plane) = }")
-            if (dist := plane_distance(new_plane, plane)) < threshold:
-                if dist < threshold/10: # planes are almost identical, no furhter averaging needed
-                    # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
+            # choose two random points
+            idx1: int = np.random.randint(0, n-1)
+            idx2: int = np.random.randint(idx1 + 1, n)
+            # compute normal vector of plane across which one point is reflected to the other
+            p1, p2 = X[idx1], X[idx2]
+
+            diff_vector: np.ndarray = p2 - p1
+            normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
+            # compute midpoint
+            midpoint: np.ndarray = p1 + diff_vector / 2
+            # TODO: check if plane is not too similar to existing planes
+            new_plane = plane_point_normal2standard_form((midpoint, normal))
+            new_plane_key = tuple(new_plane)
+            # plane_key = 4-tuple describing the plane
+            # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
+            add_new_plane: bool = True
+            for plane_key, (plane, num) in list(found_planes.items()):
+                # print(f"{plane_distance(new_plane, plane) = }")
+                if (dist := plane_distance(new_plane, plane)) < threshold:
+                    if dist < threshold/10: # planes are almost identical, no furhter averaging needed
+                        # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
+                        add_new_plane: bool = False
+                        break
+                    avg_plane: np.ndarray = average_planes(new_plane, plane)
+                    avg_plane_key: tuple[float] = tuple(avg_plane)
+                    found_planes[avg_plane_key] = (avg_plane, num + 1)
+                    if not avg_plane_key == plane_key:
+                        del found_planes[plane_key]
+                    new_plane_key = avg_plane_key
+                    new_plane = avg_plane
                     add_new_plane: bool = False
-                    break
-                avg_plane: np.ndarray = average_planes(new_plane, plane)
-                avg_plane_key: tuple[float] = tuple(avg_plane)
-                found_planes[avg_plane_key] = (avg_plane, num + 1)
-                if not avg_plane_key == plane_key:
-                    del found_planes[plane_key]
-                new_plane_key = avg_plane_key
-                new_plane = avg_plane
-                add_new_plane: bool = False
-        if add_new_plane:
-            found_planes[new_plane_key] = (new_plane, 1)
+            if add_new_plane:
+                found_planes[new_plane_key] = (new_plane, 1)
     return [plane for plane, _ in found_planes.values()] # extract planes in standard form
 
 def average_planes(plane_1: np.ndarray, plane_2: np.ndarray):

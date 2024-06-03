@@ -146,12 +146,6 @@ def find_rotational_symmetries(
     #   2.1 find intersections of pairs of planes
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = []
-    # for _ in range(num_planes//10):
-        # Step 2.1: Select two planes and find their intersection
-        # idx_1: int = np.random.randint(len(planes) - 1)
-        # idx_2: int = np.random.randint(idx_1 + 1, len(planes))
-        # plane_1 = planes[idx_1]
-        # plane_2 = planes[idx_2]
     k = 0
     for idx_1, plane_1 in enumerate(planes[:-1]):
         for idx_2, plane_2 in enumerate(planes[idx_1 + 1:]):
@@ -168,6 +162,7 @@ def find_rotational_symmetries(
                 continue # planes are parallel (should never happen here)
             axis_support, axis = intersection
             if not rotation_angle or np.isnan(rotation_angle):
+                # This should never happen
                 from symmetry_plane_detection import plane_distance
                 print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
                 print(f"plane_1: {tuple(plane_1)}")
