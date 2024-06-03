@@ -98,9 +98,9 @@ def load_puzzle_points(puzzle_name: str) -> tuple[np.ndarray, np.ndarray]:
 
 
 if __name__ == "__main__":
-    points, colors = load_puzzle_points("rubiks_2x2")
+    # points, colors = load_puzzle_points("rubiks_2x2")
     # points, colors = load_puzzle_points("rubiks_cube")
-    # points, colors = load_puzzle_points("gear_cube")
+    points, colors = load_puzzle_points("gear_cube")
     # rotations = find_rotational_symmetries(
     #     X=points,
     #     num_planes=300,
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         find_rotational_symmetries,
         X=points,
         num_planes = 3000,
-        num_candidate_rotations = 5000,
+        num_candidate_rotations = 30,
         threshold = 0.1,
         min_angle = np.pi / 12.5,
         num_best_rotations = 40,
@@ -119,5 +119,6 @@ if __name__ == "__main__":
     ps = pstats.Stats(profile)
     ps.sort_stats(("tottime"))
     ps.print_stats(10)
-    for rotation in rotations:
-        print(rotation_to_permutation(points, rotation))
+    for i, rotation in enumerate(rotations):
+        print(f"rot_{i+1}/{len(rotations)}: {rotation_to_permutation(points, rotation)}")
+    print("Done.")

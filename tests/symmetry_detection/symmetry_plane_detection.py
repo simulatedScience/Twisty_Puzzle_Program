@@ -36,6 +36,7 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
             if (dist := plane_distance(new_plane, plane)) < threshold:
                 if dist < threshold/10: # planes are almost identical, no furhter averaging needed
                     # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
+                    add_new_plane: bool = False
                     break
                 avg_plane: np.ndarray = average_planes(new_plane, plane)
                 avg_plane_key: tuple[float] = tuple(avg_plane)
@@ -169,21 +170,24 @@ def find_symmetry_planes(
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
     planes = init_planes(X, num_planes, threshold)
+    print(f"Initalized {len(planes)} planes.")
     best_planes = []
     best_scores = []
     # choose planes with best symmetry measure
     for plane in planes:
         score = reflect_symmetry_measure(X, plane, alpha)
-        if len(best_scores) < S:
+        if len(best_planes) < S:
             best_scores.append(score)
             best_planes.append(plane)
         elif score > min(best_scores):
             min_index = np.argmin(best_scores)
             best_scores[min_index] = score
             best_planes[min_index] = plane
+    print(f"Selected {len(best_planes)}/{S} possible symmetry planes.")
     best_score = max(best_scores)
     best_planes = [plane for plane, score in zip(best_planes, best_scores) if score >= best_score * min_score_ratio]
     del best_scores # free memory, this list is no longer accurate or needed.
+    print(f"Optimizing {len(best_planes)} best planes.")
     # optimize with the best planes as starting points
     def objective(plane):
         # normalize the normal vector

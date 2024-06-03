@@ -32,7 +32,7 @@ def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1)
         # plot the plane
         draw_plane(ax, plane, show_normal=False)
         # draw_plane(ax, p, n, show_normal=False)
-    ax.set_box_aspect([1,1,1])
+    set_equal_aspect_3d(ax)
     plt.title("Initial planes for symmetry detection")
     plt.show()
     return planes

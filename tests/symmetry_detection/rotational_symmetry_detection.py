@@ -168,11 +168,29 @@ def find_rotational_symmetries(
                 continue # planes are parallel (should never happen here)
             axis_support, axis = intersection
             if not rotation_angle or np.isnan(rotation_angle):
+                from symmetry_plane_detection import plane_distance
                 print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
-                print(f"plane_1 normal: {tuple(plane_1[:3])}")
-                print(f"plane_2 normal: {tuple(plane_2[:3])}")
+                print(f"plane_1: {tuple(plane_1)}")
+                print(f"plane_2: {tuple(plane_2)}")
                 print(f"Encountered invalid rotation_angle: {rotation_angle}")
+                print(f"plane distance: {plane_distance(plane_1, plane_2)}")
+                print(f"plane intersection: {intersection}")
                 print()
+                import matplotlib.pyplot as plt
+                from test_symmetry_plane_detection import draw_plane, set_equal_aspect_3d
+                # create a 3D plot
+                fig = plt.figure()
+                ax = fig.add_subplot(111, projection='3d')
+                # plot the points
+                ax.scatter(X[:, 0], X[:, 1], X[:, 2], c='b', marker='o')
+                # plot the planes
+                draw_plane(ax, plane_1, show_normal=True)
+                draw_plane(ax, plane_2, show_normal=True)
+                # draw_plane(ax, p, n, show_normal=False)
+                set_equal_aspect_3d(ax)
+                plt.title("Initial planes for symmetry detection")
+                plt.show()
+                continue
             # make sure rotation_angle is in [min_angle, pi]
             rotation_angle = rotation_angle % (2*np.pi)
             if rotation_angle > np.pi:
