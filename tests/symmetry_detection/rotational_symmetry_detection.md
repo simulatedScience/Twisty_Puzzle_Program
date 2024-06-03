@@ -65,10 +65,10 @@ In similarity function $s_X(T)$, set $\alpha = \frac{\textbf{20}}{l_{avg}}$ with
    3. (Optimization) further pruning and averaging of similar planes
    4. if $\delta < 0.1$, plane is too close.
    5. else: add plane to $P$.
-2. For each plane $p \in P$
+2. For each plane $p_i \in P$
 3. $\quad$ translate points $X$ and initial plane $p$ to origin.
 4. $\quad$ (Optimization) simplify point set to **~3000** points by 3D cell based averaging
-5. $\quad$ Evaluate symmetry measure $s_X(r(p_i, x))$ for all planes $p_i \in P$.
+5. $\quad$ Evaluate symmetry measure $s_X(r(p_i, x))$.
 6. end for
 7. Choose $S=30$ best planes by their symmetry measure
 8. Find local maximum of symmetry measure $s_X(T)$ by optimizing over $p$ e.g. using L-BFGS (quasi-Newtown). $T$ are the reflections about the $S$ best planes
