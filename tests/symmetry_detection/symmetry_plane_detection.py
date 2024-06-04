@@ -49,9 +49,15 @@ def init_planes(X: np.ndarray, num_planes: int = 1000, threshold: float = 0.1) -
                     new_plane_key = avg_plane_key
                     new_plane = avg_plane
                     add_new_plane: bool = False
+                    # break
             if add_new_plane:
                 found_planes[new_plane_key] = (new_plane, 1)
-    return [plane for plane, _ in found_planes.values()] # extract planes in standard form
+            # if prev_len == len(found_planes):
+            #     print(f"Added plane: {new_plane}")
+            # else:
+            #     print(f"Old planes: {prev_len}, new planes: {len(found_planes)}")
+    planes = [plane for plane, _ in found_planes.values()] # extract planes in standard form
+    return planes
 
 def average_planes(plane_1: np.ndarray, plane_2: np.ndarray):
     """
@@ -199,10 +205,20 @@ def find_symmetry_planes(
     symmetry_planes = []
     for plane in best_planes:
         result = minimize(objective, plane, method="L-BFGS-B")
-        symmetry_planes.append(result.x)
+        symmetry_plane = result.x
         # normalize the normal vector
-        symmetry_planes[-1][:3] = symmetry_planes[-1][:3] / np.linalg.norm(symmetry_planes[-1][:3])
-    return symmetry_planes
+        symmetry_plane[:3] = symmetry_plane[:3] / np.linalg.norm(symmetry_plane[:3])
+        # TODO: sort symmetry_planes by decreasing -results.fun
+        symmetry_planes.append(symmetry_plane)
+    # prune similar planes
+    pruned_symmetry_planes = []
+    for plane in symmetry_planes:
+        for other_plane in pruned_symmetry_planes:
+            if plane_distance(plane, other_plane) < threshold:
+                break
+        else:
+            pruned_symmetry_planes.append(plane)
+    return pruned_symmetry_planes
 
 def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     """

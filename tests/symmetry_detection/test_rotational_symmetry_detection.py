@@ -128,7 +128,7 @@ def show_rotation(
         anim_pause: float = 2):
     """
     Show the given rotation of a point cloud X around an axis as an animated 3D plot.
-    
+
     Args:
         ax (plt.Axes): matplotlib axis to plot on
         X (np.ndarray): point cloud
