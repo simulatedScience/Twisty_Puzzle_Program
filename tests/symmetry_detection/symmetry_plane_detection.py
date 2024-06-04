@@ -155,6 +155,10 @@ def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> 
     similarity_measures = dist_similarity_function(pairwise_distances, alpha)
     # Sum all the similarity measures
     similarity_measure = np.sum(similarity_measures)
+    if hasattr(reflect_symmetry_measure, "run_count"):
+        reflect_symmetry_measure.run_count += 1
+    else:
+        reflect_symmetry_measure.run_count = 1
     return similarity_measure
 
 def find_symmetry_planes(

@@ -102,6 +102,11 @@ def rotation_symmetry_measure(X: np.ndarray, rotation: tuple[float, np.ndarray],
         #     similarity_measure += dist_similarity_function(distance, alpha)
     # small angle penalization
     similarity_measure *= penalty(rotation[0])
+    
+    if hasattr(rotation_symmetry_measure, "run_count"):
+        rotation_symmetry_measure.run_count += 1
+    else:
+        rotation_symmetry_measure.run_count = 1
     return similarity_measure
 
 def find_rotational_symmetries(
@@ -259,7 +264,11 @@ def find_rotational_symmetries(
         result = minimize(objective, concat_rotation(rotation), method="L-BFGS-B")
         # symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
         symmetry_rotations.append((result.x[0], result.x[1:4], np.zeros(3)))
-    # Step 5: Shift back to original coordinates
+    # Step 5: Prune rotations that are too similar to existing ones
+    
+    # Step 6: Find all possible rotation angles for each axis
+    
+    # Step 7: Shift back to original coordinates
     symmetry_rotations = [(angle, axis, axis_support + X_shift) for angle, axis, axis_support in symmetry_rotations]
     return symmetry_rotations
 
