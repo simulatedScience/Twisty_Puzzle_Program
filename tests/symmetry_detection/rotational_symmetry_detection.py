@@ -3,7 +3,6 @@
 This moidule implements rotational symmetry detection for a 3D point cloud as described in [Hruda et. al.](https://doi.org/10.1016/j.cagd.2022.102138) [1].
 author: Sebastian Jost
 """
-
 import numpy as np
 from scipy.optimize import minimize
 from scipy.spatial.transform import Rotation as R
@@ -103,6 +102,11 @@ def rotation_symmetry_measure(X: np.ndarray, rotation: tuple[float, np.ndarray],
         #     similarity_measure += dist_similarity_function(distance, alpha)
     # small angle penalization
     similarity_measure *= penalty(rotation[0])
+    
+    if hasattr(rotation_symmetry_measure, "run_count"):
+        rotation_symmetry_measure.run_count += 1
+    else:
+        rotation_symmetry_measure.run_count = 1
     return similarity_measure
 
 def find_rotational_symmetries(
@@ -148,7 +152,7 @@ def find_rotational_symmetries(
     pruned_candidates = []
     k = 0
     for idx_1, plane_1 in enumerate(planes[:-1]):
-        for idx_2, plane_2 in enumerate(planes[idx_1 + 1:]):
+        for idx_2, plane_2 in enumerate(planes[idx_1+1:]):
             k += 1
             # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
             rotation_angle: float = 2*np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle of rotation = 2*angle between normals
@@ -160,16 +164,16 @@ def find_rotational_symmetries(
             if intersection is None:
                 # print("Skipping due to parallel planes")
                 continue # planes are parallel (should never happen here)
-            axis_support, axis = intersection
             if not rotation_angle or np.isnan(rotation_angle):
                 # This should never happen
+                # raise ValueError("Encountered invalid rotation_angle")
                 from symmetry_plane_detection import plane_distance
                 print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
-                print(f"plane_1: {tuple(plane_1)}")
-                print(f"plane_2: {tuple(plane_2)}")
+                print(f"plane_1 {idx_1}: {(plane_1)}")
+                print(f"plane_2 {idx_1+1+idx_2}: {(plane_2)}")
                 print(f"Encountered invalid rotation_angle: {rotation_angle}")
                 print(f"plane distance: {plane_distance(plane_1, plane_2)}")
-                print(f"plane intersection: {intersection}")
+                # print(f"plane intersection: {intersection}")
                 print()
                 import matplotlib.pyplot as plt
                 from test_symmetry_plane_detection import draw_plane, set_equal_aspect_3d
@@ -186,6 +190,7 @@ def find_rotational_symmetries(
                 plt.title("Initial planes for symmetry detection")
                 plt.show()
                 continue
+            axis_support, axis = intersection
             # make sure rotation_angle is in [min_angle, pi]
             rotation_angle = rotation_angle % (2*np.pi)
             if rotation_angle > np.pi:
@@ -194,8 +199,8 @@ def find_rotational_symmetries(
             quaternion = R.from_rotvec(rotation_angle * axis).as_quat()
             # candidate: (quaternion, axis_support) = (Q,s) in paper [1]
             for i, (Q_i, s_i, w_i) in enumerate(pruned_candidates):
-                if (np.linalg.norm(quaternion - Q_i * np.sign(np.dot(quaternion, Q_i))) < epsilon_Q and
-                        np.linalg.norm(axis_support - s_i) < epsilon_s):
+                
+                if (rotation_distance(epsilon_Q, epsilon_s, axis_support, quaternion, Q_i, s_i)):
                     # Merge the candidates
                     new_weight = w_i + 1 # w(quarternion, axis_support) := 1
                     s_new = (w_i * s_i + axis_support) / new_weight
@@ -259,9 +264,18 @@ def find_rotational_symmetries(
         result = minimize(objective, concat_rotation(rotation), method="L-BFGS-B")
         # symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
         symmetry_rotations.append((result.x[0], result.x[1:4], np.zeros(3)))
-    # Step 5: Shift back to original coordinates
+    # Step 5: Prune rotations that are too similar to existing ones
+    
+    # Step 6: Find all possible rotation angles for each axis
+    
+    # Step 7: Shift back to original coordinates
     symmetry_rotations = [(angle, axis, axis_support + X_shift) for angle, axis, axis_support in symmetry_rotations]
     return symmetry_rotations
+
+def rotation_distance(epsilon_Q, epsilon_s, axis_support, quaternion, Q_i, s_i):
+    return np.linalg.norm(
+        quaternion - Q_i * np.sign(np.dot(quaternion, Q_i))) < epsilon_Q and \
+        np.linalg.norm(axis_support - s_i) < epsilon_s
 
 def penalty(angle, min_angle=np.pi/25, max_angle=np.pi/13, alpha: float = 0.1):
     """
