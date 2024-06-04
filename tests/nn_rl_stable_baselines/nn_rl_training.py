@@ -12,24 +12,30 @@ actions (dict[str, list[tuple[int, ...]]]):
 
         Example entry: {'U': [(0, 1, 2, 3), (4, 5, 6, 7)]} represents the action U that cyclically permutes the first 4 stickers and the next set of 4 stickers of the puzzle. All other stickers (indices >7) remain unchanged.
 """
-
 import os
-import sys
-import time
+import random
 
 import numpy as np
-import matplotlib.pyplot as plt
 
-print(sys.version)
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete, Discrete
 from stable_baselines3 import PPO
+from stable_baselines3.common.callbacks import BaseCallback
+from tqdm.auto import tqdm
+import logging
+
+# Disable Stable Baselines3 Logging
+logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
 
 class Twisty_Puzzle_Env(Env):
-    def __init__(self, solved_state: list[int], actions: dict[str, list[tuple[int, ...]]]):
+    def __init__(self, solved_state: list[int], actions: dict[str, list[tuple[int, ...]]], max_moves=50):
         super(Twisty_Puzzle_Env, self).__init__()
         self.solved_state = solved_state
         self.actions = actions
+        self.max_moves = max_moves
+        self.current_step = 0
+        self.scramble_length = 1
+        self.episode_counter = 0
         
         # Observation space: MultiDiscrete for the stickers, each can be one of the colors
         self.observation_space = MultiDiscrete([6] * len(solved_state))
@@ -42,27 +48,49 @@ class Twisty_Puzzle_Env(Env):
         # Initialize the state
         self.state = list(solved_state)
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, options=None, print_scramble=False):
         self.state = list(self.solved_state)
-        return self.state
-    
+        self.current_step = 0
+        self.episode_counter += 1
+        if self.episode_counter % 1000 == 0:
+            self.scramble_length += 1
+        self.state = self.scramble_puzzle(self.scramble_length, print_scramble=print_scramble)
+        return self.state, {}
+
+    def scramble_puzzle(self, n, print_scramble=False):
+        state = list(self.solved_state)
+        if print_scramble:
+            scramble = [0]*n
+        for i in range(n):
+            action_name = random.choice(list(self.actions.keys()))
+            if print_scramble:
+                scramble[i] = action_name
+            permutation = self.actions[action_name]
+            state = self.apply_permutation(state, permutation)
+        if print_scramble:
+            print(f"Scramble: {' '.join(scramble)}")
+        return state
+
     def step(self, action):
         action_name = self.action_index_to_name[action]
         permutation = self.actions[action_name]
         self.state = self.apply_permutation(self.state, permutation)
         
-        done = self.state == self.solved_state
-        reward = 1 if done else -1
+        self.current_step += 1
         
-        return self.state, reward, done, {}
+        terminated = np.all(self.state == self.solved_state)
+        truncated = self.current_step >= self.max_moves
+        
+        reward = 1 if terminated else 0
+        
+        return self.state, reward, terminated, truncated, {}
     
     def apply_permutation(self, state, permutation):
-        new_state = list(state)
+        new_state = np.array(state)
         for cycle in permutation:
             if len(cycle) > 1:
                 first_element = new_state[cycle[0]]
-                for i in range(len(cycle) - 1):
-                    new_state[cycle[i]] = new_state[cycle[i + 1]]
+                new_state[cycle[:-1]] = new_state[cycle[1:]]
                 new_state[cycle[-1]] = first_element
         return new_state
 
@@ -70,6 +98,17 @@ class Twisty_Puzzle_Env(Env):
         # Simple render function
         print(self.state)
 
+
+class ProgressBarCallback(BaseCallback):
+    def __init__(self, total_timesteps):
+        super().__init__()
+        self.pbar = tqdm(total=total_timesteps, desc="Training Progress")
+    def _on_step(self):
+        self.pbar.update(self.locals["self"].num_timesteps - self.pbar.n)
+        # self.pbar.set_postfix(
+        #     time_elapsed=self.num_timesteps,  # or calculate a more accurate time remaining
+        # )
+        return True
 
 def load_puzzle(puzzle_name: str):
     """
@@ -105,10 +144,55 @@ def load_puzzle(puzzle_name: str):
     colors = list(set(point_colors))
     solved_state: np.ndarray[int] = np.array([colors.index(color) for color in point_colors])
     return solved_state, moves_dict
-    
 
 
-solved_state, actions_dict = load_puzzle("rubiks_2x2_ai")
-env = Twisty_Puzzle_Env(solved_state, actions_dict)
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=1000)
+def test_agent(
+        model,
+        env,
+        num_tests: int = 5,
+        scramble_length: int = 5
+    ):
+    env.scramble_length = scramble_length
+    for i in range(num_tests):
+        obs, _ = env.reset(print_scramble=True)
+        done = False
+        action_sequence = []
+        while not done:
+            action, _ = model.predict(obs, deterministic=True)
+            obs, _, terminated, truncated, _ = env.step(int(action))
+            done = terminated or truncated
+            action_sequence.append(env.action_index_to_name[int(action)])
+        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+
+def main(
+        puzzle_name: str = "rubiks_2x2_ai",
+        train_new: bool = False,
+        n_episodes: int = 500_000,
+    ):
+    solved_state, actions_dict = load_puzzle(puzzle_name)
+    env = Twisty_Puzzle_Env(solved_state, actions_dict)
+    model = PPO("MlpPolicy", env, verbose=1)
+    # print model summary
+    print(model.policy)
+    # look for existing model
+    model_path = os.path.join("models", f"{puzzle_name}_model_{n_episodes}.zip")
+    if not train_new and os.path.exists(model_path):
+        print("Loading existing model...")
+        model = model.load(model_path)
+    else: # train a new model
+        print("Training new model...")
+        callback = ProgressBarCallback(total_timesteps=n_episodes)
+        model.learn(
+            total_timesteps=n_episodes,
+            callback=callback,
+            log_interval=5000)
+    os.makedirs("models", exist_ok=True)
+    model.save(os.path.join("models", f"{puzzle_name}_model_{n_episodes}.zip"))
+    test_agent(model, env)
+
+
+if __name__ == "__main__":
+    main(
+        train_new=False,
+    )
