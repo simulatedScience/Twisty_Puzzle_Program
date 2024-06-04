@@ -21,8 +21,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 print(sys.version)
-from gym import Env
+from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete, Discrete
+from stable_baselines3 import PPO
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self, solved_state: list[int], actions: dict[str, list[tuple[int, ...]]]):
@@ -41,7 +42,7 @@ class Twisty_Puzzle_Env(Env):
         # Initialize the state
         self.state = list(solved_state)
 
-    def reset(self):
+    def reset(self, seed=None):
         self.state = list(self.solved_state)
         return self.state
     
@@ -101,8 +102,8 @@ def load_puzzle(puzzle_name: str):
     #     convert to color index for each point
     point_colors = [point["vpy_color"] for point in point_dicts]
     point_colors = [(color.x, color.y, color.z) for color in point_colors]
-    colors = set(point_colors)
-    solved_state: np.ndarray[int] = np.array((colors.index(color) for color in point_colors))
+    colors = list(set(point_colors))
+    solved_state: np.ndarray[int] = np.array([colors.index(color) for color in point_colors])
     return solved_state, moves_dict
     
 

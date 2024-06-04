@@ -7,3 +7,5 @@ sympy # to calculate number of states of a puzzle
 scipy # combinatorics
 # keras # neural networks
 matplotlib # plotting of training progress
+stable_baselines3==2.3.2 # reinforcement learning
+gymnasium==0.29.1
