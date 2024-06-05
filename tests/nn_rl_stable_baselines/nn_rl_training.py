@@ -21,11 +21,9 @@ from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete, Discrete
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.monitor import Monitor
 from tqdm.auto import tqdm
 import logging
-
-# Disable Stable Baselines3 Logging
-logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self, solved_state: list[int], actions: dict[str, list[tuple[int, ...]]], max_moves=50):
@@ -52,8 +50,15 @@ class Twisty_Puzzle_Env(Env):
         self.state = list(self.solved_state)
         self.current_step = 0
         self.episode_counter += 1
-        if self.episode_counter % 1000 == 0:
-            self.scramble_length += 1
+        # Access the monitor wrapper to get episode rewards
+        if hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
+            results = self.monitor.get_episode_rewards()
+            last_n_episodes = 100  # Or any desired number of episodes
+            mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
+            if mean_reward > 0.8:
+                self.scramble_length += 1
+                print(f"Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
+                print(f"Mean reward over last {last_n_episodes} episodes: {mean_reward:.2f}")
         self.state = self.scramble_puzzle(self.scramble_length, print_scramble=print_scramble)
         return self.state, {}
 
@@ -98,6 +103,13 @@ class Twisty_Puzzle_Env(Env):
         # Simple render function
         print(self.state)
 
+class EvalCallback(BaseCallback):
+    def __init__(self, verbose=0):
+        super(EvalCallback, self).__init__(verbose)
+
+    def _on_step(self):
+        self.training_env.ep_rew_mean = np.mean(self.locals.get("episode_rewards", []))
+        return True
 
 class ProgressBarCallback(BaseCallback):
     def __init__(self, total_timesteps):
@@ -148,51 +160,87 @@ def load_puzzle(puzzle_name: str):
 
 def test_agent(
         model,
-        env,
-        num_tests: int = 5,
-        scramble_length: int = 5
+        env: Twisty_Puzzle_Env,
+        num_tests: int = 500,
+        scramble_length: int = 20
     ):
+    print(f"Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
+    success_count: int = 0
     for i in range(num_tests):
-        obs, _ = env.reset(print_scramble=True)
+        obs, _ = env.reset(print_scramble=False)
         done = False
         action_sequence = []
         while not done:
-            action, _ = model.predict(obs, deterministic=True)
+            action, _ = model.predict(obs, deterministic=False)
             obs, _, terminated, truncated, _ = env.step(int(action))
             done = terminated or truncated
             action_sequence.append(env.action_index_to_name[int(action)])
-        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+        success_count += int(terminated)
+        # print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+        # print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+    print(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
 
 def main(
         puzzle_name: str = "rubiks_2x2_ai",
+        load_model: str = None,
         train_new: bool = False,
-        n_episodes: int = 500_000,
+        n_episodes: int = 20_000,
     ):
+    exp_name = f"{puzzle_name}_model"
     solved_state, actions_dict = load_puzzle(puzzle_name)
     env = Twisty_Puzzle_Env(solved_state, actions_dict)
-    model = PPO("MlpPolicy", env, verbose=1)
-    # print model summary
-    print(model.policy)
-    # look for existing model
-    model_path = os.path.join("models", f"{puzzle_name}_model_{n_episodes}.zip")
-    if not train_new and os.path.exists(model_path):
+    monitor_env = Monitor(env)
+    env.monitor = monitor_env
+    env = monitor_env
+    model_path = os.path.join("models", f"{exp_name}.zip")
+    if load_model:
+        model_path = os.path.join("models", load_model)
+        model = PPO.load(model_path, env)
+        print(model.policy)
+    elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
         model = model.load(model_path)
-    else: # train a new model
+    else:
+        model = PPO(
+            "MlpPolicy",
+            env,
+            verbose=0,
+            tensorboard_log=f"tb_logs/{exp_name}")
+        print(model.policy)
         print("Training new model...")
-        callback = ProgressBarCallback(total_timesteps=n_episodes)
+        # callback = ProgressBarCallback(total_timesteps=n_episodes)
+        # # Disable Stable Baselines3 Logging
+        # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
         model.learn(
             total_timesteps=n_episodes,
-            callback=callback,
-            log_interval=5000)
+            reset_num_timesteps=False,
+            # callback=callback,
+            # log_interval=5000,
+            )
     os.makedirs("models", exist_ok=True)
-    model.save(os.path.join("models", f"{puzzle_name}_model_{n_episodes}.zip"))
+    if n_episodes > 0:
+        if load_model:
+            n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
+            n_episodes += n_prev_episodes
+        model.save(os.path.join("models", f"{exp_name}_{n_episodes}.zip"))
     test_agent(model, env)
 
 
 if __name__ == "__main__":
+    # main(
+    #     # load_model="rubiks_2x2_ai_model_600000.zip",
+    #     # train_new=True,
+    # )
+    # main(
+    #     puzzle_name="gear_cube",
+    #     load_model="gear_cube_model_300000.zip",
+    #     train_new=False,
+    #     n_episodes=0,
+    # )
     main(
-        train_new=False,
+        puzzle_name="skewb",
+        load_model=None,
+        train_new=True,
+        n_episodes=200_000,
     )
