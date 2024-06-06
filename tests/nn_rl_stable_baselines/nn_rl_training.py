@@ -26,13 +26,18 @@ from tqdm.auto import tqdm
 import logging
 
 class Twisty_Puzzle_Env(Env):
-    def __init__(self, solved_state: list[int], actions: dict[str, list[tuple[int, ...]]], max_moves=50):
+    def __init__(self,
+            solved_state: list[int],
+            actions: dict[str, list[tuple[int, ...]]],
+            base_actions: list[str] = None,
+            max_moves=50):
         super(Twisty_Puzzle_Env, self).__init__()
         self.solved_state = solved_state
         self.actions = actions
+        self.base_actions: list[str] = base_actions if base_actions else list(actions.keys())
         self.max_moves = max_moves
         self.current_step = 0
-        self.scramble_length = 1
+        self.scramble_length = 3
         self.episode_counter = 0
         
         # Observation space: MultiDiscrete for the stickers, each can be one of the colors
@@ -51,9 +56,9 @@ class Twisty_Puzzle_Env(Env):
         self.current_step = 0
         self.episode_counter += 1
         # Access the monitor wrapper to get episode rewards
-        if hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
+        if self.episode_counter%1000 == 999 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
             results = self.monitor.get_episode_rewards()
-            last_n_episodes = 100  # Or any desired number of episodes
+            last_n_episodes = 500  # Or any desired number of episodes
             mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
             if mean_reward > 0.8:
                 self.scramble_length += 1
@@ -67,7 +72,8 @@ class Twisty_Puzzle_Env(Env):
         if print_scramble:
             scramble = [0]*n
         for i in range(n):
-            action_name = random.choice(list(self.actions.keys()))
+            # only scramble using base actions
+            action_name = random.choice(list(self.base_actions))
             if print_scramble:
                 scramble[i] = action_name
             permutation = self.actions[action_name]
@@ -183,38 +189,45 @@ def test_agent(
 
 def main(
         puzzle_name: str = "rubiks_2x2_ai",
+        base_actions: list[str] = None,
         load_model: str = None,
         train_new: bool = False,
         n_episodes: int = 20_000,
     ):
     exp_name = f"{puzzle_name}_model"
     solved_state, actions_dict = load_puzzle(puzzle_name)
-    env = Twisty_Puzzle_Env(solved_state, actions_dict)
+    env = Twisty_Puzzle_Env(
+            solved_state,
+            actions_dict,
+            base_actions=base_actions)
     monitor_env = Monitor(env)
     env.monitor = monitor_env
     env = monitor_env
     model_path = os.path.join("models", f"{exp_name}.zip")
     if load_model:
         model_path = os.path.join("models", load_model)
-        model = PPO.load(model_path, env)
+        model = PPO.load(model_path, env, device="cpu")
         print(model.policy)
     elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
-        model = model.load(model_path)
+        model = PPO.load(model_path, device="cpu")
     else:
+        print("Training new model...")
         model = PPO(
             "MlpPolicy",
             env,
-            verbose=0,
+            verbose=2,
+            device="cpu",
             tensorboard_log=f"tb_logs/{exp_name}")
         print(model.policy)
-        print("Training new model...")
+    if n_episodes > 0:
         # callback = ProgressBarCallback(total_timesteps=n_episodes)
         # # Disable Stable Baselines3 Logging
         # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
         model.learn(
             total_timesteps=n_episodes,
             reset_num_timesteps=False,
+            tb_log_name=f"{exp_name}_{n_episodes}",
             # callback=callback,
             # log_interval=5000,
             )
@@ -237,10 +250,12 @@ if __name__ == "__main__":
     #     load_model="gear_cube_model_300000.zip",
     #     train_new=False,
     #     n_episodes=0,
-    # )
+    # )available())
     main(
         puzzle_name="skewb",
-        load_model=None,
+        base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
+        # load_model=None,
+        # load_model="skewb_sym_model_500000.zip",
         train_new=True,
-        n_episodes=200_000,
+        n_episodes=1_500_000,
     )
