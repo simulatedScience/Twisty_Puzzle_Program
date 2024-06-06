@@ -58,6 +58,12 @@ But this automatic algorithm creation is dificult:
 3. How can we tell if the found algorithms are sufficient to solve the puzzle completely?
 4. How can we use the algorithms efficiently without running into the same problems the previous version had?
 
+Why do we expect this to be better?
+1. Learning algorithms like Q-Learning often depend on being able to estimate how good the current state is. If only basic moves are available, then there are usually two adjacent states where the one closer to the goal state has more pieces in the wrong positions. This makes an optimal state-value function more necessarily complicated than comparing the current state to the goal state and counting similarities. But such a simple function would be very easy to learn for neural networks.
+2. Having algorithms available that only change a few moves, allows for such a simple state-value function to be used together with a greedy search method, making it far easier for an RL agent to learn a generalizable solution.
+
+![algorithm advantage visualization](algorithm_advantage_visualization_text.png)
+
 ### Additional improvements
 - Instead of online curriculum learning, learn by observing reverse scrambles as shown to be effective in the [Efficientcube paper](https://openreview.net/pdf?id=bnBeNFB27b).
   - improve this technique through scramble shortening  
@@ -85,7 +91,7 @@ We want algorithms to be ...
 3. ... of low order. We want them to both include a small number of turns and have a low order. Usual orders are 2, 3, 4 and 6, as these often represent simple cycles of just a few pieces.
 
 The exact numbers will need to be tested to see which yield the best results. This depends on the puzzle.  
-For example on  a gear cube, some useful algorithms affect 8 pieces, which would be almost useless on a 2x2 rubiks cube that only has 8 pieces.
+For example on  a gear cube, some useful algorithms affect at least 8 pieces, which would almost always be useless on a 2x2 rubiks cube that only has 8 pieces.
 
 ### 2. evaluate algorithms with RLHF
 The requirements for algorithms in 2. are quite subjective and difficult to quantify and generalize. Solution idea:
