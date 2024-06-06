@@ -41,7 +41,7 @@ def generate_algorithms(
                 puzzle.SOLVED_STATE,
                 puzzle.moves,
                 sequence_length)
-        algorithm_base = ["t", "t", "d'", "d'", "f", "b'"]
+        # algorithm_base = ["t", "t", "d'", "d'", "f", "b'"]
         algorithm_base_str = " ".join(algorithm_base)
         new_algorithms = alg_ana.analyse_alg(
             algorithm_base_str ,
@@ -179,8 +179,8 @@ def main():
     print(f"Enter 'exit' to quit the program.")
 
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
-    # puzzle_name = input("Enter a puzzle name: ")
-    puzzle_name = "rubiks_2x2"
+    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = "rubiks_2x2"
     # puzzle_name = "geared_mixup"
     puzzle.load_puzzle(puzzle_name)
     n = puzzle.state_space_size
@@ -193,10 +193,10 @@ def main():
     puzzle_algorithms = generate_algorithms(
         puzzle,
         sympy_moves,
-        find_n_algorithms=1,
-        max_pieces_affected=8,
-        max_order=2,
-        max_algorithm_length=6,
+        find_n_algorithms=10,
+        max_pieces_affected=5,
+        max_order=6,
+        max_algorithm_length=40,
         )
     # puzzle_algorithms = generate_algorithms(
     #     puzzle,
