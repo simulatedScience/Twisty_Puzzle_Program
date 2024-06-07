@@ -271,20 +271,22 @@ if __name__ == "__main__":
     #     train_new=False,
     #     n_episodes=0,
     # )available())
-    # main(
-    #     puzzle_name="rubiks_2x2_ai",
-    #     load_model=None,
-    #     train_new=False,
-    #     n_episodes=150_000,
-    # )
     main(
-        puzzle_name="skewb",
-        base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
+        puzzle_name="rubiks_2x2",
+        base_actions=["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
+        start_scramble_depth=1,
         load_model=None,
-        start_scramble_depth=4,
-        # load_model="skewb_sym_model_500000.zip",
-        # load_model="skewb_sym_half_model_1500000.zip",
         train_new=True,
-        n_episodes=1_500_000,
+        n_episodes=20_000_000,
     )
+    # main(
+    #     puzzle_name="skewb",
+    #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
+    #     load_model=None,
+    #     start_scramble_depth=1,
+    #     # load_model="skewb_sym_model_500000.zip",
+    #     # load_model="skewb_sym_half_model_1500000.zip",
+    #     train_new=True,
+    #     n_episodes=1_500_000,
+    # )
     # In terminal, run "tensorboard --logdir tb_logs/..." to view training progress
