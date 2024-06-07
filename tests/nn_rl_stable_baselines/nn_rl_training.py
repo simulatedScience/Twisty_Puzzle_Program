@@ -25,6 +25,8 @@ from stable_baselines3.common.monitor import Monitor
 from tqdm.auto import tqdm
 import logging
 
+from reward_functions import binary_reward, euclidean_distance_reward
+
 class Twisty_Puzzle_Env(Env):
     def __init__(self,
             solved_state: list[int],
@@ -37,8 +39,9 @@ class Twisty_Puzzle_Env(Env):
         self.base_actions: list[str] = base_actions if base_actions else list(actions.keys())
         self.max_moves = max_moves
         self.current_step = 0
-        self.scramble_length = 3
+        self.scramble_length = 1
         self.episode_counter = 0
+        self.episode_success_history = np.zeros(500)
         
         # Observation space: MultiDiscrete for the stickers, each can be one of the colors
         self.observation_space = MultiDiscrete([6] * len(solved_state))
@@ -57,10 +60,11 @@ class Twisty_Puzzle_Env(Env):
         self.episode_counter += 1
         # Access the monitor wrapper to get episode rewards
         if self.episode_counter%1000 == 999 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
-            results = self.monitor.get_episode_rewards()
-            last_n_episodes = 500  # Or any desired number of episodes
-            mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
-            if mean_reward > 0.8:
+            mean_success_rate = np.mean(self.episode_success_history)
+            if mean_success_rate > 0.8:
+                results = self.monitor.get_episode_rewards()
+                last_n_episodes = 500  # Or any desired number of episodes
+                mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
                 self.scramble_length += 1
                 print(f"Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
                 print(f"Mean reward over last {last_n_episodes} episodes: {mean_reward:.2f}")
@@ -89,10 +93,15 @@ class Twisty_Puzzle_Env(Env):
         
         self.current_step += 1
         
-        terminated = np.all(self.state == self.solved_state)
+        # terminated = np.all(self.state == self.solved_state)
         truncated = self.current_step >= self.max_moves
         
-        reward = 1 if terminated else 0
+        # reward = 1 if terminated else 0
+        # reward, terminated = euclidean_distance_reward(self.state, action, self.solved_state)
+        reward, terminated = binary_reward(self.state, action, self.solved_state)
+        
+        if truncated or terminated:
+            self.episode_success_history[self.episode_counter % 500] = terminated
         
         return self.state, reward, terminated, truncated, {}
     
@@ -167,14 +176,14 @@ def load_puzzle(puzzle_name: str):
 def test_agent(
         model,
         env: Twisty_Puzzle_Env,
-        num_tests: int = 500,
-        scramble_length: int = 20
+        num_tests: int = 5,
+        scramble_length: int = 5
     ):
     print(f"Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
     success_count: int = 0
     for i in range(num_tests):
-        obs, _ = env.reset(print_scramble=False)
+        obs, _ = env.reset(print_scramble=True)
         done = False
         action_sequence = []
         while not done:
@@ -183,8 +192,8 @@ def test_agent(
             done = terminated or truncated
             action_sequence.append(env.action_index_to_name[int(action)])
         success_count += int(terminated)
-        # print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-        # print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
     print(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
 
 def main(
@@ -193,32 +202,43 @@ def main(
         load_model: str = None,
         train_new: bool = False,
         n_episodes: int = 20_000,
+        start_scramble_depth: int = 1
     ):
-    exp_name = f"{puzzle_name}_model"
+    # exp_name = f"{puzzle_name}_model"
+    exp_name = f"{puzzle_name}_binary"
     solved_state, actions_dict = load_puzzle(puzzle_name)
     env = Twisty_Puzzle_Env(
             solved_state,
             actions_dict,
             base_actions=base_actions)
+    env.scramble_length = start_scramble_depth
     monitor_env = Monitor(env)
     env.monitor = monitor_env
-    env = monitor_env
+    # env
     model_path = os.path.join("models", f"{exp_name}.zip")
     if load_model:
         model_path = os.path.join("models", load_model)
-        model = PPO.load(model_path, env, device="cpu")
+        model = PPO.load(
+            model_path,
+            env,
+            device="cpu",
+        )
         print(model.policy)
     elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
-        model = PPO.load(model_path, device="cpu")
+        model = PPO.load(
+            model_path,
+            device="cpu"
+        )
     else:
         print("Training new model...")
         model = PPO(
             "MlpPolicy",
-            env,
+            monitor_env,
             verbose=2,
             device="cpu",
-            tensorboard_log=f"tb_logs/{exp_name}")
+            tensorboard_log=f"tb_logs/{exp_name}",
+        )
         print(model.policy)
     if n_episodes > 0:
         # callback = ProgressBarCallback(total_timesteps=n_episodes)
@@ -227,7 +247,7 @@ def main(
         model.learn(
             total_timesteps=n_episodes,
             reset_num_timesteps=False,
-            tb_log_name=f"{exp_name}_{n_episodes}",
+            tb_log_name=f"{exp_name}_{n_episodes}_{env.scramble_length}",
             # callback=callback,
             # log_interval=5000,
             )
@@ -236,7 +256,7 @@ def main(
         if load_model:
             n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
             n_episodes += n_prev_episodes
-        model.save(os.path.join("models", f"{exp_name}_{n_episodes}.zip"))
+        model.save(os.path.join("models", f"{exp_name}_{start_scramble_depth}_{n_episodes}.zip"))
     test_agent(model, env)
 
 
@@ -251,11 +271,20 @@ if __name__ == "__main__":
     #     train_new=False,
     #     n_episodes=0,
     # )available())
+    # main(
+    #     puzzle_name="rubiks_2x2_ai",
+    #     load_model=None,
+    #     train_new=False,
+    #     n_episodes=150_000,
+    # )
     main(
         puzzle_name="skewb",
         base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
-        # load_model=None,
+        load_model=None,
+        start_scramble_depth=4,
         # load_model="skewb_sym_model_500000.zip",
+        # load_model="skewb_sym_half_model_1500000.zip",
         train_new=True,
         n_episodes=1_500_000,
     )
+    # In terminal, run "tensorboard --logdir tb_logs/..." to view training progress
