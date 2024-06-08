@@ -32,14 +32,17 @@ class Twisty_Puzzle_Env(Env):
             solved_state: list[int],
             actions: dict[str, list[tuple[int, ...]]],
             base_actions: list[str] = None,
-            max_moves=50):
+            max_moves=50,
+            initial_scramble_length=1, # 1 seems to work best
+            success_threshold=0.9,
+            ):
         super(Twisty_Puzzle_Env, self).__init__()
         self.solved_state = solved_state
         self.actions = actions
         self.base_actions: list[str] = base_actions if base_actions else list(actions.keys())
         self.max_moves = max_moves
         self.current_step = 0
-        self.scramble_length = 1
+        self.scramble_length = initial_scramble_length
         self.episode_counter = 0
         self.episode_success_history = np.zeros(500)
         
@@ -59,9 +62,9 @@ class Twisty_Puzzle_Env(Env):
         self.current_step = 0
         self.episode_counter += 1
         # Access the monitor wrapper to get episode rewards
-        if self.episode_counter%1000 == 999 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
+        if self.episode_counter%1000 == 0 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
             mean_success_rate = np.mean(self.episode_success_history)
-            if mean_success_rate > 0.8:
+            if mean_success_rate > success_threshold:
                 results = self.monitor.get_episode_rewards()
                 last_n_episodes = 500  # Or any desired number of episodes
                 mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
