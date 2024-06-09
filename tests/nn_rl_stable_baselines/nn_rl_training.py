@@ -82,17 +82,17 @@ class Twisty_Puzzle_Env(Env):
 
     def scramble_puzzle(self, n, print_scramble=False):
         state = list(self.solved_state)
-        # if print_scramble:
-        #     scramble = [0]*n
+        if print_scramble:
+            scramble = [0]*n
         for i in range(n):
             # only scramble using base actions
             action_name = random.choice(list(self.base_actions))
-            # if print_scramble:
-            #     scramble[i] = action_name
+            if print_scramble:
+                scramble[i] = action_name
             permutation = self.actions[action_name]
             state = self.apply_permutation(state, permutation)
-        # if print_scramble:
-        #     print(f"Scramble: {' '.join(scramble)}")
+        if print_scramble:
+            print(f"Scramble: {' '.join(scramble)}")
         return state
 
     def step(self, action):
@@ -194,7 +194,7 @@ def test_agent(
     env.scramble_length = scramble_length
     success_count: int = 0
     for i in range(num_tests):
-        obs, _ = env.reset(print_scramble=False)
+        obs, _ = env.reset(print_scramble=True)
         done = False
         action_sequence = []
         while not done:
@@ -203,8 +203,8 @@ def test_agent(
             done = terminated or truncated
             action_sequence.append(env.action_index_to_name[int(action)])
         success_count += int(terminated)
-        # print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-        # print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
     print(f"[{id}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
 
 def main(
@@ -278,7 +278,7 @@ def main(
             n_episodes += n_prev_episodes
         model.save(os.path.join("models", f"{exp_identifier}.zip"))
     print(f"Testing agent {exp_name}...")
-    test_agent(model, env, num_tests=500, scramble_length=10, id=f"st={success_threshold}")
+    test_agent(model, env, num_tests=5, scramble_length=10, id=f"st={success_threshold}")
 
 
 if __name__ == "__main__":
@@ -288,15 +288,16 @@ if __name__ == "__main__":
     # )
     import multiprocessing as mp
     success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
-    n_processes = 8
+    n_processes = 1
     kwargs_list  = [
             (
             "skewb_sym_half", # puzzle_name
-            None,            # base_actions
-            None,            # load_model
-            # f"skewb_pyramid_binary_st={threshold}_1_500000",            # load_model
-            True,            # train_new
-            10_000_000,         # n_episodes
+            ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+            # None,            # load_model
+            f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
+            # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
+            False,            # train_new
+            0,         # n_episodes
             1,               # start_scramble_depth
             threshold,       # success_threshold
         ) for threshold in success_thresholds
