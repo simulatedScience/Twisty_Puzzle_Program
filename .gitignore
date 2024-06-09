@@ -11,6 +11,9 @@ neural_network*
 *param_hist_*
 saved_model.pb
 keras_metadata.pb
+*.zip
+tb_logs/*
+models/*
 # ignore test files
 tests/state compression tests/*
 !tests/state compression tests/*.py
