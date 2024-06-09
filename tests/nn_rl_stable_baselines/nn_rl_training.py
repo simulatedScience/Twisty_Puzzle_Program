@@ -14,6 +14,7 @@ actions (dict[str, list[tuple[int, ...]]]):
 """
 import os
 import random
+import time
 
 import numpy as np
 
@@ -22,8 +23,9 @@ from gymnasium.spaces import MultiDiscrete, Discrete
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.callbacks import CheckpointCallback
 from tqdm.auto import tqdm
-import logging
+# import logging
 
 from reward_functions import binary_reward, euclidean_distance_reward
 
@@ -40,11 +42,14 @@ class Twisty_Puzzle_Env(Env):
         self.solved_state = solved_state
         self.actions = actions
         self.base_actions: list[str] = base_actions if base_actions else list(actions.keys())
-        self.max_moves = max_moves
+        self.max_moves: int = max_moves
+        self.scramble_length: int = initial_scramble_length
+        self.success_threshold: float = success_threshold
+
         self.current_step = 0
-        self.scramble_length = initial_scramble_length
         self.episode_counter = 0
-        self.episode_success_history = np.zeros(500)
+        self.last_n_episodes: int = 1000
+        self.episode_success_history = np.zeros(self.last_n_episodes, dtype=bool)
         
         # Observation space: MultiDiscrete for the stickers, each can be one of the colors
         self.observation_space = MultiDiscrete([6] * len(solved_state))
@@ -64,29 +69,30 @@ class Twisty_Puzzle_Env(Env):
         # Access the monitor wrapper to get episode rewards
         if self.episode_counter%1000 == 0 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
             mean_success_rate = np.mean(self.episode_success_history)
-            if mean_success_rate > success_threshold:
+            if mean_success_rate >= self.success_threshold:
                 results = self.monitor.get_episode_rewards()
-                last_n_episodes = 500  # Or any desired number of episodes
-                mean_reward = np.mean(results[-last_n_episodes:]) if len(results) > 0 else 0
+                # last_n_episodes = len(self.episode_success_history)  # Or any desired number of episodes
+                mean_reward = np.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
                 self.scramble_length += 1
-                print(f"Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
-                print(f"Mean reward over last {last_n_episodes} episodes: {mean_reward:.2f}")
+                if self.scramble_length < 25 or self.scramble_length % 25 == 0:
+                    print(f"[st={self.success_threshold}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
+                    print(f"[st={self.success_threshold}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
         self.state = self.scramble_puzzle(self.scramble_length, print_scramble=print_scramble)
         return self.state, {}
 
     def scramble_puzzle(self, n, print_scramble=False):
         state = list(self.solved_state)
-        if print_scramble:
-            scramble = [0]*n
+        # if print_scramble:
+        #     scramble = [0]*n
         for i in range(n):
             # only scramble using base actions
             action_name = random.choice(list(self.base_actions))
-            if print_scramble:
-                scramble[i] = action_name
+            # if print_scramble:
+            #     scramble[i] = action_name
             permutation = self.actions[action_name]
             state = self.apply_permutation(state, permutation)
-        if print_scramble:
-            print(f"Scramble: {' '.join(scramble)}")
+        # if print_scramble:
+        #     print(f"Scramble: {' '.join(scramble)}")
         return state
 
     def step(self, action):
@@ -104,7 +110,7 @@ class Twisty_Puzzle_Env(Env):
         reward, terminated = binary_reward(self.state, action, self.solved_state)
         
         if truncated or terminated:
-            self.episode_success_history[self.episode_counter % 500] = terminated
+            self.episode_success_history[self.episode_counter % self.last_n_episodes] = terminated
         
         return self.state, reward, terminated, truncated, {}
     
@@ -180,13 +186,15 @@ def test_agent(
         model,
         env: Twisty_Puzzle_Env,
         num_tests: int = 5,
-        scramble_length: int = 5
+        scramble_length: int = 5,
+        id="",
     ):
-    print(f"Testing agent on {num_tests} scrambles of length {scramble_length}...")
+    start_time = time.perf_counter()
+    print(f"[{id}] Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
     success_count: int = 0
     for i in range(num_tests):
-        obs, _ = env.reset(print_scramble=True)
+        obs, _ = env.reset(print_scramble=False)
         done = False
         action_sequence = []
         while not done:
@@ -195,9 +203,9 @@ def test_agent(
             done = terminated or truncated
             action_sequence.append(env.action_index_to_name[int(action)])
         success_count += int(terminated)
-        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
-    print(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
+        # print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+        # print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+    print(f"[{id}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
 
 def main(
         puzzle_name: str = "rubiks_2x2_ai",
@@ -205,16 +213,19 @@ def main(
         load_model: str = None,
         train_new: bool = False,
         n_episodes: int = 20_000,
-        start_scramble_depth: int = 1
+        start_scramble_depth: int = 1,
+        success_threshold: float = 0.9,
     ):
     # exp_name = f"{puzzle_name}_model"
-    exp_name = f"{puzzle_name}_binary"
+    exp_name = f"{puzzle_name}_binary_st={success_threshold}"
     solved_state, actions_dict = load_puzzle(puzzle_name)
     env = Twisty_Puzzle_Env(
             solved_state,
             actions_dict,
-            base_actions=base_actions)
-    env.scramble_length = start_scramble_depth
+            base_actions=base_actions,
+            initial_scramble_length=start_scramble_depth,
+            success_threshold=success_threshold,)
+    # env.scramble_length = start_scramble_depth
     monitor_env = Monitor(env)
     env.monitor = monitor_env
     # env
@@ -226,7 +237,7 @@ def main(
             env,
             device="cpu",
         )
-        print(model.policy)
+        # print(model.policy)
     elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
         model = PPO.load(
@@ -238,29 +249,36 @@ def main(
         model = PPO(
             "MlpPolicy",
             monitor_env,
-            verbose=2,
+            verbose=0,
             device="cpu",
             tensorboard_log=f"tb_logs/{exp_name}",
         )
-        print(model.policy)
+        # print(model.policy)
+    exp_identifier = f"{exp_name}_{start_scramble_depth}_{n_episodes}"
     if n_episodes > 0:
         # callback = ProgressBarCallback(total_timesteps=n_episodes)
         # # Disable Stable Baselines3 Logging
         # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
+        checkpoint_callback = CheckpointCallback(
+            save_freq=100_000,
+            save_path=os.path.join("models", exp_identifier),
+            name_prefix=f"{exp_name}_{start_scramble_depth}",
+        )
         model.learn(
             total_timesteps=n_episodes,
             reset_num_timesteps=False,
             tb_log_name=f"{exp_name}_{n_episodes}_{env.scramble_length}",
-            # callback=callback,
+            callback=checkpoint_callback,
             # log_interval=5000,
-            )
+        )
     os.makedirs("models", exist_ok=True)
     if n_episodes > 0:
         if load_model:
             n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
             n_episodes += n_prev_episodes
-        model.save(os.path.join("models", f"{exp_name}_{start_scramble_depth}_{n_episodes}.zip"))
-    test_agent(model, env)
+        model.save(os.path.join("models", f"{exp_identifier}.zip"))
+    print(f"Testing agent {exp_name}...")
+    test_agent(model, env, num_tests=500, scramble_length=10, id=f"st={success_threshold}")
 
 
 if __name__ == "__main__":
@@ -268,20 +286,31 @@ if __name__ == "__main__":
     #     # load_model="rubiks_2x2_ai_model_600000.zip",
     #     # train_new=True,
     # )
+    import multiprocessing as mp
+    success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
+    n_processes = 8
+    kwargs_list  = [
+            (
+            "skewb_sym_half", # puzzle_name
+            None,            # base_actions
+            None,            # load_model
+            # f"skewb_pyramid_binary_st={threshold}_1_500000",            # load_model
+            True,            # train_new
+            10_000_000,         # n_episodes
+            1,               # start_scramble_depth
+            threshold,       # success_threshold
+        ) for threshold in success_thresholds
+        ]
+    with mp.Pool(n_processes) as pool:
+        pool.starmap(main, kwargs_list)
     # main(
-    #     puzzle_name="gear_cube",
-    #     load_model="gear_cube_model_300000.zip",
-    #     train_new=False,
-    #     n_episodes=0,
-    # )available())
-    main(
-        puzzle_name="rubiks_2x2",
-        base_actions=["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
-        start_scramble_depth=1,
-        load_model=None,
-        train_new=True,
-        n_episodes=20_000_000,
-    )
+    #     puzzle_name="rubiks_2x2",
+    #     base_actions=["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
+    #     start_scramble_depth=1,
+    #     load_model=None,
+    #     train_new=True,
+    #     n_episodes=20_000_000,
+    # )
     # main(
     #     puzzle_name="skewb",
     #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
