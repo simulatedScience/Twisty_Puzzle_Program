@@ -64,7 +64,8 @@ def user_test_algorithms(
         sympy_moves: dict,
         puzzle_algorithms: dict,
         draw_pieces: bool = True,
-        move_text_color: str = "#5588ff"):
+        move_text_color: str = "#5588ff",
+        saved_algs: dict[str, dict[str, str|int]] | None = None):
     """
     Given a dict of generated algorithms and a puzzle, allow the user to test and view the algorithms.
 
@@ -104,7 +105,7 @@ def user_test_algorithms(
             #         f"{alg['n_reps']}*({alg['base_sequence']})")
     list_algs()
 
-    saved_algs: dict[str, dict[str, str|str|int]] = dict()
+    saved_algs: dict[str, dict[str, str|str|int]] = dict() if saved_algs is None else saved_algs
     user_input: str = ""
     while user_input.lower() != "exit":
         user_input = input("Enter an algorithm number to show or\n 'list' to list available ones or\n 'exit' to quit the program:\n ")
@@ -120,6 +121,13 @@ def user_test_algorithms(
             continue
         if user_input.lower() == "new":
             return "new_algs", saved_algs
+        if user_input.lower() in ("show_algs", "show"):
+            print("="*30 + "\nCurrent algorithms:")
+            for alg_name, alg in saved_algs.items():
+                alg_order, alg_permutation = get_alg_order(alg, sympy_moves)
+                print(f"'{alg_name}': {alg_permutation},")
+            print("="*30)
+            continue
         if user_input.lower()[:5] == "keep ":
             # save the specified algorithm
             keep_input_parts = user_input.split(" ")
@@ -277,12 +285,12 @@ def main(move_text_color: str = "#5588ff"):
         puzzle_algorithms = generate_algorithms(
             puzzle,
             sympy_moves,
-            max_base_sequence_length=16
+            max_base_sequence_length=16,
             find_n_algorithms=9,
             max_pieces_affected=5,
             max_order=6,
             max_algorithm_length=60,
-            )
+        )
         # puzzle_algorithms = generate_algorithms(
         #     puzzle,
         #     sympy_moves,
@@ -290,8 +298,14 @@ def main(move_text_color: str = "#5588ff"):
         #     max_pieces_affected=16,
         #     max_order=6,
         #     max_algorithm_length=30,
-        #     )
-        state, saved_algs = user_test_algorithms(puzzle, sympy_moves, puzzle_algorithms, draw_pieces=False)
+        # )
+        state, saved_algs = user_test_algorithms(
+            puzzle,
+            sympy_moves,
+            puzzle_algorithms,
+            draw_pieces=False,
+            saved_algs=current_algorithms,
+        )
         current_algorithms = current_algorithms | saved_algs # merge dictionaries
     # print current algorithms
     print("="*30 + "\nCurrent algorithms:")
