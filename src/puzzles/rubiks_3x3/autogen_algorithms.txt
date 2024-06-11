@@ -1,0 +1,36 @@
+Current algorithms:
+Algorithm rotate_3_corners: 6*(t f r' t' f')
+Algorithm length: 30 moves
+Alg. order: 3
+Alg. affects 3 pieces:
+ [{2, 34, 36}, {8, 28, 6}, {27, 51, 38}]
+Algorithm flip_4_edges: 4*(slice_y d)
+Algorithm length: 8 moves
+Alg. order: 2
+Alg. affects 4 pieces:
+ [{23, 46}, {16, 21}, {5, 31}, {50, 14}]
+Algorithm swap_2_corner_pairs: 6*(t' l' t' f' b f' f')
+Algorithm length: 42 moves
+Alg. order: 2
+Alg. affects 4 pieces:
+ [{0, 24, 42}, {9, 18, 17}, {8, 28, 6}, {53, 30, 7}]
+Algorithm rotate_core: 4*(slice_x' slice_z)
+Algorithm length: 8 moves
+Alg. order: 3
+Alg. affects 3 pieces:
+ [{49, 3}, {32, 22}, {40, 12}]
+Algorithm flip_2_edges: 6*(l' slice_z' slice_x' r slice_y slice_y f l d' f')
+Algorithm length: 60 moves
+Alg. order: 2
+Alg. affects 2 pieces:
+ [{1, 39}, {50, 14}]
+Algorithm swap_4_centers: 6*(t f slice_x b d)
+Algorithm length: 30 moves
+Alg. order: 2
+Alg. affects 2 pieces:
+ [{49, 3}, {40, 12}]
+Algorithm cycle_3_edges: 4*(d' d' slice_x')
+Algorithm length: 12 moves
+Alg. order: 3
+Alg. affects 3 pieces:
+ [{41, 48}, {4, 13}, {1, 39}]

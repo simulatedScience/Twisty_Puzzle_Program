@@ -135,8 +135,11 @@ def user_test_algorithms(
                 print(f"Unknown algorithm number: {alg_nbr}. Expected integer 1 to {len(user_input_algorithms)}.")
                 print("To save an alg, enter 'keep <alg_nbr> <alg_name>'.")
                 continue
-            saved_algs[keep_input_parts[2]] = user_input_algorithms[alg_nbr]
-            print(f"Saved algorithm {alg_nbr} as '{keep_input_parts[2]}'.")
+            try:
+                saved_algs[keep_input_parts[2]] = user_input_algorithms[alg_nbr]
+                print(f"Saved algorithm {alg_nbr} as '{keep_input_parts[2]}'.")
+            except IndexError:
+                print("Invalid syntax for 'keep'. Expected 'keep <alg_nbr> <alg_name>'.")
 
         else: # show algorithm
             try:
@@ -155,12 +158,12 @@ def user_test_algorithms(
                     move_text_color=move_text_color,
                 )
             except ValueError as exception:
-                print(f"Invalid input. Enter an" +
-                        "  - algorithm number, to show it," +
-                        "  - 'list' to list available algorithms," +
-                        f"  - 'keep <{colored_text('alg_nbr', move_text_color)}> <{colored_text('alg_name', move_text_color)}>' to save an algorithm," +
-                        "  - 'new' to generate new algorithms, or"
-                        "  - 'exit' to quit the program.")
+                print(f"Invalid input. Enter an\n" +
+                        "  - algorithm number, to show it,\n" +
+                        "  - 'list' to list available algorithms,\n" +
+                        f"  - 'keep <{colored_text('alg_nbr', move_text_color)}> <{colored_text('alg_name', move_text_color)}>' to save an algorithm,\n" +
+                        "  - 'new' to generate new algorithms, or\n"
+                        "  - 'exit' to quit the program.\n")
             except KeyError as exception:
                 print(f"Unknown algorithm. Expected integer 1 to {len(user_input_algorithms)}.")
     return "exit", saved_algs
@@ -274,10 +277,11 @@ def main(move_text_color: str = "#5588ff"):
         puzzle_algorithms = generate_algorithms(
             puzzle,
             sympy_moves,
-            find_n_algorithms=10,
+            max_base_sequence_length=16
+            find_n_algorithms=9,
             max_pieces_affected=5,
             max_order=6,
-            max_algorithm_length=40,
+            max_algorithm_length=60,
             )
         # puzzle_algorithms = generate_algorithms(
         #     puzzle,
