@@ -260,7 +260,7 @@ def main(
         # # Disable Stable Baselines3 Logging
         # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
         checkpoint_callback = CheckpointCallback(
-            save_freq=100_000,
+            save_freq=250_000,
             save_path=os.path.join("models", exp_identifier),
             name_prefix=f"{exp_name}_{start_scramble_depth}",
         )
@@ -269,6 +269,7 @@ def main(
             reset_num_timesteps=False,
             tb_log_name=f"{exp_name}_{n_episodes}_{env.scramble_length}",
             callback=checkpoint_callback,
+            # progress_bar=True,
             # log_interval=5000,
         )
     os.makedirs("models", exist_ok=True)
@@ -277,6 +278,7 @@ def main(
             n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
             n_episodes += n_prev_episodes
         model.save(os.path.join("models", f"{exp_identifier}.zip"))
+        print(f"Saved final model to {os.path.join('models', f'{exp_identifier}.zip')}")
     print(f"Testing agent {exp_name}...")
     test_agent(model, env, num_tests=5, scramble_length=10, id=f"st={success_threshold}")
 
@@ -286,24 +288,28 @@ if __name__ == "__main__":
     #     # load_model="rubiks_2x2_ai_model_600000.zip",
     #     # train_new=True,
     # )
-    import multiprocessing as mp
-    success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
-    n_processes = 1
-    kwargs_list  = [
-            (
-            "skewb_sym_half", # puzzle_name
-            ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
-            # None,            # load_model
-            f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
-            # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
-            False,            # train_new
-            0,         # n_episodes
-            1,               # start_scramble_depth
-            threshold,       # success_threshold
-        ) for threshold in success_thresholds
-        ]
-    with mp.Pool(n_processes) as pool:
-        pool.starmap(main, kwargs_list)
+    # ===============================
+    # test various success thresholds with multiprocessing
+    # ===============================
+    # import multiprocessing as mp
+    # success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
+    # n_processes = 1
+    # kwargs_list  = [
+    #         (
+    #         "skewb_sym_half", # puzzle_name
+    #         ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+    #         # None,            # load_model
+    #         f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
+    #         # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
+    #         False,            # train_new
+    #         0,         # n_episodes
+    #         1,               # start_scramble_depth
+    #         threshold,       # success_threshold
+    #     ) for threshold in success_thresholds
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # ===============================
     # main(
     #     puzzle_name="rubiks_2x2",
     #     base_actions=["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
@@ -321,5 +327,32 @@ if __name__ == "__main__":
     #     # load_model="skewb_sym_half_model_1500000.zip",
     #     train_new=True,
     #     n_episodes=1_500_000,
+    # )
+    import multiprocessing as mp
+    success_thresholds = [.1, .95]
+    puzzle_names = ["square_two", "square_two_algs"]
+    kwargs_list  = [
+            (
+            puzzle_name, # puzzle_name
+            ["s", "t", "t'", "b", "b'"],            # base_actions
+            None,            # load_model
+            True,            # train_new
+            50_000_000,         # n_episodes
+            1,               # start_scramble_depth
+            threshold,       # success_threshold
+        ) for threshold in success_thresholds for puzzle_name in puzzle_names
+    ]
+    with mp.Pool(4) as pool:
+        pool.starmap(main, kwargs_list)
+    # main(
+    #     puzzle_name="square_two_algs",
+    #     base_actions=["s", "t", "t'", "b", "b'"],
+    #     load_model=None,
+    #     start_scramble_depth=1,
+    #     # load_model="skewb_sym_model_500000.zip",
+    #     # load_model="skewb_sym_half_model_1500000.zip",
+    #     train_new=True,
+    #     n_episodes=80_000_000,
+    #     success_threshold=0.95
     # )
     # In terminal, run "tensorboard --logdir tb_logs/..." to view training progress
