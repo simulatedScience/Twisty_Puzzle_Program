@@ -187,14 +187,17 @@ def test_agent(
         env: Twisty_Puzzle_Env,
         num_tests: int = 5,
         scramble_length: int = 5,
-        id="",
+        id: str = "",
+        verbose: bool | None =None,
     ):
+    if verbose is None:
+        verbose = num_tests <= 5
     start_time = time.perf_counter()
     print(f"[{id}] Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
     success_count: int = 0
     for i in range(num_tests):
-        obs, _ = env.reset(print_scramble=True)
+        obs, _ = env.reset(print_scramble=verbose)
         done = False
         action_sequence = []
         while not done:
@@ -203,8 +206,9 @@ def test_agent(
             done = terminated or truncated
             action_sequence.append(env.action_index_to_name[int(action)])
         success_count += int(terminated)
-        print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-        print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
+        if verbose:
+            print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+            print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
     print(f"[{id}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
 
 def main(
@@ -280,7 +284,7 @@ def main(
         model.save(os.path.join("models", f"{exp_identifier}.zip"))
         print(f"Saved final model to {os.path.join('models', f'{exp_identifier}.zip')}")
     print(f"Testing agent {exp_name}...")
-    test_agent(model, env, num_tests=5, scramble_length=10, id=f"st={success_threshold}")
+    test_agent(model, env, num_tests=5, scramble_length=20, id=f"st={success_threshold}", verbose=None)
 
 
 if __name__ == "__main__":
@@ -335,14 +339,15 @@ if __name__ == "__main__":
             (
             puzzle_name, # puzzle_name
             ["s", "t", "t'", "b", "b'"],            # base_actions
-            None,            # load_model
-            True,            # train_new
-            50_000_000,         # n_episodes
+            f"{puzzle_name}_binary_st={threshold}_1_50000000/{puzzle_name}_binary_st={threshold}_1_59250000_steps.zip",            # load_model
+            # None,            # load_model
+            False,            # train_new
+            0,         # n_episodes
             1,               # start_scramble_depth
             threshold,       # success_threshold
         ) for threshold in success_thresholds for puzzle_name in puzzle_names
     ]
-    with mp.Pool(4) as pool:
+    with mp.Pool(2) as pool:
         pool.starmap(main, kwargs_list)
     # main(
     #     puzzle_name="square_two_algs",
