@@ -66,11 +66,12 @@ def main(
         puzzle_name: str = "rubiks_2x2_ai",
         base_actions: list[str] = None,
         load_model: str = None,
-        model_folder: "models_her",
+        model_folder: str = "models_her",
         train_new: bool = False,
         n_episodes: int = 20_000,
         start_scramble_depth: int = 1,
         success_threshold: float = 0.9,
+        device="cpu",
     ):
     exp_name = f"{puzzle_name}_binary_st={success_threshold}"
     solved_state, actions_dict = load_puzzle(puzzle_name)
@@ -86,18 +87,36 @@ def main(
 
     model_path = os.path.join(model_folder, f"{exp_name}.zip")
     if load_model:
-        model_path = os.path.join(model_folder, load_model)
-        model = DQN.load(
-            model_path,
-            env,
-            device="cpu",
-        )
-    elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
-        model = DQN.load(
-            model_path,
-            device="cpu"
+        model_path = os.path.join(model_folder, load_model)
+        # model = DQN.load(
+        #     model_path,
+        #     env,
+        #     device=device,
+        #     # learning_starts=10_000,
+        # )
+        # model.learning_starts = 10_000
+        model = DQN(
+            "MultiInputPolicy",
+            monitor_env,
+            replay_buffer_class=HerReplayBuffer,
+            replay_buffer_kwargs=dict(
+                n_sampled_goal=4,
+                goal_selection_strategy='future',
+            ),
+            learning_starts=10_000,
+            verbose=0,
+            device=device,
+            tensorboard_log=f"tb_logs_her/{exp_name}",
         )
+        model.set_parameters(model_path, device=device)
+    # elif not train_new and os.path.exists(model_path):
+    #     print("Loading existing model...")
+    #     model = DQN.load(
+    #         model_path,
+    #         device=device,
+    #         learning_starts=10_000,
+    #     )
     else:
         print("Training new model...")
         model = DQN(
@@ -109,7 +128,7 @@ def main(
                 goal_selection_strategy='future',
             ),
             verbose=0,
-            device="cpu",
+            device=device,
             tensorboard_log=f"tb_logs_her/{exp_name}",
         )
 
@@ -125,6 +144,8 @@ def main(
             reset_num_timesteps=False,
             tb_log_name=f"{exp_name}_{n_episodes}_{env.scramble_length}",
             callback=checkpoint_callback,
+            # learning_starts=100,
+            # progress_bar=True,
         )
 
     # os.makedirs(model_folder, exist_ok=True)
@@ -147,6 +168,7 @@ if __name__ == "__main__":
         "rubiks_2x2_ai",
         None, # ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
         f"rubiks_2x2_ai_binary_st={success_threshold}_1_10000000.zip", # load_model
+        "models_her",
         False, # train_new
         # 100_000, # n_episodes
         10_000_000,
@@ -158,7 +180,7 @@ if __name__ == "__main__":
     
     
     
-    # main(*kwargs_list[0])
+    # main(*kwargs_list[1])
     with mp.Pool(2) as pool:
         pool.starmap(main, kwargs_list)
     # In terminal, run "tensorboard --logdir tb_logs_her" to view training progress
