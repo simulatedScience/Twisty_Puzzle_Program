@@ -30,6 +30,10 @@ Overcoming such local optima is already a very challenging problem in machine- a
 
 <img src="edge_parity_example_3x3.png" alt="Rubik's cube edge parity example" width="200"/>
 
+## Imitating Human Strategies with RL
+Now we have established, that RL agents try to find shortest paths when using binary rewards. However, this proof very much depends on the reward function. Using a different reward function, we could steer the agents towards different behaviour. We can add algorithms to the action set to help these agents get out of the local optima more easily.
+
+We test this approach by randomly scrambling puzzles and plotting the average step-reward after each action, simulating an agent's solves in reverse. This way we can compare different action sets and reward functions.
 
 ## References
 **[1]**: Solving the Rubik’s Cube with deep reinforcement learning and search. McAleer, S., Agostinelli, F., Shmakov, A., & Baldi, P. (2019). Nature Machine Intelligence, 1(8), 356-363. https://doi.org/10.1038/s42256-019-0070-z  

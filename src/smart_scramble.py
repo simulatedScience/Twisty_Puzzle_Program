@@ -5,12 +5,30 @@ from copy import deepcopy
 from numpy import lcm
 from .ai_modules.twisty_puzzle_model import perform_action
 
-def smart_scramble(SOLVED_STATE, ACTIONS_DICT, n_moves):
+def smart_scramble(SOLVED_STATE, ACTIONS_DICT, n_moves, max_time: float = 60) -> list[str]:
+    """
+    Generate a sequence of scramble moves of length `<= n_moves` that is more efficient in achieving the final state than a random scramble of the same length.
+    This is done by replacing moves with their inverses if they are repeated more than half of their order and removing moves if the same state is reached twice during a scramble.
+    If this shortening process does not terminate within `max_time`, the current, possibly shorter scramble is returned.
+    
+    inputs:
+    -------
+        SOLVED_STATE - (list[int]) - unscrambled initial state of the puzzle
+        ACTIONS_DICT - (dict[str, list[list[int]]]) - dictionary with all possible action names and cycle representations
+        n_moves - (int) - length of the desired scramble sequence.
+        max_time - (float) - maximum time in seconds to generate the scramble. If this is exceeded, the current scramble is returned, which may be shorter than `n_moves`.
+    
+    returns:
+    --------
+        (list[str]) - sequence of scramble moves
+    """
     scramble_moves = scramble_n(
             SOLVED_STATE,
             ACTIONS_DICT,
             n_moves,
-            get_action_orders(ACTIONS_DICT))
+            get_action_orders(ACTIONS_DICT),
+            max_time,
+            )
     return scramble_moves
 
 
@@ -27,9 +45,14 @@ def get_action_orders(ACTIONS_DICT) -> dict[str, int]:
     return {action_name:get_action_order(action) for action_name, action in ACTIONS_DICT.items()}
 
 
-def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders, max_time: float = 60) -> list[str]:
+def scramble_n(
+        SOLVED_STATE,
+        ACTIONS_DICT,
+        n_moves,
+        action_orders,
+        max_time: float = 60) -> list[str]:
     """
-    scrambles the puzzle such that the result state is approximately [n_moves] away from the solved state
+    scrambles the puzzle such that the result state is approximately `n_moves` away from the solved state
 
     inputs:
     -------
@@ -37,6 +60,7 @@ def scramble_n(SOLVED_STATE, ACTIONS_DICT, n_moves, action_orders, max_time: flo
         ACTIONS_DICT - (dict) - dictionary with all possible action names and cycle representations
         n_moves - (int) - number of moves the scrambled state is from a solved_state
         ACTION_ORDERS - (dict) - order of each action possible in the puzzle
+        max_time - (float) - maximum time in seconds to generate the scramble. If this is exceeded, the current scramble is returned, which may be shorter than `n_moves`.
 
     returns:
     --------

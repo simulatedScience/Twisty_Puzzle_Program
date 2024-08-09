@@ -27,7 +27,7 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 from tqdm.auto import tqdm
 # import logging
 
-from reward_functions import binary_reward, euclidean_distance_reward
+from reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self,
@@ -107,7 +107,7 @@ class Twisty_Puzzle_Env(Env):
         
         # reward = 1 if terminated else 0
         # reward, terminated = euclidean_distance_reward(self.state, action, self.solved_state)
-        reward, terminated = binary_reward(self.state, action, self.solved_state)
+        reward, terminated = correct_points_reward(self.state, action, self.solved_state)
         
         if truncated or terminated:
             self.episode_success_history[self.episode_counter % self.last_n_episodes] = terminated
@@ -219,9 +219,11 @@ def main(
         n_episodes: int = 20_000,
         start_scramble_depth: int = 1,
         success_threshold: float = 0.9,
+        model_folder: str = "models",
+        tb_log_folder: str = "tb_logs",
     ):
     # exp_name = f"{puzzle_name}_model"
-    exp_name = f"{puzzle_name}_binary_st={success_threshold}"
+    exp_name = f"{puzzle_name}_piece_reward_100_st={success_threshold}"
     solved_state, actions_dict = load_puzzle(puzzle_name)
     env = Twisty_Puzzle_Env(
             solved_state,
@@ -233,9 +235,9 @@ def main(
     monitor_env = Monitor(env)
     env.monitor = monitor_env
     # env
-    model_path = os.path.join("models", f"{exp_name}.zip")
+    model_path = os.path.join(model_folder, f"{exp_name}.zip")
     if load_model:
-        model_path = os.path.join("models", load_model)
+        model_path = os.path.join(model_folder, load_model)
         model = PPO.load(
             model_path,
             env,
@@ -255,7 +257,7 @@ def main(
             monitor_env,
             verbose=0,
             device="cpu",
-            tensorboard_log=f"tb_logs/{exp_name}",
+            tensorboard_log=f"{tb_log_folder}/{exp_name}",
         )
         # print(model.policy)
     exp_identifier = f"{exp_name}_{start_scramble_depth}_{n_episodes}"
@@ -265,7 +267,7 @@ def main(
         # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
         checkpoint_callback = CheckpointCallback(
             save_freq=250_000,
-            save_path=os.path.join("models", exp_identifier),
+            save_path=os.path.join(model_folder, exp_identifier),
             name_prefix=f"{exp_name}_{start_scramble_depth}",
         )
         model.learn(
@@ -276,13 +278,14 @@ def main(
             # progress_bar=True,
             # log_interval=5000,
         )
-    os.makedirs("models", exist_ok=True)
+    os.makedirs(model_folder, exist_ok=True)
     if n_episodes > 0:
         if load_model:
             n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
             n_episodes += n_prev_episodes
-        model.save(os.path.join("models", f"{exp_identifier}.zip"))
-        print(f"Saved final model to {os.path.join('models', f'{exp_identifier}.zip')}")
+        save_path: str = os.path.join(model_folder, f"{exp_identifier}.zip")
+        model.save(save_path)
+        print(f"Saved final model to {save_path}")
     print(f"Testing agent {exp_name}...")
     test_agent(model, env, num_tests=5, scramble_length=20, id=f"st={success_threshold}", verbose=None)
 
@@ -322,33 +325,36 @@ if __name__ == "__main__":
     #     train_new=True,
     #     n_episodes=20_000_000,
     # )
-    # main(
-    #     puzzle_name="skewb",
-    #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
-    #     load_model=None,
-    #     start_scramble_depth=1,
-    #     # load_model="skewb_sym_model_500000.zip",
-    #     # load_model="skewb_sym_half_model_1500000.zip",
-    #     train_new=True,
-    #     n_episodes=1_500_000,
-    # )
-    import multiprocessing as mp
-    success_thresholds = [.1, .95]
-    puzzle_names = ["square_two", "square_two_algs"]
-    kwargs_list  = [
-            (
-            puzzle_name, # puzzle_name
-            ["s", "t", "t'", "b", "b'"],            # base_actions
-            f"{puzzle_name}_binary_st={threshold}_1_50000000/{puzzle_name}_binary_st={threshold}_1_59250000_steps.zip",            # load_model
-            # None,            # load_model
-            False,            # train_new
-            0,         # n_episodes
-            1,               # start_scramble_depth
-            threshold,       # success_threshold
-        ) for threshold in success_thresholds for puzzle_name in puzzle_names
-    ]
-    with mp.Pool(2) as pool:
-        pool.starmap(main, kwargs_list)
+    main(
+        puzzle_name="skewb_sym_half",
+        base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
+        load_model=None,
+        start_scramble_depth=8,
+        # load_model="skewb_sym_model_500000.zip",
+        # load_model="skewb_sym_half_model_1500000.zip",
+        train_new=True,
+        n_episodes=900_000,
+        # n_episodes=1_500_000,
+        model_folder="piece_reward_models",
+        tb_log_folder="piece_reward_tb_logs",
+    )
+    # import multiprocessing as mp
+    # success_thresholds = [.1, .95]
+    # puzzle_names = ["square_two", "square_two_algs"]
+    # kwargs_list  = [
+    #         (
+    #         puzzle_name, # puzzle_name
+    #         ["s", "t", "t'", "b", "b'"],            # base_actions
+    #         f"{puzzle_name}_binary_st={threshold}_1_50000000/{puzzle_name}_binary_st={threshold}_1_59250000_steps.zip",            # load_model
+    #         # None,            # load_model
+    #         False,            # train_new
+    #         0,         # n_episodes
+    #         1,               # start_scramble_depth
+    #         threshold,       # success_threshold
+    #     ) for threshold in success_thresholds for puzzle_name in puzzle_names
+    # ]
+    # with mp.Pool(2) as pool:
+    #     pool.starmap(main, kwargs_list)
     # main(
     #     puzzle_name="square_two_algs",
     #     base_actions=["s", "t", "t'", "b", "b'"],
