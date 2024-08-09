@@ -62,12 +62,12 @@ def analyse_alg(
     
     for k in divs[:-1]:
         k_rep = alg_perm**k
-        l = k_rep.order()
+        pot_alg_order = k_rep.order()
         affected_pieces = get_affected_pieces(k_rep, pieces)
         n_pieces = len(affected_pieces)
-        if n_pieces <= max_pieces and l <= max_order:
+        if n_pieces <= max_pieces and pot_alg_order <= max_order:
             print(f"Algorithm {alg_number}: {k}*({moves})")
-            print(f"After {k} repetitions, we get an algorithm with order {l}:")
+            print(f"After {k} repetitions, we get an algorithm with order {pot_alg_order}:")
             print(f"This algorithm affects {n_pieces} pieces.")
             print(k_rep)
             print(affected_pieces)
