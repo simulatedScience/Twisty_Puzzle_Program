@@ -298,24 +298,25 @@ if __name__ == "__main__":
     # ===============================
     # test various success thresholds with multiprocessing
     # ===============================
-    # import multiprocessing as mp
+    import multiprocessing as mp
     # success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
-    # n_processes = 1
-    # kwargs_list  = [
-    #         (
-    #         "skewb_sym_half", # puzzle_name
-    #         ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
-    #         # None,            # load_model
-    #         f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
-    #         # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
-    #         False,            # train_new
-    #         0,         # n_episodes
-    #         1,               # start_scramble_depth
-    #         threshold,       # success_threshold
-    #     ) for threshold in success_thresholds
-    #     ]
-    # with mp.Pool(n_processes) as pool:
-    #     pool.starmap(main, kwargs_list)
+    success_thresholds = [.1, .9]
+    n_processes = 2
+    kwargs_list  = [
+            (
+            "skewb", # puzzle_name
+            ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+            None,            # load_model
+            # f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
+            # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
+            True,            # train_new
+            30_000_000,      # n_episodes
+            1,               # start_scramble_depth
+            threshold,       # success_threshold
+        ) for threshold in success_thresholds
+        ]
+    with mp.Pool(n_processes) as pool:
+        pool.starmap(main, kwargs_list)
     # ===============================
     # main(
     #     puzzle_name="rubiks_2x2",

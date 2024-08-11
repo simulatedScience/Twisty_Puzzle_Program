@@ -21,3 +21,5 @@ tests/state compression tests/*
 *.mp4
 # ignore colelcted literature
 local_research/*
+/models
+/tb_logs_20240724

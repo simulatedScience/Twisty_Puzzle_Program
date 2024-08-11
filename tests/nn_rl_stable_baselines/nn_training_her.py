@@ -164,12 +164,25 @@ if __name__ == "__main__":
     import multiprocessing as mp
     scramble_depths: list[int] = [1]#, 8, 16]
     success_thresholds: list[float] = [0.1, 0.9]
+    # kwargs_list: list[tuple[any]] = [(
+    #     "rubiks_2x2_ai",
+    #     None, # ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
+    #     None, # f"rubiks_2x2_ai_binary_st={success_threshold}_1_10000000.zip", # load_model
+    #     "models_her",
+    #     True, # train_new
+    #     # 100_000, # n_episodes
+    #     30_000_000,
+    #     start_scramble_depth,
+    #     success_threshold,
+    # ) for start_scramble_depth in scramble_depths
+    #     for success_threshold in success_thresholds
+    # ]
     kwargs_list: list[tuple[any]] = [(
-        "rubiks_2x2_ai",
-        None, # ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"],
-        f"rubiks_2x2_ai_binary_st={success_threshold}_1_10000000.zip", # load_model
+        "skewb_sym_half",
+        ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+        None, # f"rubiks_2x2_ai_binary_st={success_threshold}_1_10000000.zip", # load_model
         "models_her",
-        False, # train_new
+        True, # train_new
         # 100_000, # n_episodes
         10_000_000,
         start_scramble_depth,
@@ -177,6 +190,7 @@ if __name__ == "__main__":
     ) for start_scramble_depth in scramble_depths
         for success_threshold in success_thresholds
     ]
+    
     
     
     
