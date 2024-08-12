@@ -92,6 +92,12 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   }
   ```
 
+- **Fourier Basis RL** - Fourier Bases for Solving Permutation Puzzles  
+ - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf)
+ - Exploiting the symmetry group structure of permutation puzzles using Fourier basis functions in reinforcement learning. (maths heavy)  
+  ```
+  Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
+  ```
 
 ## Useful Techniques for RL
 - **Learning Options** - Learning Options in Reinforcement Learning
