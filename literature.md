@@ -95,9 +95,34 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
 - **Fourier Basis RL** - Fourier Bases for Solving Permutation Puzzles  
  - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf)
  - Exploiting the symmetry group structure of permutation puzzles using Fourier basis functions in reinforcement learning. (maths heavy)  
+ - claims significantly better results than RL with Deep Value Networks (as in DeepCubeA), using 2-3 orders of magnitude less parameters and less training data (as low as 1/10th) and time.
+ - solved pyraminx, 2x2 rubiks and S8 puzzle
   ```
   Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
   ```
+
+- **** - Solving Puzzles related to Permutation Groups
+  - [paper](https://dl.acm.org/doi/abs/10.1145/281508.281611), [pdf](https://dl.acm.org/doi/pdf/10.1145/281508.281611)
+  - gives state space sizes for many popular twisty puzzles including Rubiks 2x2, 3x3, 4x4, Hungarian Rings, Nintendo Barrel and Square One (listed as "MegaChallenger").
+  ```BibTex
+  @inproceedings{10.1145/281508.281611,
+    author = {Egner, Sebastian and P\"{u}schel, Markus},
+    title = {Solving puzzles related to permutation groups},
+    year = {1998},
+    isbn = {1581130023},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/281508.281611},
+    doi = {10.1145/281508.281611},
+    booktitle = {Proceedings of the 1998 International Symposium on Symbolic and Algebraic Computation},
+    pages = {186–193},
+    numpages = {8},
+    location = {Rostock, Germany},
+    series = {ISSAC '98}
+  }
+  ```
+
+
 
 ## Useful Techniques for RL
 - **Learning Options** - Learning Options in Reinforcement Learning
