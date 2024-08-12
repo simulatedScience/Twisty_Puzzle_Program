@@ -59,13 +59,13 @@ def get_scramble_rewards(
     return rewards, dones
 
 def plot_rewards(
-    rewards: dict[str, list[float]],
-    dones: dict[str, list[bool]],
-    min_max_rewards: dict[str, list[tuple[float, float]]],
-    label_prefix: str = "",
-    puzzle_name: str = None,
-    show: bool = True,
-):
+        rewards: dict[str, list[float]],
+        dones: dict[str, list[bool]],
+        min_max_rewards: dict[str, list[tuple[float, float]]],
+        label_prefix: str = "",
+        puzzle_name: str = None,
+        show: bool = True,
+    ) -> list[tuple]:
     """
     Plot the rewards for each reward function at each step of the scramble.
 
@@ -80,7 +80,11 @@ def plot_rewards(
     # check if any rewards are nonpositive
     nonpositive = any(reward <= 0 for reward_list in rewards.values() for reward in reward_list)
     plt_func = plt.plot if nonpositive else plt.semilogy
-    
+    # plt_func = plt.semilogy
+    # plt_func = plt.plot
+
+    artists = []
+
     for i, (name, reward_list) in enumerate(rewards.items()):
         # plot done markers
         # plt.scatter(
@@ -89,7 +93,7 @@ def plot_rewards(
         #     label=name + "done",
         #     # plot done flags with different marker
         #     marker=['p' if done else 'o' for done in dones[name]])
-        plt_func(
+        ax_line, = plt_func(
             range(num_moves),
             reward_list,
             linestyle=linestyles[i % len(linestyles)],
@@ -97,22 +101,27 @@ def plot_rewards(
             label="   ".join([name, label_prefix]),
             # color=color,
         )
+        map_legend_to_ax
         color = plt.gca().lines[-1].get_color()
         if name in min_max_rewards:
             # get last plot color
-            min_rewards, max_rewards = zip(*min_max_rewards[name])
-            plt.fill_between(
+            min_rewards, max_rewards = min_max_rewards[name]
+            ax_poly = plt.fill_between(
                 x=range(num_moves),
                 y1=min_rewards,
                 y2=max_rewards,
                 color=color,
                 alpha=0.2,
             )
+        else:
+            ax_poly = None
+        artists.append((ax_line, ax_poly))
     if puzzle_name is not None:
         plt.title(f"Rewards for {puzzle_name}")
-    plt.legend()
+    # plt.legend()
     if show:
         plt.show()
+    return artists
 
 def filter_actions(
         actions_dict: dict[str, list[list[int]]],
@@ -153,7 +162,7 @@ def create_actions_dict_options(
     # 1. only base actions
         "base_actions": base_actions,
     # 2. base actions + algorithms
-        "base_actions + algorithms": base_actions | algorithms,
+        # "base_actions + algorithms": base_actions | algorithms,
     # 3. algorithms + whole puzzle rotations
         "algorithms + rotations": algorithms | rotations,
     # 4. base actions + whole puzzle rotations + algorithms
@@ -171,6 +180,8 @@ if __name__ == "__main__":
     # puzzle.load_puzzle(puzzle_name)
     solved_state, moves_dict = load_puzzle(puzzle_name)
     # n = puzzle.state_space_size
+    
+    n_repetitions: int = 1
     
     base_actions, rotations, algorithms = filter_actions(
         actions_dict=moves_dict,
@@ -190,29 +201,60 @@ if __name__ == "__main__":
     correct_points_reward = correct_points_reward_factory(solved_state)
     most_correct_points_reward = most_correct_points_reward_factory(rotated_solved_states)
 
+    map_legend_to_ax = {}
+    all_artists = []
     for actions_dict_name, actions_dict in actions_dict_options.items():
-        scramble_moves = [random.choice(list(actions_dict)) for _ in range(50)]
-        print(f"\nScramble moves for {actions_dict_name}:")
-        print(*scramble_moves)
-        rewards, dones = get_scramble_rewards(
-            scramble_moves=scramble_moves,
-            reward_functions={
-                # 'binary': binary_reward,
-                'correct_points': correct_points_reward,
-                'most_correct_points': most_correct_points_reward
-            },
-            solved_state=solved_state,
-            actions_dict=moves_dict,
-        )
-        
-        plot_rewards(
+        reward_data: dict[str, list[list[float]]] = {}
+        # dones_data: dict[str, list[list[bool]]] = {}
+        for rep in range(n_repetitions):
+            scramble_moves = [random.choice(list(actions_dict)) for _ in range(100)]
+            # print(f"\nScramble moves for {actions_dict_name}:")
+            # print(*scramble_moves)
+            rewards, dones = get_scramble_rewards(
+                scramble_moves=scramble_moves,
+                reward_functions={
+                    'binary': binary_reward,
+                    'correct_points': correct_points_reward,
+                    'most_correct_points': most_correct_points_reward
+                },
+                solved_state=solved_state,
+                actions_dict=moves_dict,
+            )
+            for name, reward_list in rewards.items():
+                if name not in reward_data:
+                    reward_data[name] = []
+                reward_data[name].append(reward_list)
+
+        reward_data = {name: np.array(reward_lists) for name, reward_lists in reward_data.items()}
+        # average the rewards over all repetitions
+        reward_data_mean: dict[str, np.ndarray] = {}
+        reward_data_std: dict[str, np.ndarray] = {}
+        reward_data_min_max: dict[str, list[tuple[float, float]]] = {}
+        for name, reward_lists in reward_data.items():
+            reward_data_mean[name] = np.mean(reward_lists, axis=0)
+            reward_data_std[name] = np.std(reward_lists, axis=0) if n_repetitions > 1 else np.zeros_like(reward_data_mean[name])
+            # reward_data_min_max[name] = [np.max(reward_lists, axis=0), np.min(reward_lists, axis=0)]
+            # get min max by adding +-std
+            reward_data_min_max[name] = [reward_data_mean[name] + reward_data_std[name], reward_data_mean[name] - reward_data_std[name]]
+
+
+        artists = plot_rewards(
             puzzle_name=puzzle_name,
-            rewards=rewards,
+            rewards=reward_data_mean,
             dones=dones,
-            min_max_rewards={},
+            min_max_rewards=reward_data_min_max,
             label_prefix=actions_dict_name,
             show=False,
         )
+        all_artists = all_artists + artists
+        # new_legend_lines = legend.get_lines()#[:len(artists)]
+        # print(f"{new_legend_lines = }")
+    # plt.plot((0, 100), (0, 0), label="0", color="#000")
+    legend = plt.legend(fancybox=True)
+    pickradius = 10  # Points (Pt). How close the click needs to be to trigger an event.
+    for legend_line, (ax_line, ax_poly) in zip(legend.get_lines(), all_artists):
+        legend_line.set_picker(pickradius)  # Enable picking on the legend line.
+        map_legend_to_ax[legend_line] = ax_line, ax_poly
     plt.suptitle(
         "Action Sets:\n$\\quad$" + "\n$\\quad$".join(
             [f"{name}: {{{', '.join(actions)}}}" for name, actions in actions_dict_options.items()]
@@ -222,4 +264,35 @@ if __name__ == "__main__":
         x=0.05,
         fontsize=9,
     )
+    # for legend_line, ax_line, polygon in zip(legend.get_lines(), plt.gca().lines, plt.gca().artists):
+    #     legend_line.set_picker(pickradius)  # Enable picking on the legend line.
+    #     map_legend_to_ax[legend_line] = ax_line, polygon
+        
+    
+    def legend_on_pick(event):
+        """
+        copied from mpl legend picking demo: https://matplotlib.org/stable/gallery/event_handling/legend_picking.html
+        """
+        # On the pick event, find the original line corresponding to the legend
+        # proxy line, and toggle its visibility.
+        legend_line = event.artist
+        # print(f"legend line: {legend_line}")
+
+        # Do nothing if the source of the event is not a legend line.
+        if legend_line not in map_legend_to_ax:
+            return
+
+        ax_line, polygon = map_legend_to_ax[legend_line]
+        # ax_line = map_legend_to_ax[legend_line]
+        visible = not ax_line.get_visible()
+        ax_line.set_visible(visible)
+        polygon.set_visible(visible)
+        # Change the alpha on the line in the legend, so we can see what lines
+        # have been toggled.
+        legend_line.set_alpha(1.0 if visible else 0.2)
+        plt.gcf().canvas.draw()
+    
+    plt.xlabel("Number of scramble moves since solved state.")
+    plt.ylabel("average step reward $\pm 1 \sigma$")
+    plt.gcf().canvas.mpl_connect('pick_event', legend_on_pick)
     plt.show()

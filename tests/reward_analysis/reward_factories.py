@@ -30,7 +30,7 @@ def correct_points_reward_factory(solved_state) -> callable:
         reward = correct_points/state.shape[-1]
         done = 1-reward < 1e-5
         if done:
-            reward = 100.
+            reward = 10.
         # print("correct points reward: ",
         #       state,
         #       solved_state,
@@ -60,7 +60,7 @@ def most_correct_points_reward_factory(solved_states: list[np.ndarray]) -> calla
         reward = max_correct_points/state.shape[-1]
         done = 1-reward < 1e-5
         if done:
-            reward = 100.
+            reward = 10.
         # print("most correct points reward: ",
         #       state,
         #       solved_states,
