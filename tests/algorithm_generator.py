@@ -256,10 +256,10 @@ def get_alg_order(move_sequence, sympy_moves) -> tuple[int, Permutation]:
 
 def main(move_text_color: str = "#5588ff"):
     import os, sys, inspect
-    from src.puzzle_class import Twisty_Puzzle
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parentdir = os.path.dirname(currentdir)
     sys.path.insert(0,parentdir) 
+    from src.puzzle_class import Twisty_Puzzle
 
     print(f"Enter 'exit' to quit the program.")
 

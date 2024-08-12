@@ -98,7 +98,8 @@ def load_puzzle_points(puzzle_name: str) -> tuple[np.ndarray, np.ndarray]:
 
 
 if __name__ == "__main__":
-    points, colors = load_puzzle_points("rubiks_2x2")
+    # points, colors = load_puzzle_points("rubiks_2x2")
+    points, colors = load_puzzle_points("rubiks_algs")
     # points, colors = load_puzzle_points("skewb")
     # points, colors = load_puzzle_points("rubiks_cube")
     # points, colors = load_puzzle_points("gear_cube")

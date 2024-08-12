@@ -27,7 +27,10 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 from tqdm.auto import tqdm
 # import logging
 
-from reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
+if __name__ == "__main__":
+    from reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
+else:
+    from .reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self,
@@ -158,7 +161,7 @@ def load_puzzle(puzzle_name: str):
         dict[str, list[tuple[int, ...]]]: dictionary of actions (name -> permutation in cycle notation)
     """
     try:
-        from src.interaction_modules.load_from_xml import load_puzzle
+        from src.interaction_modules.load_from_xml import load_puzzle as load_xml_puzzle
     except ImportError:
         import sys
         import os
@@ -166,9 +169,9 @@ def load_puzzle(puzzle_name: str):
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')) 
         # Add the project root and the C directory to the Python path
         sys.path.insert(0, project_root)
-        from src.interaction_modules.load_from_xml import load_puzzle
+        from src.interaction_modules.load_from_xml import load_puzzle as load_xml_puzzle
     try:
-        point_dicts, moves_dict, state_space_size = load_puzzle(puzzle_name)
+        point_dicts, moves_dict, state_space_size = load_xml_puzzle(puzzle_name)
     except FileNotFoundError:
         raise FileNotFoundError(f"Could not find the puzzle '{puzzle_name}'.")
     # convert point colors to solved state for the environment
