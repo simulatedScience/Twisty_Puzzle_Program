@@ -101,9 +101,18 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
   ```
 
-- **** - Solving Puzzles related to Permutation Groups
+- **?** - Solving Twisty Puzzles as a Factorization problem
+- [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
+
+- **An Algorithm for Solving the Factorization Problem in Permutation Groups**
+  - [paper](https://doi.org/10.1006/JSCO.1998.0202) by Torsten Minkwith (1998), Karlsruhe, [pdf](https://www.sciencedirect.com/science/article/pii/S0747717198902024?via%3Dihub)
+  - 
+
+- **Modelling Perumtation puzzles** - Solving Puzzles related to Permutation Groups
   - [paper](https://dl.acm.org/doi/abs/10.1145/281508.281611), [pdf](https://dl.acm.org/doi/pdf/10.1145/281508.281611)
-  - gives state space sizes for many popular twisty puzzles including Rubiks 2x2, 3x3, 4x4, Hungarian Rings, Nintendo Barrel and Square One (listed as "MegaChallenger").
+  - gives state space sizes for many popular twisty puzzles including Rubiks 2x2, 3x3, 4x4, Hungarian Rings (listed as "Pretzel"), Nintendo Barrel and Square One (listed as "MegaChallenger").
+  - roughly describes techniques for modelling puzzles like the Nintendo Barrel using monooids and permutation groups.
+  - briefly mentions the difficulty of finding legal moves in the Square-1 puzzle, solving this with a 3d model.
   ```BibTex
   @inproceedings{10.1145/281508.281611,
     author = {Egner, Sebastian and P\"{u}schel, Markus},

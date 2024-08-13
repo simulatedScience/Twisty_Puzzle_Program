@@ -27,10 +27,12 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 from tqdm.auto import tqdm
 # import logging
 
-if __name__ == "__main__":
-    from reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
-else:
-    from .reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
+# if __name__ == "__main__":
+#     from reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
+# else:
+#     from .reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
+    
+from reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self,
@@ -40,6 +42,7 @@ class Twisty_Puzzle_Env(Env):
             max_moves=50,
             initial_scramble_length=1, # 1 seems to work best
             success_threshold=0.9,
+            reward_func: callable = None,
             ):
         super(Twisty_Puzzle_Env, self).__init__()
         self.solved_state = solved_state
@@ -48,6 +51,8 @@ class Twisty_Puzzle_Env(Env):
         self.max_moves: int = max_moves
         self.scramble_length: int = initial_scramble_length
         self.success_threshold: float = success_threshold
+        # define reward. Default: binary reward with single solved state
+        self.reward_func: callable = reward_func if reward_func else lambda state: binary_reward(state, None, self.solved_state)
 
         self.current_step = 0
         self.episode_counter = 0
@@ -93,7 +98,7 @@ class Twisty_Puzzle_Env(Env):
             if print_scramble:
                 scramble[i] = action_name
             permutation = self.actions[action_name]
-            state = self.apply_permutation(state, permutation)
+            state = Twisty_Puzzle_Env.apply_permutation(state, permutation)
         if print_scramble:
             print(f"Scramble: {' '.join(scramble)}")
         return state
@@ -101,7 +106,7 @@ class Twisty_Puzzle_Env(Env):
     def step(self, action):
         action_name = self.action_index_to_name[action]
         permutation = self.actions[action_name]
-        self.state = self.apply_permutation(self.state, permutation)
+        self.state = Twisty_Puzzle_Env.apply_permutation(self.state, permutation)
         
         self.current_step += 1
         
@@ -110,14 +115,14 @@ class Twisty_Puzzle_Env(Env):
         
         # reward = 1 if terminated else 0
         # reward, terminated = euclidean_distance_reward(self.state, action, self.solved_state)
-        reward, terminated = correct_points_reward(self.state, action, self.solved_state)
+        reward, terminated = self.reward_func(self.state)
         
         if truncated or terminated:
             self.episode_success_history[self.episode_counter % self.last_n_episodes] = terminated
         
         return self.state, reward, terminated, truncated, {}
     
-    def apply_permutation(self, state, permutation):
+    def apply_permutation(state, permutation):
         new_state = np.array(state)
         for cycle in permutation:
             if len(cycle) > 1:
@@ -214,26 +219,68 @@ def test_agent(
             print(f"{'Solved' if terminated else 'Failed'} after {env.current_step} steps")
     print(f"[{id}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
 
+def filter_actions(
+        actions_dict: dict[str, list[list[int]]],
+        base_action_names: list[str],
+        rotations_prefix: str = "rot_") -> tuple[set[str], set[str], set[str]]:
+    """
+    Split actions into base actions, whole puzzle rotations and algorithms based on their names.
+
+    Args:
+        actions_dict (dict[str, list[list[int]]]): A dictionary of actions to perform given by their names and cycle representation, including whole puzzle rotations and algorithms
+        base_action_names (list[str]): A list of base action names.
+        rotations_prefix (str, optional): The prefix for whole puzzle rotations. Defaults to "rot_".
+
+    Returns:
+        set[str]: A set of base action names.
+        set[str]: A set of whole puzzle rotation names.
+        set[str]: A set of algorithm names.
+    """
+    # split actions into base actions, whole puzzle rotations and algorithms
+    # base actions
+    base_actions = {name for name, action in actions_dict.items() if name in base_action_names}
+    # whole puzzle rotations
+    puzzle_rotations = {name for name, action in actions_dict.items() if name.startswith(rotations_prefix)}
+    # algorithms
+    algorithms = {name for name, action in actions_dict.items() if name not in base_action_names and not name.startswith(rotations_prefix)}
+    return base_actions, puzzle_rotations, algorithms
+
 def main(
         puzzle_name: str = "rubiks_2x2_ai",
         base_actions: list[str] = None,
         load_model: str = None,
         train_new: bool = False,
         n_episodes: int = 20_000,
-        start_scramble_depth: int = 1,
-        success_threshold: float = 0.9,
         model_folder: str = "models",
         tb_log_folder: str = "tb_logs",
+        start_scramble_depth: int = 1,
+        success_threshold: float = 0.9,
+        reward: str = "binary",
     ):
     # exp_name = f"{puzzle_name}_model"
-    exp_name = f"{puzzle_name}_piece_reward_100_st={success_threshold}"
+    exp_name = f"{puzzle_name}_100_st={success_threshold}_{reward}"
     solved_state, actions_dict = load_puzzle(puzzle_name)
+    # check for whole puzzle rotation moves
+    _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
+    # calculate rotations of the solved state
+    solved_states = [solved_state] + [Twisty_Puzzle_Env.apply_permutation(solved_state.copy(), actions_dict[rotation]) for rotation in rotations]
+    # define reward function
+    if reward == "binary":
+        reward_func = binary_reward_factory(solved_state)
+    elif reward == "correct_points":
+        reward_func = correct_points_reward_factory(solved_state)
+    elif reward == "most_correct_points":
+        reward_func = most_correct_points_reward_factory(solved_states)
+    else:
+        raise ValueError(f"Unknown reward function: {reward}. Expected one of ('binary', 'correct_points', 'most_correct_points').")
+    
     env = Twisty_Puzzle_Env(
             solved_state,
             actions_dict,
             base_actions=base_actions,
             initial_scramble_length=start_scramble_depth,
-            success_threshold=success_threshold,)
+            success_threshold=success_threshold,
+            reward_func=reward_func,)
     # env.scramble_length = start_scramble_depth
     monitor_env = Monitor(env)
     env.monitor = monitor_env
@@ -303,21 +350,42 @@ if __name__ == "__main__":
     # ===============================
     import multiprocessing as mp
     # success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
-    success_thresholds = [.1, .9]
-    n_processes = 2
+    success_thresholds = [.9]
+    scramble_depths = [1, 4, 8]
+    rewards = ["binary", "most_correct_points"]
+    n_processes = 6
     kwargs_list  = [
             (
-            "skewb", # puzzle_name
+            "skewb_sym_half", # puzzle_name
             ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
             None,            # load_model
             # f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
             # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
             True,            # train_new
-            30_000_000,      # n_episodes
-            1,               # start_scramble_depth
+            1_000_000,      # n_episodes
+            "piece_reward_models", # model_folder
+            "piece_reward_tb_logs", # tb_log_folder
+            scramble_depth,               # start_scramble_depth
             threshold,       # success_threshold
+            reward, # rewards
         ) for threshold in success_thresholds
+            for scramble_depth in scramble_depths
+                for reward in rewards
         ]
+    # kwargs_list  = [
+    #         (
+    #         "skewb_sym_half", # puzzle_name
+    #         ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+    #         None,            # load_model
+    #         # f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
+    #         # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
+    #         True,            # train_new
+    #         1_000_000,      # n_episodes
+    #         [1, 4, 8],               # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         "most_correct_points", # reward
+    #     ) for threshold in success_thresholds
+    #     ]
     with mp.Pool(n_processes) as pool:
         pool.starmap(main, kwargs_list)
     # ===============================
@@ -329,19 +397,20 @@ if __name__ == "__main__":
     #     train_new=True,
     #     n_episodes=20_000_000,
     # )
-    main(
-        puzzle_name="skewb_sym_half",
-        base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
-        load_model=None,
-        start_scramble_depth=8,
-        # load_model="skewb_sym_model_500000.zip",
-        # load_model="skewb_sym_half_model_1500000.zip",
-        train_new=True,
-        n_episodes=900_000,
-        # n_episodes=1_500_000,
-        model_folder="piece_reward_models",
-        tb_log_folder="piece_reward_tb_logs",
-    )
+    # main(
+    #     puzzle_name="skewb_sym_half",
+    #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],
+    #     load_model=None,
+    #     start_scramble_depth=8,
+    #     # load_model="skewb_sym_model_500000.zip",
+    #     # load_model="skewb_sym_half_model_1500000.zip",
+    #     train_new=True,
+    #     n_episodes=500_000,
+    #     # n_episodes=1_500_000,
+    #     model_folder="piece_reward_models",
+    #     tb_log_folder="piece_reward_tb_logs",
+    #     reward="most_correct_points",
+    # )
     # import multiprocessing as mp
     # success_thresholds = [.1, .95]
     # puzzle_names = ["square_two", "square_two_algs"]

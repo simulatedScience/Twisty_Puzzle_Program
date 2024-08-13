@@ -177,6 +177,7 @@ if __name__ == "__main__":
     # puzzle_name = "square_two_algs"
     # puzzle_name = "skewb_sym_half"
     puzzle_name = "rubiks_algs"
+    puzzle_name = "rubiks_2x2_sym"
     # puzzle.load_puzzle(puzzle_name)
     solved_state, moves_dict = load_puzzle(puzzle_name)
     # n = puzzle.state_space_size
@@ -185,9 +186,10 @@ if __name__ == "__main__":
     
     base_actions, rotations, algorithms = filter_actions(
         actions_dict=moves_dict,
-        # base_action_names={"s", "t", "t'", "b", "b'"},
-        # base_action_names={"wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"},
-        base_action_names={"f", "f'", "r", "r'", "b", "b'", "t", "t'", "l", "l'", "d", "d'"},
+        # base_action_names={"s", "t", "t'", "b", "b'"}, # square_two
+        # base_action_names={"wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"}, # skewb_sym_half
+        # base_action_names={"f", "f'", "r", "r'", "b", "b'", "t", "t'", "l", "l'", "d", "d'"}, # rubiks_algs
+        base_action_names={"f", "f'", "r", "r'", "b", "b'", "t", "t'", "l", "l'", "d", "d'"}, # rubiks_2x2_sym
         rotations_prefix="rot_",
     )
     actions_dict_options = create_actions_dict_options(
