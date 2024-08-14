@@ -23,48 +23,90 @@ def generate_cuboid(
         (np.ndarray): The colors of the stickers. (shape: (6, 3))
     """
     colors = np.array([
-        [.1, .9, .1], # green
-        [.1, .5, 1.], # blue
+        [.1, .8, .1], # green
+        [.9, .1, .1], # red
+        [.1, .5, .9], # blue
         [1., .5, 0.], # orange
-        [1., .1, .1], # red
-        [1., .8, 0.], # yellow
         [.9, .9, .9], # white
+        [1., .8, 0.], # yellow
     ])
-    # generate cuboid sticker coordinates for each of the 6 faces
-    sticker_coords: list[list[float]] = []
-    # green (front) and blue (back) faces
-    for sign in [-1, 1]:
-        # generate one face
-        for x in range(size[0]):
-            for z in range(size[2]):
-                sticker_coords.append([
-                    x*cuby_size - size[0]*cuby_size/2 + cuby_size/2,
-                    sign * (size[1]*cuby_size/2 + sticker_offset),
-                    z*cuby_size - size[2]*cuby_size/2 + cuby_size/2,
-                    0 + (sign>0), # color index 0 or 1
-                ])
-    # red (right) and orange (left) faces
-    for sign in [1, -1]:
-        # generate one face
-        for y in range(size[1]):
-            for z in range(size[2]):
-                sticker_coords.append([
-                    sign * (size[0]*cuby_size/2 + sticker_offset),
-                    y*cuby_size - size[1]*cuby_size/2 + cuby_size/2,
-                    z*cuby_size - size[2]*cuby_size/2 + cuby_size/2,
-                    2 + (sign>0), # color index 2 or 3
-                ])
-    # white (top) and yellow (bottom) faces
-    for sign in [-1, 1]:
-        # generate one face
-        for x in range(size[0]):
-            for y in range(size[1]):
-                sticker_coords.append([
-                    x*cuby_size - size[0]*cuby_size/2 + cuby_size/2,
-                    y*cuby_size - size[1]*cuby_size/2 + cuby_size/2,
-                    sign * (size[2]*cuby_size/2 + sticker_offset),
-                    4 + (sign>0), # color index 4 or 5
-                ])
+    
+    # construct each face from 5 properties:
+    #    start: the location of the first point on the face
+    #    dir1: the direction in which the second point is located
+    #    dir2: the direction in which the first point of the second row is located
+    #    fixed: the axis that is fixed for all points on the face
+    #    sign: the sign for the fixed axis (indicating location of the face along that axis)
+    # cuby size and offset are automatically computed later
+    sticker_coords = []
+    face_configs = [
+        # Green face (front)
+        {
+            'start': np.array((-size[0]/2, -size[1]/2, -size[2]/2)),
+            'dir1': np.array((1, 0, 0)),
+            'dir2': np.array((0, 0, 1)),
+            'fixed': 1,
+            'sign': -1,
+            'color': 0},
+        # Red face (right)
+        {
+            'start': np.array((size[0]/2, -size[1]/2, -size[2]/2)),
+            'dir1': np.array((0, 1, 0)),
+            'dir2': np.array((0, 0, 1)),
+            'fixed': 0,
+            'sign': 1,
+            'color': 1},
+        # Blue face (back)
+        {
+            'start': np.array((size[0]/2, size[1]/2, -size[2]/2)),
+            'dir1': np.array((-1, 0, 0)),
+            'dir2': np.array((0, 0, 1)),
+            'fixed': 1,
+            'sign': 1,
+            'color': 2},
+        # Orange face (left)
+        {
+            'start': np.array((-size[0]/2, size[1]/2, -size[2]/2)),
+            'dir1': np.array((0, -1, 0)),
+            'dir2': np.array((0, 0, 1)),
+            'fixed': 0,
+            'sign': -1,
+            'color': 3},
+        # White face (top)
+        {
+            'start': np.array((-size[0]/2, -size[1]/2, size[2]/2)),
+            'dir1': np.array((1, 0, 0)),
+            'dir2': np.array((0, 1, 0)),
+            'fixed': 2,
+            'sign': 1,
+            'color': 4},
+        # Yellow face (bottom)
+        {
+            'start': np.array((size[0]/2, size[1]/2, -size[2]/2)),
+            'dir1': np.array((-1, 0, 0)),
+            'dir2': np.array((0, -1, 0)),
+            'fixed': 2,
+            'sign': -1,
+            'color': 5},
+    ]
+
+    for config in face_configs:
+        # calculate offset to center the stickers on each cuby
+        start_offset = (config['dir1'] + config['dir2']) * cuby_size / 2
+        start_offset[config['fixed']] = 0
+        # scale to cuby size and add offset
+        start = config['start'] * cuby_size + start_offset
+        dir1 = config['dir1'] * cuby_size
+        dir2 = config['dir2'] * cuby_size
+        # calculate coordinate of the fixed axis
+        fixed_offset = config['sign'] * (size[config['fixed']] * cuby_size / 2 + sticker_offset)
+        # calculate sticker coordinates
+        for i in range(size[abs(config['dir1']).argmax()]): # iterate over the first direction
+            for j in range(size[abs(config['dir2']).argmax()]): # iterate over the second direction
+                pos = start + i * dir1 + j * dir2
+                pos[config['fixed']] = fixed_offset
+                sticker_coords.append([*pos, config['color']]) # combine coordinates and color index
+    
     return np.array(sticker_coords), colors
 
 def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
@@ -123,6 +165,7 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
 def plot_points(
         sticker_coords: np.ndarray,
         colors: np.ndarray,
+        show_indices: bool = False,
     ):
     """
     Plot the given points and colors in 3D using matplotlib.
@@ -137,10 +180,12 @@ def plot_points(
         sticker_coords[:, 2],
         c=colors[color_indices],
         s=100,
+        alpha=1,
     )
     # show sticker index as text at the sticker position
-    for i, coords in enumerate(sticker_coords):
-        ax.text(*coords[:3], f"{i}", color="black")
+    if show_indices:
+        for i, coords in enumerate(sticker_coords):
+            ax.text(*coords[:3], f"{i}", color="black")
     # ax.set_box_aspect([1, 1, 1])
     ax.set_aspect("equal")
     plt.show()
@@ -149,4 +194,6 @@ if __name__ == "__main__":
     # generate 2x3x4 cuboid
     # sticker_coords, colors = generate_cuboid((2, 3, 4))
     sticker_coords, colors = generate_cuboid((2,3,5))
-    plot_points(sticker_coords, colors)
+    # sticker_coords, colors = generate_cuboid((5,5,5))
+    # sticker_coords, colors = generate_cuboid((3,3,3))
+    plot_points(sticker_coords, colors, show_indices=sticker_coords.shape[0] < 100)
