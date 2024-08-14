@@ -43,48 +43,48 @@ def generate_cuboid(
         # Green face (front)
         {
             'start': np.array((-size[0]/2, -size[1]/2, -size[2]/2)),
-            'dir1': np.array((1, 0, 0)),
-            'dir2': np.array((0, 0, 1)),
+            'dir1': np.array((0, 0, 1)),
+            'dir2': np.array((1, 0, 0)),
             'fixed': 1,
             'sign': -1,
             'color': 0},
         # Red face (right)
         {
             'start': np.array((size[0]/2, -size[1]/2, -size[2]/2)),
-            'dir1': np.array((0, 1, 0)),
-            'dir2': np.array((0, 0, 1)),
+            'dir1': np.array((0, 0, 1)),
+            'dir2': np.array((0, 1, 0)),
             'fixed': 0,
             'sign': 1,
             'color': 1},
         # Blue face (back)
         {
             'start': np.array((size[0]/2, size[1]/2, -size[2]/2)),
-            'dir1': np.array((-1, 0, 0)),
-            'dir2': np.array((0, 0, 1)),
+            'dir1': np.array((0, 0, 1)),
+            'dir2': np.array((-1, 0, 0)),
             'fixed': 1,
             'sign': 1,
             'color': 2},
         # Orange face (left)
         {
             'start': np.array((-size[0]/2, size[1]/2, -size[2]/2)),
-            'dir1': np.array((0, -1, 0)),
-            'dir2': np.array((0, 0, 1)),
+            'dir1': np.array((0, 0, 1)),
+            'dir2': np.array((0, -1, 0)),
             'fixed': 0,
             'sign': -1,
             'color': 3},
         # White face (top)
         {
             'start': np.array((-size[0]/2, -size[1]/2, size[2]/2)),
-            'dir1': np.array((1, 0, 0)),
-            'dir2': np.array((0, 1, 0)),
+            'dir1': np.array((0, 1, 0)),
+            'dir2': np.array((1, 0, 0)),
             'fixed': 2,
             'sign': 1,
             'color': 4},
         # Yellow face (bottom)
         {
-            'start': np.array((size[0]/2, size[1]/2, -size[2]/2)),
-            'dir1': np.array((-1, 0, 0)),
-            'dir2': np.array((0, -1, 0)),
+            'start': np.array((-size[0]/2, size[1]/2, -size[2]/2)),
+            'dir2': np.array((1, 0, 0)),
+            'dir1': np.array((0, -1, 0)),
             'fixed': 2,
             'sign': -1,
             'color': 5},
@@ -137,6 +137,7 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
         for faces that are further inwards, the name is prefixed by the number of layers that are further from the center than this face.
         e.g. moves of a 7x7x7 from left to right: L, 2L, 3L, M, 3R, 2R, R
     """
+    
     # calculate number of stickers on each face
     n_stickers = {
         "green": size[0]*size[2],
@@ -146,22 +147,234 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
         "white": size[0]*size[1],
         "yellow": size[0]*size[1],
     }
-    moves: dict[str, list[list[str]]] = {}
-    # U moves
-    if size[0] == size[1] and size[2] > 1:
-        # 1. define outermost move: U
-        # 1.1 define white face cycles
+    moves = {}
+    x, y, z = size
 
-        # 1.2 define cycles of green, red, blue, orange faces
+    def calculate_face_cycles_90(
+            start_index: int,
+            face_size: int,
+            face_height_offset: int = None,
+        ) -> list[list[int]]:
+        """
+        Recursively define the cycles for a single colored face. Each iteration adds cycles for the outermost ring of stickers.
+        
+        Args:
+            start_index (int): The index of the first sticker on the face.
+            face_size (int): The width and height of the face (must be equal for 90° moves).
+            face_height_offset (int): The index offset between adjacent stickers in the height direction.
+                The offset to the next sticker in width direction is always 1.
+        """
+        if face_height_offset is None:
+            face_height_offset = face_size
+        if face_size < 2: # no cycles for faces with less than 2 stickers per direction
+            return []
+        cycles = []
+        # add corner cycle
+        cycles.append([
+            start_index,
+            start_index + face_height_offset*(face_size-1),
+            start_index + face_height_offset*(face_size-1) + face_size - 1,
+            start_index + face_size - 1,
+        ])
+        # add edge cycles
+        for i in range(1, face_size-1):
+            cycles.append([
+                start_index + i,
+                start_index + (face_size-1-i) * face_height_offset,
+                start_index + (face_size-1) * face_height_offset + face_size - 1 - i,
+                start_index + i * face_height_offset + face_size - 1,
+            ])
+        return cycles + calculate_face_cycles_90(
+            start_index + face_height_offset + 1,
+            face_size - 2,
+            face_height_offset,
+        )
+    
+    def calculate_face_cycles_180():
+        pass
+    
+    def calculate_off_face_cycles_90(
+        size: tuple[int, int, int],
+        faces_start_indices: list[int],
+        face_1_width: int,
+        face_2_width: int,
+        shared_axis_width: int,
+    ) -> list[list[int]]:
+        """
+        Define the cycles of slice moves involving four different-colored faces.
+        """
+    
+    start_index = 0
+    moves["F"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=x,
+        face_size=z,
+    )
+    start_index += x*z
+    moves["R"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=y,
+        face_size=z,
+    )
+    start_index += y*z
+    moves["B"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=x,
+        face_size=z,
+    )
+    start_index += x*z
+    moves["L"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=y,
+        face_size=z,
+    )
+    start_index += y*z
+    moves["U"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=x,
+        face_size=y,
+    )
+    start_index += x*y
+    moves["D"] = calculate_face_cycles_90(
+        start_index=start_index,
+        face_size=x,
+        face_size=y,
+    )
+    start_index += x*y
+    return moves
 
-        # 2. define inner moves: 2U, 3U, ...
-        for z in range(1, size[2]//2):
-            if z > 0:
-                name = f"{z+1}U"
-            # 2.1 define white face cycles
-            moves[name] = [
-                
-            ]
+    # x, y, z = size
+    
+    # def _define_face_cycles(width: int, height: int, offset: int) -> list[list[int]]:
+    #     """
+    #     Define the cycles for a single face.
+
+    #     Args:
+    #         width (int): The width of the face.
+    #         height (int): The height of the face.
+    #         offset (int): The index offset for the starting point of the face.
+
+    #     Returns:
+    #         list[list[int]]: A list of cycles representing how the stickers on a single face are permuted by a 90° rotation.
+    #     """
+    #     cycles = []
+    #     layer_count = min(width, height) // 2
+
+    #     for layer in range(layer_count):
+    #         cycle = []
+    #         # Top row, left to right
+    #         for i in range(layer, width - layer - 1):
+    #             cycle.append(offset + layer * width + i)
+    #         # Right column, top to bottom
+    #         for i in range(layer, height - layer - 1):
+    #             cycle.append(offset + (i + 1) * width - layer - 1)
+    #         # Bottom row, right to left
+    #         for i in range(layer, width - layer - 1):
+    #             cycle.append(offset + (height - layer - 1) * width + (width - i - 1))
+    #         # Left column, bottom to top
+    #         for i in range(layer, height - layer - 1):
+    #             cycle.append(offset + (height - i - 1) * width + layer)
+    #         if len(cycle) > 1:  # Ensure only valid cycles are included
+    #             cycles.append(cycle)
+
+    #     return cycles
+    
+    # def _define_side_cycles(
+    #     face_size: int,
+    #     layers: int,
+    #     move_direction: int,
+    #     fixed_face_idx: int,
+    #     side_offsets: list[int]
+    # ) -> list[list[int]]:
+    #     """
+    #     Define the cycles for stickers on the adjacent faces when rotating a face.
+
+    #     Args:
+    #         face_size (int): Size of the face in the direction of movement.
+    #         layers (int): The number of layers to rotate.
+    #         move_direction (int): The direction to rotate the face.
+    #         fixed_face_idx (int): The fixed index (U, F, L, etc.).
+    #         side_offsets (list[int]): Offsets for the adjacent faces.
+
+    #     Returns:
+    #         list[list[int]]: A list of cycles representing how the stickers on adjacent faces are permuted.
+    #     """
+    #     cycles = []
+
+    #     for layer in range(layers):
+    #         for i in range(face_size):
+    #             cycle = []
+    #             base = layer * face_size + i + fixed_face_idx
+    #             for offset in side_offsets:
+    #                 current_idx = base + offset
+    #                 if current_idx not in cycle:  # Ensure no duplicates
+    #                     cycle.append(current_idx)
+    #             if len(cycle) > 1:  # Ensure only valid cycles are included
+    #                 cycles.append(cycle)
+        
+    #     return cycles
+
+    # def _generate_moves():
+    #     """
+    #     Generate the moves for the cuboid based on its dimensions.
+
+    #     Returns:
+    #         dict[str, list[list[int]]]: The moves for the cuboid.
+    #     """
+    #     moves = {}
+        
+    #     # Each entry corresponds to a face (U, D, F, B, L, R) in the following order:
+    #     # U (white), D (yellow), F (green), B (blue), L (orange), R (red)
+    #     face_info = [
+    #         {'face_name': 'U', 'face_dims': (x, y), 'fixed_axis': 2, 'sign': 1, 'offset': 0},
+    #         {'face_name': 'D', 'face_dims': (x, y), 'fixed_axis': 2, 'sign': 1, 'offset': 5 * x * y},
+    #         {'face_name': 'F', 'face_dims': (x, z), 'fixed_axis': 1, 'sign': 1, 'offset': x * y},
+    #         {'face_name': 'B', 'face_dims': (x, z), 'fixed_axis': 1, 'sign': 1, 'offset': 4 * x * y},
+    #         {'face_name': 'L', 'face_dims': (y, z), 'fixed_axis': 0, 'sign': 1, 'offset': 2 * x * y},
+    #         {'face_name': 'R', 'face_dims': (y, z), 'fixed_axis': 0, 'sign': 1, 'offset': 3 * x * y}
+    #     ]
+        
+    #     # Offsets for adjacent faces corresponding to (U, D, F, B, L, R)
+    #     adj_face_offsets = {
+    #         'U': [0, x * y, 4 * x * y, 3 * x * y],
+    #         'D': [5 * x * y, x * y, 4 * x * y, 3 * x * y],
+    #         'F': [x * y, 2 * x * y, 5 * x * y, 0],
+    #         'B': [4 * x * y, 2 * x * y, 5 * x * y, 0],
+    #         'L': [2 * x * y, 3 * x * y, 4 * x * y, x * y],
+    #         'R': [2 * x * y, 0, 4 * x * y, x * y]
+    #     }
+        
+    #     # Create moves for each face
+    #     for info in face_info:
+    #         face_name = info['face_name']
+    #         width, height = info['face_dims']
+    #         fixed_idx = info['offset']
+
+    #         # Define face cycles (single face rotation)
+    #         face_cycles = _define_face_cycles(width, height, fixed_idx)
+    #         moves[face_name] = face_cycles
+
+    #         # Define side cycles (adjacent faces affected by the move)
+    #         side_cycles = _define_side_cycles(width, height, 1, fixed_idx, adj_face_offsets[face_name])
+    #         moves[face_name].extend(side_cycles)
+
+    #         # Define inner layer moves (like M, E, S for odd layers)
+    #         for layer in range(2, min([x, y, z]) // 2 + 1):
+    #             layer_name = f'{layer}{face_name}'
+    #             side_cycles = _define_side_cycles(width, height, layer, fixed_idx, adj_face_offsets[face_name])
+    #             moves[layer_name] = side_cycles
+
+    #     return moves
+    
+    # # Generate all moves
+    # return _generate_moves()
+
+
+
+
+
+
+
 def plot_points(
         sticker_coords: np.ndarray,
         colors: np.ndarray,
@@ -179,21 +392,46 @@ def plot_points(
         sticker_coords[:, 1],
         sticker_coords[:, 2],
         c=colors[color_indices],
-        s=100,
+        s=500,
         alpha=1,
     )
     # show sticker index as text at the sticker position
     if show_indices:
         for i, coords in enumerate(sticker_coords):
-            ax.text(*coords[:3], f"{i}", color="black")
+            if show_indices == "positive" and coords[3] in [2, 3, 5]:
+                continue
+            ax.text(
+                *coords[:3], f"{i}",
+                color="black",
+                # bold
+                weight="bold",
+                # text alginment center
+                ha="center",
+                va="center",
+            )
     # ax.set_box_aspect([1, 1, 1])
     ax.set_aspect("equal")
     plt.show()
     
 if __name__ == "__main__":
     # generate 2x3x4 cuboid
-    # sticker_coords, colors = generate_cuboid((2, 3, 4))
-    sticker_coords, colors = generate_cuboid((2,3,5))
-    # sticker_coords, colors = generate_cuboid((5,5,5))
-    # sticker_coords, colors = generate_cuboid((3,3,3))
-    plot_points(sticker_coords, colors, show_indices=sticker_coords.shape[0] < 100)
+    # shape = (2, 3, 5)
+    # shape = (3, 3, 3)
+    shape = (4, 4, 4)
+    # shape = (9, 9, 9)
+    # shape = (5, 5, 5)
+    # shape = (6, 5, 6)
+    # shape = (2, 2, 2)
+    sticker_coords, colors = generate_cuboid(shape)
+    moves = define_moves(shape)
+    if moves:
+        for name, cycles in moves.items():
+            print(name, cycles)
+            # break
+    plot_points(
+        sticker_coords,
+        colors,
+        # show_indices=True,
+        show_indices="positive",
+        # show_indices=sticker_coords.shape[0] < 100,
+    )
