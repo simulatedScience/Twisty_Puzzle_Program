@@ -189,21 +189,28 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
             face_size - 2,
             face_height_offset,
         )
-    
-    def calculate_face_cycles_180():
+
+    def calculate_cycle_indices(
+        start_index: int,
+        axis: int,
+        angle: float,
+        sticker_coords: np.ndarray,
+    ) -> list[int]:
+        """
+        Calculate the indices of the stickers in a cycle for a given rotation by rotating the start sticker around the given axis by the given angle.
+        Then return the sticker indices which are closest to the rotated points.
+        """
+
+    def calculate_off_face_cycles(
+        start_index: int,
+        axis: int,
+        angle: float,
+    ):
+        """
+        Calculate 
+        """
         pass
-    
-    def calculate_off_face_cycles_90(
-        size: tuple[int, int, int],
-        faces_start_indices: list[int],
-        face_1_width: int,
-        face_2_width: int,
-        shared_axis_width: int,
-    ) -> list[list[int]]:
-        """
-        Define the cycles of slice moves involving four different-colored faces.
-        """
-    
+
     start_index = 0
     moves["F"] = calculate_face_cycles_90(
         start_index=start_index,
