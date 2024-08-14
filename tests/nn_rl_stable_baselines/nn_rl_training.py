@@ -349,29 +349,11 @@ if __name__ == "__main__":
     # test various success thresholds with multiprocessing
     # ===============================
     import multiprocessing as mp
-    # success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
-    success_thresholds = [.9]
-    scramble_depths = [1, 4, 8]
-    rewards = ["binary", "most_correct_points"]
-    n_processes = 6
-    kwargs_list  = [
-            (
-            "skewb_sym_half", # puzzle_name
-            ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
-            None,            # load_model
-            # f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
-            # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
-            True,            # train_new
-            1_000_000,      # n_episodes
-            "piece_reward_models", # model_folder
-            "piece_reward_tb_logs", # tb_log_folder
-            scramble_depth,               # start_scramble_depth
-            threshold,       # success_threshold
-            reward, # rewards
-        ) for threshold in success_thresholds
-            for scramble_depth in scramble_depths
-                for reward in rewards
-        ]
+    # # success_thresholds = [.1, .3, .5, .7, .8, .9, .95, 1.]
+    # success_thresholds = [.9]
+    # scramble_depths = [1, 4, 8]
+    # rewards = ["binary", "most_correct_points"]
+    # n_processes = 6
     # kwargs_list  = [
     #         (
     #         "skewb_sym_half", # puzzle_name
@@ -381,11 +363,58 @@ if __name__ == "__main__":
     #         # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
     #         True,            # train_new
     #         1_000_000,      # n_episodes
-    #         [1, 4, 8],               # start_scramble_depth
+    #         "piece_reward_models", # model_folder
+    #         "piece_reward_tb_logs", # tb_log_folder
+    #         scramble_depth,               # start_scramble_depth
     #         threshold,       # success_threshold
-    #         "most_correct_points", # reward
+    #         reward, # rewards
     #     ) for threshold in success_thresholds
+    #         for scramble_depth in scramble_depths
+    #             for reward in rewards
     #     ]
+    # # kwargs_list  = [
+    # #         (
+    # #         "skewb_sym_half", # puzzle_name
+    # #         ["wbr", "wbr'", "wgo", "wgo'", "ryg", "ryg'", "oyb", "oyb'"],            # base_actions
+    # #         None,            # load_model
+    # #         # f"skewb_sym_half_binary_st={threshold}_1_10000000.zip",            # load_model
+    # #         # f"skewb_pyramid_binary_st={threshold}_1_5000000",            # load_model
+    # #         True,            # train_new
+    # #         1_000_000,      # n_episodes
+    # #         [1, 4, 8],               # start_scramble_depth
+    # #         threshold,       # success_threshold
+    # #         "most_correct_points", # reward
+    # #     ) for threshold in success_thresholds
+    # #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # ===============================
+    success_thresholds = [.9]
+    scramble_depths_rewards = [
+        (1, "binary"),
+        (1, "most_correct_points"),
+        (4, "most_correct_points"),
+        (8, "most_correct_points"),
+    ]
+    n_processes = 4
+    kwargs_list  = [
+            (
+            "rubiks_2x2_sym", # puzzle_name
+            # "rubiks_algs", # puzzle_name
+            ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"], # base_actions
+            None,            # load_model
+            True,            # train_new
+            2_000_000,       # n_episodes
+            "rubiks_2x2_models",  # model_folder
+            "rubiks_2x2_tb_logs", # tb_log_folder
+            # "rubiks_3x3_models",  # model_folder
+            # "rubiks_3x3_tb_logs", # tb_log_folder
+            scramble_depth,  # start_scramble_depth
+            threshold,       # success_threshold
+            reward,          # reward
+        ) for threshold in success_thresholds
+            for scramble_depth, reward in scramble_depths_rewards
+        ]
     with mp.Pool(n_processes) as pool:
         pool.starmap(main, kwargs_list)
     # ===============================
