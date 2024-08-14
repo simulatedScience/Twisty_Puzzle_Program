@@ -208,37 +208,31 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
     moves["F"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=x,
-        face_size=z,
     )
     start_index += x*z
     moves["R"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=y,
-        face_size=z,
     )
     start_index += y*z
     moves["B"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=x,
-        face_size=z,
     )
     start_index += x*z
     moves["L"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=y,
-        face_size=z,
     )
     start_index += y*z
     moves["U"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=x,
-        face_size=y,
     )
     start_index += x*y
     moves["D"] = calculate_face_cycles_90(
         start_index=start_index,
         face_size=x,
-        face_size=y,
     )
     start_index += x*y
     return moves
@@ -409,8 +403,10 @@ def plot_points(
                 ha="center",
                 va="center",
             )
-    # ax.set_box_aspect([1, 1, 1])
     ax.set_aspect("equal")
+    # set background color
+    ax.set_facecolor("#777") # mid gray
+    fig.set_facecolor("#777") # mid gray
     plt.show()
     
 if __name__ == "__main__":
