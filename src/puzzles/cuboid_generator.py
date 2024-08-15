@@ -192,23 +192,44 @@ def define_moves(
         """
         
         """
+        # add faces with internal rotations to start indices
+        endpoints_pos,  = np.where(points[:, sort_by_coordinate] == max(points[:, sort_by_coordinate]))
+        endpoints_neg,  = np.where(points[:, sort_by_coordinate] == min(points[:, sort_by_coordinate]))
+        # find start indices and face sizes for the faces with internal rotations
+        start_index_pos = np.min(endpoints_pos)
+        start_index_neg = np.min(endpoints_neg)
+        face_size_pos = len(endpoints_pos)
+        face_size_neg = len(endpoints_neg)
+
+        # discard extra faces if they are not single-colored
+        if len(set(points[endpoints_pos, 3])) == 1:
+            use_extra_faces: bool = True
+            start_indeces: tuple[int, int, int, int] = (start_index_pos, start_index_neg, *start_indeces)
+            start_face_sizes: tuple[int, int, int, int] = (face_size_pos, face_size_neg, *start_face_sizes)
+        else:
+            use_extra_faces: bool = False
+
         cycles: list[list[int]] = []
-        no_second_loop: bool = False
-        for start_index, face_size in zip(start_indeces, start_face_sizes):
+        skip_last_loop: bool = False
+        for face_index, (start_index, face_size) in enumerate(zip(start_indeces, start_face_sizes)):
             for i in range(face_size):
                 cycle = []
                 current_index = start_index + i
-                while current_index not in cycle:
-                    cycle.append(current_index)
-                    current_index = np.argmin(np.linalg.norm(rotated_points - points[current_index][:3], axis=1))
-                cycles.append(cycle) # first index in cycle is index of first point in `points`
-                if start_indeces[1] in cycle:
-                    no_second_loop = True
-            if no_second_loop:
+                for existing_cycle in cycles:
+                    if current_index in existing_cycle:
+                        break
+                else:
+                    while current_index not in cycle:
+                        cycle.append(current_index)
+                        current_index = np.argmin(np.linalg.norm(rotated_points - points[current_index][:3], axis=1))
+                    # if len(cycle) > 1:
+                    cycles.append(cycle) # first index in cycle is index of first point in `points`
+                    if start_indeces[1] in cycle:
+                        skip_last_loop = True
+            if face_index > 2 and skip_last_loop:
                 break
         # group and sort cycles by coordinates of their first point.
         # if first_point[sort_by_coordinate] is the same, the cycle is in the same group.
-
         first_point_coords = np.array([points[cycle[0]][sort_by_coordinate] for cycle in cycles])
         # group cycles by first point coordinate
         cycle_groups: dict[float, list[list[int]]] = {}
@@ -216,10 +237,20 @@ def define_moves(
             if first_point_coord not in cycle_groups:
                 cycle_groups[first_point_coord] = []
             cycle_groups[first_point_coord].append(cycle)
+        # merge first two and last two grouos to include all points belonging to the same pieces.
+        # join first two groups
+        if use_extra_faces:
+            sorted_keys = sorted(list(cycle_groups.keys()))
+            cycle_groups[sorted_keys[1]] += cycle_groups.pop(sorted_keys[0])
+            # join last two groups
+            if len(cycle_groups) > 1:
+                cycle_groups[sorted_keys[-2]] += cycle_groups.pop(sorted_keys[-1])
+        if len(cycle_groups) == 1:
+            cycle_groups = {}
         # sort the groups by the first point coordinate
         sorted_cycle_groups: list[list[list[int]]] = [cycle_groups[coord] for coord in sorted(cycle_groups.keys())]
 
-        print(f"naming {len(sorted_cycle_groups)} moves")
+        # print(f"naming {len(sorted_cycle_groups)} moves")
         # name moves, invert cycles if necessary
         named_moves: dict[str, list[list[int]]] = {}
         midpoint: float = (len(sorted_cycle_groups)-1) / 2
@@ -236,11 +267,11 @@ def define_moves(
                 # invert cycles
                 group = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
             named_moves[name] = group
-            print(f"new move: {name} = {group}")
+            # print(f"new move: {name} = {group}")
         # return named moves
         return named_moves
 
-    cycles_y = find_rotation_cycles(
+    moves_y = find_rotation_cycles(
         start_indeces=(start_indices["red"], start_indices["white"]), # red and white faces
         start_face_sizes=(y*z, x*y),
         points=sticker_coords,
@@ -248,7 +279,7 @@ def define_moves(
         sort_by_coordinate=1,
         move_names=move_names[1],
     )
-    cycles_x = find_rotation_cycles(
+    moves_x = find_rotation_cycles(
         start_indeces=(start_indices["green"], start_indices["white"]), # green and white faces
         start_face_sizes=(x*z, x*y),
         points=sticker_coords,
@@ -256,7 +287,7 @@ def define_moves(
         sort_by_coordinate=0,
         move_names=move_names[0],
     )
-    cycles_z = find_rotation_cycles(
+    moves_z = find_rotation_cycles(
         start_indeces=(start_indices["green"], start_indices["red"]), # green and red faces
         start_face_sizes=(x*z, y*z),
         points=sticker_coords,
@@ -264,13 +295,7 @@ def define_moves(
         sort_by_coordinate=2,
         move_names=move_names[2],
     )
-    moves = {}
-    for name, cycles in cycles_x.items():
-        moves[name] = cycles
-    for name, cycles in cycles_y.items():
-        moves[name] = cycles
-    for name, cycles in cycles_z.items():
-        moves[name] = cycles
+    moves: dict[str, list[list[int]]] = moves_x | moves_y | moves_z # merge dictionaries
     return moves
 
 
@@ -318,15 +343,20 @@ def plot_points(
     
 if __name__ == "__main__":
     # generate 2x3x4 cuboid
-    shape = (6, 3, 5)
+    # shape = (6, 3, 5)
     # shape = (3, 3, 3)
     # shape = (4, 4, 4)
     # shape = (9, 9, 9)
     # shape = (5, 5, 5)
     # shape = (6, 5, 6)
     # shape = (2, 3, 4)
-    # shape = (3, 2, 3)
-    sticker_coords, colors = generate_cuboid(shape)
+    # shape = (2, 2, 2)
+    shape = (0, 1, 3)
+    sticker_coords, colors = generate_cuboid(
+        size=shape,
+        cuby_size=1.,
+        sticker_offset=0.25,
+    )
     moves = define_moves(shape, sticker_coords)
     if moves:
         for name, cycles in moves.items():
