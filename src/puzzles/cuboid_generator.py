@@ -109,13 +109,17 @@ def generate_cuboid(
     
     return np.array(sticker_coords), colors
 
-def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
+def define_moves(
+        size: tuple[int, int, int],
+        sticker_coords: np.ndarray,
+    ) -> dict[str, list[list[str]]]:
     """
     Define the base moves for a cuboid of the given shape (x, y, z).
     This method relies on points being ordered exactly as output by the `generate_cuboid` function.
 
     Args:
         size (tuple[int, int, int]): The size of the cuboid in the form (width, depth, height).
+        sticker_coords (np.ndarray): The coordinates of the stickers (shape: (s, 4)), s = number of stickers, fourth component is an integer representing the sticker color by index in the list of the second output
 
     Returns:
         (dict[str, list[list[str]]]): The base moves for the cuboid with default names represented by permutations as lists of cycles acting on the stickers.
@@ -137,241 +141,137 @@ def define_moves(size: tuple[int, int, int]) -> dict[str, list[list[str]]]:
         for faces that are further inwards, the name is prefixed by the number of layers that are further from the center than this face.
         e.g. moves of a 7x7x7 from left to right: L, 2L, 3L, M, 3R, 2R, R
     """
-    
-    # calculate number of stickers on each face
-    n_stickers = {
-        "green": size[0]*size[2],
-        "blue": size[0]*size[2],
-        "red": size[1]*size[2],
-        "orange": size[1]*size[2],
-        "white": size[0]*size[1],
-        "yellow": size[0]*size[1],
-    }
-    moves = {}
     x, y, z = size
+    # 1. rotate puzzle around each major axis (x, y, z)
+    rotation_axes: list[np.ndarray] = [vec for vec in np.eye(3)] # x, y, z standard basis vectors
+    rotation_is_90: list[bool] = [y == z, x == z, x == y]
+    my_sin = lambda angle_is_90: 1 if angle_is_90 else 0
+    my_cos = lambda angle_is_90: 0 if angle_is_90 else -1
+    # rotate in ngative direction due to cycle detection method
+    rot_mat_x = np.array([
+        [1, 0, 0],
+        [0, my_cos(rotation_is_90[0]), my_sin(rotation_is_90[0])],
+        [0, -my_sin(rotation_is_90[0]), my_cos(rotation_is_90[0])],
+    ])
+    points_rotated_x: np.ndarray = np.dot(sticker_coords[:, :3], rot_mat_x.T)
 
-    def calculate_face_cycles_90(
-            start_index: int,
-            face_size: int,
-            face_height_offset: int = None,
-        ) -> list[list[int]]:
+    rot_mat_y = np.array([
+        [my_cos(rotation_is_90[1]), 0, -my_sin(rotation_is_90[1])],
+        [0, 1, 0],
+        [my_sin(rotation_is_90[1]), 0, my_cos(rotation_is_90[1])],
+    ])
+    points_rotated_y: np.ndarray = np.dot(sticker_coords[:, :3], rot_mat_y.T)
+
+    rot_mat_z = np.array([
+        [my_cos(rotation_is_90[2]), my_sin(rotation_is_90[2]), 0],
+        [-my_sin(rotation_is_90[2]), my_cos(rotation_is_90[2]), 0],
+        [0, 0, 1],
+    ])
+    points_rotated_z: np.ndarray = np.dot(sticker_coords[:, :3], rot_mat_z.T)
+
+    # use static starting points for all cycles
+    # choose faces with minimal index for each axis to avoid sorting later.
+    # green face for x rotations, red face for y rotations, green face for z rotations
+    # starting points for each face
+    start_indices = {
+        "red": x*z, # on red face
+        "green": 0, # on green face
+        "white": 2*x*z + 2*y*z, # on green face
+    }
+    move_names = [("L", "M", "R"), ("F", "S", "B"), ("D", "E", "U")]
+
+    # for each starting face, find where each point gets mapped under a given rotation
+    def find_rotation_cycles(
+            start_indeces: tuple[int, int],
+            start_face_sizes: tuple[int, int],
+            points: np.ndarray,
+            rotated_points: np.ndarray,
+            sort_by_coordinate: int,
+            move_names: tuple[str, str, str],
+        ) -> list[list[list[int]]]:
         """
-        Recursively define the cycles for a single colored face. Each iteration adds cycles for the outermost ring of stickers.
         
-        Args:
-            start_index (int): The index of the first sticker on the face.
-            face_size (int): The width and height of the face (must be equal for 90° moves).
-            face_height_offset (int): The index offset between adjacent stickers in the height direction.
-                The offset to the next sticker in width direction is always 1.
         """
-        if face_height_offset is None:
-            face_height_offset = face_size
-        if face_size < 2: # no cycles for faces with less than 2 stickers per direction
-            return []
-        cycles = []
-        # add corner cycle
-        cycles.append([
-            start_index,
-            start_index + face_height_offset*(face_size-1),
-            start_index + face_height_offset*(face_size-1) + face_size - 1,
-            start_index + face_size - 1,
-        ])
-        # add edge cycles
-        for i in range(1, face_size-1):
-            cycles.append([
-                start_index + i,
-                start_index + (face_size-1-i) * face_height_offset,
-                start_index + (face_size-1) * face_height_offset + face_size - 1 - i,
-                start_index + i * face_height_offset + face_size - 1,
-            ])
-        return cycles + calculate_face_cycles_90(
-            start_index + face_height_offset + 1,
-            face_size - 2,
-            face_height_offset,
-        )
+        cycles: list[list[int]] = []
+        no_second_loop: bool = False
+        for start_index, face_size in zip(start_indeces, start_face_sizes):
+            for i in range(face_size):
+                cycle = []
+                current_index = start_index + i
+                while current_index not in cycle:
+                    cycle.append(current_index)
+                    current_index = np.argmin(np.linalg.norm(rotated_points - points[current_index][:3], axis=1))
+                cycles.append(cycle) # first index in cycle is index of first point in `points`
+                if start_indeces[1] in cycle:
+                    no_second_loop = True
+            if no_second_loop:
+                break
+        # group and sort cycles by coordinates of their first point.
+        # if first_point[sort_by_coordinate] is the same, the cycle is in the same group.
 
-    def calculate_cycle_indices(
-        start_index: int,
-        axis: int,
-        angle: float,
-        sticker_coords: np.ndarray,
-    ) -> list[int]:
-        """
-        Calculate the indices of the stickers in a cycle for a given rotation by rotating the start sticker around the given axis by the given angle.
-        Then return the sticker indices which are closest to the rotated points.
-        """
+        first_point_coords = np.array([points[cycle[0]][sort_by_coordinate] for cycle in cycles])
+        # group cycles by first point coordinate
+        cycle_groups: dict[float, list[list[int]]] = {}
+        for first_point_coord, cycle in zip(first_point_coords, cycles):
+            if first_point_coord not in cycle_groups:
+                cycle_groups[first_point_coord] = []
+            cycle_groups[first_point_coord].append(cycle)
+        # sort the groups by the first point coordinate
+        sorted_cycle_groups: list[list[list[int]]] = [cycle_groups[coord] for coord in sorted(cycle_groups.keys())]
 
-    def calculate_off_face_cycles(
-        start_index: int,
-        axis: int,
-        angle: float,
-    ):
-        """
-        Calculate 
-        """
-        pass
+        print(f"naming {len(sorted_cycle_groups)} moves")
+        # name moves, invert cycles if necessary
+        named_moves: dict[str, list[list[int]]] = {}
+        midpoint: float = (len(sorted_cycle_groups)-1) / 2
+        for i, group in enumerate(sorted_cycle_groups):
+            dist_to_edge = min(i+1, len(sorted_cycle_groups) - i)
+            if i < midpoint:
+                prefix: str = f"{dist_to_edge}" if dist_to_edge > 1 else ""
+                name: str = prefix + move_names[0]
+            elif i == midpoint:
+                name: str = move_names[1]
+            else: # i > midpoint
+                prefix: str = f"{dist_to_edge}" if dist_to_edge > 1 else ""
+                name: str = prefix + move_names[2]
+                # invert cycles
+                group = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
+            named_moves[name] = group
+            print(f"new move: {name} = {group}")
+        # return named moves
+        return named_moves
 
-    start_index = 0
-    moves["F"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=x,
+    cycles_y = find_rotation_cycles(
+        start_indeces=(start_indices["red"], start_indices["white"]), # red and white faces
+        start_face_sizes=(y*z, x*y),
+        points=sticker_coords,
+        rotated_points=points_rotated_y,
+        sort_by_coordinate=1,
+        move_names=move_names[1],
     )
-    start_index += x*z
-    moves["R"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=y,
+    cycles_x = find_rotation_cycles(
+        start_indeces=(start_indices["green"], start_indices["white"]), # green and white faces
+        start_face_sizes=(x*z, x*y),
+        points=sticker_coords,
+        rotated_points=points_rotated_x,
+        sort_by_coordinate=0,
+        move_names=move_names[0],
     )
-    start_index += y*z
-    moves["B"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=x,
+    cycles_z = find_rotation_cycles(
+        start_indeces=(start_indices["green"], start_indices["red"]), # green and red faces
+        start_face_sizes=(x*z, y*z),
+        points=sticker_coords,
+        rotated_points=points_rotated_z,
+        sort_by_coordinate=2,
+        move_names=move_names[2],
     )
-    start_index += x*z
-    moves["L"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=y,
-    )
-    start_index += y*z
-    moves["U"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=x,
-    )
-    start_index += x*y
-    moves["D"] = calculate_face_cycles_90(
-        start_index=start_index,
-        face_size=x,
-    )
-    start_index += x*y
+    moves = {}
+    for name, cycles in cycles_x.items():
+        moves[name] = cycles
+    for name, cycles in cycles_y.items():
+        moves[name] = cycles
+    for name, cycles in cycles_z.items():
+        moves[name] = cycles
     return moves
-
-    # x, y, z = size
-    
-    # def _define_face_cycles(width: int, height: int, offset: int) -> list[list[int]]:
-    #     """
-    #     Define the cycles for a single face.
-
-    #     Args:
-    #         width (int): The width of the face.
-    #         height (int): The height of the face.
-    #         offset (int): The index offset for the starting point of the face.
-
-    #     Returns:
-    #         list[list[int]]: A list of cycles representing how the stickers on a single face are permuted by a 90° rotation.
-    #     """
-    #     cycles = []
-    #     layer_count = min(width, height) // 2
-
-    #     for layer in range(layer_count):
-    #         cycle = []
-    #         # Top row, left to right
-    #         for i in range(layer, width - layer - 1):
-    #             cycle.append(offset + layer * width + i)
-    #         # Right column, top to bottom
-    #         for i in range(layer, height - layer - 1):
-    #             cycle.append(offset + (i + 1) * width - layer - 1)
-    #         # Bottom row, right to left
-    #         for i in range(layer, width - layer - 1):
-    #             cycle.append(offset + (height - layer - 1) * width + (width - i - 1))
-    #         # Left column, bottom to top
-    #         for i in range(layer, height - layer - 1):
-    #             cycle.append(offset + (height - i - 1) * width + layer)
-    #         if len(cycle) > 1:  # Ensure only valid cycles are included
-    #             cycles.append(cycle)
-
-    #     return cycles
-    
-    # def _define_side_cycles(
-    #     face_size: int,
-    #     layers: int,
-    #     move_direction: int,
-    #     fixed_face_idx: int,
-    #     side_offsets: list[int]
-    # ) -> list[list[int]]:
-    #     """
-    #     Define the cycles for stickers on the adjacent faces when rotating a face.
-
-    #     Args:
-    #         face_size (int): Size of the face in the direction of movement.
-    #         layers (int): The number of layers to rotate.
-    #         move_direction (int): The direction to rotate the face.
-    #         fixed_face_idx (int): The fixed index (U, F, L, etc.).
-    #         side_offsets (list[int]): Offsets for the adjacent faces.
-
-    #     Returns:
-    #         list[list[int]]: A list of cycles representing how the stickers on adjacent faces are permuted.
-    #     """
-    #     cycles = []
-
-    #     for layer in range(layers):
-    #         for i in range(face_size):
-    #             cycle = []
-    #             base = layer * face_size + i + fixed_face_idx
-    #             for offset in side_offsets:
-    #                 current_idx = base + offset
-    #                 if current_idx not in cycle:  # Ensure no duplicates
-    #                     cycle.append(current_idx)
-    #             if len(cycle) > 1:  # Ensure only valid cycles are included
-    #                 cycles.append(cycle)
-        
-    #     return cycles
-
-    # def _generate_moves():
-    #     """
-    #     Generate the moves for the cuboid based on its dimensions.
-
-    #     Returns:
-    #         dict[str, list[list[int]]]: The moves for the cuboid.
-    #     """
-    #     moves = {}
-        
-    #     # Each entry corresponds to a face (U, D, F, B, L, R) in the following order:
-    #     # U (white), D (yellow), F (green), B (blue), L (orange), R (red)
-    #     face_info = [
-    #         {'face_name': 'U', 'face_dims': (x, y), 'fixed_axis': 2, 'sign': 1, 'offset': 0},
-    #         {'face_name': 'D', 'face_dims': (x, y), 'fixed_axis': 2, 'sign': 1, 'offset': 5 * x * y},
-    #         {'face_name': 'F', 'face_dims': (x, z), 'fixed_axis': 1, 'sign': 1, 'offset': x * y},
-    #         {'face_name': 'B', 'face_dims': (x, z), 'fixed_axis': 1, 'sign': 1, 'offset': 4 * x * y},
-    #         {'face_name': 'L', 'face_dims': (y, z), 'fixed_axis': 0, 'sign': 1, 'offset': 2 * x * y},
-    #         {'face_name': 'R', 'face_dims': (y, z), 'fixed_axis': 0, 'sign': 1, 'offset': 3 * x * y}
-    #     ]
-        
-    #     # Offsets for adjacent faces corresponding to (U, D, F, B, L, R)
-    #     adj_face_offsets = {
-    #         'U': [0, x * y, 4 * x * y, 3 * x * y],
-    #         'D': [5 * x * y, x * y, 4 * x * y, 3 * x * y],
-    #         'F': [x * y, 2 * x * y, 5 * x * y, 0],
-    #         'B': [4 * x * y, 2 * x * y, 5 * x * y, 0],
-    #         'L': [2 * x * y, 3 * x * y, 4 * x * y, x * y],
-    #         'R': [2 * x * y, 0, 4 * x * y, x * y]
-    #     }
-        
-    #     # Create moves for each face
-    #     for info in face_info:
-    #         face_name = info['face_name']
-    #         width, height = info['face_dims']
-    #         fixed_idx = info['offset']
-
-    #         # Define face cycles (single face rotation)
-    #         face_cycles = _define_face_cycles(width, height, fixed_idx)
-    #         moves[face_name] = face_cycles
-
-    #         # Define side cycles (adjacent faces affected by the move)
-    #         side_cycles = _define_side_cycles(width, height, 1, fixed_idx, adj_face_offsets[face_name])
-    #         moves[face_name].extend(side_cycles)
-
-    #         # Define inner layer moves (like M, E, S for odd layers)
-    #         for layer in range(2, min([x, y, z]) // 2 + 1):
-    #             layer_name = f'{layer}{face_name}'
-    #             side_cycles = _define_side_cycles(width, height, layer, fixed_idx, adj_face_offsets[face_name])
-    #             moves[layer_name] = side_cycles
-
-    #     return moves
-    
-    # # Generate all moves
-    # return _generate_moves()
-
-
-
 
 
 
@@ -418,15 +318,16 @@ def plot_points(
     
 if __name__ == "__main__":
     # generate 2x3x4 cuboid
-    # shape = (2, 3, 5)
+    shape = (6, 3, 5)
     # shape = (3, 3, 3)
-    shape = (4, 4, 4)
+    # shape = (4, 4, 4)
     # shape = (9, 9, 9)
     # shape = (5, 5, 5)
     # shape = (6, 5, 6)
-    # shape = (2, 2, 2)
+    # shape = (2, 3, 4)
+    # shape = (3, 2, 3)
     sticker_coords, colors = generate_cuboid(shape)
-    moves = define_moves(shape)
+    moves = define_moves(shape, sticker_coords)
     if moves:
         for name, cycles in moves.items():
             print(name, cycles)
@@ -434,7 +335,7 @@ if __name__ == "__main__":
     plot_points(
         sticker_coords,
         colors,
-        # show_indices=True,
-        show_indices="positive",
+        show_indices=True,
+        # show_indices="positive",
         # show_indices=sticker_coords.shape[0] < 100,
     )
