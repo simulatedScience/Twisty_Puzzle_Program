@@ -149,7 +149,7 @@ def define_moves(
     rotation_is_90: list[bool] = [y == z, x == z, x == y]
     my_sin = lambda angle_is_90: 1 if angle_is_90 else 0
     my_cos = lambda angle_is_90: 0 if angle_is_90 else -1
-    # rotate in ngative direction due to cycle detection method
+    # rotate in negative direction due to cycle detection method
     rot_mat_x = np.array([
         [1, 0, 0],
         [0, my_cos(rotation_is_90[0]), my_sin(rotation_is_90[0])],
@@ -190,7 +190,7 @@ def define_moves(
             rotated_points: np.ndarray,
             sort_by_coordinate: int,
             move_names: tuple[str, str, str],
-        ) -> list[list[list[int]]]:
+        ) -> dict[str, list[list[int]]]:
         """
         
         """
@@ -269,6 +269,9 @@ def define_moves(
                 # invert cycles
                 group = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
             named_moves[name] = group
+            # add inverse if order is > 2
+            if True in [len(cycle) > 2 for cycle in group]:
+                named_moves[name + "'"] = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
             # print(f"new move: {name} = {group}")
         # return named moves
         return named_moves
@@ -348,6 +351,7 @@ def save_cuboid_to_xml(
                               encoding='UTF-8')
     with open(os.path.join(puzzle_folder_path, filename), "wb") as file:
         file.write(xml_string)
+    print(f"Saved puzzle to {os.path.join(puzzle_folder_path)}")
 
 def _save_points(
         root_elem: let.Element,
@@ -441,7 +445,7 @@ if __name__ == "__main__":
     # shape = (9, 9, 9)
     # shape = (5, 5, 5)
     # shape = (6, 5, 6)
-    shape = (2, 3, 4)
+    shape = (3, 2, 2)
     # shape = (2, 2, 2)
     # shape = (3, 3, 5)
     sticker_coords, colors = generate_cuboid(
@@ -468,5 +472,5 @@ if __name__ == "__main__":
         moves=moves,
         point_size=10,
         puzzle_name=None,
-        puzzles_path="src/puzzles",
+        puzzles_path=os.path.join("src", "puzzles"),
     )
