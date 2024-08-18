@@ -340,22 +340,22 @@ def plot_points(
     ax.set_facecolor("#777") # mid gray
     fig.set_facecolor("#777") # mid gray
     plt.show()
-    
+
 if __name__ == "__main__":
     # generate 2x3x4 cuboid
     # shape = (6, 3, 5)
     # shape = (3, 3, 3)
-    # shape = (4, 4, 4)
+    shape = (4, 4, 4)
     # shape = (9, 9, 9)
     # shape = (5, 5, 5)
     # shape = (6, 5, 6)
     # shape = (2, 3, 4)
     # shape = (2, 2, 2)
-    shape = (0, 1, 3)
+    # shape = (3, 3, 5)
     sticker_coords, colors = generate_cuboid(
         size=shape,
         cuby_size=1.,
-        sticker_offset=0.25,
+        sticker_offset=0.,
     )
     moves = define_moves(shape, sticker_coords)
     if moves:
@@ -365,7 +365,7 @@ if __name__ == "__main__":
     plot_points(
         sticker_coords,
         colors,
-        show_indices=True,
-        # show_indices="positive",
+        # show_indices=True,
+        show_indices="positive",
         # show_indices=sticker_coords.shape[0] < 100,
     )

@@ -19,11 +19,12 @@ We want to show the puzzle using vpython and allow all kinds of interaction.
 ### Minimum information
 #### Variables
   - dictionary of all possible moves
-  - center of mass of the puzzle's 3d points - _used to calculate rotation axes_
   - correct position of the 3d points - _used to prevent numerical errors during animation_
+  - (center of mass of the puzzle's 3d points - _used to calculate rotation axes_)
   - (temporary storage for functions assigned to clickevents)
   - (list of displayed vpython objects)
   - (currently displayed canvas)
+
 #### Methods
   - `perform_move`
   - `scramble_puzzle` - _randomly scramble the puzzle so the user doesn't have to do it manually_
