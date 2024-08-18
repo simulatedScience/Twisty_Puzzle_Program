@@ -1,0 +1,312 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="cuboid_2x3x4">
+  <points>
+    <point size="10">
+      <coords x="-0.5" y="-1.5" z="-1.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.5" z="-1.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.5" z="-0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.5" z="-0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.5" z="0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.5" z="0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.5" z="1.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.5" z="1.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-1.0" z="-1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.0" z="-1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="1.0" z="-1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-1.0" z="-0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.0" z="-0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="1.0" z="-0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-1.0" z="0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.0" z="0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="1.0" z="0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-1.0" z="1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.0" z="1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="1.0" z="1.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.5" z="-1.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.5" z="-1.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.5" z="-0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.5" z="-0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.5" z="0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.5" z="0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.5" z="1.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.5" z="1.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="1.0" z="-1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.0" z="-1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-1.0" z="-1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="1.0" z="-0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.0" z="-0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-1.0" z="-0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="1.0" z="0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.0" z="0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-1.0" z="0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="1.0" z="1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.0" z="1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-1.0" z="1.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="0.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="0.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.0" z="2.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="0.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.0" z="-2.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+  </points>
+  <moves>
+    <move name="L">
+      <cycle>0, 27</cycle>
+      <cycle>2, 25</cycle>
+      <cycle>4, 23</cycle>
+      <cycle>6, 21</cycle>
+      <cycle>40, 46</cycle>
+      <cycle>42, 48</cycle>
+      <cycle>44, 50</cycle>
+      <cycle>28, 39</cycle>
+      <cycle>29, 38</cycle>
+      <cycle>30, 37</cycle>
+      <cycle>31, 36</cycle>
+      <cycle>32, 35</cycle>
+      <cycle>33, 34</cycle>
+    </move>
+    <move name="R">
+      <cycle>1, 26</cycle>
+      <cycle>3, 24</cycle>
+      <cycle>5, 22</cycle>
+      <cycle>7, 20</cycle>
+      <cycle>41, 47</cycle>
+      <cycle>43, 49</cycle>
+      <cycle>45, 51</cycle>
+      <cycle>8, 19</cycle>
+      <cycle>9, 18</cycle>
+      <cycle>10, 17</cycle>
+      <cycle>11, 16</cycle>
+      <cycle>12, 15</cycle>
+      <cycle>13, 14</cycle>
+    </move>
+    <move name="F">
+      <cycle>8, 39</cycle>
+      <cycle>11, 36</cycle>
+      <cycle>14, 33</cycle>
+      <cycle>17, 30</cycle>
+      <cycle>40, 51</cycle>
+      <cycle>41, 50</cycle>
+      <cycle>0, 7</cycle>
+      <cycle>1, 6</cycle>
+      <cycle>2, 5</cycle>
+      <cycle>3, 4</cycle>
+    </move>
+    <move name="S">
+      <cycle>9, 38</cycle>
+      <cycle>12, 35</cycle>
+      <cycle>15, 32</cycle>
+      <cycle>18, 29</cycle>
+      <cycle>42, 49</cycle>
+      <cycle>43, 48</cycle>
+    </move>
+    <move name="B">
+      <cycle>10, 37</cycle>
+      <cycle>13, 34</cycle>
+      <cycle>16, 31</cycle>
+      <cycle>19, 28</cycle>
+      <cycle>44, 47</cycle>
+      <cycle>45, 46</cycle>
+      <cycle>20, 27</cycle>
+      <cycle>21, 26</cycle>
+      <cycle>22, 25</cycle>
+      <cycle>23, 24</cycle>
+    </move>
+    <move name="D">
+      <cycle>0, 20</cycle>
+      <cycle>1, 21</cycle>
+      <cycle>8, 28</cycle>
+      <cycle>9, 29</cycle>
+      <cycle>10, 30</cycle>
+      <cycle>46, 51</cycle>
+      <cycle>47, 50</cycle>
+      <cycle>48, 49</cycle>
+    </move>
+    <move name="2D">
+      <cycle>2, 22</cycle>
+      <cycle>3, 23</cycle>
+      <cycle>11, 31</cycle>
+      <cycle>12, 32</cycle>
+      <cycle>13, 33</cycle>
+    </move>
+    <move name="2U">
+      <cycle>4, 24</cycle>
+      <cycle>5, 25</cycle>
+      <cycle>14, 34</cycle>
+      <cycle>15, 35</cycle>
+      <cycle>16, 36</cycle>
+    </move>
+    <move name="U">
+      <cycle>6, 26</cycle>
+      <cycle>7, 27</cycle>
+      <cycle>17, 37</cycle>
+      <cycle>18, 38</cycle>
+      <cycle>19, 39</cycle>
+      <cycle>40, 45</cycle>
+      <cycle>41, 44</cycle>
+      <cycle>42, 43</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	

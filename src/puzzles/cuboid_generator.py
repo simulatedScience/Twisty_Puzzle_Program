@@ -1,9 +1,11 @@
 """
 This module provides functions to generate cuboid puzzles (a.k.a. n x m x k Rubik's cubes).
 """
+import os
 
-import numpy as np
+import lxml.etree as let
 import matplotlib.pyplot as plt
+import numpy as np
 
 def generate_cuboid(
         size: tuple[int, int, int],
@@ -298,6 +300,96 @@ def define_moves(
     moves: dict[str, list[list[int]]] = moves_x | moves_y | moves_z # merge dictionaries
     return moves
 
+def save_cuboid_to_xml(
+        size: tuple[int, int, int],
+        sticker_coords: np.ndarray,
+        colors: np.ndarray,
+        moves: dict[str, list[list[str]]],
+        point_size: int = 10,
+        puzzle_name: str = None,
+        # puzzles_path: str = "Twisty_Puzzle_Program/src/puzzles/",
+        puzzles_path: str = ".",
+    ):
+    """
+    Save the cuboid to a legacy puzzle file using xml-format.
+
+    Args:
+        size (tuple[int, int, int]): The size of the cuboid in the form (width, depth, height).
+        sticker_coords (np.ndarray): The coordinates of the stickers (shape: (s, 4)), s = number of stickers, fourth component is an integer representing the sticker color by index in the list of the second output
+        colors (np.ndarray): The colors of the stickers. (shape: (6, 3))
+        moves (dict[str, list[list[str]]]): The base moves for the cuboid with default names represented by permutations as lists of cycles acting on the stickers.
+        puzzle_name (str): The name of the file to save the puzzle to. If None, the puzzle is named "cuboid_{width}x{depth}x{height}.xml".
+    """
+    if not puzzle_name:
+        if len(set(size)) == 1:
+            puzzle_name = f"cube_{size[0]}x{size[1]}x{size[2]}"
+        elif len(set(size)) == 2 and 1 in size:
+            long_side: int = max(size)
+            puzzle_name: str = f"floppy_{long_side}x{long_side}"
+        else:
+            puzzle_name: str = f"cuboid_{size[0]}x{size[1]}x{size[2]}"
+    filename: str = "puzzle_definition.xml"
+    # create directory with puzzle name
+    puzzle_folder_path: str = os.path.join(puzzles_path, puzzle_name)
+    os.makedirs(puzzle_folder_path, exist_ok=True)
+    
+    root_elem = let.Element("puzzledefinition", name=puzzle_name)
+    root_elem.tail = "\n\t"
+    # save puzzle points
+    _save_points(root_elem, sticker_coords, colors, point_size)
+    
+    # save puzzle moves
+    _save_moves(root_elem, moves)
+    
+    puzzle_tree = let.ElementTree(root_elem)
+    xml_string = let.tostring(puzzle_tree,
+                              pretty_print=True,
+                              xml_declaration=True,
+                              encoding='UTF-8')
+    with open(os.path.join(puzzle_folder_path, filename), "wb") as file:
+        file.write(xml_string)
+
+def _save_points(
+        root_elem: let.Element,
+        sticker_coords: np.ndarray,
+        colors: np.ndarray,
+        point_size: int = 10,
+    ) -> None:
+    """
+    Add the points to the given ElementTree 'puzzle_tree' in a 'points' subelement. Each point stores its `coords` (x,y,z) and `color` (r,g,b).
+
+    Args:
+        root_elem (let.Element): The root object where points will be saved.
+        sticker_coords (np.ndarray): The coordinates of the stickers (shape: (s, 4)), s = number of stickers, fourth component is an integer representing the sticker color by index in the list of the second output
+        colors (np.ndarray): The colors of the stickers. (shape: (6, 3))
+    """
+    points_elem = let.SubElement(root_elem, "points")
+    for point in sticker_coords:
+        x, y, z = [str(coord) for coord in point[:3]]
+        r, g, b = [str(component) for component in colors[int(point[3])]]
+        point_elem = let.SubElement(points_elem, "point", size=str(point_size))
+        let.SubElement(point_elem, "coords", x=x, y=y, z=z)
+        let.SubElement(point_elem, "color", r=r, g=g, b=b)
+
+def _save_moves(
+        root_elem: let.Element,
+        moves_dict: dict[str, list[list[str]]],
+    ) -> None:
+    """
+    Add the moves to the given ElementTree 'puzzle_tree' in a 'moves' subelement. Each move is stored as a subelement with the move name as tag and the cycles as subelements.
+
+    Args:
+        root_elem (let.Element): The root object where moves will be saved.
+        moves_dict (dict[str, list[list[str]]]): Dictionary with move information:
+            keys: move names
+            values: list of lists of ints as cycles
+    """
+    moves_elem = let.SubElement(root_elem, "moves")
+    for move_name, cycles in moves_dict.items():
+        move = let.SubElement(moves_elem, "move", name=move_name)
+        for cycle in cycles:
+            cycle_elem = let.SubElement(move, "cycle")
+            cycle_elem.text = str(cycle)[1:-1]
 
 
 
@@ -345,11 +437,11 @@ if __name__ == "__main__":
     # generate 2x3x4 cuboid
     # shape = (6, 3, 5)
     # shape = (3, 3, 3)
-    shape = (4, 4, 4)
+    # shape = (4, 4, 4)
     # shape = (9, 9, 9)
     # shape = (5, 5, 5)
     # shape = (6, 5, 6)
-    # shape = (2, 3, 4)
+    shape = (2, 3, 4)
     # shape = (2, 2, 2)
     # shape = (3, 3, 5)
     sticker_coords, colors = generate_cuboid(
@@ -368,4 +460,13 @@ if __name__ == "__main__":
         # show_indices=True,
         show_indices="positive",
         # show_indices=sticker_coords.shape[0] < 100,
+    )
+    save_cuboid_to_xml(
+        size=shape,
+        sticker_coords=sticker_coords,
+        colors=colors,
+        moves=moves,
+        point_size=10,
+        puzzle_name=None,
+        puzzles_path="src/puzzles",
     )

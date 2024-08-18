@@ -41,14 +41,7 @@ def save_to_xml(puzzle):
         save_moves(root_elem, puzzle.moves)
     except KeyError:
         pass
-    try: # create a "puzzles" folder if it doesn't exist yet
-        os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles"))
-    except FileExistsError:
-        pass
-    try: # create a folder for the given puzzle if it doesn't exist yet
-        os.mkdir(os.path.join(os.path.dirname(__file__), "..", "puzzles", puzzle_name))
-    except FileExistsError:
-        pass
+    os.makedirs(os.path.join(os.path.dirname(__file__), "..", "puzzles", puzzle_name), exist_ok=True)
     puzzle_tree = let.ElementTree(root_elem)
     xml_string = let.tostring(puzzle_tree,
                               pretty_print=True,
@@ -106,9 +99,9 @@ def save_moves(root_elem, moves_dict):
         None
     """
     moves_elem = let.SubElement(root_elem, "moves")
-    for movename, movelist in moves_dict.items():
-        move = let.SubElement(moves_elem, "move", name=movename)
-        for cycle in movelist:
+    for move_name, cycles in moves_dict.items():
+        move = let.SubElement(moves_elem, "move", name=move_name)
+        for cycle in cycles:
             cycle_elem = let.SubElement(move, "cycle")
             cycle_elem.text = str(cycle)[1:-1]
 
