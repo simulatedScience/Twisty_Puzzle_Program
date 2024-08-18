@@ -50,11 +50,11 @@ def analyse_alg(
         alg_perm *= sympy_moves[perm]
     n = alg_perm.order()
     if n > max_move_sequence_order:
-        print(f"Algorithm has order {n} > {max_move_sequence_order}.")
-        print(f"Algorithm is too long. => not likely to be useful.")
+        print(f"The move sequence has order {n} > {max_move_sequence_order}.")
+        print(f"Move sequence is too long. => not likely to be useful.")
         return {}
     else:
-        print(f"The algorithm has order {n}")
+        print(f"The move sequence has order {n}")
     divs = get_divisors(n)
     divs.sort()
     alg_number: int = 1

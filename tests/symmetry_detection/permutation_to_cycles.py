@@ -65,7 +65,6 @@ def add_moves_to_puzzle(
         new_puzzle_name = puzzle_name + "_sym"
     puzzle.save_puzzle(new_puzzle_name)
     print(f"Saved puzzle with {len(moves)} new moves as {new_puzzle_name}.")
-    _exit(0)
 
 def main():
     # rotations = skewb_rotations()
