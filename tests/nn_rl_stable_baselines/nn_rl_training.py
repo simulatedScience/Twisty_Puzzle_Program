@@ -43,6 +43,7 @@ class Twisty_Puzzle_Env(Env):
             initial_scramble_length=1, # 1 seems to work best
             success_threshold=0.9,
             reward_func: callable = None,
+            exp_identifier: str | None = None,
             ):
         super(Twisty_Puzzle_Env, self).__init__()
         self.solved_state = solved_state
@@ -52,7 +53,15 @@ class Twisty_Puzzle_Env(Env):
         self.scramble_length: int = initial_scramble_length
         self.success_threshold: float = success_threshold
         # define reward. Default: binary reward with single solved state
-        self.reward_func: callable = reward_func if reward_func else lambda state: binary_reward(state, None, self.solved_state)
+        self.reward_func: callable = reward_func# if reward_func else lambda state: binary_reward(state, None, self.solved_state)
+        self.early_stop: bool = False
+        self.mean_success_rate: float = 0
+
+        # calculate a unique identifier for the experiment
+        if exp_identifier is None:
+            self.exp_identifier = f"rew={self.reward_func.__name__}_sd={self.scramble_length}_st={self.success_threshold}"
+        else:
+            self.exp_identifier = exp_identifier
 
         self.current_step = 0
         self.episode_counter = 0
@@ -76,15 +85,16 @@ class Twisty_Puzzle_Env(Env):
         self.episode_counter += 1
         # Access the monitor wrapper to get episode rewards
         if self.episode_counter%1000 == 0 and hasattr(self, 'monitor'):# and isinstance(self.env, Monitor):
-            mean_success_rate = np.mean(self.episode_success_history)
-            if mean_success_rate >= self.success_threshold:
+            self.mean_success_rate = np.mean(self.episode_success_history)
+            if self.mean_success_rate >= self.success_threshold:
                 results = self.monitor.get_episode_rewards()
                 # last_n_episodes = len(self.episode_success_history)  # Or any desired number of episodes
                 mean_reward = np.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
                 self.scramble_length += 1
                 if self.scramble_length < 25 or self.scramble_length % 25 == 0:
-                    print(f"[st={self.success_threshold}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
-                    print(f"[st={self.success_threshold}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
+                    print(f"[{self.exp_identifier}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
+                    print(f"[{self.exp_identifier}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
+                    print(f"[{self.exp_identifier}] Current success rate: {self.mean_success_rate:.2%}")
         self.state = self.scramble_puzzle(self.scramble_length, print_scramble=print_scramble)
         return self.state, {}
 
@@ -135,12 +145,16 @@ class Twisty_Puzzle_Env(Env):
         # Simple render function
         print(self.state)
 
-class EvalCallback(BaseCallback):
-    def __init__(self, verbose=0):
-        super(EvalCallback, self).__init__(verbose)
+class EarlyStopCallback(BaseCallback):
+    def __init__(self, env: Twisty_Puzzle_Env, max_difficulty: int=100, verbose=0):
+        super(EarlyStopCallback, self).__init__(verbose)
+        self.env: Twisty_Puzzle_Env = env.unwrapped
+        self.max_difficulty: int = max_difficulty
 
     def _on_step(self):
-        self.training_env.ep_rew_mean = np.mean(self.locals.get("episode_rewards", []))
+        if self.env.scramble_length > self.max_difficulty and self.env.last_success_rate >= 1.:
+            print(f"Early stopping: Difficulty {self.env.scramble_length} > {self.max_difficulty} reached. Last success rate: {np.mean(self.env.episode_success_history):.2%}")
+            return False
         return True
 
 class ProgressBarCallback(BaseCallback):
@@ -258,7 +272,7 @@ def main(
         reward: str = "binary",
     ):
     # exp_name = f"{puzzle_name}_model"
-    exp_name = f"{puzzle_name}_100_st={success_threshold}_{reward}"
+    exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_episodes}"
     solved_state, actions_dict = load_puzzle(puzzle_name)
     # check for whole puzzle rotation moves
     _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
@@ -280,12 +294,14 @@ def main(
             base_actions=base_actions,
             initial_scramble_length=start_scramble_depth,
             success_threshold=success_threshold,
-            reward_func=reward_func,)
+            reward_func=reward_func,
+            exp_identifier=exp_identifier,
+    )
     # env.scramble_length = start_scramble_depth
     monitor_env = Monitor(env)
     env.monitor = monitor_env
     # env
-    model_path = os.path.join(model_folder, f"{exp_name}.zip")
+    model_path = os.path.join(model_folder, f"{exp_identifier}.zip")
     if load_model:
         model_path = os.path.join(model_folder, load_model)
         model = PPO.load(
@@ -307,10 +323,10 @@ def main(
             monitor_env,
             verbose=0,
             device="cpu",
-            tensorboard_log=f"{tb_log_folder}/{exp_name}",
+            tensorboard_log=f"{tb_log_folder}/{exp_identifier}",
         )
         # print(model.policy)
-    exp_identifier = f"{exp_name}_{start_scramble_depth}_{n_episodes}"
+    # exp_identifier = f"{exp_name}_eps={n_episodes}"
     if n_episodes > 0:
         # callback = ProgressBarCallback(total_timesteps=n_episodes)
         # # Disable Stable Baselines3 Logging
@@ -318,13 +334,17 @@ def main(
         checkpoint_callback = CheckpointCallback(
             save_freq=250_000,
             save_path=os.path.join(model_folder, exp_identifier),
-            name_prefix=f"{exp_name}_{start_scramble_depth}",
+            name_prefix=f"{exp_identifier}",
+        )
+        early_stopping_callback = EarlyStopCallback(
+            monitor_env,
+            max_difficulty=100, # Early Stopping at scramble depth 100
         )
         model.learn(
             total_timesteps=n_episodes,
             reset_num_timesteps=False,
-            tb_log_name=f"{exp_name}_{n_episodes}_{env.scramble_length}",
-            callback=checkpoint_callback,
+            tb_log_name=f"{exp_identifier}_{n_episodes}_{env.scramble_length}",
+            callback=[checkpoint_callback, early_stopping_callback],
             # progress_bar=True,
             # log_interval=5000,
         )
@@ -335,9 +355,9 @@ def main(
             n_episodes += n_prev_episodes
         save_path: str = os.path.join(model_folder, f"{exp_identifier}.zip")
         model.save(save_path)
-        print(f"Saved final model to {save_path}")
-    print(f"Testing agent {exp_name}...")
-    test_agent(model, env, num_tests=5, scramble_length=20, id=f"st={success_threshold}", verbose=None)
+        print(f"="*75 + f"\nSaved final model to {save_path}")
+    print(f"Testing agent {exp_identifier}...")
+    test_agent(model, env, num_tests=10, scramble_length=50, id=f"{exp_identifier}", verbose=None)
 
 
 if __name__ == "__main__":
@@ -389,34 +409,34 @@ if __name__ == "__main__":
     # with mp.Pool(n_processes) as pool:
     #     pool.starmap(main, kwargs_list)
     # ===============================
-    success_thresholds = [.9]
-    scramble_depths_rewards = [
-        (1, "binary"),
-        (1, "most_correct_points"),
-        (4, "most_correct_points"),
-        (8, "most_correct_points"),
-    ]
-    n_processes = 4
-    kwargs_list  = [
-            (
-            "rubiks_2x2_sym", # puzzle_name
-            # "rubiks_algs", # puzzle_name
-            ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"], # base_actions
-            None,            # load_model
-            True,            # train_new
-            2_000_000,       # n_episodes
-            "rubiks_2x2_models",  # model_folder
-            "rubiks_2x2_tb_logs", # tb_log_folder
-            # "rubiks_3x3_models",  # model_folder
-            # "rubiks_3x3_tb_logs", # tb_log_folder
-            scramble_depth,  # start_scramble_depth
-            threshold,       # success_threshold
-            reward,          # reward
-        ) for threshold in success_thresholds
-            for scramble_depth, reward in scramble_depths_rewards
-        ]
-    with mp.Pool(n_processes) as pool:
-        pool.starmap(main, kwargs_list)
+    # success_thresholds = [.9]
+    # scramble_depths_rewards = [
+    #     (1, "binary"),
+    #     (1, "most_correct_points"),
+    #     (4, "most_correct_points"),
+    #     (8, "most_correct_points"),
+    # ]
+    # n_processes = 4
+    # kwargs_list  = [
+    #         (
+    #         "rubiks_2x2_sym", # puzzle_name
+    #         # "rubiks_algs", # puzzle_name
+    #         ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"], # base_actions
+    #         None,            # load_model
+    #         True,            # train_new
+    #         2_000_000,       # n_episodes
+    #         "rubiks_2x2_models",  # model_folder
+    #         "rubiks_2x2_tb_logs", # tb_log_folder
+    #         # "rubiks_3x3_models",  # model_folder
+    #         # "rubiks_3x3_tb_logs", # tb_log_folder
+    #         scramble_depth,  # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         reward,          # reward
+    #     ) for threshold in success_thresholds
+    #         for scramble_depth, reward in scramble_depths_rewards
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
     # ===============================
     # main(
     #     puzzle_name="rubiks_2x2",
@@ -469,3 +489,64 @@ if __name__ == "__main__":
     #     success_threshold=0.95
     # )
     # In terminal, run "tensorboard --logdir tb_logs/..." to view training progress
+
+    # ===============================
+    # success_thresholds = [.1]
+    # scramble_depths_rewards = [
+    #     (1, "binary"),
+    #     (1, "most_correct_points"),
+    #     (4, "most_correct_points"),
+    #     (8, "most_correct_points"),
+    # ]
+    # n_processes = 4
+    # kwargs_list  = [
+    #         (
+    #         "cuboid_3x2x2_algs", # puzzle_name
+    #         ["L", "L'", "R", "R'", "F", "B", "D", "U"], # base_actions
+    #         None,            # load_model
+    #         True,            # train_new
+    #         500_000,       # n_episodes
+    #         "cuboid_3x2x2_models",  # model_folder
+    #         "cuboid_3x2x2_tb_logs", # tb_log_folder
+    #         scramble_depth,  # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         reward,          # reward
+    #     ) for threshold in success_thresholds
+    #         for scramble_depth, reward in scramble_depths_rewards
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # In terminal, run "tensorboard --logdir cuboid_3x2x2_tb_logs" to view training progress
+    # ===============================
+    success_thresholds = [.3]
+    # scramble_depths_rewards = [
+    #     (1, "binary"),
+    #     (1, "most_correct_points"),
+    #     (4, "most_correct_points"),
+    #     (8, "most_correct_points"),
+    # ]
+    scramble_depths_rewards = [
+        (1, "binary"),
+        (8, "most_correct_points"),
+        (16, "most_correct_points"),
+        (32, "most_correct_points"),
+    ]
+    n_processes = 4
+    kwargs_list  = [
+            (
+            "cuboid_3x3x2_sym_algs", # puzzle_name
+            ["L", "R", "F", "B", "D", "D'", "U", "U'", "M", "S"], # base_actions
+            None,            # load_model
+            True,            # train_new
+            11_000_000,       # n_episodes
+            "cuboid_3x3x2_models",  # model_folder
+            "cuboid_3x3x2_tb_logs", # tb_log_folder
+            scramble_depth,  # start_scramble_depth
+            threshold,       # success_threshold
+            reward,          # reward
+        ) for threshold in success_thresholds
+            for scramble_depth, reward in scramble_depths_rewards
+        ]
+    with mp.Pool(n_processes) as pool:
+        pool.starmap(main, kwargs_list)
+    # In terminal, run "tensorboard --logdir cuboid_3x3x2_tb_logs" to view training progress
