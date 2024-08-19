@@ -44,6 +44,8 @@ def generate_algorithms(
         max_order (int): maximum order of the algorithm
         max_move_sequence_order (int): maximum order of the move sequence
         max_algorithm_length (int): maximum length of the algorithm
+    
+    Returns:
     """
     found_algorithms: dict[tuple[str, int], str] = dict()
     while len(found_algorithms) < find_n_algorithms:
@@ -74,7 +76,7 @@ def user_test_algorithms(
         sympy_moves: dict,
         puzzle_algorithms: dict,
         draw_pieces: bool = True,
-        saved_algs: dict[str, dict[str, str|int]] | None = None):
+        saved_algs: dict[tuple[str, int], str] | None = None):
     """
     Given a dict of generated algorithms and a puzzle, allow the user to test and view the algorithms.
 
@@ -85,7 +87,7 @@ def user_test_algorithms(
     """
     if draw_pieces:
         puzzle.draw_3d_pieces()
-    user_input_algorithms = dict()
+    user_input_algorithms: dict[int, dict[tuple[str, int], str]] = dict()
     for alg_nbr, (key, alg_moves) in enumerate(puzzle_algorithms.items()):
         alg_nbr += 1
         user_input_algorithms[alg_nbr] = {
@@ -120,43 +122,77 @@ def user_test_algorithms(
     user_input: str = ""
     while user_input.lower() != "exit":
         user_input = input(
+            "Enter one of the following commands:\n" +
             f"<{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> - to show a given algorithm in viewport,\n" + 
-            f"'{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>' to save an algorithm, \n" +
-            f"'{colored_text('show', COMMAND_COLORS['command'])}' or '{colored_text('show_algs', COMMAND_COLORS['command'])}' to print all currently saved algorithms, \n" +
-            f"'{colored_text('list', COMMAND_COLORS['command'])}' to list available ones, \n" + 
-            f"'{colored_text('reset', COMMAND_COLORS['command'])}' to reset the puzzle to a solved state, \n" +
-            f"'{colored_text('new', COMMAND_COLORS['command'])}' to generate new algorithms,\n" +
-            f"'{colored_text('export', COMMAND_COLORS['command'])} <{colored_text('new_puzzle_name', COMMAND_COLORS['arguments'])}>' to save algorithms to puzzle under a new name (default = '<{colored_text('puzzle_name', COMMAND_COLORS['arguments'])}>_algs'), or\n" +
-            f"'{colored_text('exit', COMMAND_COLORS['command'])}' to quit the program:\n >>>")
+            f"<{colored_text('alg_name', COMMAND_COLORS['arguments'])}> - to show a given saved algorithm in viewport,\n" + 
+            f"{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}> to save an algorithm, \n" +
+            f"{colored_text('show', COMMAND_COLORS['command'])} or {colored_text('show_algs', COMMAND_COLORS['command'])} to print all currently saved algorithms, \n" +
+            f"{colored_text('list', COMMAND_COLORS['command'])} to list available ones, \n" + 
+            f"{colored_text('reset', COMMAND_COLORS['command'])} to reset the puzzle to a solved state, \n" +
+            f"{colored_text('add', COMMAND_COLORS['command'])} <{colored_text('alg_name', COMMAND_COLORS['arguments'])}> <{colored_text('n_reps', COMMAND_COLORS['arguments'])}>*(<{colored_text('move_sequence', COMMAND_COLORS['arguments'])}>) to add an algorithm to the puzzle manually, \n" +
+            f"{colored_text('new', COMMAND_COLORS['command'])} to generate new algorithms,\n" +
+            f"{colored_text('export', COMMAND_COLORS['command'])} <{colored_text('new_puzzle_name', COMMAND_COLORS['arguments'])}> to save algorithms to puzzle under a new name (default = '<{colored_text('puzzle_name', COMMAND_COLORS['arguments'])}>_algs'), or\n" +
+            f"{colored_text('exit', COMMAND_COLORS['command'])} to quit the program:\n >>>")
         if user_input.lower() == "exit":
             print("Exiting program.")
             break
 
-        if user_input.lower() == "reset":
+        elif user_input.lower() == "reset":
             puzzle.reset_to_solved()
             print("Puzzle reset.")
             continue
 
-        if user_input.lower() == "list":
+        elif user_input.lower() == "list":
             list_algs()
             continue
 
-        if user_input.lower() == "new":
+        elif user_input.lower() == "new":
             return "new_algs", saved_algs
 
-        if user_input.lower() in ("show_algs", "show"):
+        elif user_input.lower()[:3] == "add":
+            # get repetitions and base sequence
+            if user_input[3] != " ":
+                print(f"Missing space after command name.")
+            add_input_parts = user_input[4:].split("*")
+            add_input_parts[0:1] = add_input_parts[0].split(" ")
+            if len(add_input_parts) > 3 or len(add_input_parts) < 2:
+                print(f"Invalid syntax for {colored_text('add', COMMAND_COLORS['command'])}'. Expected <{colored_text('alg_name', COMMAND_COLORS['arguments'])}> <{colored_text('n_reps', COMMAND_COLORS['arguments'])}>*(<{colored_text('base_sequence', COMMAND_COLORS['arguments'])}>).")
+                continue
+            elif len(add_input_parts) == 3:
+                try:
+                    n_reps = int(add_input_parts[1].strip())
+                except ValueError:
+                    print(f"Invalid syntax for {colored_text('add', COMMAND_COLORS['command'])}'. Expected <{colored_text('n_reps', COMMAND_COLORS['arguments'])}>*(<{colored_text('base_sequence', COMMAND_COLORS['arguments'])}>)'.")
+                    continue
+            else:
+                n_reps = 1
+            alg_name = add_input_parts[0]
+            base_sequence = add_input_parts[-1].strip("()")
+            # define algorithm in proper format
+            alg = {
+                "alg_moves": " ".join([base_sequence]*n_reps),
+                "base_sequence": base_sequence,
+                "n_reps": n_reps,
+            }
+            # print algorithm info
+            print(f"Adding algorithm {n_reps}*({base_sequence}) to the puzzle.")
+            print_algorithm(puzzle, sympy_moves, alg, alg_name)
+            # save algorithm
+            saved_algs[alg_name] = alg
+
+        elif user_input.lower() in ("show_algs", "show"):
             print("="*75 + f"\n{colored_text('Current algorithms:', COMMAND_COLORS['headline'])}")
             for alg_name, alg in saved_algs.items():
                 alg_order, alg_permutation = get_alg_order(alg, sympy_moves)
-                print(f"'{alg_name}': {alg_permutation},")
+                print(f"{alg_name}: {alg_permutation},")
             print("="*75)
             continue
 
-        if user_input.lower()[:6] == "export":
+        elif user_input.lower()[:6] == "export":
             # export algorithms to new puzzle
             export_input_parts = user_input.split(" ")
             if len(export_input_parts) > 2:
-                print(f"invalid syntax for '{colored_text('export', COMMAND_COLORS['command'])}'. Expected 'export <{colored_text('new_puzzle_name', COMMAND_COLORS['arguments'])}>'.")
+                print(f"invalid syntax for {colored_text('export', COMMAND_COLORS['command'])}'. Expected export <{colored_text('new_puzzle_name', COMMAND_COLORS['arguments'])}>.")
                 print("New puzzle name cannot contain spaces.")
                 continue
             if len(export_input_parts) == 1:
@@ -181,51 +217,55 @@ def user_test_algorithms(
             )
             print(f"Exported algorithms to puzzle '{new_puzzle_name}'.")
 
-        if user_input.lower()[:4] == "keep":
+        elif user_input.lower()[:4] == "keep":
             # save the specified algorithm
             keep_input_parts = user_input.split(" ")
             if len(keep_input_parts) > 3:
-                print(f"invalid syntax for '{colored_text('keep', COMMAND_COLORS['command'])}'. Expected 'keep <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>'. `alg_name` cannot contain spaces.")
+                print(f"invalid syntax for {colored_text('keep', COMMAND_COLORS['command'])}. Expected {colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>. `alg_name` cannot contain spaces.")
             try:
                 alg_nbr = int(keep_input_parts[1])
             except ValueError:
                 print(f"Invalid algorithm number: {user_input[5:]}. Expected integer 1 to {len(user_input_algorithms)}.")
-                print(f"To save an alg, enter '{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>'.")
+                print(f"To save an alg, enter {colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>.")
                 continue
             if alg_nbr not in user_input_algorithms:
                 print(f"Unknown algorithm number: {alg_nbr}. Expected integer 1 to {len(user_input_algorithms)}.")
-                print(f"To save an alg, enter '{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>'.")
+                print(f"To save an alg, enter {colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>.")
                 continue
             try:
                 saved_algs[keep_input_parts[2]] = user_input_algorithms[alg_nbr]
                 print(f"Saved algorithm {alg_nbr} as '{keep_input_parts[2]}'.")
             except IndexError:
-                print(f"Invalid syntax for '{colored_text('keep', COMMAND_COLORS['command'])}'. Expected 'keep <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>'.")
+                print(f"Invalid syntax for {colored_text('keep', COMMAND_COLORS['command'])}. Expected {colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>.")
 
         else: # show algorithm
             try:
                 if user_input[-1] == "'":
-                    alg_nbr = int(user_input[:-1])
+                    user_input = user_input[:-1]
                     inverse = True
                 else:
-                    alg_nbr: int = int(user_input)
                     inverse = False
+                try:
+                    alg_nbr: int = int(user_input[:-1])
+                    algorithm = user_input_algorithms[alg_nbr]
+                except ValueError:
+                    try:
+                        algorithm = saved_algs[user_input]
+                    except KeyError:
+                        print(f"Unknown algorithm. Expected integer 1 to {len(user_input_algorithms)} or saved algorithm name.")
+                        continue
+                
                 show_algorithm(
                     puzzle,
                     sympy_moves,
-                    user_input_algorithms[alg_nbr],
-                    alg_nbr,
+                    algorithm,#user_input_algorithms[alg_nbr],
+                    user_input + "'"*int(inverse),
                     inverse=inverse,
                 )
-            except ValueError as exception:
-                print(f"Invalid input. Enter an\n" +
-                        f"  - <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> to show the given algorithm,\n" +
-                        f"  - '{colored_text('list', COMMAND_COLORS['command'])}' to list available algorithms,\n" +
-                        f"  - '{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}>' to save an algorithm,\n" +
-                        f"  - 'new' to generate new algorithms, or\n"
-                        f"  - 'exit' to quit the program.\n")
             except KeyError as exception:
                 print(f"Unknown algorithm. Expected integer 1 to {len(user_input_algorithms)}.")
+            except (ValueError, IndexError) as exception:
+                print(f"Invalid input.")
     return "exit", saved_algs
 
 
@@ -233,15 +273,15 @@ def show_algorithm(
         puzzle: Twisty_Puzzle,
         sympy_moves: dict,
         alg: dict[str, str|str|int],
-        alg_nbr: int,
+        alg_identifier: int,
         inverse: bool=False,
         move_text_color: str = "#5588ff"):
     # show basic algorithm info
     if inverse:
         inverse_base_sequence = " ".join([f"{move}'" for move in alg['base_sequence'].split(" ")][::-1])
-        print(f"{colored_text(f'Algorithm {alg_nbr}', COMMAND_COLORS['headline'])}" + colored_text("':", COMMAND_COLORS['headline']) +  f"{alg['n_reps']}*({colored_text(inverse_base_sequence, move_text_color)})")
+        print(f"{colored_text(f'Algorithm {alg_identifier}', COMMAND_COLORS['headline'])}" + colored_text("':", COMMAND_COLORS['headline']) +  f"{alg['n_reps']}*({colored_text(inverse_base_sequence, move_text_color)})")
     else:
-        print(f"{colored_text(f'Algorithm {alg_nbr}:', COMMAND_COLORS['headline'])} {alg['n_reps']}*({colored_text(alg['base_sequence'], move_text_color)})")
+        print(f"{colored_text(f'Algorithm {alg_identifier}:', COMMAND_COLORS['headline'])} {alg['n_reps']}*({colored_text(alg['base_sequence'], move_text_color)})")
     print(f"Algorithm length: {alg['n_reps'] * len(alg['base_sequence'].split(' '))} moves")
     alg_order, alg_permutation = get_alg_order(alg, sympy_moves)
     print(f"Alg. order: {alg_order}")
@@ -252,35 +292,37 @@ def show_algorithm(
         alg_permutation = ~alg_permutation # invert permutation
     # show algorithm on puzzle
     # puzzle.reset_to_solved()
-    show_algorithm_on_puzzle(puzzle, alg_permutation, alg, alg_nbr)
+    show_algorithm_on_puzzle(puzzle, alg_permutation, alg, alg_identifier)
     # puzzle.perform_move(alg["alg_moves"])
-    print(f"Algorithm {alg_nbr} applied.")
+    print(f"Algorithm {alg_identifier} applied.")
 
 def print_algorithm(
         puzzle: Twisty_Puzzle,
         sympy_moves: dict,
         alg: dict,
-        alg_name: str,
-        move_text_color: str = "#5588ff"):
-    print(f"Algorithm {alg_name}: {alg['n_reps']}*({colored_text(alg['base_sequence'], move_text_color)})")
+        alg_name: str):
+    print(f"Algorithm {alg_name}: {alg['n_reps']}*({colored_text(alg['base_sequence'], COMMAND_COLORS['arguments'])})")
     print(f"Algorithm length: {alg['n_reps'] * len(alg['base_sequence'].split(' '))} moves")
     alg_order, alg_permutation = get_alg_order(alg, sympy_moves)
     print(f"Alg. order: {alg_order}")
     affected_pieces = alg_ana.get_affected_pieces(alg_permutation, puzzle.pieces)
     print(f"Alg. affects {len(affected_pieces)} pieces:\n {affected_pieces}")
 
-def show_algorithm_on_puzzle(puzzle: Twisty_Puzzle, alg_permutation, alg: dict, alg_nbr: int):
+def show_algorithm_on_puzzle(puzzle: Twisty_Puzzle, alg_permutation, alg: dict, alg_identifier: int|str):
     """
     Show a given algorithm on the puzzle.
 
     Args:
         puzzle (Twisty_Puzzle): puzzle to show the algorithm on
         alg (dict): algorithm to show
-        alg_nbr (int): number of the algorithm
+        alg_nbr (int): number of the algorithm or name of the algorithm
     """
     puzzle.animation_time = 1
     # define algorithm as new move in puzzle
-    alg_name = f"alg{alg_nbr}"
+    if isinstance(alg_identifier, int):
+        alg_name: str = f"alg{alg_identifier}"
+    else:
+        alg_name: str = alg_identifier
     # calculate move cycles
     move_cycles: list[tuple[int]] = alg_permutation.cyclic_form
     puzzle._add_move_direct(alg_name, move_cycles)
@@ -316,7 +358,7 @@ def main(move_text_color: str = "#5588ff"):
     print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
     
     
-    print(f"Enter '{colored_text('exit', COMMAND_COLORS['command'])}' to quit the program.")
+    print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to quit the program.")
 
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
     puzzle_name = input("Enter a puzzle name: ")
@@ -326,7 +368,7 @@ def main(move_text_color: str = "#5588ff"):
     n = puzzle.state_space_size
     sympy_moves = alg_ana.get_sympy_dict(puzzle)
 
-    current_algorithms: dict[str, dict[str, str|str|int]] = dict()
+    current_algorithms: dict[str, dict[tuple[str, int], str]] = dict()
         # key: algorithm name
         # value: dict with keys:
         #   - alg_moves: move sequence of the algorithm as str
@@ -365,7 +407,7 @@ def main(move_text_color: str = "#5588ff"):
     # print current algorithms
     print("="*75 + "\nCurrent algorithms:")
     for alg_name, alg in current_algorithms.items():
-        print_algorithm(puzzle, sympy_moves, alg, alg_name, move_text_color)
+        print_algorithm(puzzle, sympy_moves, alg, alg_name)
     # close program
     os._exit(0)
 
