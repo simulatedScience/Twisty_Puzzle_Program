@@ -10,7 +10,7 @@ def binary_reward_factory(solved_state) -> callable:
             reward = np.where(done, 1., 0.)
         else:
             raise ValueError(f"Unexpected type for done: {type(done)}")
-        return 10000*reward, done
+        return reward, done
     return binary_reward
 
 def correct_points_reward_factory(solved_state) -> callable:
@@ -30,14 +30,14 @@ def correct_points_reward_factory(solved_state) -> callable:
         reward = correct_points/state.shape[-1]
         done = 1-reward < 1e-5
         if done:
-            reward = 10.
+            reward = 500.
         # print("correct points reward: ",
         #       state,
         #       solved_state,
         #       f"reward = {reward}",
         #       sep="\n",
         #       end="\n\n")
-        return 100*reward, done
+        return reward, done
     return correct_points_reward
 
 def most_correct_points_reward_factory(solved_states: list[np.ndarray]) -> callable:
@@ -60,12 +60,12 @@ def most_correct_points_reward_factory(solved_states: list[np.ndarray]) -> calla
         reward = max_correct_points/state.shape[-1]
         done = 1-reward < 1e-5
         if done:
-            reward = 10.
+            reward = 500.
         # print("most correct points reward: ",
         #       state,
         #       solved_states,
         #       f"reward = {reward}",
         #       sep="\n",
         #       end="\n\n")
-        return 100*reward, done
+        return reward, done
     return most_correct_points_reward

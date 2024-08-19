@@ -27,3 +27,4 @@ local_research/*
 /piece_reward_tb_logs
 /temp_tb_logs
 /cuboid_3x2x2_tb_logs
+/cuboid_3x3x2_tb_logs

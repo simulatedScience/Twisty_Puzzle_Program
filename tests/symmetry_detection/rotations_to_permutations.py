@@ -99,7 +99,8 @@ def load_puzzle_points(puzzle_name: str) -> tuple[np.ndarray, np.ndarray]:
 
 if __name__ == "__main__":
     # points, colors = load_puzzle_points("rubiks_2x2")
-    points, colors = load_puzzle_points("rubiks_algs")
+    # points, colors = load_puzzle_points("rubiks_algs")
+    points, colors = load_puzzle_points("cuboid_3x3x2")
     # points, colors = load_puzzle_points("skewb")
     # points, colors = load_puzzle_points("rubiks_cube")
     # points, colors = load_puzzle_points("gear_cube")
@@ -122,5 +123,6 @@ if __name__ == "__main__":
     ps.sort_stats(("tottime"))
     ps.print_stats(10)
     for i, rotation in enumerate(rotations):
-        print(f"rot_{i+1}/{len(rotations)}: {rotation_to_permutation(points, rotation)}")
+        print(f"'rot_{i+1}': " + #/{len(rotations)}:
+              f"{rotation_to_permutation(points, rotation)},")
     print("Done.")

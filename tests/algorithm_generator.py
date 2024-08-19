@@ -122,7 +122,7 @@ def user_test_algorithms(
     user_input: str = ""
     while user_input.lower() != "exit":
         user_input = input(
-            "Enter one of the following commands:\n" +
+            f"{colored_text('Enter one of the following commands:', COMMAND_COLORS['headline'])}\n" +
             f"<{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> - to show a given algorithm in viewport,\n" + 
             f"<{colored_text('alg_name', COMMAND_COLORS['arguments'])}> - to show a given saved algorithm in viewport,\n" + 
             f"{colored_text('keep', COMMAND_COLORS['command'])} <{colored_text('alg_nbr', COMMAND_COLORS['arguments'])}> <{colored_text('alg_name', COMMAND_COLORS['arguments'])}> to save an algorithm, \n" +
@@ -132,7 +132,7 @@ def user_test_algorithms(
             f"{colored_text('add', COMMAND_COLORS['command'])} <{colored_text('alg_name', COMMAND_COLORS['arguments'])}> <{colored_text('n_reps', COMMAND_COLORS['arguments'])}>*(<{colored_text('move_sequence', COMMAND_COLORS['arguments'])}>) to add an algorithm to the puzzle manually, \n" +
             f"{colored_text('new', COMMAND_COLORS['command'])} to generate new algorithms,\n" +
             f"{colored_text('export', COMMAND_COLORS['command'])} <{colored_text('new_puzzle_name', COMMAND_COLORS['arguments'])}> to save algorithms to puzzle under a new name (default = '<{colored_text('puzzle_name', COMMAND_COLORS['arguments'])}>_algs'), or\n" +
-            f"{colored_text('exit', COMMAND_COLORS['command'])} to quit the program:\n >>>")
+            f"{colored_text('exit', COMMAND_COLORS['command'])} to quit the program:\n>>> ")
         if user_input.lower() == "exit":
             print("Exiting program.")
             break
@@ -246,7 +246,7 @@ def user_test_algorithms(
                 else:
                     inverse = False
                 try:
-                    alg_nbr: int = int(user_input[:-1])
+                    alg_nbr: int = int(user_input)
                     algorithm = user_input_algorithms[alg_nbr]
                 except ValueError:
                     try:

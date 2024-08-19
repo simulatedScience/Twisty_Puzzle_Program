@@ -66,26 +66,20 @@ def add_moves_to_puzzle(
     puzzle.save_puzzle(new_puzzle_name)
     print(f"Saved puzzle with {len(moves)} new moves as {new_puzzle_name}.")
 
-def main():
-    # rotations = skewb_rotations()
-    # rotations = rubiks_2x2_rotations()
-    rotations = rubiks_algs_rotations()
-    # rotations = square_two_algs()
+def main(
+        get_rotations: callable,
+        orignal_puzzle_name: str,
+        new_puzzle_name: str):
+    rotations = get_rotations()
     moves = permutations_to_moves(rotations)
     for move in moves:
         print(f"{move}: {moves[move]}")
 
-    # add_moves_to_puzzle(
-    #     "skewb",
-    #     moves,
-    #     new_puzzle_name="skewb_sym")
     add_moves_to_puzzle(
-        # "rubiks_2x2",
-        "rubiks_algs",
-        # "square_two",
+        orignal_puzzle_name,
         moves,
-        # new_puzzle_name="square_two_algs")
-        new_puzzle_name="rubiks_algs")
+        new_puzzle_name=new_puzzle_name)
+    _exit(0)
 
 def skewb_rotations():
     return {
@@ -178,6 +172,49 @@ def square_two_algs():
         "cycle_3": [0, 1, 2, 3, 4, 5, 6, 7, 21, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 9, 22, 23, 24, 25, 26, 27, 28, 29, 30, 47, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
     }
 
+def cuboid_3x2x2_rotations():
+    return {
+        'rot_1': [20, 21, 22, 23, 24, 25, 8, 6, 9, 7, 31, 30, 29, 28, 27, 26, 17, 19, 16, 18, 15, 14, 13, 12, 11, 10, 0, 1, 2, 3, 4, 5],
+        'rot_2': [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 19, 18, 17, 16, 26, 27, 28, 29, 30, 31, 20, 21, 22, 23, 24, 25],
+        'rot_3': [25, 24, 23, 22, 21, 20, 18, 16, 19, 17, 26, 27, 28, 29, 30, 31, 7, 9, 6, 8, 5, 4, 3, 2, 1, 0, 10, 11, 12, 13, 14, 15],
+        'rot_4': [26, 27, 28, 29, 30, 31, 7, 9, 6, 8, 25, 24, 23, 22, 21, 20, 18, 16, 19, 17, 0, 1, 2, 3, 4, 5, 15, 14, 13, 12, 11, 10],
+        'rot_5': [5, 4, 3, 2, 1, 0, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20],
+        'rot_6': [31, 30, 29, 28, 27, 26, 17, 19, 16, 18, 20, 21, 22, 23, 24, 25, 8, 6, 9, 7, 10, 11, 12, 13, 14, 15, 5, 4, 3, 2, 1, 0],
+        'rot_7': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 24, 23, 22, 21, 20, 31, 30, 29, 28, 27, 26],
+    }
+def cuboid_3x3x2_rotations():
+    return {
+        'rot_1': [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 39, 36, 33, 40, 37, 34, 41, 38, 35, 26, 29, 32, 25, 28, 31, 24, 27, 30],
+        'rot_2': [5, 4, 3, 2, 1, 0, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24],
+        'rot_3': [17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 23, 22, 21, 20, 19, 18, 33, 34, 35, 36, 37, 38, 39, 40, 41, 24, 25, 26, 27, 28, 29, 30, 31, 32],
+        'rot_4': [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 35, 38, 41, 34, 37, 40, 33, 36, 39, 30, 27, 24, 31, 28, 25, 32, 29, 26],
+        'rot_5': [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 26, 29, 32, 25, 28, 31, 24, 27, 30, 39, 36, 33, 40, 37, 34, 41, 38, 35],
+        'rot_6': [18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 30, 27, 24, 31, 28, 25, 32, 29, 26, 35, 38, 41, 34, 37, 40, 33, 36, 39],
+        'rot_7': [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 32, 31, 30, 29, 28, 27, 26, 25, 24, 41, 40, 39, 38, 37, 36, 35, 34, 33],
+    }
+
 
 if __name__ == "__main__":
-    main()
+    # # cuboid 3x3x2
+    # main(
+    #     cuboid_3x3x2_rotations,
+    #     "cuboid_3x3x2_algs",
+    #     "cuboid_3x3x2_sym_algs",
+    # )
+    # # cuboid 3x2x2
+    main(
+        cuboid_3x2x2_rotations,
+        "cuboid_3x2x2_algs",
+        "cuboid_3x2x2_sym_algs",
+    )
+    # # square-two
+    # main(
+    #     square_two_algs,
+    #     "square_two",
+    #     "square_two_algs",
+    # )
+    # # rubiks 2x2x2
+    # main(
+    #     rubiks_2x2_rotations,
+    #     "rubiks_2x2_algs",
+    #     "rubiks_2x2_sym_algs",
