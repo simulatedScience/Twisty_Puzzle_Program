@@ -77,7 +77,7 @@ def intersect_pieces(move_pieces, n_points):
     return puzzle_pieces
 
 
-def split_moves(moves, n_points, inverse_dict=None):
+def split_moves(moves: dict[str, list[list[int]]], n_points: int, inverse_dict: dict[str, str]=None):
     """
     calculate the pieces necessary to make each move at least once.
 
@@ -89,9 +89,9 @@ def split_moves(moves, n_points, inverse_dict=None):
             every move is represented as a list of cycles
                 describing the move
         n_points - (int) - number of points in the puzzle
-        inverse_dict - (dict) - dictionary that assigns inverse moves
+        inverse_dict - (dict[str, str]) - dictionary that assigns inverse moves
             for each move where one exists.
-            keys and values are both movenames and therefor (str)s
+            keys and values are both move names and therefore (str)s
 
     returns:
     --------

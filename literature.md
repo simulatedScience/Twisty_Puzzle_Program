@@ -63,6 +63,7 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   - [code](https://github.com/kyo-takano/efficientcube)
   - [paper](https://openreview.net/pdf?id=bnBeNFB27b)
   - Solve the Rubik's cube, sliding tile puzzles, and other combinatorial puzzles using a combination of deep reinforcement learning from reverse scrambles and Beam search.
+  - This includes scaling laws for compute as well as a clear figure of the compute budget for training the model: $5.14 \times 10^19$ FLOPs with a $1.19 \times 10^8$ parameter model (119 Million).
   ```BibTex
   @article{
   takano2023selfsupervision,
@@ -93,15 +94,35 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   ```
 
 - **Fourier Basis RL** - Fourier Bases for Solving Permutation Puzzles  
- - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf)
+ - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf), [website](https://proceedings.mlr.press/v130/pan21a.html)
  - Exploiting the symmetry group structure of permutation puzzles using Fourier basis functions in reinforcement learning. (maths heavy)  
  - claims significantly better results than RL with Deep Value Networks (as in DeepCubeA), using 2-3 orders of magnitude less parameters and less training data (as low as 1/10th) and time.
  - solved pyraminx, 2x2 rubiks and S8 puzzle
+ - states how many states of each puzzle were seen during training with different methods!
+   - ~50% of 2x2x2 with Deep Value Networks (DVN), only 4.5-20% with Fourier Bases
+   - 100% of Pyraminx states with all methods
   ```
   Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
   ```
+  ```BibTex
+  @InProceedings{pmlr-v130-pan21a,
+    title = 	 { Fourier Bases for Solving Permutation Puzzles },
+    author =       {Pan, Horace and Kondor, Risi},
+    booktitle = 	 {Proceedings of The 24th International Conference on Artificial Intelligence and Statistics},
+    pages = 	 {172--180},
+    year = 	 {2021},
+    editor = 	 {Banerjee, Arindam and Fukumizu, Kenji},
+    volume = 	 {130},
+    series = 	 {Proceedings of Machine Learning Research},
+    month = 	 {13--15 Apr},
+    publisher =    {PMLR},
+    pdf = 	 {http://proceedings.mlr.press/v130/pan21a/pan21a.pdf},
+    url = 	 {https://proceedings.mlr.press/v130/pan21a.html},
+    abstract = 	 { Traditionally, permutation puzzles such as the Rubik’s Cube were often solved by heuristic search like $A^*\!$-search and value based reinforcement learning methods. Both heuristic search and Q-learning approaches to solving these puzzles can be reduced to learning a heuristic/value function to decide what puzzle move to make at each step. We propose learning a value function using the irreducible representations basis (which we will also call the Fourier basis) of the puzzle’s underlying group. Classical Fourier analysis on real valued functions tells us we can approximate smooth functions with low frequency basis functions. Similarly, smooth functions on finite groups can be represented by the analogous low frequency Fourier basis functions. We demonstrate the effectiveness of learning a value function in the Fourier basis for solving various permutation puzzles and show that it outperforms standard deep learning methods. }
+  }
+  ```
 
-- **?** - Solving Twisty Puzzles as a Factorization problem
+- **Minkwitz Algorithm** - Solving Twisty Puzzles as a Factorization problem
 - [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
 
 - **An Algorithm for Solving the Factorization Problem in Permutation Groups**
