@@ -5,17 +5,25 @@ import time
 from copy import deepcopy
 
 import numpy as np
+from sortedcontainers import SortedDict
 
 from .ai_modules.twisty_puzzle_model import perform_action
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.v_puzzle_class import Puzzle_V_AI
+from .ai_modules.greedy_solver import Greedy_Puzzle_Solver
 # from .ai_modules.nn_puzzle_class import Puzzle_Network
 
-def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=60, WEIGHT=0.1):
+def solve_puzzle(
+        start_state: list[int],
+        ACTIONS_DICT: dict[str, list[list[int]]],
+        SOLVED_STATE: list[int],
+        ai_class: Puzzle_Q_AI | Puzzle_V_AI | Greedy_Puzzle_Solver,
+        max_time: float = 60,
+        WEIGHT: float = 0.1):
     """
     inputs:
     -------
-        starting_state - (list) - scrambled state of the puzzle, that shall be solved
+        start_state - (list) - scrambled state of the puzzle, that shall be solved
         ACTIONS_DICT - (dict) - dictionary containing all availiable moves for the puzzle
         SOLVED_STATE - (list) - solved state representation as for the Q-Learning
         ai_class - (Puzzle_Q_AI) or (Puzzle_V_AI) or (Puzzle_Network) - an instance of the Q/V-learning puzzle class or the puzzle network class
@@ -28,21 +36,27 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
     --------
         - list/tuple/str of moves chosen to solve the puzzle
     """
+    # def _get_key(key):
+    #     """
+    #     helper function for max() to get the best action from open_states
+    #     """
+    #     return open_states[key][0]
+    def seq_length_from_key(key):
+        return len(key[1])
+
     end_time = time.time() + max_time
 
-    open_states = {():(0, starting_state)} # init starting state with value 0, no actions taken so far
+    # open_states = {():(0, start_state)} # init starting state with value 0, no actions taken so far
+    open_states = SortedDict({(0,tuple(start_state)):()})
+    # open_states = SortedDict({(0, ): start_state})
     closed_states = dict()
 
-    def _get_key(key):
-        """
-        helper function for max() to get the best action from open_states
-        """
-        return open_states[key][0]
 
     while time.time() < end_time:
-        best_action_seq = max(open_states, key=_get_key)
+        # best_action_seq = max(open_states, key=_get_key)
+        # best_action_seq = open_states.peekitem(index=-1)
         # value, puzzle_state = open_states[best_action_seq]
-        solution_sequence = expand_node(best_action_seq,
+        solution_sequence = expand_node(#best_action_seq,
                                         open_states,
                                         closed_states,
                                         ACTIONS_DICT,
@@ -51,14 +65,14 @@ def solve_puzzle(starting_state, ACTIONS_DICT, SOLVED_STATE, ai_class, max_time=
                                         WEIGHT=WEIGHT)
         if solution_sequence is not None:
             print(f"Searched {len(closed_states) + len(open_states)} state-action pairs to find a solution.")
-            print(f"Maximum search depth was {len(max(open_states.keys(), key=len))} moves.")
+            print(f"Maximum search depth was {max([seq_length_from_key(key) for key in open_states.keys()])} moves.")
             return " ".join(solution_sequence)
     print(f"Searched {len(closed_states) + len(open_states)} state-action pairs but found no solution.")
-    print(f"Maximum search depth was {len(max(open_states.keys(), key=len))} moves.")
+    print(f"Maximum search depth was {max([seq_length_from_key(key) for key in open_states.keys()])} moves.")
     return ""
 
 
-def expand_node(action_seq,
+def expand_node(#action_seq,
                 open_states,
                 closed_states,
                 ACTIONS_DICT,
@@ -79,41 +93,44 @@ def expand_node(action_seq,
             this determines what is used for the solving process
             the Q/V-table or neural network should already be loaded.
         WEIGHT - (float) - weight factor in [0,1] for weighted A*. 
-            default value 1
+            default value .1
 
     returns:
     --------
         None if no solution was found,
         (tuple) action_key sequence of the solution if it was found.
     """
-    prev_value, prev_state = open_states.pop(action_seq)
+    (prev_value, prev_state),  action_seq= open_states.popitem(index=0)
+    # prev_value, prev_state = open_states.pop(action_seq)
     for action_key, action_cycles in ACTIONS_DICT.items():
-        puzzle_state = deepcopy(prev_state)
+        puzzle_state = list(prev_state)
         perform_action(puzzle_state, action_cycles)
-        new_key = action_seq + (action_key,)
+        new_action_seq = action_seq + (action_key,)
         if puzzle_state == SOLVED_STATE:
-            return new_key
+            return new_action_seq
         # start_time = time.perf_counter()
-        value = get_a_star_eval(action_key, prev_value, prev_state, ai_class, action_cycles, WEIGHT=WEIGHT)
+        value = -get_a_star_eval(prev_value, prev_state, ai_class, WEIGHT=WEIGHT)
         # end_time = time.perf_counter()
         # print(f"evaluation of state took {(end_time-start_time)*1000:5} ms.")
 
         state_tuple = tuple(puzzle_state)
         if not state_tuple in closed_states:
-            open_states[new_key] = (value, puzzle_state)
+            # state was not seen before -> explore
+            open_states[(value, state_tuple)] = new_action_seq
         else:
-            if value > closed_states[state_tuple]:
+            if value < closed_states[state_tuple]:
                 # found better path to a state visited before.
                 # delete from closed_states and add to open_states
                 del(closed_states[state_tuple])
-                open_states[new_key] = (value, puzzle_state)
+                open_states[(value, state_tuple)] = new_action_seq
+                # open_states[new_action_seq] = (value, puzzle_state)
         closed_states[tuple(prev_state)] = prev_value
 
 
-def get_a_star_eval(action_key, prev_value, prev_state, ai_class, action_cycles, WEIGHT=0.1):
+def get_a_star_eval(prev_value, prev_state, ai_class, WEIGHT=0.1):
     """
     evaluate the current sequence of actions according to the usual formula of weighted A*:
-        f(s) = lambda * g(s) + h(s)
+        f(s) = WEIGHT * g(s) + h(s)
     
     inputs:
     -------
@@ -129,12 +146,13 @@ def get_a_star_eval(action_key, prev_value, prev_state, ai_class, action_cycles,
     --------
         (float) - representing f(s)
     """
-    if isinstance(ai_class, Puzzle_Q_AI):
-        return WEIGHT*prev_value-WEIGHT + get_q_value(tuple(prev_state), action_key, ai_class)
-    if isinstance(ai_class, Puzzle_V_AI):
-        return WEIGHT*prev_value-WEIGHT + get_v_value(tuple(prev_state), action_cycles, ai_class)
-    if isinstance(ai_class, Puzzle_Network):
-        return WEIGHT*prev_value-WEIGHT + get_nn_value(prev_state, action_cycles, ai_class)
+    return WEIGHT*prev_value + ai_class.get_state_value(tuple(prev_state))#, action_key, action_cycles)
+    # if isinstance(ai_class, Puzzle_Q_AI):
+    #     return WEIGHT*prev_value-WEIGHT + get_q_value(tuple(prev_state), action_key, ai_class)
+    # if isinstance(ai_class, Puzzle_V_AI):
+    #     return WEIGHT*prev_value-WEIGHT + get_v_value(tuple(prev_state), action_cycles, ai_class)
+    # if isinstance(ai_class, Puzzle_Network):
+    #     return WEIGHT*prev_value-WEIGHT + get_nn_value(prev_state, action_cycles, ai_class)
 
 
 def get_q_value(state, action_key, ai_class):

@@ -152,7 +152,7 @@ class EarlyStopCallback(BaseCallback):
         self.max_difficulty: int = max_difficulty
 
     def _on_step(self):
-        if self.env.scramble_length > self.max_difficulty and self.env.last_success_rate >= 1.:
+        if self.env.scramble_length > self.max_difficulty and self.env.mean_success_rate >= 1.:
             print(f"Early stopping: Difficulty {self.env.scramble_length} > {self.max_difficulty} reached. Last success rate: {np.mean(self.env.episode_success_history):.2%}")
             return False
         return True
@@ -518,7 +518,7 @@ if __name__ == "__main__":
     #     pool.starmap(main, kwargs_list)
     # In terminal, run "tensorboard --logdir cuboid_3x2x2_tb_logs" to view training progress
     # ===============================
-    success_thresholds = [.3]
+    success_thresholds = [.05]
     # scramble_depths_rewards = [
     #     (1, "binary"),
     #     (1, "most_correct_points"),
@@ -527,9 +527,9 @@ if __name__ == "__main__":
     # ]
     scramble_depths_rewards = [
         (1, "binary"),
+        (4, "most_correct_points"),
         (8, "most_correct_points"),
         (16, "most_correct_points"),
-        (32, "most_correct_points"),
     ]
     n_processes = 4
     kwargs_list  = [
@@ -538,7 +538,7 @@ if __name__ == "__main__":
             ["L", "R", "F", "B", "D", "D'", "U", "U'", "M", "S"], # base_actions
             None,            # load_model
             True,            # train_new
-            11_000_000,       # n_episodes
+            8_000_000,       # n_episodes
             "cuboid_3x3x2_models",  # model_folder
             "cuboid_3x3x2_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth

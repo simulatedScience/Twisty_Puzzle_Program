@@ -42,10 +42,11 @@ def main_interaction():
         - 'scramble' [max_moves]       - scramble the puzzle randomly
         - 'editpoints'                 - enter point color editing mode
         - 'endeditpoints'              - exit point color editing mode
+        - 'solve_greedy' [max_time]    - solve the puzzle using a greedy algorithm
         - 'train_q'                    - train Q-table for current puzzle
         - 'plot' [average length]      - plot the success of the Q-table over time
         - 'move_q'                     - make a move based on current Q-table
-        - 'solve_q'                    - solve puzzle based on current Q-table
+        - 'solve_q' [max_time]         - solve puzzle based on current Q-table
         - 'train_nn'                   - train Neural Network for current puzzle (see help for options)
         - 'move_nn'                    - make a move based on current Neural Network
         - 'solve_nn'                   - solve puzzle based on current Neural Network
@@ -54,6 +55,7 @@ def main_interaction():
     """
     command_color = "#ff8800"
     argument_color = "#5588ff"
+    error_color: str = "#ff2222"
     user_input = ""
 
     puzzle = Twisty_Puzzle()
@@ -85,6 +87,7 @@ def main_interaction():
                         "reset": interface_reset,
                         "editpoints": interface_start_point_edit,
                         "endeditpoints": interface_end_point_edit,
+                        "solve_greedy": interface_solve_greedy,
                         "train_q": interface_train_Q,
                         "move_q": interface_move_Q,
                         "solve_q": interface_solve_Q,
@@ -98,10 +101,20 @@ def main_interaction():
                         "clipshape": interface_clip_shape,
                         "drawpieces": interface_draw_pieces,
                         "validate": interface_validate}
-
+        
+        # try:
         if validate_command(command_dict, user_input):
-            run_command(command_dict, user_input, puzzle,
-                        command_color, argument_color)
+            run_command(
+                command_dict=command_dict,
+                user_input=user_input,
+                puzzle=puzzle,
+                command_color=command_color,
+                arg_color=argument_color,
+                error_color=error_color,
+            )
+        # except Exception as e:
+        #     print(colored(f"Error: {e}", error_color))
+        #     print(colored("please try again", error_color))
 
 
 def validate_command(command_dict, user_input):
@@ -148,6 +161,7 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "loadpuzzle",
                           "animtime",
                           "scramble",
+                          "solve_greedy",
                           "train_q",
                           "solve_q",
                           "plot",

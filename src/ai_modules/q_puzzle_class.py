@@ -283,7 +283,6 @@ class Puzzle_Q_AI():
         #     print("lost", n_moves)
         return state_history, action_history
 
-
     def update_q_table(self,
             state_history,
             action_history,
@@ -319,7 +318,6 @@ class Puzzle_Q_AI():
         self.q_table[(prev_state, prev_action)] += self.learning_rate*(reward + self.discount_factor * max(next_rewards, default=0) - self.q_table[(prev_state, prev_action)])
         # self.N_table[(prev_state, prev_action)] += 1
 
-
     def get_reward(self,
             state,
             n_moves,
@@ -345,7 +343,6 @@ class Puzzle_Q_AI():
             reward = self.reward_dict["move"]
         return reward
 
-
     def puzzle_solved(self,
             state,
             n_moves,
@@ -362,7 +359,6 @@ class Puzzle_Q_AI():
         elif n_moves > max_moves:
             return "timeout"
 
-
     def choose_q_action(self, state, exploration_rate=0):
         """
         choose an action based on the possible actions, the current Q-table and the current exploration rate
@@ -375,12 +371,11 @@ class Puzzle_Q_AI():
         r = random.random()
         if r > exploration_rate:
             # exploit knowledge
-            action_values = []
-            for action_key in self.ACTIONS_DICT.keys():
-                try:
-                    action_values.append(self.q_table[(state,action_key)])
-                except KeyError:
-                    action_values.append(0)
+            # get the Q-value of each action in the given state
+            action_values = [
+                self.q_table.get((state,action_key), 0)
+                    for action_key in self.ACTIONS_DICT.keys()
+            ]
             max_value = max(action_values)
             best_actions = []
             for action_key, value in zip(self.ACTIONS_DICT, action_values):
@@ -390,6 +385,24 @@ class Puzzle_Q_AI():
             return random.choice(best_actions)
         # explore environment through random move
         return random.choice(list(self.ACTIONS_DICT.keys()))
+
+
+    def get_state_value(self, state: tuple[int]) -> float:
+        """
+        Return the value of the given state in the Q-table as the maximum Q-value of all possible actions.
+
+        Args:
+            state (tuple[int]): The state of the puzzle as a tuple of integers.
+
+        Returns:
+            float: The value of the given state considering the Q-table.
+        """
+        action_values = [
+            self.q_table.get((state,action_key), 0)
+                for action_key in self.ACTIONS_DICT.keys()
+        ]
+        max_value = max(action_values)
+        return max_value
 
 
     def export_q_table(self, filename="pickle_q_table"):
@@ -402,7 +415,6 @@ class Puzzle_Q_AI():
             filename += ".pickle"
         with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.q_table, file, protocol=4)
-
 
     def import_q_table(self, filename="pickle_q_table"):
         """

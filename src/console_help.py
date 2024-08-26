@@ -64,11 +64,13 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "reset": ([], "Reset the puzzle to a solved state. Only works properly in the point-view."), # TODO: fix resetting for 3D pieces mode
         "editpoints": ([], "Enter point color editing mode for inputting puzzle states. Only works properly in the point-view."), # TODO: fix color editing for 3D pieces mode
         "endeditpoints": ([], "Exit point color editing mode"),
+        "solve_greedy": (["max_time", "weight"], "Solve the puzzle using a greedy algorithm. " +
+                            f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
         "train_q": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "reuse_Q-table"],
                     "Train the Q-table for the puzzle with the given parameters"),
         "move_q": ([], "Make a single move based on current Q-table"),
-        "solve_q": (["max_time"], "Solve the puzzle based on the current Q-table and an A* algorithm. " +
-                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s"),
+        "solve_q": (["max_time", "weight"], "Solve the puzzle based on the current Q-table and an A* algorithm. " +
+                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
         "plot": (["batch_size"], f"Plot the success of the last Q-training by averaging over `{colored('batch_size', arg_color)}` episodes."),
         "train_v": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "reuse_V-table"],
                     "Train the V-table for the puzzle with the given parameters"),
@@ -80,7 +82,7 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
                      "(Hindsight Experience Replay) and use the given parameters."),
         "move_nn": ([], "Make a single move based on the current neural network of the AI"),
         "solve_nn": (["max_time"], "Solve the puzzle based on the current neural network and an A* algorithm. " +
-                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s"),
+                    f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s)"),
         "clipshape": (["shape", "size", "show_edges"], "define a shape for the puzzle. Currently availiable shapes: \n" +
                       f"`{colored('cuboid', arg_color)}`=`{colored('c', arg_color)}` (default), " +
                       f"`{colored('tetrahedron', arg_color)}`=`{colored('tet', arg_color)}`, " +

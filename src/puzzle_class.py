@@ -25,7 +25,7 @@ from .puzzle_analysis_modules.piece_detection_v2 import detect_pieces
 from .puzzle_analysis_modules.state_validation import State_Validator, gen_puzzle_group
 
 from .vpython_modules.vpy_functions import create_canvas, next_color, bind_next_color
-from .vpython_modules.vpy_rotation import get_com, make_move
+from .vpython_modules.vpy_rotation import get_com, animate_move
 from .vpython_modules.cycle_input import bind_click
 from .vpython_modules.polyhedra import Polyhedron
 from .vpython_modules.piece_modeling import draw_3d_pieces
@@ -36,6 +36,7 @@ from .puzzle_solver import solve_puzzle
 
 # from .ai_modules.twisty_puzzle_model import scramble, perform_action
 from .ai_modules.ai_data_preparation import state_for_ai
+from .ai_modules.greedy_solver import Greedy_Puzzle_Solver
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.v_puzzle_class import Puzzle_V_AI
 # from .ai_modules.nn_puzzle_class import Puzzle_Network
@@ -244,9 +245,7 @@ but was of type '{type(shape_str)}'")
         # print scramble moves
         print(f"scrambled with the following moves:\n{colored(scramble_hist, arg_color)}")
         # perform scramble moves
-        for move in scramble_list:
-            self.perform_move(move)
-
+        self.perform_move(scramble_hist)
 
     def reset_to_solved(self):
         """
@@ -256,7 +255,7 @@ but was of type '{type(shape_str)}'")
             obj.color = color
 
 
-    def perform_move(self, moves):
+    def perform_move(self, moves, max_anim_time: float = 25.):
         """
         perform the given move on the puzzle self
         if multiple moves are given (seperated by spaces), they are all executed
@@ -264,14 +263,24 @@ but was of type '{type(shape_str)}'")
         inputs:
         -------
             moves - (str) - a single move or several seperated by spaces
+            max_anim_time - (float) - maximum time in seconds for all animations
+                If this time is exceeded, the animations are disabled
         """
         if ' ' in moves:
-            for move in moves.split(' '):
+            moves_list: list[str] = moves.split(' ')
+            num_moves: int = len(moves_list)
+            # disable animations that take more than `max_anim_time` seconds
+            old_anim_time: float = self.animation_time
+            if num_moves*old_anim_time > max_anim_time:
+                print(f"Not showing animation for {num_moves} moves.")
+                self.animation_time = 0
+            for move in moves_list:
                 self.perform_move(move)
-                # time.sleep(self.animation_time)
+            # reset animation time
+            self.animation_time = old_anim_time
         else:
             # make_move also permutes the vpy_objects
-            make_move(self.vpy_objects,
+            animate_move(self.vpy_objects,
                       self.moves[moves],
                       self.POINT_POSITIONS,
                       self.COM,
@@ -507,6 +516,29 @@ but was of type '{type(shape_str)}'")
         print(f"{colored(move_name, arg_color)} =", move_str)
 
 
+    def solve_greedy(self, max_time: float = 60, WEIGHT: float = 0.1, arg_color="#0066ff"):
+        """
+        solve the puzzle using a greedy algorithm
+        """
+        ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
+        greedy_solver: Greedy_Puzzle_Solver = Greedy_Puzzle_Solver(
+            self.moves,
+            ai_solved_state,
+            puzzle_name=self.PUZZLE_NAME,
+        )
+        solve_moves = solve_puzzle(
+            self._get_ai_state(),
+            self.moves,
+            ai_solved_state,
+            ai_class=greedy_solver,
+            max_time=max_time,
+            WEIGHT=WEIGHT,
+        )
+        if not solve_moves == "":
+            print(f"solved the puzzle after {colored(str(len(solve_moves.split(' '))), arg_color)} moves:")
+            print(f"{colored(solve_moves, arg_color)}")
+            self.perform_move(solve_moves)
+
     def _get_ai_state(self):
         """
         return the current puzzle state for the ai based on self.color_list
@@ -685,7 +717,8 @@ but was of type '{type(shape_str)}'")
                                    max_time=max_time,
                                    WEIGHT=WEIGHT)
         if not solve_moves == "":
-            print(f"solved the puzzle after {colored(str(len(solve_moves.split(' '))), arg_color)} moves:")
+            solution_length = len(solve_moves.split(' '))
+            print(f"solved the puzzle after {colored(str(solution_length), arg_color)} moves:")
             print(f"{colored(solve_moves, arg_color)}")
             self.perform_move(solve_moves)
 

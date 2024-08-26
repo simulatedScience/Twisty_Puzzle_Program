@@ -12,3 +12,4 @@ matplotlib # plotting of training progress
 stable_baselines3==2.3.2 # reinforcement learning
 gymnasium==0.29.1
 tensorboard
+sortedcontainers # for search-assisted puzzle solver

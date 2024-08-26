@@ -228,6 +228,41 @@ def interface_reset(puzzle, command_color="#ff8800", arg_color="#5588ff", error_
     """
     puzzle.reset_to_solved()
 
+def interface_move_greedy(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    make one move based on the greedy algorithm
+    """
+    # TODO: implement greedy move
+    # try:
+    #     puzzle.move_greedy(arg_color=arg_color)
+    # except AttributeError:
+    #     print(f"{colored('Error:', error_color)} Load a puzzle before trying to make a move.")
+
+def interface_solve_greedy(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    solve the puzzle using a greedy algorithm
+    """
+    user_args = user_args.split(' ')
+    n_args = 2
+    default_args = [60, 0.1]
+    data_types = [float, float]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+
+    final_args = []
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    max_time, WEIGHT = final_args
+    
+    puzzle.solve_greedy(max_time=max_time, WEIGHT=WEIGHT, arg_color=arg_color)
+    
+
 #####     START Q-Learning     #####
 
 def interface_train_Q(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):

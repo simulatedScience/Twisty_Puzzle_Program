@@ -343,7 +343,6 @@ class Puzzle_V_AI():
             reward = self.reward_dict["move"]
         return reward
 
-
     def puzzle_solved(self,
                       state: List[int],
                       n_moves: int,
@@ -365,7 +364,6 @@ class Puzzle_V_AI():
             return "solved"
         elif n_moves >= max_moves:
             return "timeout"
-
 
     def choose_v_action(self, state: List[int], exploration_rate: float = 0) -> str:
         """
@@ -413,6 +411,19 @@ class Puzzle_V_AI():
         return random.choice(best_actions[:best_action_len])
 
 
+    def get_state_value(self, state: tuple[int]) -> float:
+        """
+        Return the value of the given state in the V-table
+
+        Args:
+            state (tuple[int]): The state of the puzzle as a tuple of integers.
+
+        Returns:
+            float: The value of the given state in the V-table.
+        """
+        return self.v_table.get(state, 0)
+
+
     def export_v_table(self, filename="pickle_v_table"):
         """
         write the given V-table into a file using pickle
@@ -423,7 +434,6 @@ class Puzzle_V_AI():
             filename += ".pickle"
         with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", self.name, filename), "wb") as file:
             pickle.dump(self.v_table, file, protocol=4)
-
 
     def import_v_table(self, filename="pickle_V_table"):
         """

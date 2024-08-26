@@ -4,7 +4,7 @@ methods to perform and animate rotations on a list of points
 import vpython as vpy
 import time
 
-def make_move(points, cycles, POINT_POS, PUZZLE_COM, animation_time=0.25, target_fps=60):
+def animate_move(points, cycles, POINT_POS, PUZZLE_COM, animation_time=0.25, target_fps=60):
     """
     applies a move given as several cycles to the given points
 
@@ -259,7 +259,7 @@ if __name__ == "__main__":
     # canvas.bind("keydown", lambda _: calc_rotate_cycle(points, [0,2,5], POINT_POS, PUZZLE_COM=PUZZLE_COM))
     # canvas.bind("keydown", lambda _: calc_rotate_cycle(points, [3,7,4], POINT_POS, PUZZLE_COM=PUZZLE_COM))
     # canvas.bind("keydown", lambda _: make_move(points, [[0,2,5], [3,7,4]], POINT_POS))
-    canvas.bind("keydown", lambda _: make_move(points, [[0,2]], POINT_POS))
+    canvas.bind("keydown", lambda _: animate_move(points, [[0,2]], POINT_POS))
 
     # L = [0,1,2,3,4,5,6,7]
     # apply_cycle(L, [0,1,2,3])
