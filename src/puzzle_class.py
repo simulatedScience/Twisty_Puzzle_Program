@@ -516,6 +516,48 @@ but was of type '{type(shape_str)}'")
         print(f"{colored(move_name, arg_color)} =", move_str)
 
 
+    def move_greedy(self, num_moves: int = 1, max_anim_time: float = 25., arg_color: str = "#0066ff"):
+        """
+        Make `num_moves` moves using a greedy policy with rewards counting the number of solved points
+
+        Args:
+            num_moves (int, optional): number of moves to make. Defaults to 1.
+            max_anim_time (float, optional): maximum time in seconds for all animations. Defaults to 25..
+                If this time is expected to be exceeded, disable animations temporarily.
+            arg_color (str, optional): color for printing the moves. Defaults to "#0066ff".
+        """
+        # disable animations that take more than `max_anim_time` seconds
+        old_anim_time: float = self.animation_time
+        if num_moves * self.animation_time > max_anim_time:
+            print(f"Not showing animation for {num_moves} moves.")
+            self.animation_time = 0
+        # execute `num_moves` moves using the V-table
+        max_move_name_len = max([len(move) for move in self.moves.keys()])
+        # init greedy solver
+        ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
+        greedy_solver: Greedy_Puzzle_Solver = Greedy_Puzzle_Solver(
+            self.moves,
+            ai_solved_state,
+            puzzle_name=self.PUZZLE_NAME,
+        )
+        for i in range(num_moves):
+            # get move from the greedy solver
+            ai_state = self._get_ai_state()
+            value = greedy_solver.get_state_value(ai_state)
+            ai_move = greedy_solver.choose_action(ai_state)
+            self.perform_move(ai_move)
+            # print move info
+            ai_move_str = f"{ai_move:{max_move_name_len}}"
+            print(f"made move: {colored(ai_move_str, arg_color)}. Previous state had value: {value}.")
+            # check if puzzle is solved
+            if self._get_ai_state() == ai_solved_state:
+                print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
+                break
+        # reset animation time
+        if self.animation_time != old_anim_time:
+            self.animation_time = old_anim_time
+
+
     def solve_greedy(self, max_time: float = 60, WEIGHT: float = 0.1, arg_color="#0066ff"):
         """
         solve the puzzle using a greedy algorithm
@@ -691,20 +733,35 @@ but was of type '{type(shape_str)}'")
         #             keep_v_table=keep_v_table)
 
 
-    def move_v(self, arg_color="#0066ff"):
+    def move_v(self, num_moves: int = 1, max_anim_time: float = 25., arg_color: str = "#0066ff"):
         """
         make one move based on the current V-table of the AI
         """
-        ai_state = self._get_ai_state()
-        ai_move = self.ai_v_class.choose_v_action(ai_state)
-        self.perform_move(ai_move)
-        print(f"made move: {colored(ai_move, arg_color)}")
-        try:
-            value = self.ai_v_class.v_table[tuple(ai_state)]
-        except KeyError:
-            value = 0
-        print(f"move had value {value}")
-
+        # disable animations that take more than `max_anim_time` seconds
+        old_anim_time = self.animation_time
+        if num_moves * self.animation_time > max_anim_time:
+            print(f"Not showing animation for {num_moves} moves.")
+            self.animation_time = 0
+        ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
+        # execute `num_moves` moves using the V-table
+        max_move_name_len = max([len(move) for move in self.moves.keys()])
+        for _ in range(num_moves):
+            ai_state = self._get_ai_state()
+            ai_move = self.ai_v_class.choose_v_action(ai_state)
+            self.perform_move(ai_move)
+            try:
+                value = self.ai_v_class.v_table[tuple(ai_state)]
+            except KeyError:
+                value = 0
+            ai_move_str = f"{ai_move:{max_move_name_len}}"
+            print(f"made move: {colored(ai_move_str, arg_color)}. Previous state had value: {value}.")
+            # check if puzzle is solved
+            if self._get_ai_state() == ai_solved_state:
+                print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
+                break
+        # reset animation time
+        if self.animation_time != old_anim_time:
+            self.animation_time = old_anim_time
 
     def solve_v(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
         """

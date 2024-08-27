@@ -64,6 +64,7 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "reset": ([], "Reset the puzzle to a solved state. Only works properly in the point-view."), # TODO: fix resetting for 3D pieces mode
         "editpoints": ([], "Enter point color editing mode for inputting puzzle states. Only works properly in the point-view."), # TODO: fix color editing for 3D pieces mode
         "endeditpoints": ([], "Exit point color editing mode"),
+        "move_greedy": (["num_moves"], f"Make `{colored('num_moves', arg_color)}` moves using a greedy algorithm. (default: 1)"),
         "solve_greedy": (["max_time", "weight"], "Solve the puzzle using a greedy algorithm. " +
                             f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
         "train_q": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "reuse_Q-table"],
@@ -74,7 +75,7 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "plot": (["batch_size"], f"Plot the success of the last Q-training by averaging over `{colored('batch_size', arg_color)}` episodes."),
         "train_v": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "reuse_V-table"],
                     "Train the V-table for the puzzle with the given parameters"),
-        "move_v": ([], "Make a single move based on current V-table"),
+        "move_v": (["num_moves"], f"Make `{colored('num_moves', arg_color)}` moves using the V-table"), 
         "solve_v": (["max_time", "weight"], "Solve the puzzle based on the current V-table using weighted A* search. " +
                     f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
         "train_nn": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "k_for_HER", "keep_nn"],

@@ -6,9 +6,9 @@ interface methods
 import os
 from .interaction_modules.colored_text import colored_text as colored
 # from interaction_modules.methods import *
+from .puzzle_class import Twisty_Puzzle
 
-
-def interface_import(filepath, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_import(filepath, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     import puzzle from geogebra file and save information in 'history_dict'
     """
@@ -21,7 +21,7 @@ def interface_import(filepath, puzzle, command_color="#ff8800", arg_color="#5588
         print(f"{colored('Error:', error_color)} Invalid file path, try again.")
 
 
-def interface_validate(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_validate(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     check whether or not the puzzle is currently in a valid state.
     """
@@ -34,7 +34,7 @@ def interface_validate(puzzle, command_color="#ff8800", arg_color="#5588ff", err
         print(f"There is a {100*validity:4.1}% probability that the current state is valid.")
 
 
-def interface_snap(shape, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_snap(shape, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     if not shape in ['r', 'c', 's', 'reset', 'cube', 'sphere']:
         print(f"{colored('Error:', error_color)} Invalid shape specified. Try {colored('cube', command_color)}, {colored('sphere', command_color)} or {colored('reset', command_color)}")
     if not puzzle.vpy_objects == []:
@@ -43,7 +43,7 @@ def interface_snap(shape, puzzle, command_color="#ff8800", arg_color="#5588ff", 
         print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
 
 
-def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_clip_shape(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     user_args = user_args.split(' ')
     default_args = ["cuboid", None, True]
     data_types = [str, float, bool]
@@ -77,14 +77,14 @@ def interface_clip_shape(user_args, puzzle, command_color="#ff8800", arg_color="
         print(f"{colored('Error:', error_color)} use {colored('import', command_color)} before snapping")
 
 
-def interface_draw_pieces(debug, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_draw_pieces(debug, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     if debug.lower() in ["t", "true"]:
         puzzle.draw_3d_pieces(debug=True)
     else:
         puzzle.draw_3d_pieces(debug=False)
 
 
-def interface_newmove(movename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_newmove(movename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     if len(movename) == 0 or ' ' in movename:
         print(
             f"{colored('Error:', error_color)} Movename cannot be empty or include a space.")
@@ -92,11 +92,11 @@ def interface_newmove(movename, puzzle, command_color="#ff8800", arg_color="#558
     puzzle.newmove(movename, arg_color=arg_color)
 
 
-def interface_endmove(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_endmove(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     puzzle.end_movecreation(arg_color=arg_color)
 
 
-def interface_move(movename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_move(movename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     try:
         puzzle.perform_move(movename)
     except KeyError:
@@ -104,14 +104,14 @@ def interface_move(movename, puzzle, command_color="#ff8800", arg_color="#5588ff
  Create a move using {colored('newmove', command_color)}.")
 
 
-def interface_printmove(movename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_printmove(movename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     try:
         puzzle.print_move(movename, arg_color=arg_color)
     except KeyError:
         print(f"{colored('Error:', error_color)} move '{colored(movename, arg_color)}' does not exist yet. Create a move using {colored('newmove', command_color)}.")
 
 
-def interface_savepuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_savepuzzle(puzzlename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     if puzzlename == '' and puzzle.PUZZLE_NAME != None:
         puzzle.save_puzzle(puzzle.PUZZLE_NAME)
         print(f"saved puzzle as {colored(puzzle.PUZZLE_NAME, arg_color)}")
@@ -122,7 +122,7 @@ def interface_savepuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color=
         print(f"{colored('Error:', error_color)} invalid puzzle name. Name must not include spaces or other invalid characters for filenames.")
 
 
-def interface_loadpuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_loadpuzzle(puzzlename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     load a puzzle 'puzzlename' from 'puzzles/[puzzlename]/puzzle_definition.xml' and
         save information in history_dict
@@ -133,22 +133,22 @@ def interface_loadpuzzle(puzzlename, puzzle, command_color="#ff8800", arg_color=
         print(f"{colored('Errod:', error_color)} Puzzle file does not exist yet. Create necessary files with {colored('savepuzzle', command_color)}.")
 
 
-def interface_listpuzzles(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_listpuzzles(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     puzzle_folder_path = os.path.join(os.path.dirname(__file__), "puzzles")
-    puzzles = os.listdir(puzzle_folder_path)
+    all_puzzles = os.listdir(puzzle_folder_path)
     print("loadable puzzles:")
-    for puzzle in puzzles:
-        print(f"\t{colored(puzzle, arg_color)}")
+    for puzzle_name in all_puzzles:
+        print(f"\t{colored(puzzle_name, arg_color)}")
 
 
-def interface_listmoves(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_listmoves(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     list all moves saved for a puzzle
     """
     puzzle.listmoves(arg_color=arg_color)
 
 
-def interface_rename(user_input, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_rename(user_input, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     renames the move given in user_input
 
@@ -165,7 +165,7 @@ def interface_rename(user_input, puzzle, command_color="#ff8800", arg_color="#55
         print(f"{colored('Error:', error_color)} Move {colored(old_name, arg_color)} does not exist.")
 
 
-def interface_delmove(move_name, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_delmove(move_name, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     deletes the given move from the given puzzle object
     """
@@ -178,7 +178,7 @@ def interface_delmove(move_name, puzzle, command_color="#ff8800", arg_color="#55
         print(f"{colored('Error:', error_color)} Move {colored(move_name, arg_color)} does not exist.")
 
 
-def interface_animtime(animation_time, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_animtime(animation_time, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     updates the sleep time in the active puzzle
     """
@@ -190,7 +190,7 @@ def interface_animtime(animation_time, puzzle, command_color="#ff8800", arg_colo
         print(f"{colored('Error:', error_color)} Given time is not a float.")
 
 
-def interface_scramble(max_moves, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_scramble(max_moves, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     scrambles the given puzzle
     """
@@ -202,7 +202,7 @@ def interface_scramble(max_moves, puzzle, command_color="#ff8800", arg_color="#5
         print(f"{colored('Error:', error_color)} Load a puzzle or define moves scrambling.")
 
 
-def interface_start_point_edit(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_start_point_edit(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     starts point color editing mode
     """
@@ -212,7 +212,7 @@ def interface_start_point_edit(puzzle, command_color="#ff8800", arg_color="#5588
         print(f"{colored('Error:', error_color)} Load a puzzle before trying to edit one.")
 
 
-def interface_end_point_edit(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_end_point_edit(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     ends point color editing mode
     """
@@ -222,23 +222,38 @@ def interface_end_point_edit(puzzle, command_color="#ff8800", arg_color="#5588ff
         print(f"{colored('Error:', error_color)} Editing mode was not enabled.")
 
 
-def interface_reset(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_reset(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     reset puzzle to a solved state
     """
     puzzle.reset_to_solved()
 
-def interface_move_greedy(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_move_greedy(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
-    make one move based on the greedy algorithm
+    make a given number of moves based on the greedy algorithm (defualt: 1 move)
     """
-    # TODO: implement greedy move
-    # try:
-    #     puzzle.move_greedy(arg_color=arg_color)
-    # except AttributeError:
-    #     print(f"{colored('Error:', error_color)} Load a puzzle before trying to make a move.")
+    user_args = user_args.split(' ')
+    n_args = 1
+    default_args = [1]
+    data_types = [int]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+    final_args = [] # final arguments in correct datatype
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    num_moves = final_args[0]
+    try:
+        puzzle.move_greedy(num_moves=num_moves, arg_color=arg_color)
+    except AttributeError:
+        print(f"{colored('Error:', error_color)} Load a puzzle before trying to solve it.")
 
-def interface_solve_greedy(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_greedy(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle using a greedy algorithm
     """
@@ -265,7 +280,7 @@ def interface_solve_greedy(user_args, puzzle, command_color="#ff8800", arg_color
 
 #####     START Q-Learning     #####
 
-def interface_train_Q(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_train_Q(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     train the Q-table for the current puzzle
     """
@@ -302,7 +317,7 @@ def interface_train_Q(user_args, puzzle, command_color="#ff8800", arg_color="#55
                             keep_q_table=keep_Q)
 
 
-def interface_move_Q(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_move_Q(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     make one move based on the current Q-table of the AI
     """
@@ -312,7 +327,7 @@ def interface_move_Q(puzzle, command_color="#ff8800", arg_color="#5588ff", error
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_solve_Q(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_Q(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle based on the current Q-table of the AI
     """
@@ -339,7 +354,7 @@ def interface_solve_Q(user_args, puzzle, command_color="#ff8800", arg_color="#55
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_plot_success(batch_size, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_plot_success(batch_size, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     plot evalutation of the Q-training
     """
@@ -355,7 +370,7 @@ def interface_plot_success(batch_size, puzzle, command_color="#ff8800", arg_colo
 #####     END Q-Learning     #####
 #####     START V-Learning     #####
 
-def interface_train_v(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_train_v(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     train the V-table for the current puzzle
     """
@@ -392,17 +407,33 @@ def interface_train_v(user_args, puzzle, command_color="#ff8800", arg_color="#55
                             keep_v_table=keep_v)
 
 
-def interface_move_v(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_move_v(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
-    make one move based on the current V-table of the AI
+    make a given number of moves based on the current V-table of the AI (default: 1 move).
     """
+    user_args = user_args.split(' ')
+    n_args = 1
+    default_args = [1]
+    data_types = [int]
+    # make user_args the correct length (n_args)
+    if len(user_args) > n_args:
+        user_args = user_args[:n_args]
+    elif len(user_args) < n_args:
+        user_args += ['']*(n_args-len(user_args))
+    final_args = [] # final arguments in correct datatype
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    num_moves = final_args[0]
     try:
-        puzzle.move_v(arg_color=arg_color)
+        puzzle.move_v(num_moves=num_moves, arg_color=arg_color)
     except AttributeError:
         print(f"{colored('Error:', error_color)} Train the V-table before requesting a move.")
 
 
-def interface_solve_v(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_v(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle based on the current V-table of the AI
     """
@@ -431,7 +462,7 @@ def interface_solve_v(user_args, puzzle, command_color="#ff8800", arg_color="#55
 #####     END V-Learning     #####
 
 #####     START NN-HER-Q-Learning     #####
-def interface_train_q_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_train_q_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     train neural network using HER
     """
@@ -470,7 +501,7 @@ def interface_train_q_nn(user_args, puzzle, command_color="#ff8800", arg_color="
             keep_nn=keep_nn) # default True
 
 
-def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_move_nn(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     make a move based on the current neural network
     """
@@ -480,7 +511,7 @@ def interface_move_nn(puzzle, command_color="#ff8800", arg_color="#5588ff", erro
         print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
 
 
-def interface_solve_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_solve_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     solve the puzzle based on the current neural network trained for the puzzle
     """
@@ -510,7 +541,7 @@ def interface_solve_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5
 
 #####     START NN-HER-V-Learning     #####
 
-def interface_train_v_nn(user_args, puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_train_v_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     train neural network using HER
     """

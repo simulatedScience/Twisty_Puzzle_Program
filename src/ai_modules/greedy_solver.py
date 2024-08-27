@@ -1,7 +1,7 @@
 """
 This module implements a greedy solver for twisty puzzles based on dense reward counting the number of correct points up to symmetry.
 """
-
+import random # for choosing between multiple best actions
 if __name__ != "__main__":
     from .twisty_puzzle_model import perform_action
 else:
@@ -44,6 +44,34 @@ class Greedy_Puzzle_Solver():
         # initialize list of solved states considering rotations
         solved_states: list[list[int]] = get_symmetric_solvable_states(SOLVED_STATE, ACTIONS_DICT)
         self.get_state_value: callable = most_correct_points_reward_factory(solved_states, self.reward_dict)
+    
+    def choose_action(self, state: list[int]) -> str:
+        """
+        choose the action that leads to the state with the highest value.
+        If multiple moves have the same value, choose a random one.
+
+        inputs:
+        -------
+            state - (list) - the current state of the puzzle
+
+        returns:
+        --------
+            (str) - the name of the chosen action
+        """
+        best_actions: list[str] = []
+        best_value: float = float("-inf")
+        
+        for action in self.ACTION_KEYS:
+            new_state = perform_action(state.copy(), self.ACTIONS_DICT[action])
+            value = self.get_state_value(new_state)
+            if value > best_value:
+                best_actions = [action]
+                best_value = value
+            elif value == best_value:
+                best_actions.append(action)
+        # choose random action with maximum value
+        best_action = random.choice(best_actions)
+        return best_action
 
 def get_symmetric_solvable_states(
             solved_state: list[int],
@@ -84,7 +112,7 @@ def most_correct_points_reward_factory(solved_states: list[tuple[int]], rewards:
             (bool): True if the puzzle is solved, False otherwise
         """
         if state == solved_states[0]:
-            return rewards["exact_solve"], True
+            return rewards["exact_solved"]#, True
 
         max_correct_points = 0
         for solved_state in solved_states:
