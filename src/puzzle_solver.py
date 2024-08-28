@@ -47,7 +47,7 @@ def solve_puzzle(
     end_time = time.time() + max_time
 
     # open_states = {():(0, start_state)} # init starting state with value 0, no actions taken so far
-    open_states = SortedDict({(0,tuple(start_state)):()})
+    open_states = SortedDict({(0,()):tuple(start_state)})
     # open_states = SortedDict({(0, ): start_state})
     closed_states = dict()
 
@@ -100,7 +100,7 @@ def expand_node(#action_seq,
         None if no solution was found,
         (tuple) action_key sequence of the solution if it was found.
     """
-    (prev_value, prev_state),  action_seq= open_states.popitem(index=0)
+    (prev_value, action_seq), prev_state = open_states.popitem(index=0)
     # prev_value, prev_state = open_states.pop(action_seq)
     for action_key, action_cycles in ACTIONS_DICT.items():
         puzzle_state = list(prev_state)
@@ -109,20 +109,20 @@ def expand_node(#action_seq,
         if puzzle_state == SOLVED_STATE:
             return new_action_seq
         # start_time = time.perf_counter()
-        value = -get_a_star_eval(prev_value, prev_state, ai_class, WEIGHT=WEIGHT)
+        value = -get_a_star_eval(prev_value, puzzle_state, ai_class, WEIGHT=WEIGHT)
         # end_time = time.perf_counter()
         # print(f"evaluation of state took {(end_time-start_time)*1000:5} ms.")
 
         state_tuple = tuple(puzzle_state)
         if not state_tuple in closed_states:
             # state was not seen before -> explore
-            open_states[(value, state_tuple)] = new_action_seq
+            open_states[(value, new_action_seq)] = state_tuple
         else:
             if value < closed_states[state_tuple]:
                 # found better path to a state visited before.
                 # delete from closed_states and add to open_states
                 del(closed_states[state_tuple])
-                open_states[(value, state_tuple)] = new_action_seq
+                open_states[(value, new_action_seq)] = state_tuple
                 # open_states[new_action_seq] = (value, puzzle_state)
         closed_states[tuple(prev_state)] = prev_value
 
