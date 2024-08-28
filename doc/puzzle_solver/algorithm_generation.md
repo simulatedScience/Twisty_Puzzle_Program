@@ -13,6 +13,7 @@ One of the core contributions of this work is the automatic generation of algori
    What remains are potentially useful algorithms.
 4. filter out overlap with previously generated algorithms or refine the existing ones  
    We don't want to generate the same algorithm twice, as it would be a waste of resources to train an RL agent to use the same algorithm in two different ways.
+5. reapeat 1-4 or stop generating new algorithms
 
 ### 1. Generate move sequences
 To generate the base sequences, we utilize the `smart_scramble` function: This avoids
@@ -48,6 +49,8 @@ Given a new algorithm $a$, a set $A$ of existing ones and a set $R$ of spatial r
 
 See also: `algorithm_filtering.md`
 
+### 5. Repeat or stop generating new algorithms
+Deciding when to stop generating new algorithms is a difficult problem. Experiments with the greedy solver have shown that having only some algorithms available
 
 ## Algorithm Generation Flowchart
 <!-- ![algorithm generation flowchart](algorithm_generation_flowchart.png) -->
@@ -55,12 +58,13 @@ See also: `algorithm_filtering.md`
 <img src="algorithm_generation_flowchart.png" alt="algorithm generation flowchart" width="50%"/>
 
 
-## Idea for advanced algorithm generation
+## Ideas for advanced algorithm generation
+### 1. Dynamic algorithm generation based on greedy solver
 Part 2 of this method describes how to find algorithms targetting specific points. This could be used to dynamically find algorithms solving the puzzle in steps.
 
 At first, find any algorithm. Then, over many scrambles and greedy solves optimizing the reward function, we can differentiate pieces that can be solved with the exisitng algorihtms from those that can't. We can then generate new algorithms targetting only the unsolved pieces. This prevents making the action set for RL agents unnecessarily large.
 
-### Positive effects of this approach
+#### Positive effects of this approach
 
 - This allows enables solutions to follow a common strategy used by humans: first solve a few pieces while ignoring the rest, then solve the rest in similar steps, ignoring some others.
 This can be useful, as it simplifies the algorithms needed to solve the puzzle.
@@ -73,4 +77,5 @@ Example: When we start our solution by solving the corners of a Rubik's cube, we
 
 - This technique could provide a good indication when to stop searching for new algorithms: If the greedy solver can solve a high proportion of states, we can assume that the action set is sufficient for the RL agent to efficiently learn a good policy.
 
-
+### 2. Advanced algorithm generation through conjugation
+current algorithm generation cannot easily find some popular algorithms because they don't follow the structure n*(base_sequence). Instead, they are better described by a sequence mAmAm^-2, where A is the base sequence and m is a setup move that gets undone afterwards.

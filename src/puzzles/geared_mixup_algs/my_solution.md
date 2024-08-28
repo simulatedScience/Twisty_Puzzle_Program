@@ -55,10 +55,14 @@ order: 2
 
 ### flip one edge in-place 180°
 Turn a single edge in-place (the top back one).
-
 order: 2
 78*(r t f r' t')
 78*5 = 390 moves
+
+# new, shorter version!
+order: 2
+18*(b r t f' d' b' r')
+18*7 = 126 moves
 
 ### flip four edges in-place
 Flip all top and bottom edges on the two side faces by 180° in-place.

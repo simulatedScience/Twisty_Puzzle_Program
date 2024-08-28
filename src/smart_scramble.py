@@ -3,7 +3,10 @@ import time
 
 from copy import deepcopy
 from numpy import lcm
-from .ai_modules.twisty_puzzle_model import perform_action
+try:
+    from .ai_modules.twisty_puzzle_model import perform_action
+except ImportError:
+    from ai_modules.twisty_puzzle_model import perform_action
 
 def smart_scramble(SOLVED_STATE, ACTIONS_DICT, n_moves, max_time: float = 60) -> list[str]:
     """
