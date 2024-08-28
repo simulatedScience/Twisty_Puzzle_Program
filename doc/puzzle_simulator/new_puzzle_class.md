@@ -11,11 +11,11 @@ For each puzzle, we want to store the following information:
   - base moves
     - `str` name
     - `list[list[int]]` permutation
-    - (`vec3` rotation axis)?
+    - (`vec3` rotation axis)? -> no, improve automatic rotation detection instead
   - spatial rotations
     - `str` name
     - `list[list[int]]` permutation
-    - `vec3` rotation axis
+    - (`vec3` rotation axis)? -> no, improve automatic rotation detection instead
   - algorithms
     - `str` name
     - `list[list[int]]` permutation
@@ -27,4 +27,4 @@ For each puzzle, we want to store the following information:
 
 dtypes: `str`, `vec3`, `list[list[int]]`, `list[str]`, `bool`, `int`
 
-use `json` instead of `xml`?
+use `json` instead of `xml`.

@@ -383,7 +383,7 @@
           <mxGeometry x="8" y="6" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="SwG8wEym7CFrvehHTtar-14" value="Algorithm Generation" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="-1056" y="1204" width="653" height="932" as="geometry" />
+          <mxGeometry x="-1063" y="1147" width="653" height="932" as="geometry" />
         </mxCell>
         <mxCell id="SwG8wEym7CFrvehHTtar-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="SwG8wEym7CFrvehHTtar-14" source="SwG8wEym7CFrvehHTtar-16" target="SwG8wEym7CFrvehHTtar-19" edge="1">
           <mxGeometry relative="1" as="geometry" />

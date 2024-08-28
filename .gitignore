@@ -28,3 +28,5 @@ local_research/*
 /temp_tb_logs
 /cuboid_3x2x2_tb_logs
 /cuboid_3x3x2_tb_logs
+# TODO: recreate similar image
+doc/puzzle_solver/stepwise_rubiks_cube_solution.jpg
