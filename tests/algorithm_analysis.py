@@ -17,13 +17,11 @@ def get_sympy_dict(puzzle):
     """
     generate the moves of the given puzzle as sympy permutations
 
-    inputs:
-    -------
-        puzzle - (Twisty_Puzzle) - a puzzle object where a puzzle is loaded
+    Args:
+        puzzle (Twisty_Puzzle): a puzzle object where a puzzle is loaded
 
-    returns:
-    --------
-        (dict) - dictionary with sympy permutations
+    Returns:
+        (dict[str, Permutation]): dictionary with sympy permutations
             keys are the same as in `puzzle move_dict`
             values are the same permutations as sympy permutations
     """
@@ -34,15 +32,32 @@ def get_sympy_dict(puzzle):
 
 
 def analyse_alg(
-        moves,
-        sympy_moves,
-        pieces,
-        max_pieces=6,
-        max_order=5,
-        max_move_sequence_order=300,
+        moves: str,
+        sympy_moves: dict[str, Permutation],
+        pieces: List[set[int]],
+        max_pieces: int = 6,
+        max_order: int = 5,
+        max_move_sequence_order: int = 300,
         ) -> dict[tuple[str, int], str]:
     """
-    analyse a given algorithm (a move sequence)
+    Analyse a given a move sequence $s$ and use it to find useful algorithms.
+    1. determine move sequence order
+    2. get divisors of the order
+    3. check properties of $s^k$ for each divisor $k$ if they meet the requirements for a useful algorithm
+
+    Args:
+        moves (str): a move sequence
+        sympy_moves (dict): dictionary of sympy permutations
+        pieces (list): list of pieces in the puzzle
+            each piece is represented as a set of point indices
+        max_pieces (int): maximum number of pieces that can be affected by an algorithm
+        max_order (int): maximum order of an algorithm
+        max_move_sequence_order (int): maximum order of the move sequence
+
+    Returns:
+        (dict[tuple[str, int], str]): dictionary of found algorithms given as:
+            key: tuple of (move sequence, number of repetitions)
+            value: full move sequence of the algorithm (= move sequence * number of repetitions)
     """
     move_list = moves.split(" ")
     alg_perm = sympy_moves[move_list[0]]
@@ -61,8 +76,14 @@ def analyse_alg(
     found_algorithms: dict[tuple[str, int], str] = dict()
     
     for k in divs[:-1]:
+        predicted_order = n//k
         k_rep = alg_perm**k
         pot_alg_order = k_rep.order()
+        if predicted_order != pot_alg_order:
+            print(f"Unexpected order: {pot_alg_order} != {predicted_order}")
+        # skip if the algorithm order is too high
+        if pot_alg_order > max_order:
+            continue
         affected_pieces = get_affected_pieces(k_rep, pieces)
         n_pieces = len(affected_pieces)
         if n_pieces <= max_pieces and pot_alg_order <= max_order:
@@ -81,37 +102,34 @@ def get_algorithm_move_sequence(moves, n_rep):
     """
     get the move sequence of an algorithm that is repeated n_rep times
 
-    inputs:
-    -------
+    Args:
         moves - (str) - a move sequence
         n_rep - (int) - number of repetitions
 
-    returns:
-    --------
+    Returns:
         (str) - move sequence of the algorithm
     """
     alg_moves = (moves + " ")*n_rep
     return alg_moves[:-1]
 
-def get_affected_pieces(perm, pieces):
+def get_affected_pieces(perm: Permutation, pieces: list[set[int]]) -> list[set[int]]:
     """
     get a list of all pieces moved by the given permutation
 
-    inputs:
-    -------
-        perm - (sympy.combinatorics.Permutation) - a sympy permutation for analysis
-        pieces - (list) of (set) - list of all pieces in the puzzle
+    Args:
+        perm (sympy.combinatorics.Permutation): a sympy permutation for analysis
+        pieces (list[set[int]]): list of all pieces in the puzzle
             each piece is represented as a set of point indices
 
-    returns:
-    --------
-        (list) of (set) - list of pieces affected by the permutation.
+    Returns:
+        list[set[int]]: list of pieces affected by the permutation.
             each piece is represented as a set of point indices
     """
-    L = set(itertools.chain(*perm.cyclic_form))
+    # flatten the cyclic form of the permutation into the set of all affected points
+    affected_points = set(itertools.chain(*perm.cyclic_form))
     affected_pieces = list()
     for piece in pieces:
-        if L & piece != set():
+        if affected_points & piece != set(): # if piece is affected by algorithm: append piece
             affected_pieces.append(piece)
     return affected_pieces
 
@@ -126,13 +144,11 @@ def get_divisors(n):
         L = get_divisors(n)
         L = L[::2] + L[1::2].reversed()
 
-    inputs:
-    -------
-        n - (int) - any integer
+    Args:
+        n (int): any integer
     
-    returns:
-    --------
-        (list) of (int) - unsorted list of all divisors of n (see above)
+    Returns:
+        list[int]: unsorted list of all divisors of n (see above)
             includes divisors 1 and n as the first two elements.
     """
     divs = list()
@@ -191,10 +207,10 @@ def main(
         except ValueError:
             pass
         if user_input in current_algorithms:
-            if len(current_algorithms[user_input]) > 100:
-                puzzle.animation_time = 0
-            else:
-                puzzle.animation_time = 0.1
+            # if len(current_algorithms[user_input]) > 100:
+            #     puzzle.animation_time = 0
+            # else:
+            #     puzzle.animation_time = 0.1
             print(f"Showing algorithm {user_input}.")
             puzzle.perform_move(current_algorithms[user_input])
             user_input = str(user_input)
@@ -221,7 +237,7 @@ if __name__ == "__main__":
     
     # puzzle_name = input("Enter a puzzle name: ")
     # puzzle_name = "geared_mixup"
-    puzzle_name = "rubiks_2x2"
+    puzzle_name = "rubiks_3x3"
     main(
         puzzle_name=puzzle_name,
         max_pieces=8,

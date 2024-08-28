@@ -49,13 +49,14 @@ def generate_algorithms(
     """
     found_algorithms: dict[tuple[str, int], str] = dict()
     while len(found_algorithms) < find_n_algorithms:
-        # choose random sequence length
+        # generate efficient base sequence for algorithms
         sequence_length: int = random.randint(2, max_base_sequence_length)
         algorithm_base: list[str] = smart_scramble(
                 puzzle.SOLVED_STATE,
                 puzzle.moves,
                 sequence_length)
         # algorithm_base = ["t", "t", "d'", "d'", "f", "b'"]
+        # generate new algorithms from a base sequence of moves
         algorithm_base_str = " ".join(algorithm_base)
         new_algorithms = alg_ana.analyse_alg(
             algorithm_base_str ,
@@ -65,6 +66,7 @@ def generate_algorithms(
             max_order=max_order,
             max_move_sequence_order=max_move_sequence_order,
         )
+        # check if potential algorithms are too long
         for alg_key, alg_moves in new_algorithms.items():
             if len(alg_moves.split(" ")) > max_algorithm_length:
                 continue

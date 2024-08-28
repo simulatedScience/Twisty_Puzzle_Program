@@ -16,18 +16,19 @@ Some of the ideas explained here are already implemented in `tests/algorithm_ana
 
 We can classify move sequences using several criteria:
 1. order of the algorithm
-2. number of pieces changed by the algorithm
-3. order of the piece permutation, disregarding piece rotations
-4. order of the piece rotations, disregarding piece movements
-5. whether or not pieces are...
+2. number of points changed by the algorithm
+3. number of pieces changed by the algorithm
+4. order of the piece permutation, disregarding piece rotations
+5. order of the piece rotations, disregarding piece movements
+6. whether or not pieces are...
    1. moved , ...
    2. rotated or ...
    3. moved and rotated
-6. types of affected pieces (only if there are different classes of pieces in the puzzle)</br>
-   The information 2-5 can also be calculated for each piece type individually.
+7. types of affected pieces (only if there are different classes of pieces in the puzzle)  
+   The information 3-6 can also be calculated for each piece type individually.
 
-A desireable algorithm should only affect a small number of pieces (ideally 2 or 3, possibly up to 8).
-It should also either only rotate piece or only move them, not both at the same time.
+A desireable algorithm should only affect a small number of pieces (ideally 2 or 3, possibly up to 8, depending on the puzzle).
+It should also either only rotate piece or only move them, not rotate some pieces in-place while moving others.
 
 # How to calculate the different pieces of information
 
