@@ -51,6 +51,7 @@ def generate_algorithms(
     while len(found_algorithms) < max_number_of_algorithms \
             and time.time() < end_time \
             and iterations_since_new_algorithm < max_iterations_without_new_algorithm:
+            # TODO: add orbit based end condition
         added_algorithms_this_iteration: bool = False
         # generate efficient base sequence for algorithms
         sequence_length: int = random.randint(2, max_base_sequence_length)

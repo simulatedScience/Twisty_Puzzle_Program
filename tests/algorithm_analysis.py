@@ -13,7 +13,7 @@ import math
 from sympy.combinatorics import Permutation
 
 
-def get_sympy_dict(puzzle):
+def get_sympy_dict(puzzle: "Twisty_Puzzle") -> dict[str, Permutation]:
     """
     generate the moves of the given puzzle as sympy permutations
 

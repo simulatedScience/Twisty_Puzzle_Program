@@ -443,9 +443,9 @@ if __name__ == "__main__":
     # shape = (3, 3, 3)
     # shape = (4, 4, 4)
     # shape = (9, 9, 9)
-    # shape = (5, 5, 5)
+    shape = (5, 5, 5)
     # shape = (6, 5, 6)
-    shape = (3, 3, 2)
+    # shape = (3, 3, 2)
     # shape = (2, 2, 2)
     # shape = (3, 3, 5)
     sticker_coords, colors = generate_cuboid(

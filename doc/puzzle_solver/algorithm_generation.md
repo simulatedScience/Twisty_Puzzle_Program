@@ -79,3 +79,30 @@ Example: When we start our solution by solving the corners of a Rubik's cube, we
 
 ### 2. Advanced algorithm generation through conjugation
 current algorithm generation cannot easily find some popular algorithms because they don't follow the structure n*(base_sequence). Instead, they are better described by a sequence mAmAm^-2, where A is the base sequence and m is a setup move that gets undone afterwards.
+
+### 3. Advanced algorithm generation by recording piece effects
+This idea relaxes the condition on the number of pieces an algorithm can affect.
+
+1. categorize permutations into:  
+   a) those that _move_ pieces around the puzzle (cycles go between different pieces)  
+   b) those that _rotate_ pieces in-place (all cycles are within a single piece)  
+   c) those that both _move_ and _rotate_ pieces
+   For each affected piece, store, whether it is _moved_, _rotated_.
+2. a new algorithm affecting more than a few pieces can still be accepted, if other algorithms can counteract its side-effects. We may find one algorithm that only rotates pieces in-place and another that moves some while rotating others. In some cases, these could be combined to create a single new algorithm that only moves pieces.  
+   Such cases could be identified by checking the classification of each piece affected. The goal would then be to find algorithms that are in categories (a) or (b). For new algorithms in (c), we search through existing algorithms to find a pair that can counteract the side-effects of the new one.
+
+
+# end condition: Group pieces/ points into orbits.
+applies the same for points
+
+using random scrambles, record where each piece can move.
+Collect this info into a list of possible positions for each piece. To get more complete information, merge the orbits of pieces as soon as one overlapping position is found. This way, we can find out which pieces can be interchanged and which can't.
+
+This process can be recreated using just algorithms and spatial rotations to measure when we have found sufficiently many algorithms to solve the puzzle without base moves.
+
+Withenough algorithms, it may be feasible, if not advantageous to train an AI using no base moves and instead just algorithms and symmetries.
+
+Try adding a binary neuron: 1 if last action was a spatial rotation, 0 otherwise. Then, punish the agent for using two spatial rotations in a row. (the extra neuron is required for this to remain an MDP).
+
+When calculating piece orbits from algorithms, don't apply rotations as moves but rather wrap algorithms in rotations as conjuggates (e.g. $r^{-1} a r$ instead of $a$). Otherwise, whole puzzle rotations could join orbits. I'm not sure if that would be a problem.  
+It certainly is a problem without symmetry filtering (example: skewb), but with symmetry filtering (see OneNote), it be irrelevant.
