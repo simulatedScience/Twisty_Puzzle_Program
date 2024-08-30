@@ -52,11 +52,11 @@ def show_algorithm_on_puzzle(puzzle: Twisty_Puzzle, alg: Twisty_Puzzle_Algorithm
 def user_test_algorithms(puzzle, algorithms, saved_algs):
     while True:
         list_algorithms(algorithms)
-        print(f"\n{colored_text('Commands:', COMMAND_COLORS['headline'])} show <alg_number>, save <alg_number>, reset, quit")
+        print(f"\n{colored_text('Commands:', COMMAND_COLORS['headline'])} show <alg_number>, save <alg_number>, reset, exit")
         command = input("Enter a command: ").strip().lower()
 
-        if command == "quit":
-            return "quit", saved_algs
+        if command == "exit":
+            return "exit", saved_algs
 
         if command == "reset":
             # reset puzzle
@@ -74,24 +74,25 @@ def user_test_algorithms(puzzle, algorithms, saved_algs):
                 print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
             continue
 
-        if command.startswith("save"):
-            try:
-                alg_number = int(command.split()[1])
-                alg = algorithms[alg_number]
-                saved_algs[alg_number] = alg
-                print(f"{colored_text('Algorithm saved.', COMMAND_COLORS['headline'])}")
-            except (IndexError, ValueError):
-                print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
-            continue
+        # if command.startswith("save"):
+        #     try:
+        #         alg_number = int(command.split()[1])
+        #         alg = algorithms[alg_number]
+        #         saved_algs[alg_number] = alg
+        #         print(f"{colored_text('Algorithm saved.', COMMAND_COLORS['headline'])}")
+        #     except (IndexError, ValueError):
+        #         print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
+        #     continue
 
         print(f"{colored_text('Invalid command.', COMMAND_COLORS['headline'])}")
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
-    print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to quit the program.")
+    print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to exit the program.")
 
     puzzle = Twisty_Puzzle()
-    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = input("Enter a puzzle name: ")
+    puzzle_name = "geared_mixup"
     # puzzle_name = "rubiks_3x3"
     try:
         puzzle.load_puzzle(puzzle_name)
@@ -104,7 +105,7 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     # remove permutations that are rotations
     sympy_base_moves = {name: perm for name, perm in sympy_moves.items() if not name in sympy_rotations}
 
-    current_algorithms = {}
+    current_algorithms: dict[str, Twisty_Puzzle_Algorithm] = {}
     puzzle.animation_time = 0.1
 
     while True:
@@ -112,7 +113,8 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             puzzle=puzzle,
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
-            max_time=30,
+            # max_time=3,
+            max_time=300,
             max_base_sequence_length=16,
             max_move_sequence_order=200,
             max_algorithm_moves=150,
@@ -123,14 +125,20 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
         )
 
         state, saved_algs = user_test_algorithms(puzzle, new_algorithms, current_algorithms)
-        if state == "quit":
+        current_algorithms = {alg.name: alg for alg in new_algorithms}
+        if state == "exit":
             break
-        current_algorithms.update(saved_algs)
 
-    print("=" * 75 + "\nCurrent algorithms:")
-    for alg_name, alg in current_algorithms.items():
-        print_algorithm(alg, alg_name)
+    # print("=" * 75 + "\nCurrent algorithms:")
+    # for alg_name, alg in current_algorithms.items():
+    #     print_algorithm(alg, alg_name)
 
+    # save algorithms' compact form to basic text file insie src/puzzles/puzzle_name/autogen_algorithms.txt
+    filepath = os.path.join("src", "puzzles", puzzle_name, "autogen_algorithms.txt")
+    with open(filepath, "w") as file:
+        for alg_name, alg in current_algorithms.items():
+            file.write(str(alg) + "\n")
+    print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
     os._exit(0)
 
 if __name__ == "__main__":

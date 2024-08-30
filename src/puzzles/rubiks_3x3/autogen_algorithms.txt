@@ -1,42 +1,20 @@
-Current algorithms:
-Algorithm rotate_3_corners: 6*(t f r' t' f')
-Algorithm length: 30 moves
-Alg. order: 3
-Alg. affects 3 pieces:
- [{2, 34, 36}, {8, 28, 6}, {27, 51, 38}]
-Algorithm flip_4_edges: 4*(slice_y d)
-Algorithm length: 8 moves
-Alg. order: 2
-Alg. affects 4 pieces:
- [{23, 46}, {16, 21}, {5, 31}, {50, 14}]
-Algorithm swap_2_corner_pairs: 6*(t' l' t' f' b f' f')
-Algorithm length: 42 moves
-Alg. order: 2
-Alg. affects 4 pieces:
- [{0, 24, 42}, {9, 18, 17}, {8, 28, 6}, {53, 30, 7}]
-Algorithm rotate_core: 4*(slice_x' slice_z)
-Algorithm length: 8 moves
-Alg. order: 3
-Alg. affects 3 pieces:
- [{49, 3}, {32, 22}, {40, 12}]
-Algorithm flip_2_edges: 6*(l' slice_z' slice_x' r slice_y slice_y f l d' f')
-Algorithm length: 60 moves
-Alg. order: 2
-Alg. affects 2 pieces:
- [{1, 39}, {50, 14}]
-Algorithm swap_4_centers: 6*(t f slice_x b d)
-Algorithm length: 30 moves
-Alg. order: 2
-Alg. affects 2 pieces:
- [{49, 3}, {40, 12}]
-Algorithm cycle_3_edges: 4*(d' d' slice_x')
-Algorithm length: 12 moves
-Alg. order: 3
-Alg. affects 3 pieces:
- [{41, 48}, {4, 13}, {1, 39}]
-
- Algorithm cycle_3_corners: 12*(t slice_y' d' f)
- Algorithm length: 48
- Alg. order: 3
- Alg. affects 3 pieces:
-  
+ 1: len=112, order=  2, pieces=  2, 14*(slice_x slice_y' slice_x' slice_z' l' t' l' f')
+ 2: len= 20, order=  3, pieces=  3, 4*(t d t' slice_x d)
+ 3: len= 96, order=  2, pieces=  4, 12*(slice_x' l' slice_y' slice_z t' b' slice_x slice_z')
+ 4: len= 90, order=  3, pieces=  3, 6*(f' b slice_y' slice_z' d t f slice_x f r' f' slice_z' slice_y slice_y slice_z)
+ 5: len= 18, order=  2, pieces=  4, 6*(slice_y' b slice_y')
+ 6: len= 36, order=  2, pieces=  4, 6*(slice_y' f b' slice_z f b)
+ 7: len=135, order=  2, pieces=  4, 15*(b t' b' r' slice_z' f' d l slice_x')
+ 8: len= 24, order=  4, pieces=  4, 6*(b f' d' l')
+ 9: len= 75, order=  2, pieces=  4, 15*(t' l' r d d)
+10: len=126, order=  4, pieces=  4, 9*(t' l d' f r b' f d slice_y' r slice_y' r' f slice_y')
+11: len=150, order=  4, pieces=  4, 15*(f f d f' r' d' slice_y r f f)
+12: len= 80, order=  3, pieces=  3, 16*(b' d f d' l)
+13: len=147, order=  4, pieces=  4, 21*(l d' t' slice_y r' t' l)
+14: len= 72, order=  3, pieces=  4, 8*(t' f' t l r' d l' slice_z' r)
+15: len= 36, order=  3, pieces=  2, 4*(r d b' slice_y slice_x b' slice_y' f l)
+16: len=147, order=  4, pieces=  4, 21*(f slice_z b r' d slice_y' slice_x)
+17: len= 90, order=  4, pieces=  4, 9*(d' r l d' f slice_z' d l' t l)
+18: len=135, order=  2, pieces=  4, 9*(slice_x f l l d' slice_z' f' r' slice_x' d' r' b d r slice_y)
+19: len= 90, order=  4, pieces=  4, 9*(l d slice_y slice_z' f' slice_x' slice_x' l' slice_x f')
+20: len=144, order=  9, pieces=  4, 16*(slice_z' t' b slice_z' l' t' r t r')

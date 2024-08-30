@@ -27,6 +27,7 @@ def generate_algorithms(
         max_pieces_affected: int | None = None, # automatic
         max_number_of_algorithms: int = 30,
         max_iterations_without_new_algorithm: int = 1000,
+        verbosity: int = 1,
     ):
     """
     Generate algorithms for the given puzzle within the given constraints.
@@ -93,6 +94,14 @@ def generate_algorithms(
                 added_algorithms_this_iteration = True
         if not added_algorithms_this_iteration:
             iterations_since_new_algorithm += 1
+    # print end condition
+    if verbosity:
+        if len(found_algorithms) >= max_number_of_algorithms:
+            print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached.")
+        if time.time() >= end_time:
+            print(f"Maximum time ({max_time} seconds) reached.")
+        if iterations_since_new_algorithm >= max_iterations_without_new_algorithm:
+            print(f"Maximum iterations without new algorithm ({max_iterations_without_new_algorithm}) reached.")
     return found_algorithms
 
 def get_repetition_candidates(

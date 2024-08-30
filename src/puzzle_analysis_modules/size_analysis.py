@@ -42,9 +42,7 @@ def _state_space_size_upper_bound(moves: list, n_points: int):
     Returns:
         (int): number of possible states of the puzzle
     """
-    perms = list()
-    for move in moves:
-        perms.append(Permutation(move, size=n_points))
+    perms = [Permutation(move, size=n_points) for move in moves]
     perm_group = PermutationGroup(perms)
     return perm_group.order()
 
