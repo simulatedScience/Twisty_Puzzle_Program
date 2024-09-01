@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="cube_2x2x2">
+  <points>
+    <point size="10">
+      <coords x="-0.5" y="-1.0" z="-0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.0" z="-0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-1.0" z="0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-1.0" z="0.5"/>
+      <color r="0.1" g="0.8" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-0.5" z="-0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.5" z="-0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="-0.5" z="0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="1.0" y="0.5" z="0.5"/>
+      <color r="0.9" g="0.1" b="0.1"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.0" z="-0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.0" z="-0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="1.0" z="0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="1.0" z="0.5"/>
+      <color r="0.1" g="0.5" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.5" z="-0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-0.5" z="-0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="0.5" z="0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-1.0" y="-0.5" z="0.5"/>
+      <color r="1.0" g="0.5" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-0.5" z="1.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-0.5" z="1.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="0.5" z="1.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="0.5" z="1.0"/>
+      <color r="0.9" g="0.9" b="0.9"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="0.5" z="-1.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="0.5" z="-1.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="-0.5" y="-0.5" z="-1.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+    <point size="10">
+      <coords x="0.5" y="-0.5" z="-1.0"/>
+      <color r="1.0" g="0.8" b="0.0"/>
+    </point>
+  </points>
+  <moves>
+    <move name="L">
+      <cycle>0, 20, 11, 16</cycle>
+      <cycle>2, 22, 9, 18</cycle>
+      <cycle>12, 14, 15, 13</cycle>
+    </move>
+    <move name="L'">
+      <cycle>0, 16, 11, 20</cycle>
+      <cycle>2, 18, 9, 22</cycle>
+      <cycle>12, 13, 15, 14</cycle>
+    </move>
+    <move name="R">
+      <cycle>1, 17, 10, 21</cycle>
+      <cycle>3, 19, 8, 23</cycle>
+      <cycle>4, 6, 7, 5</cycle>
+    </move>
+    <move name="R'">
+      <cycle>1, 21, 10, 17</cycle>
+      <cycle>3, 23, 8, 19</cycle>
+      <cycle>4, 5, 7, 6</cycle>
+    </move>
+    <move name="F">
+      <cycle>4, 22, 15, 17</cycle>
+      <cycle>6, 23, 13, 16</cycle>
+      <cycle>0, 2, 3, 1</cycle>
+    </move>
+    <move name="F'">
+      <cycle>4, 17, 15, 22</cycle>
+      <cycle>6, 16, 13, 23</cycle>
+      <cycle>0, 1, 3, 2</cycle>
+    </move>
+    <move name="B">
+      <cycle>5, 19, 14, 20</cycle>
+      <cycle>7, 18, 12, 21</cycle>
+      <cycle>8, 10, 11, 9</cycle>
+    </move>
+    <move name="B'">
+      <cycle>5, 20, 14, 19</cycle>
+      <cycle>7, 21, 12, 18</cycle>
+      <cycle>8, 9, 11, 10</cycle>
+    </move>
+    <move name="D">
+      <cycle>0, 4, 8, 12</cycle>
+      <cycle>1, 5, 9, 13</cycle>
+      <cycle>20, 22, 23, 21</cycle>
+    </move>
+    <move name="D'">
+      <cycle>0, 12, 8, 4</cycle>
+      <cycle>1, 13, 9, 5</cycle>
+      <cycle>20, 21, 23, 22</cycle>
+    </move>
+    <move name="U">
+      <cycle>2, 14, 10, 6</cycle>
+      <cycle>3, 15, 11, 7</cycle>
+      <cycle>16, 18, 19, 17</cycle>
+    </move>
+    <move name="U'">
+      <cycle>2, 6, 10, 14</cycle>
+      <cycle>3, 7, 11, 15</cycle>
+      <cycle>16, 17, 19, 18</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	
