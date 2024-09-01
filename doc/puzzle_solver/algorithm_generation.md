@@ -45,7 +45,12 @@ Given a new algorithm $a$, a set $A$ of existing ones and a set $R$ of spatial r
    - If yes, compare the number of moves required by both algorithms. Keep the shorter one, discard the longer one.  
         If they are the same length, we could decide based on which base moves are used, or the length of the base sequence (analogous to the number of repetitions).  
         Afterwards, we can move on to generating new algorithms or stop generation.
-2. if $a$ or any rotation of it are not in $A$, we can check if algorithms in $A$ are similar to $a$, by investigating the order as well as number and types of affected pieces. For this purpose, we propose an algorithm signature, that can be used quickly tell algorithms apart or detect similarity. (see `src/algorithm_generation/algorithm_analysis.py` and `algorithm_signature_planning.pdf`. For an outdated earlier version, see `algorithm_analysis.md`).
+2. if $a$ or any rotation of it are not in $A$, we can check if algorithms in $A$ are similar to $a$, by investigating the order as well as number and types of affected pieces. For this purpose, we propose an algorithm signature, that can be used quickly tell algorithms apart or detect similarity. (see `src/algorithm_generation/algorithm_analysis.py` and `algorithm_signature_planning.pdf`. For an outdated earlier version, see `algorithm_analysis.md`).  
+This algorithm signiture is not sufficient to reject an algorithm based on matching signature though. A puzzle could have two disjoint orbits of pieces that are otherwise identical (e.g. the "left" and "right" edges of a 4x4x4 cube. If these were in different orbits, an algorithm signiture would not be able to tell them apart. Therefore, we must allow saving these.  
+However, saving algorithms with similar signature is problematic. For example, there are at least 36 unique  3-cycles of edges on a 3x3x3 rubiks's cube, that are in different equivalence classes under whole cube rotations. On a Megaminx, this number would be much larger. We don't want to store an algorithm for each one of those as it would bloat the action set for RL agents and inhibit learning in that step.  
+Leaving out the RL aspect and just using a greedy solver with many algorithms could work, but then large nxnxn puzzles, particularly many faced ones like dodecahedron shaped ones, would have enormous action sets, even with very tight restrictions on the number of pieces affected by an algorithm.  
+___So we cannot ignore algorithms with similar signature but we also cannot store all of them.___  
+**Solution:** prune the action set once a sufficient one is found. Probably using orbit information.
 
 See also: `algorithm_filtering.md`
 
@@ -104,5 +109,10 @@ Withenough algorithms, it may be feasible, if not advantageous to train an AI us
 
 Try adding a binary neuron: 1 if last action was a spatial rotation, 0 otherwise. Then, punish the agent for using two spatial rotations in a row. (the extra neuron is required for this to remain an MDP).
 
-When calculating piece orbits from algorithms, don't apply rotations as moves but rather wrap algorithms in rotations as conjuggates (e.g. $r^{-1} a r$ instead of $a$). Otherwise, whole puzzle rotations could join orbits. I'm not sure if that would be a problem.  
+When calculating piece orbits from algorithms, don't apply rotations as moves but rather wrap algorithms in rotations as conjuggates (e.g. $r^{-1} a r$ instead of $a$). Otherwise, whole puzzle rotations could join orbits that may not be connected when just considering base moves.
 It certainly is a problem without symmetry filtering (example: skewb), but with symmetry filtering (see OneNote), it be irrelevant.
+
+## Potential efficiency improvement
+We can consider solving the permutations within each orbit as a subproblem, that usually has a much smaller state space than the entire puzzle, but can still be represented the same way: as a permutation group. If we find a set of algorithms that can generate all valid permutations of an orbit, we have solved that subproblem. If we achieve this independently for every orbit, we know that we have found a sufficient set of algorithms to solve the entire puzzle.
+
+This is not guaranteed to work for all puzzles though. It's possible, that for some puzzles and some orbit within them, there is no algorithm (especially not one meeting our other requirements) that only affects pieces in that orbit. Some orbits may always be linked to others and cannot be solved independently. In such cases, checking for the end condition described above would be wasted time.

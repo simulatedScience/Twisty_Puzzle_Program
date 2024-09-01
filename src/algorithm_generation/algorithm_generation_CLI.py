@@ -26,11 +26,13 @@ def list_algorithms(user_input_algorithms: list[Twisty_Puzzle_Algorithm], alg_pr
     print(f"{colored_text('Available algorithms:', COMMAND_COLORS['headline'])} (sorted by length)")
     for alg_nbr, alg in enumerate(user_input_algorithms):
         length = len(alg.full_action_sequence)
-        print(colored_text(f"{alg_nbr+1:2}", COMMAND_COLORS['command']), end=": ")
+        # print(colored_text(f"{alg_nbr+1:2}", COMMAND_COLORS['command']), end=": ")
+        print(colored_text(f"{alg.name.split('_')[-1]:2}", COMMAND_COLORS['command']), end=": ")
         print(f"len={length:3}", end=", ")
         print(f"order={int(alg.order):3}", end=", ")
         print(f"pieces={alg.n_affected_pieces:3}", end=", ")
-        print(colored_text(alg.compact_moves(), COMMAND_COLORS['arguments']))
+        print(colored_text(f'{alg.compact_moves():55}', COMMAND_COLORS['arguments']), end=" -> ")
+        print(colored_text(alg.sympy_permutation.cyclic_form, COMMAND_COLORS['arguments']))
     print("=" * 75)
 
 def print_algorithm(alg: Twisty_Puzzle_Algorithm, alg_number: int):
@@ -45,15 +47,51 @@ def show_algorithm_on_puzzle(puzzle: Twisty_Puzzle, alg: Twisty_Puzzle_Algorithm
     puzzle.animation_time = 1
     alg_name = alg.name
     move_cycles = alg.sympy_permutation.cyclic_form
-    puzzle._add_move_direct(alg_name, move_cycles)
+    puzzle._add_move_direct(alg_name, move_cycles, verbose=0)
     puzzle.perform_move(alg_name)
     puzzle.del_move(alg_name)
 
-def user_test_algorithms(puzzle, algorithms, saved_algs):
+def print_command_help():
+    """
+    print all available commands:
+    - help
+    - list
+    - show <number>
+    - reset
+    - exit
+    """
+    print("=" * 75)
+    print(f"{colored_text('Commands:', COMMAND_COLORS['headline'])}")
+    print(f"  {colored_text('help', COMMAND_COLORS['command'])}: show available commands.")
+    print(f"  {colored_text('list', COMMAND_COLORS['command'])}: list available algorithms.")
+    print(f"  {colored_text('show', COMMAND_COLORS['command'])} <{colored_text('number', COMMAND_COLORS['arguments'])}>: show algorithm with given number.")
+    print(f"  <{colored_text('number', COMMAND_COLORS['arguments'])}>: show algorithm with given number. (shorthand for '{colored_text('show', COMMAND_COLORS['command'])} <{colored_text('number', COMMAND_COLORS['arguments'])}>')")
+    # print(f"  {colored_text('save <number>', COMMAND_COLORS['command'])}: save algorithm with given number.")
+    print(f"  {colored_text('reset', COMMAND_COLORS['command'])}: reset puzzle to solved state.")
+    print(f"  {colored_text('exit', COMMAND_COLORS['command'])}: exit the program and save new puzzle version with the given algorithms.")
+    print("=" * 75)
+    
+
+def user_test_algorithms(
+        puzzle: Twisty_Puzzle,
+        algorithms: list[Twisty_Puzzle_Algorithm],
+        saved_algs: dict[str, Twisty_Puzzle_Algorithm]
+        ) -> tuple[str, dict[str, Twisty_Puzzle_Algorithm]]:
+    """
+    Allow user to visualize the given algorithms on the puzzle.
+    """
+    list_algorithms(algorithms)
+    print_command_help()
     while True:
-        list_algorithms(algorithms)
-        print(f"\n{colored_text('Commands:', COMMAND_COLORS['headline'])} show <alg_number>, save <alg_number>, reset, exit")
-        command = input("Enter a command: ").strip().lower()
+        command = input(f"{colored_text('Enter a command:', COMMAND_COLORS['headline'])} ").strip().lower()
+
+        if command == "help":
+            print_command_help()
+            continue
+
+        if command == "list":
+            list_algorithms(algorithms)
+            continue
 
         if command == "exit":
             return "exit", saved_algs
@@ -84,15 +122,68 @@ def user_test_algorithms(puzzle, algorithms, saved_algs):
         #         print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
         #     continue
 
-        print(f"{colored_text('Invalid command.', COMMAND_COLORS['headline'])}")
+        try:
+            alg_number = int(command)
+            if alg_number < 1 or alg_number > len(algorithms):
+                raise IndexError("Invalid algorithm number.")
+            alg = algorithms[alg_number-1]
+            print_algorithm(alg, alg_number)
+            show_algorithm_on_puzzle(puzzle, alg)
+        except IndexError:
+            print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
+        except ValueError:
+            print(f"{colored_text('Invalid command.', COMMAND_COLORS['headline'])}")
+
+
+def add_algorithms_to_puzzle(
+        puzzle: Twisty_Puzzle,
+        algorithms: dict[str, Twisty_Puzzle_Algorithm],
+        new_puzzle_name: str = "",
+        suffix: str = "_algs"
+        ) -> None:
+    """
+    Add algorithms to a puzzle and save it under a new name. If name already exists, a console interaction will ask if the existing puzzle should be overwritten and offer to enter a new name.
+
+    Args:
+        puzzle (Twisty_Puzzle): Puzzle to add algorithms to.
+        algorithms (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of algorithms to add to the puzzle.
+        new_puzzle_name (str, optional): Name of the new puzzle. Defaults to "".
+        suffix (str, optional): Suffix to add to the puzzle name if no name is given. Ignored if `new_puzzle_name` is given. Defaults to "_algs
+    """
+    if not new_puzzle_name:
+        new_puzzle_name: str = puzzle.PUZZLE_NAME + suffix
+    # check if puzzle already exists
+    while new_puzzle_name in ALL_PUZZLES:
+        print(f"{colored_text(f'Puzzle {new_puzzle_name} already exists.', COMMAND_COLORS['headline'])}")
+        overwrite_answer: str = input("Do you want to overwrite the existing puzzle? (y/N): ").strip().lower()
+        if not overwrite_answer == "y":
+            new_name_answer: str = " "
+            while " " in new_name_answer:
+                new_name_answer: str = input("If you want to save it under a different name, enter the new name. Press enter without a name to abort saving.").strip()
+                if new_name_answer:
+                    if " " in new_name_answer:
+                        print(f"{colored_text('Name cannot contain spaces.', COMMAND_COLORS['headline'])}")
+                        continue
+                    new_puzzle_name = new_name_answer
+                    break
+                else:
+                    return
+        else:
+            break
+    # create new puzzle with 
+    for alg_name, alg in algorithms.items():
+        puzzle.moves[alg_name] = alg.sympy_permutation.cyclic_form
+    puzzle.save_puzzle(new_puzzle_name)
+    print(f"{colored_text(f'Puzzle {new_puzzle_name} saved.', COMMAND_COLORS['headline'])}")
+
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
     print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to exit the program.")
 
     puzzle = Twisty_Puzzle()
-    # puzzle_name = input("Enter a puzzle name: ")
-    puzzle_name = "geared_mixup"
+    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = "geared_mixup"
     # puzzle_name = "rubiks_3x3"
     try:
         puzzle.load_puzzle(puzzle_name)
@@ -117,11 +208,12 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             max_time=300,
             max_base_sequence_length=16,
             max_move_sequence_order=200,
-            max_algorithm_moves=150,
-            max_algorithm_order=4,
-            max_pieces_affected=4,
+            max_algorithm_moves=80,
+            max_algorithm_order=6,
+            max_pieces_affected=5,
             max_number_of_algorithms=30,
-            max_iterations_without_new_algorithm=1000,
+            max_iterations_without_new_algorithm=10000,
+            verbosity=2,
         )
 
         state, saved_algs = user_test_algorithms(puzzle, new_algorithms, current_algorithms)
@@ -139,6 +231,11 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
         for alg_name, alg in current_algorithms.items():
             file.write(str(alg) + "\n")
     print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
+    
+    # save puzzle with new algorithms
+    if input("Do you want to save the puzzle with the new algorithms? (y/N): ").strip().lower() == "y":
+        add_algorithms_to_puzzle(puzzle, current_algorithms)
+
     os._exit(0)
 
 if __name__ == "__main__":

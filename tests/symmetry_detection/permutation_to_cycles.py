@@ -39,12 +39,16 @@ def permutations_to_moves(perms: dict[str, list[int]]) -> dict[str, list[list[in
 def add_moves_to_puzzle(
         puzzle_name: str,
         moves: dict[str, list[list[int]]],
-        new_puzzle_name: str = ""):
+        new_puzzle_name: str = "",
+        suffix: str = "_sym"):
     """
     Given a set of moves in cycle notation, add them to the puzzle and save it again.
 
     Args:
-        
+        puzzle_name (str): name of the puzzle to load
+        moves (dict[str, list[list[int]]]): dict of named moves in cycle notation
+        new_puzzle_name (str, optional): name of the new puzzle. Defaults to "".
+        suffix (str, optional): suffix to add to the new puzzle name. Defaults to "_sym".
     """
     try:
         from src.puzzle_class import Twisty_Puzzle
@@ -62,7 +66,7 @@ def add_moves_to_puzzle(
     for move_name, move in moves.items():
         puzzle.moves[move_name] = move
     if new_puzzle_name == "":
-        new_puzzle_name = puzzle_name + "_sym"
+        new_puzzle_name = puzzle_name + suffix
     puzzle.save_puzzle(new_puzzle_name)
     print(f"Saved puzzle with {len(moves)} new moves as {new_puzzle_name}.")
 
@@ -182,6 +186,7 @@ def cuboid_3x2x2_rotations():
         'rot_6': [31, 30, 29, 28, 27, 26, 17, 19, 16, 18, 20, 21, 22, 23, 24, 25, 8, 6, 9, 7, 10, 11, 12, 13, 14, 15, 5, 4, 3, 2, 1, 0],
         'rot_7': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 24, 23, 22, 21, 20, 31, 30, 29, 28, 27, 26],
     }
+
 def cuboid_3x3x2_rotations():
     return {
         'rot_1': [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 39, 36, 33, 40, 37, 34, 41, 38, 35, 26, 29, 32, 25, 28, 31, 24, 27, 30],
@@ -202,11 +207,11 @@ if __name__ == "__main__":
     #     "cuboid_3x3x2_sym_algs",
     # )
     # # cuboid 3x2x2
-    main(
-        cuboid_3x2x2_rotations,
-        "cuboid_3x2x2_algs",
-        "cuboid_3x2x2_sym_algs",
-    )
+    # main(
+    #     cuboid_3x2x2_rotations,
+    #     "cuboid_3x2x2_algs",
+    #     "cuboid_3x2x2_sym_algs",
+    # )
     # # square-two
     # main(
     #     square_two_algs,
@@ -218,3 +223,9 @@ if __name__ == "__main__":
     #     rubiks_2x2_rotations,
     #     "rubiks_2x2_algs",
     #     "rubiks_2x2_sym_algs",
+    # rubiks_3x3_algs
+    main(
+        rubiks_algs_rotations,
+        "rubiks_3x3",
+        "rubiks_3x3_sym",
+    )

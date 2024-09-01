@@ -14,6 +14,9 @@ from sympy.combinatorics import Permutation
 
 from src.smart_scramble import smart_scramble
 from src.algorithm_generation.algorithm_analysis import Twisty_Puzzle_Algorithm, get_move_sequence_info
+from src.interaction_modules.colored_text import colored_text
+
+DEBUG: bool = False
 
 def generate_algorithms(
         puzzle: "Twisty_Puzzle",
@@ -26,8 +29,8 @@ def generate_algorithms(
         max_algorithm_order: int = 6,
         max_pieces_affected: int | None = None, # automatic
         max_number_of_algorithms: int = 30,
-        max_iterations_without_new_algorithm: int = 1000,
-        verbosity: int = 1,
+        max_iterations_without_new_algorithm: int = 10000,
+        verbosity: int = 2,
     ):
     """
     Generate algorithms for the given puzzle within the given constraints.
@@ -49,6 +52,8 @@ def generate_algorithms(
     found_algorithms: list[Twisty_Puzzle_Algorithm] = [] # TODO: initialize with existing algorithms
     # found_algorithms: list[Twisty_Puzzle_Algorithm] = puzzle.algorithms
     iterations_since_new_algorithm: int = 0
+    num_base_sequences: int = 0
+    base_moves: dict[str, list[list[str]]] = {name: puzzle.moves[name] for name in sympy_base_moves.keys()}
     while len(found_algorithms) < max_number_of_algorithms \
             and time.time() < end_time \
             and iterations_since_new_algorithm < max_iterations_without_new_algorithm:
@@ -58,8 +63,9 @@ def generate_algorithms(
         sequence_length: int = random.randint(2, max_base_sequence_length)
         base_sequence: list[str] = smart_scramble(
             puzzle.SOLVED_STATE,
-            puzzle.moves,
+            base_moves,
             sequence_length)
+        num_base_sequences += 1
         # get cycles of base sequence
         repetitions_candidates, base_sequence_info = get_repetition_candidates(
             sympy_moves=sympy_base_moves,
@@ -82,26 +88,31 @@ def generate_algorithms(
                 sympy_moves=sympy_base_moves,
             )
             # add algorithm if it meets the requirements
+            iteration = num_base_sequences if verbosity else -1
             added_algorithms_step = filter_and_add_algorithm(
                 new_algorithm=algorithm,
                 found_algorithms=found_algorithms,
                 rotations=sympy_rotations,
                 max_pieces_affected=max_pieces_affected,
+                iteration=iteration,
                 )
             # keep track of whether a new algorithm was added
             if added_algorithms_step:
                 iterations_since_new_algorithm = 0
-                added_algorithms_this_iteration = True
-        if not added_algorithms_this_iteration:
-            iterations_since_new_algorithm += 1
+                # added_algorithms_this_iteration = True
+        # if not added_algorithms_this_iteration:
+        iterations_since_new_algorithm += 1
     # print end condition
     if verbosity:
+        print()
         if len(found_algorithms) >= max_number_of_algorithms:
             print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached.")
         if time.time() >= end_time:
             print(f"Maximum time ({max_time} seconds) reached.")
         if iterations_since_new_algorithm >= max_iterations_without_new_algorithm:
             print(f"Maximum iterations without new algorithm ({max_iterations_without_new_algorithm}) reached.")
+    if verbosity >= 2:
+        print(f"Searched {num_base_sequences} base sequences to find {len(found_algorithms)} algorithms in {time.time()-end_time+max_time:.2f} s.")
     return found_algorithms
 
 def get_repetition_candidates(
@@ -150,6 +161,7 @@ def filter_and_add_algorithm(
         found_algorithms: list[Twisty_Puzzle_Algorithm],
         rotations: list[Permutation],
         max_pieces_affected: int = float("inf"),
+        iteration: int = -1,
         ) -> bool:
     """
     Add a newly found algorithm to the list of found algorithms if it is sufficiently different from existing ones or if it achieves the same permutation in fewer moves.
@@ -165,40 +177,71 @@ def filter_and_add_algorithm(
     """
     if len(new_algorithm.affected_pieces) > max_pieces_affected:
         # algorithm affects too many pieces
-        return found_algorithms
+        return None
     accepted_new_algorithm: bool = False
     potential_matches: list[Twisty_Puzzle_Algorithm] = []
     # compare algorithm signatures
     for alg in found_algorithms:
         if new_algorithm.is_similar(alg):
             potential_matches.append(alg)
+    for alg in potential_matches:
+        if new_algorithm.sympy_permutation.cyclic_form == alg.sympy_permutation.cyclic_form:
+            if len(new_algorithm.full_action_sequence) < len(alg.full_action_sequence):
+                print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
+                # rename new algorithm to old name
+                new_algorithm.name = alg.name
+                # replace old algorithm with new one in-place
+                found_algorithms[found_algorithms.index(alg)] = new_algorithm
+                # found_algorithms.append(new_algorithm)
+                accepted_new_algorithm = True
+            return accepted_new_algorithm
     # check if any rotation of the new algorithm exists in the found algorithms
-    for rotation_perm in rotations:
-        rotated_alg_perm = new_algorithm.sympy_permutation * rotation_perm
+    for rotation_perm in rotations.values():
+        rotated_alg_perm: Permutation = rotation_perm * new_algorithm.sympy_permutation * rotation_perm**-1
         for alg in potential_matches:
-            if rotated_alg_perm == alg.sympy_permutation \
+            # if rotated_alg_perm.cyclic_form == alg.sympy_permutation.cyclic_form:
+            if rotated_alg_perm.cyclic_form == alg.sympy_permutation.cyclic_form \
                 or new_algorithm.is_similar(alg):
                 # check if new algorithm is shorter
                 if len(new_algorithm.full_action_sequence) < len(alg.full_action_sequence):
-                    print(f"Replacing old algorithm with new one:\n  {new_algorithm}")
+                    print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
                     # rename new algorithm to old name
                     new_algorithm.name = alg.name
-                    # replace old algorithm with new one
-                    found_algorithms.remove(alg)
-                    found_algorithms.append(new_algorithm)
+                    # replace old algorithm with new one in-place
+                    found_algorithms[found_algorithms.index(alg)] = new_algorithm
+                    # found_algorithms.append(new_algorithm)
                     accepted_new_algorithm = True
-                break
-        else:
-            # break out of both loops if a match is found
-            continue
-        break
+                return accepted_new_algorithm
+        # # break out of both loops if a match is found
+        # else:
+        #     continue
+        # break
     if not potential_matches:
         # add new algorithm if no potential matches were found
-        print(f"Adding new algorithm:\n  {new_algorithm}")
+        if iteration >= 0:
+            print(f"Adding new algorithm after {iteration} iterations:\n  {new_algorithm}")
+        else:
+            print(f"Adding new algorithm:\n  {new_algorithm}")
         found_algorithms.append(new_algorithm)
         accepted_new_algorithm = True
     # else: # similar algorithms exist, but no exact match
-    #     print(f"Adding new new_algorithm with similar signature to existing ones:\n  {new_algorithm}")
+    #     print("="*75) if DEBUG else None
+    #     suffix = " = " + colored_text(str(new_algorithm.sympy_permutation.cyclic_form), color="#5588ff") if DEBUG else ""
+    #     print(f"Adding new new_algorithm with similar signature to existing ones:\n  {new_algorithm}"
+    #           + suffix)
+    #     if DEBUG:
+    #         # print cyclic forms and index in found_algorithms for all potential matches
+    #         print(f"Potential matches:")
+    #         cyclic_forms_of_matches = [alg.sympy_permutation.cyclic_form for alg in potential_matches]
+    #         for alg, cyclic_form in zip(potential_matches, cyclic_forms_of_matches):
+    #             # index = found_algorithms.index(alg)
+    #             print(f"  {alg.name:6} -> {colored_text(str(cyclic_form), color='#5588ff')}")
+    #         # print rotations of new algorithm
+    #         print(f"Rotations of new algorithm:")
+    #         for rot_name, rotation_perm in rotations.items():
+    #             rotated_alg_perm: Permutation = rotation_perm * new_algorithm.sympy_permutation * rotation_perm**-1
+    #             color = "#22dd22" if rotated_alg_perm.cyclic_form in cyclic_forms_of_matches else "#ff2222"
+    #             print(colored_text(f"  {rot_name:6} -> {rotated_alg_perm.cyclic_form}", color=color))
     #     found_algorithms.append(new_algorithm)
     #     accepted_new_algorithm = True
     return accepted_new_algorithm
@@ -249,3 +292,21 @@ if __name__ == "__main__":
         puzzle_name="rubiks_3x3",
         rotations_prefix="rot_",
     )
+
+"""
+Replacing old algorithm with new one:
+  old: alg_4 = 4*(slice_z' t l' slice_y' l slice_z')
+  new: alg_6 = 4*(d slice_x')
+
+12C3 = 220 = 2 * 5 * 11
+
+
+For a 3x3x3 cube, there are probably *9* rotationally unique 3-cycles of edges + *9* inverses = 18.
+Consider rotations of the pieces... *2?
+probably *3* 3-cycles of corners + *3* inverses = 6
+Consider rotations of the pieces... *3?
+
+=> >50 unique 3-cycles of edges or corners affecting only 3 pieces. In reality, 4 algorithms are sufficient to solve the cube entirely.
+
+for a megaminx, this gets way worse.
+"""

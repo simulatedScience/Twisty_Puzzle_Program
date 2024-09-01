@@ -118,11 +118,11 @@ class Twisty_Puzzle_Algorithm:
         Print the algorithm signature.
         """
         print(f"Signature of algorithm `{self.name}`:")
-        print(f"Algorithm has order {self.order}.")
-        print("Piece signature:")
+        print(f"  Algorithm has order {self.order}.")
+        print("  Piece signature:")
         for piece_signature in self.algorithm_signature[0]:
             print(f"    {piece_signature.num} pieces of type {piece_signature.piece_type}.")
-        print("Cycle signature:")
+        print("  Cycle signature:")
         for cycle_signature in self.algorithm_signature[1]:
             print(f"    {cycle_signature.num} cycles of length {cycle_signature.cycle_signature.cycle_length} affecting {cycle_signature.cycle_signature.n_affected_pieces} pieces of type {cycle_signature.cycle_signature.piece_type}.")
 
@@ -258,7 +258,7 @@ def get_algorithm_signature(perm: Permutation, pieces: list[set[int]]) -> tuple[
     # Count how often each cycle signature appears
     cycle_signature_counter = Counter(cycle_signatures)
     # Generate the CYCLES_SIGNATURE tuple
-    cycles_signature = tuple(
+    cycles_signature: tuple[CYCLES_SIGNATURE] = tuple(
         CYCLES_SIGNATURE(cycle_signature, count)
         for cycle_signature, count in cycle_signature_counter.items()
     )
@@ -266,10 +266,13 @@ def get_algorithm_signature(perm: Permutation, pieces: list[set[int]]) -> tuple[
     affected_pieces: list[set[int]] = get_affected_pieces(perm, pieces)
     piece_type_counter = Counter(len(piece) for piece in affected_pieces)
     # Generate the PIECES_SIGNATURE tuple
-    pieces_signature = tuple(
+    pieces_signature: tuple[PIECES_SIGNATURE] = tuple(
         PIECES_SIGNATURE(piece_type, count)
         for piece_type, count in piece_type_counter.items()
     )
+    # sort the signatures to ensure easy comparability
+    pieces_signature: tuple[PIECES_SIGNATURE] = sorted(pieces_signature)
+    cycles_signature: tuple[CYCLES_SIGNATURE] = sorted(cycles_signature)
     # assemble the algorithm signature
     return (pieces_signature, cycles_signature)
 
