@@ -40,35 +40,6 @@ def calculate_point_orbits(
     # print(f"Found {len(point_orbits)} point orbits after {iteration_count} iterations.")
     return point_orbits
 
-def calculate_point_orbits_old(n_points: int, moves: list[Permutation]) -> list[set[int]]:
-    def apply_move(point: int, move: Permutation) -> int:
-        try:
-            return move(point)
-        except (TypeError, IndexError):
-            return point
-
-    orbits = []
-    visited = set()
-
-    for point in range(n_points):
-        if point not in visited:
-            orbit = set()
-            queue = [point]
-
-            while queue:
-                current = queue.pop(0)
-                if current not in orbit:
-                    orbit.add(current)
-                    visited.add(current)
-                    for move in moves:
-                        new_point = apply_move(current, move)
-                        if new_point not in orbit:
-                            queue.append(new_point)
-            
-            orbits.append(orbit)
-    
-    return orbits
-
 def calculate_piece_orbits(
         pieces: list[set[int]],
         point_orbits: list[set[int]]
@@ -112,43 +83,24 @@ if __name__ == "__main__":
     import algorithm_analysis as alg_ana
 
     # load puzzle
-    puzzle_name: str = "rubiks_3x3_sym"
+    # puzzle_name: str = "rubiks_3x3_sym"
     # puzzle_name: str = "rubiks_2x2_ai"
     # puzzle_name: str = "rubiks_2x2"
     # puzzle_name: str = "skewb"
     # puzzle_name: str = "cube_4x4x4"
+    # puzzle_name: str = "cube_5x5x5"
     # puzzle_name: str = "gear_cube"
     # puzzle_name: str = "geared_mixup"
+    puzzle_name: str = "skewb"
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
     puzzle.load_puzzle(puzzle_name)
     
     sympy_moves: dict[str, Permutation] = alg_ana.get_sympy_moves(puzzle)
     
-    import timeit
-    import numpy as np
-    # time new orbit calculation
-    def test_new():
-        point_orbits: list[set[int]] = calculate_point_orbits(
-            n_points=len(puzzle.SOLVED_STATE),
-            moves=list(sympy_moves.values())
-        )
-        return point_orbits
-    execution_time = timeit.repeat(test_new, repeat=5000, number=1)
     point_orbits: list[set[int]] = calculate_point_orbits(
         n_points=len(puzzle.SOLVED_STATE),
         moves=list(sympy_moves.values())
     )
-    print(f"new code: {np.average(execution_time):.2e}s, std={np.std(execution_time):.2e}s")
-    
-    def test_old():
-        point_orbits: list[set[int]] = calculate_point_orbits_old(
-            n_points=len(puzzle.SOLVED_STATE),
-            moves=list(sympy_moves.values())
-        )
-        return point_orbits
-    execution_time_old = timeit.repeat(test_old, repeat=5000, number=1)
-    print(f"old code: {np.average(execution_time_old):.2e}s, std={np.std(execution_time_old):.2e}")
-    
     piece_orbits: list[list[set[int]]] = calculate_piece_orbits(
         pieces=puzzle.pieces,
         point_orbits=point_orbits,
