@@ -33,6 +33,12 @@
 
 ### classical solvers
 Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle or a given state in the fewest moves possible.
+- **Korf's Algorithm**
+  - [paper](https://cdn.aaai.org/AAAI/1997/AAAI97-109.pdf): _Finding Optimal Solutions to Rubik's Cube Using Pattern Databases_ AAAI-1997
+  - This paper by Richard korf describes an often implemented optimal solver.
+  - Abstract states that the algorithm's time and space requirements are linear in state space size, which makes this highly unsuitable for large puzzles.
+  - Uses puzzle specific domain knowledge like prcomputed shortest solutions for the corners (aka the 2x2x2 cube) as well as some move optimizations
+
 - **ksolve+/ ksolve++**  
   cumbersome text-only interface for puzzle definitions and moves with custom interpreter
   - [website ksolve+](https://mzrg.com/rubik/ksolve+/)
@@ -45,6 +51,8 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   - [website](https://trangium.github.io/BatchSolver/)
 - **nissy**  
   - [website](https://nissy.tronto.net/)
+
+---
 
 ### RL based solvers
 - **DeepCubeA** - Solving the Rubik's Cube with Deep Reinforcement Learning and Search
@@ -94,13 +102,13 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   ```
 
 - **Fourier Basis RL** - Fourier Bases for Solving Permutation Puzzles  
- - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf), [website](https://proceedings.mlr.press/v130/pan21a.html)
- - Exploiting the symmetry group structure of permutation puzzles using Fourier basis functions in reinforcement learning. (maths heavy)  
- - claims significantly better results than RL with Deep Value Networks (as in DeepCubeA), using 2-3 orders of magnitude less parameters and less training data (as low as 1/10th) and time.
- - solved pyraminx, 2x2 rubiks and S8 puzzle
- - states how many states of each puzzle were seen during training with different methods!
-   - ~50% of 2x2x2 with Deep Value Networks (DVN), only 4.5-20% with Fourier Bases
-   - 100% of Pyraminx states with all methods
+  - [paper](https://proceedings.mlr.press/v130/pan21a/pan21a.pdf), [website](https://proceedings.mlr.press/v130/pan21a.html)
+  - Exploiting the symmetry group structure of permutation puzzles using Fourier basis functions in reinforcement learning. (maths heavy)  
+  - claims significantly better results than RL with Deep Value Networks (as in DeepCubeA), using 2-3 orders of magnitude less parameters and less training data (as low as 1/10th) and time.
+  - solved pyraminx, 2x2 rubiks and S8 puzzle
+  - states how many states of each puzzle were seen during training with different methods!
+    - ~50% of 2x2x2 with Deep Value Networks (DVN), only 4.5-20% with Fourier Bases
+    - 100% of Pyraminx states with all methods
   ```
   Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
   ```
@@ -123,7 +131,7 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   ```
 
 - **Minkwitz Algorithm** - Solving Twisty Puzzles as a Factorization problem
-- [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
+  - [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
 
 - **An Algorithm for Solving the Factorization Problem in Permutation Groups**
   - [paper](https://doi.org/10.1006/JSCO.1998.0202) by Torsten Minkwith (1998), Karlsruhe, [pdf](https://www.sciencedirect.com/science/article/pii/S0747717198902024?via%3Dihub)
@@ -199,3 +207,9 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   }
   ```
 
+
+## Misc.
+- [Number of states of even nxnxn cubes](https://www.quora.com/How-many-scrambled-possibilities-for-a-1000-x-1000-Rubik-s-cube-are-there/answer/David-Smith-2412?ch=10&share=2e1e997e&srid=hl1xV)  
+  Number of reachable positions of a cube of sidelength $2n$:
+  $$N_{2n} = \frac{1}{24} \cdot (8! \cdot 3^7) \cdot 24!^{n-1} \cdot \left(\frac{24!}{4!^6}\right)^{(n-1)^2}$$
+- 
