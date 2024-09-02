@@ -276,7 +276,7 @@ def get_algorithm_signature(perm: Permutation, pieces: list[set[int]]) -> tuple[
     # assemble the algorithm signature
     return (pieces_signature, cycles_signature)
 
-def get_sympy_moves(puzzle) -> dict[str, Permutation]:
+def get_sympy_moves(puzzle: "Twisty_Puzzle") -> dict[str, Permutation]:
     """
     generate the moves of the given puzzle as sympy permutations
 
@@ -290,7 +290,7 @@ def get_sympy_moves(puzzle) -> dict[str, Permutation]:
     """
     sympy_moves = dict()
     for name, move_perm in puzzle.moves.items():
-        sympy_moves[name] = Permutation(move_perm)
+        sympy_moves[name] = Permutation(move_perm, size=len(puzzle.SOLVED_STATE))
     return sympy_moves
 
 def moves_list_to_sympy_permutation(move_sequence: list[str], sympy_moves: dict[str, Permutation]) -> Permutation:

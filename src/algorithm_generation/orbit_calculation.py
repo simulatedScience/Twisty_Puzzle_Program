@@ -21,23 +21,16 @@ def calculate_point_orbits(
         list[set[int]]: A list of sets, where each set contains the indices of points in the same orbit.
     """
     point_orbits: list[set[int]] = [set([point]) for point in range(n_points)]
-    joined: bool = True
-    iteration_count: int = 0
-    while joined:
-        joined = False
-        for move in moves:
-            for cycle in move.cyclic_form:
-                # find the orbits containing each point in the cycle
-                orbits_to_join: list[set[int]] = [
-                    i for i, orbit in enumerate(point_orbits) if not orbit.isdisjoint(cycle)]
-                # orbit indices are sorted in ascending order
-                if len(orbits_to_join) > 1:
-                    # join the orbits
-                    for orbit_index in orbits_to_join[-1:0:-1]: # iterate in reverse order to avoid index shifting
-                        point_orbits[orbits_to_join[0]] |= point_orbits.pop(orbit_index)
-                        joined = True
-        iteration_count += 1
-    # print(f"Found {len(point_orbits)} point orbits after {iteration_count} iterations.")
+    for move in moves:
+        for cycle in move.cyclic_form:
+            # find the orbits containing each point in the cycle
+            orbits_to_join: list[set[int]] = [
+                i for i, orbit in enumerate(point_orbits) if not orbit.isdisjoint(cycle)]
+            # orbit indices are sorted in ascending order
+            if len(orbits_to_join) > 1:
+                # join the orbits
+                for orbit_index in orbits_to_join[-1:0:-1]: # iterate in reverse order to avoid index shifting
+                    point_orbits[orbits_to_join[0]] |= point_orbits.pop(orbit_index)
     return point_orbits
 
 def calculate_piece_orbits(
@@ -88,15 +81,15 @@ if __name__ == "__main__":
     # puzzle_name: str = "rubiks_2x2"
     # puzzle_name: str = "skewb"
     # puzzle_name: str = "cube_4x4x4"
-    # puzzle_name: str = "cube_5x5x5"
+    puzzle_name: str = "cube_5x5x5"
     # puzzle_name: str = "gear_cube"
     # puzzle_name: str = "geared_mixup"
-    puzzle_name: str = "skewb"
+    # puzzle_name: str = "skewb"
     puzzle: Twisty_Puzzle = Twisty_Puzzle()
     puzzle.load_puzzle(puzzle_name)
-    
+
     sympy_moves: dict[str, Permutation] = alg_ana.get_sympy_moves(puzzle)
-    
+
     point_orbits: list[set[int]] = calculate_point_orbits(
         n_points=len(puzzle.SOLVED_STATE),
         moves=list(sympy_moves.values())
@@ -110,12 +103,12 @@ if __name__ == "__main__":
     point_orbits = sorted(point_orbits, key=len)
     for i, orbit in enumerate(point_orbits):
         print(f"Orbit {i+1} with {len(orbit)} points:")
-        # print(f"  {orbit}")
+        print(f"  {orbit}")
     # print piece orbits
     print(f"\ncalculated {len(piece_orbits)} piece orbits.")
     piece_orbits = sorted(piece_orbits, key=lambda orbit: (len(orbit[0]), len(orbit)))
     for i, orbit in enumerate(piece_orbits):
         print(f"Orbit {i+1} with {len(orbit)} pieces of size {len(orbit[0])}:")
-        # print(f"  {orbit}")
+        print(f"  {orbit}")
 
     os._exit(0)
