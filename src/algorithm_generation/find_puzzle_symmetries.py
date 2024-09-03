@@ -129,7 +129,7 @@ def add_rotation_moves_to_puzzle(
     rotations: list[tuple[float, np.ndarray, np.ndarray]] = find_rotational_symmetries(
         X=point_coordinates,
         num_planes = 3000, # number of planes to search for rotations
-        num_candidate_rotations = 30, # number of candidate rotations to consider
+        num_candidate_rotations = 40, # number of candidate rotations to consider
         threshold = 0.1, # threshold for distance between planes to consider them equal
         min_angle = np.pi / 12.5, # minimum rotation angle in radians (= 1/)
         num_best_rotations = 40, # number of best rotations to keep

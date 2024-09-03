@@ -294,10 +294,14 @@ def trim_algorithms_to_full_group(
             continue
         found_algorithms.pop(i)
         removed_algorithm = True
-        print(f"Removed redundant algorithm {alg}.")
+        print(f"Removed redundant algorithm {alg} of length {len(alg.full_action_sequence)}.")
+        if len(found_algorithms) <= (len(puzzle.moves) - len(sympy_rotations)) // 2:
+            print(f"Stopping removing algorithms to keep at least {(len(puzzle.moves) - len(sympy_rotations)) // 2} algorithms.")
+            break
     # rename algorithms
     for i, alg in enumerate(reversed(found_algorithms)):
         alg.name = f"alg_{i+1}"
+    found_algorithms.reverse()
     return found_algorithms
 
 def full_group_reached(
