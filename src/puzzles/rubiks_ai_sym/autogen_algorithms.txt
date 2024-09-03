@@ -1,0 +1,6 @@
+alg_1 = 6*(r' f' t' l)
+alg_2 = 6*(d r' r' b' d)
+alg_3 = 12*(r' f' t' l)
+alg_4 = 7*(r' f' b' l' l' f' b d')
+alg_5 = 15*(f' d' b' d')
+alg_6 = 15*(d t b' f t)
