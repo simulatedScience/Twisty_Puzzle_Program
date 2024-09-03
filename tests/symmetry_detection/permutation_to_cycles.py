@@ -203,14 +203,14 @@ if __name__ == "__main__":
     # # cuboid 3x3x2
     # main(
     #     cuboid_3x3x2_rotations,
-    #     "cuboid_3x3x2_algs",
-    #     "cuboid_3x3x2_sym_algs",
+    #     "cuboid_3x3x2",
+    #     "cuboid_3x3x2_sym",
     # )
-    # # cuboid 3x2x2
+    # cuboid 3x2x2
     # main(
     #     cuboid_3x2x2_rotations,
-    #     "cuboid_3x2x2_algs",
-    #     "cuboid_3x2x2_sym_algs",
+    #     "cuboid_3x2x2",
+    #     "cuboid_3x2x2_sym",
     # )
     # # square-two
     # main(
@@ -224,8 +224,14 @@ if __name__ == "__main__":
     #     "rubiks_2x2_algs",
     #     "rubiks_2x2_sym_algs",
     # rubiks_3x3_algs
+    # main(
+    #     rubiks_algs_rotations,
+    #     "rubiks_3x3",
+    #     "rubiks_3x3_sym",
+    # )
+    # dino_cube_plus
     main(
         rubiks_algs_rotations,
-        "rubiks_3x3",
-        "rubiks_3x3_sym",
+        "dino_cube_plus",
+        "dino_cube_plus_sym",
     )

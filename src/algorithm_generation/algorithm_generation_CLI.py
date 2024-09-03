@@ -1,6 +1,8 @@
 
 
 # add src to path
+import cProfile
+import pstats
 import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -70,7 +72,6 @@ def print_command_help():
     print(f"  {colored_text('reset', COMMAND_COLORS['command'])}: reset puzzle to solved state.")
     print(f"  {colored_text('exit', COMMAND_COLORS['command'])}: exit the program and save new puzzle version with the given algorithms.")
     print("=" * 75)
-    
 
 def user_test_algorithms(
         puzzle: Twisty_Puzzle,
@@ -135,18 +136,18 @@ def user_test_algorithms(
             print(f"{colored_text('Invalid command.', COMMAND_COLORS['headline'])}")
 
 
-def add_algorithms_to_puzzle(
+def add_moves_to_puzzle(
         puzzle: Twisty_Puzzle,
-        algorithms: dict[str, Twisty_Puzzle_Algorithm],
+        new_moves: dict[str, list[int]],
         new_puzzle_name: str = "",
         suffix: str = "_algs"
         ) -> None:
     """
-    Add algorithms to a puzzle and save it under a new name. If name already exists, a console interaction will ask if the existing puzzle should be overwritten and offer to enter a new name.
+    Add moves to a puzzle and save it under a new name. If name already exists, a console interaction will ask if the existing puzzle should be overwritten and offer to enter a new name.
 
     Args:
-        puzzle (Twisty_Puzzle): Puzzle to add algorithms to.
-        algorithms (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of algorithms to add to the puzzle.
+        puzzle (Twisty_Puzzle): Puzzle to add moves to.
+        moves (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of moves to add to the puzzle.
         new_puzzle_name (str, optional): Name of the new puzzle. Defaults to "".
         suffix (str, optional): Suffix to add to the puzzle name if no name is given. Ignored if `new_puzzle_name` is given. Defaults to "_algs
     """
@@ -171,25 +172,14 @@ def add_algorithms_to_puzzle(
         else:
             break
     # create new puzzle with 
-    for alg_name, alg in algorithms.items():
-        puzzle.moves[alg_name] = alg.sympy_permutation.cyclic_form
+    for move_name, move_perm in new_moves.items():
+        puzzle.moves[move_name] = move_perm
     puzzle.save_puzzle(new_puzzle_name)
     print(f"{colored_text(f'Puzzle {new_puzzle_name} saved.', COMMAND_COLORS['headline'])}")
 
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):
-    print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
-    print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to exit the program.")
-
-    puzzle = Twisty_Puzzle()
-    puzzle_name = input("Enter a puzzle name: ")
-    # puzzle_name = "geared_mixup"
-    # puzzle_name = "rubiks_3x3"
-    try:
-        puzzle.load_puzzle(puzzle_name)
-    except FileNotFoundError:
-        print(f"{colored_text('Puzzle not found.', COMMAND_COLORS['headline'])}")
-        os._exit(0)
+    puzzle, puzzle_name = load_twisty_puzzle()
     
     sympy_moves: dict[str, Permutation] = get_sympy_moves(puzzle)
     sympy_rotations: dict[str, Permutation] = {name: perm for name, perm in sympy_moves.items() if name.startswith(rotations_prefix)}
@@ -200,7 +190,10 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     puzzle.animation_time = 0.1
 
     while True:
-        new_algorithms = generate_algorithms(
+        
+        profile = cProfile.Profile()
+        new_algorithms = profile.runcall(
+            generate_algorithms,
             puzzle=puzzle,
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
@@ -209,12 +202,15 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             max_base_sequence_length=16,
             max_move_sequence_order=200,
             max_algorithm_moves=80,
-            max_algorithm_order=6,
-            max_pieces_affected=5,
+            max_algorithm_order=4,
+            max_pieces_affected=4,
             max_number_of_algorithms=30,
             max_iterations_without_new_algorithm=10000,
             verbosity=2,
         )
+        ps = pstats.Stats(profile)
+        ps.sort_stats(("tottime"))
+        ps.print_stats(20)
 
         state, saved_algs = user_test_algorithms(puzzle, new_algorithms, current_algorithms)
         current_algorithms = {alg.name: alg for alg in new_algorithms}
@@ -234,9 +230,29 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     
     # save puzzle with new algorithms
     if input("Do you want to save the puzzle with the new algorithms? (y/N): ").strip().lower() == "y":
-        add_algorithms_to_puzzle(puzzle, current_algorithms)
+        algorithm_moves: dict[str, list[int]] = {name: alg.sympy_permutation.cyclic_form for name, alg in current_algorithms.items()}
+        add_moves_to_puzzle(
+            puzzle=puzzle,
+            new_moves=algorithm_moves,
+            suffix="_algs",
+        )
 
     os._exit(0)
+
+def load_twisty_puzzle():
+    print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
+    print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to exit the program.")
+
+    puzzle = Twisty_Puzzle()
+    puzzle_name = input("Enter a puzzle name: ")
+    # puzzle_name = "geared_mixup"
+    # puzzle_name = "rubiks_3x3"
+    try:
+        puzzle.load_puzzle(puzzle_name)
+    except FileNotFoundError:
+        print(f"{colored_text('Puzzle not found.', COMMAND_COLORS['headline'])}")
+        os._exit(0)
+    return puzzle, puzzle_name
 
 if __name__ == "__main__":
     main()
