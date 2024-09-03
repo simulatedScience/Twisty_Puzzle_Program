@@ -62,6 +62,7 @@ def generate_algorithms(
         n_points=n_points,
         moves=list(sympy_base_moves.values()),
     )
+    algs_generate_full_group: bool = False
     while len(found_algorithms) < max_number_of_algorithms \
             and time.time() < end_time \
             and iterations_since_new_algorithm < max_iterations_without_new_algorithm:
@@ -105,12 +106,20 @@ def generate_algorithms(
             # keep track of whether a new algorithm was added
             if added_algorithms_step:
                 if full_group_reached(puzzle, found_algorithms, sympy_rotations):
+                    algs_generate_full_group = True
                     break
                 iterations_since_new_algorithm = 0
         else:
             iterations_since_new_algorithm += 1
             continue
         break
+    # trim algorithms to minimal full set
+    if algs_generate_full_group:
+        found_algorithms = trim_algorithms_to_full_group(
+            puzzle=puzzle,
+            found_algorithms=found_algorithms,
+            sympy_rotations=sympy_rotations,
+        )
     # print end condition
     if verbosity:
         print()
@@ -120,7 +129,7 @@ def generate_algorithms(
             print(f"Maximum time ({max_time} seconds) reached.")
         if iterations_since_new_algorithm >= max_iterations_without_new_algorithm:
             print(f"Maximum iterations without new algorithm ({max_iterations_without_new_algorithm}) reached.")
-        if full_group_reached(puzzle, found_algorithms, sympy_rotations):
+        if algs_generate_full_group:
             print(f"Full group reached.")
     if verbosity >= 2:
         print(f"Searched {num_base_sequences} base sequences to find {len(found_algorithms)} algorithms in {time.time()-end_time+max_time:.2f} s.")
@@ -256,6 +265,40 @@ def filter_and_add_algorithm(
     #     found_algorithms.append(new_algorithm)
     #     accepted_new_algorithm = True
     return accepted_new_algorithm
+
+def trim_algorithms_to_full_group(
+        puzzle: "Twisty_Puzzle",
+        found_algorithms: list[Twisty_Puzzle_Algorithm],
+        sympy_rotations: list[Permutation],
+    ) -> list[Twisty_Puzzle_Algorithm]:
+    removed_algorithm: bool = True
+    # sort algorithms by decreasing length.
+    # sorting ensures that longer algorithms are discarded first.
+    found_algorithms.sort(key=lambda alg: len(alg.full_action_sequence), reverse=True)
+    necessary_algorithms: set[str] = set()
+    while removed_algorithm:
+        for i, alg in enumerate(found_algorithms):
+            if alg.name in necessary_algorithms:
+                # skip known necessary algorithms
+                continue
+            # check if full group is still reached without the current algorithm
+            if full_group_reached(
+                puzzle,
+                found_algorithms[:i] + found_algorithms[i+1:],
+                sympy_rotations):
+                break
+            else:
+                necessary_algorithms.add(alg.name)
+        else:
+            removed_algorithm = False
+            continue
+        found_algorithms.pop(i)
+        removed_algorithm = True
+        print(f"Removed redundant algorithm {alg}.")
+    # rename algorithms
+    for i, alg in enumerate(reversed(found_algorithms)):
+        alg.name = f"alg_{i+1}"
+    return found_algorithms
 
 def full_group_reached(
         puzzle: "Twisty_Puzzle",
