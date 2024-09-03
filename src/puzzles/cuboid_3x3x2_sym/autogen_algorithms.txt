@@ -1,0 +1,6 @@
+alg_1 = 2*(R S)
+alg_2 = 6*(S U')
+alg_3 = 4*(F M B U' F D' M L F R)
+alg_4 = 3*(S R U U)
+alg_5 = 3*(D' B S F S U B U S M U)
+alg_6 = 3*(D D S L F U M F)

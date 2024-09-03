@@ -1,0 +1,5 @@
+alg_1 = 4*(ygr yog ybo yrb' ybo')
+alg_2 = 3*(yrb wgo' ygr' yrb' ygr')
+alg_3 = 5*(wbr wrg')
+alg_4 = 2*(wgo ybo' wob' ybo' ygr ybo' ygr' wob' wgo')
+alg_5 = 4*(wob' wgo' wbr wrg)

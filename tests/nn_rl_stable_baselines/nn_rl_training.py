@@ -357,7 +357,8 @@ def main(
         model.save(save_path)
         print(f"="*75 + f"\nSaved final model to {save_path}")
     print(f"Testing agent {exp_identifier}...")
-    test_agent(model, env, num_tests=10, scramble_length=50, id=f"{exp_identifier}", verbose=None)
+    test_agent(model, env, num_tests=3, scramble_length=50, id=f"{exp_identifier}", verbose=None)
+    test_agent(model, env, num_tests=100, scramble_length=50, id=f"{exp_identifier}", verbose=None)
 
 
 if __name__ == "__main__":
@@ -491,23 +492,25 @@ if __name__ == "__main__":
     # In terminal, run "tensorboard --logdir tb_logs/..." to view training progress
 
     # ===============================
-    # success_thresholds = [.1]
+    # success_thresholds = [.2]
     # scramble_depths_rewards = [
     #     (1, "binary"),
-    #     (1, "most_correct_points"),
-    #     (4, "most_correct_points"),
+    #     (4, "binary"),
+    #     (8, "binary"),
     #     (8, "most_correct_points"),
+    #     (16, "most_correct_points"),
+    #     (32, "most_correct_points"),
     # ]
-    # n_processes = 4
+    # n_processes = 6
     # kwargs_list  = [
     #         (
-    #         "cuboid_3x2x2_algs", # puzzle_name
+    #         "cuboid_3x2x2_sym_algs2", # puzzle_name
     #         ["L", "L'", "R", "R'", "F", "B", "D", "U"], # base_actions
     #         None,            # load_model
     #         True,            # train_new
-    #         500_000,       # n_episodes
-    #         "cuboid_3x2x2_models",  # model_folder
-    #         "cuboid_3x2x2_tb_logs", # tb_log_folder
+    #         10_000_000,       # n_episodes
+    #         "cuboid_3x2x2_models2",  # model_folder
+    #         "cuboid_3x2x2_tb_logs2", # tb_log_folder
     #         scramble_depth,  # start_scramble_depth
     #         threshold,       # success_threshold
     #         reward,          # reward
@@ -518,29 +521,59 @@ if __name__ == "__main__":
     #     pool.starmap(main, kwargs_list)
     # In terminal, run "tensorboard --logdir cuboid_3x2x2_tb_logs" to view training progress
     # ===============================
-    success_thresholds = [.05]
+    # success_thresholds = [.05]
+    # # scramble_depths_rewards = [
+    # #     (1, "binary"),
+    # #     (1, "most_correct_points"),
+    # #     (4, "most_correct_points"),
+    # #     (8, "most_correct_points"),
+    # # ]
     # scramble_depths_rewards = [
     #     (1, "binary"),
-    #     (1, "most_correct_points"),
     #     (4, "most_correct_points"),
     #     (8, "most_correct_points"),
+    #     (16, "most_correct_points"),
     # ]
+    # n_processes = 4
+    # kwargs_list  = [
+    #         (
+    #         "cuboid_3x3x2_sym_algs2", # puzzle_name
+    #         ["L", "R", "F", "B", "D", "D'", "U", "U'", "M", "S"], # base_actions
+    #         None,            # load_model
+    #         True,            # train_new
+    #         10_000_000,       # n_episodes
+    #         "cuboid_3x3x2_models2",  # model_folder
+    #         "cuboid_3x3x2_tb_logs2", # tb_log_folder
+    #         scramble_depth,  # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         reward,          # reward
+    #     ) for threshold in success_thresholds
+    #         for scramble_depth, reward in scramble_depths_rewards
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # In terminal, run "tensorboard --logdir cuboid_3x3x2_tb_logs" to view training progress
+    
+    
+    success_thresholds = [.2]
     scramble_depths_rewards = [
         (1, "binary"),
-        (4, "most_correct_points"),
+        (4, "binary"),
+        (8, "binary"),
         (8, "most_correct_points"),
         (16, "most_correct_points"),
+        (32, "most_correct_points"),
     ]
-    n_processes = 4
+    n_processes = 6
     kwargs_list  = [
             (
-            "cuboid_3x3x2_sym_algs", # puzzle_name
-            ["L", "R", "F", "B", "D", "D'", "U", "U'", "M", "S"], # base_actions
+            "dino_cube_plus_sym_algs", # puzzle_name
+            ["wob", "wob'", "wbr", "wbr'", "wrg", "wrg'", "wgo", "wgo'", "yrb", "yrb'", "ybo", "ybo'", "yog", "yog'", "ygr", "ygr'"], # base_actions
             None,            # load_model
             True,            # train_new
-            8_000_000,       # n_episodes
-            "cuboid_3x3x2_models",  # model_folder
-            "cuboid_3x3x2_tb_logs", # tb_log_folder
+            10_000_000,       # n_episodes
+            "dino_cube_plus_models",  # model_folder
+            "dino_cube_plus_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth
             threshold,       # success_threshold
             reward,          # reward
@@ -549,4 +582,4 @@ if __name__ == "__main__":
         ]
     with mp.Pool(n_processes) as pool:
         pool.starmap(main, kwargs_list)
-    # In terminal, run "tensorboard --logdir cuboid_3x3x2_tb_logs" to view training progress
+    # In terminal, run "tensorboard --logdir dino_cube_plus_tb_logs" to view training progress

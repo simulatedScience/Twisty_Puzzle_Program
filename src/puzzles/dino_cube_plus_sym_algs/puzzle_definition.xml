@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="rubiks_3x3_sym_algs" state_space_size="1038048078587756544000">
+<puzzledefinition name="dino_cube_plus_sym_algs">
   <points>
     <point size="5.0">
       <coords x="1.0" y="1.0" z="1.5"/>
@@ -219,119 +219,85 @@
     </point>
   </points>
   <moves>
-    <move name="f">
-      <cycle>21, 25, 23, 19</cycle>
-      <cycle>18, 24, 26, 20</cycle>
-      <cycle>17, 42, 45, 10</cycle>
-      <cycle>16, 43, 46, 11</cycle>
-      <cycle>0, 44, 47, 9</cycle>
+    <move name="wob">
+      <cycle>1, 43, 21</cycle>
+      <cycle>39, 25, 16</cycle>
+      <cycle>0, 42, 24</cycle>
     </move>
-    <move name="f'">
-      <cycle>19, 23, 25, 21</cycle>
-      <cycle>20, 26, 24, 18</cycle>
-      <cycle>10, 45, 42, 17</cycle>
-      <cycle>11, 46, 43, 16</cycle>
-      <cycle>9, 47, 44, 0</cycle>
+    <move name="wob'">
+      <cycle>21, 43, 1</cycle>
+      <cycle>16, 25, 39</cycle>
+      <cycle>24, 42, 0</cycle>
     </move>
-    <move name="r">
-      <cycle>39, 37, 41, 43</cycle>
-      <cycle>42, 36, 38, 44</cycle>
-      <cycle>0, 34, 51, 26</cycle>
-      <cycle>1, 35, 48, 25</cycle>
-      <cycle>2, 27, 45, 24</cycle>
+    <move name="wbr">
+      <cycle>17, 18, 9</cycle>
+      <cycle>16, 19, 13</cycle>
+      <cycle>21, 11, 4</cycle>
     </move>
-    <move name="r'">
-      <cycle>43, 41, 37, 39</cycle>
-      <cycle>44, 38, 36, 42</cycle>
-      <cycle>26, 51, 34, 0</cycle>
-      <cycle>25, 48, 35, 1</cycle>
-      <cycle>24, 45, 27, 2</cycle>
+    <move name="wbr'">
+      <cycle>9, 18, 17</cycle>
+      <cycle>13, 19, 16</cycle>
+      <cycle>4, 11, 21</cycle>
     </move>
-    <move name="b">
-      <cycle>31, 29, 33, 35</cycle>
-      <cycle>34, 28, 30, 27</cycle>
-      <cycle>2, 8, 53, 38</cycle>
-      <cycle>5, 15, 52, 37</cycle>
-      <cycle>6, 7, 51, 36</cycle>
+    <move name="wrg">
+      <cycle>6, 8, 28</cycle>
+      <cycle>4, 15, 31</cycle>
+      <cycle>13, 29, 5</cycle>
     </move>
-    <move name="b'">
-      <cycle>35, 33, 29, 31</cycle>
-      <cycle>27, 30, 28, 34</cycle>
-      <cycle>38, 53, 8, 2</cycle>
-      <cycle>37, 52, 15, 5</cycle>
-      <cycle>36, 51, 7, 6</cycle>
+    <move name="wrg'">
+      <cycle>28, 8, 6</cycle>
+      <cycle>31, 15, 4</cycle>
+      <cycle>5, 29, 13</cycle>
     </move>
-    <move name="t">
-      <cycle>6, 2, 0, 17</cycle>
-      <cycle>5, 1, 16, 4</cycle>
-      <cycle>28, 36, 24, 9</cycle>
-      <cycle>31, 39, 21, 13</cycle>
-      <cycle>34, 42, 18, 8</cycle>
+    <move name="wgo">
+      <cycle>2, 34, 36</cycle>
+      <cycle>5, 35, 39</cycle>
+      <cycle>31, 37, 1</cycle>
     </move>
-    <move name="t'">
-      <cycle>17, 0, 2, 6</cycle>
-      <cycle>4, 16, 1, 5</cycle>
-      <cycle>9, 24, 36, 28</cycle>
-      <cycle>13, 21, 39, 31</cycle>
-      <cycle>8, 18, 42, 34</cycle>
+    <move name="wgo'">
+      <cycle>36, 34, 2</cycle>
+      <cycle>39, 35, 5</cycle>
+      <cycle>1, 37, 31</cycle>
     </move>
-    <move name="l">
-      <cycle>8, 9, 10, 7</cycle>
-      <cycle>13, 11, 14, 15</cycle>
-      <cycle>4, 19, 50, 29</cycle>
-      <cycle>17, 20, 53, 28</cycle>
-      <cycle>6, 18, 47, 30</cycle>
+    <move name="yrb">
+      <cycle>47, 10, 20</cycle>
+      <cycle>50, 11, 23</cycle>
+      <cycle>14, 19, 46</cycle>
     </move>
-    <move name="l'">
-      <cycle>7, 10, 9, 8</cycle>
-      <cycle>15, 14, 11, 13</cycle>
-      <cycle>29, 50, 19, 4</cycle>
-      <cycle>28, 53, 20, 17</cycle>
-      <cycle>30, 47, 18, 6</cycle>
+    <move name="yrb'">
+      <cycle>20, 10, 47</cycle>
+      <cycle>23, 11, 50</cycle>
+      <cycle>46, 19, 14</cycle>
     </move>
-    <move name="d">
-      <cycle>45, 51, 53, 47</cycle>
-      <cycle>46, 48, 52, 50</cycle>
-      <cycle>23, 41, 33, 14</cycle>
-      <cycle>26, 38, 30, 10</cycle>
-      <cycle>20, 44, 27, 7</cycle>
+    <move name="ybo">
+      <cycle>45, 26, 44</cycle>
+      <cycle>48, 23, 43</cycle>
+      <cycle>41, 46, 25</cycle>
     </move>
-    <move name="d'">
-      <cycle>47, 53, 51, 45</cycle>
-      <cycle>50, 52, 48, 46</cycle>
-      <cycle>14, 33, 41, 23</cycle>
-      <cycle>10, 30, 38, 26</cycle>
-      <cycle>7, 27, 44, 20</cycle>
+    <move name="ybo'">
+      <cycle>44, 26, 45</cycle>
+      <cycle>43, 23, 48</cycle>
+      <cycle>25, 46, 41</cycle>
     </move>
-    <move name="slice_z">
-      <cycle>22, 12, 32, 40</cycle>
-      <cycle>25, 11, 29, 37</cycle>
-      <cycle>43, 19, 15, 35</cycle>
+    <move name="yog">
+      <cycle>51, 38, 27</cycle>
+      <cycle>48, 37, 33</cycle>
+      <cycle>41, 35, 52</cycle>
     </move>
-    <move name="slice_z'">
-      <cycle>40, 32, 12, 22</cycle>
-      <cycle>37, 29, 11, 25</cycle>
-      <cycle>35, 15, 19, 43</cycle>
+    <move name="yog'">
+      <cycle>27, 38, 51</cycle>
+      <cycle>33, 37, 48</cycle>
+      <cycle>52, 35, 41</cycle>
     </move>
-    <move name="slice_x">
-      <cycle>39, 4, 14, 48</cycle>
-      <cycle>40, 3, 12, 49</cycle>
-      <cycle>41, 1, 13, 50</cycle>
+    <move name="ygr">
+      <cycle>53, 30, 7</cycle>
+      <cycle>52, 29, 14</cycle>
+      <cycle>33, 15, 50</cycle>
     </move>
-    <move name="slice_x'">
-      <cycle>48, 14, 4, 39</cycle>
-      <cycle>49, 12, 3, 40</cycle>
-      <cycle>50, 13, 1, 41</cycle>
-    </move>
-    <move name="slice_y">
-      <cycle>16, 31, 52, 23</cycle>
-      <cycle>3, 32, 49, 22</cycle>
-      <cycle>33, 46, 21, 5</cycle>
-    </move>
-    <move name="slice_y'">
-      <cycle>23, 52, 31, 16</cycle>
-      <cycle>22, 49, 32, 3</cycle>
-      <cycle>5, 21, 46, 33</cycle>
+    <move name="ygr'">
+      <cycle>7, 30, 53</cycle>
+      <cycle>14, 29, 52</cycle>
+      <cycle>50, 15, 33</cycle>
     </move>
     <move name="rot_1">
       <cycle>0, 45</cycle>
@@ -842,63 +808,28 @@
       <cycle>35, 52, 41</cycle>
     </move>
     <move name="alg_1">
-      <cycle>3, 40, 22</cycle>
-      <cycle>12, 32, 49</cycle>
+      <cycle>7, 53, 30</cycle>
+      <cycle>10, 47, 20</cycle>
+      <cycle>27, 51, 38</cycle>
     </move>
     <move name="alg_2">
-      <cycle>5, 31</cycle>
-      <cycle>16, 21</cycle>
-      <cycle>33, 52</cycle>
-      <cycle>41, 48</cycle>
+      <cycle>14, 29</cycle>
+      <cycle>15, 50</cycle>
+      <cycle>23, 33</cycle>
+      <cycle>46, 52</cycle>
     </move>
     <move name="alg_3">
-      <cycle>7, 30, 53</cycle>
-      <cycle>10, 47, 20</cycle>
-      <cycle>27, 38, 51</cycle>
-    </move>
-    <move name="alg_4">
-      <cycle>1, 50</cycle>
-      <cycle>4, 48</cycle>
-      <cycle>13, 41</cycle>
-      <cycle>14, 39</cycle>
-    </move>
-    <move name="alg_5">
-      <cycle>12, 40</cycle>
-      <cycle>22, 32</cycle>
-    </move>
-    <move name="alg_6">
-      <cycle>0, 18</cycle>
-      <cycle>2, 45</cycle>
-      <cycle>9, 42</cycle>
-      <cycle>17, 24</cycle>
-      <cycle>26, 34</cycle>
-      <cycle>36, 44</cycle>
-    </move>
-    <move name="alg_7">
-      <cycle>4, 46, 13, 23</cycle>
-      <cycle>11, 25, 19, 43</cycle>
-    </move>
-    <move name="alg_8">
-      <cycle>3, 32, 49, 22</cycle>
-      <cycle>14, 41</cycle>
-      <cycle>48, 50</cycle>
-    </move>
-    <move name="alg_9">
-      <cycle>0, 24, 42</cycle>
       <cycle>6, 8, 28</cycle>
-      <cycle>7, 53, 30</cycle>
       <cycle>9, 18, 17</cycle>
     </move>
-    <move name="alg_10">
-      <cycle>2, 44, 18</cycle>
-      <cycle>9, 34, 45</cycle>
-      <cycle>17, 36, 26</cycle>
+    <move name="alg_4">
+      <cycle>0, 24, 42</cycle>
     </move>
-    <move name="alg_11">
-      <cycle>2, 17</cycle>
-      <cycle>9, 36</cycle>
-      <cycle>12, 32, 40, 22</cycle>
-      <cycle>18, 34</cycle>
+    <move name="alg_5">
+      <cycle>0, 24, 42</cycle>
+      <cycle>2, 36, 34</cycle>
+      <cycle>6, 8, 28</cycle>
+      <cycle>9, 17, 18</cycle>
     </move>
   </moves>
 </puzzledefinition>
