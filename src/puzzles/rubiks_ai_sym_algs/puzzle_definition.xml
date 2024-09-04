@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="rubiks_ai_sym_algs">
+<puzzledefinition name="rubiks_ai_sym_algs" state_space_size="1038048078587756544000">
   <points>
     <point size="5.0">
       <coords x="1.0" y="1.0" z="1.5"/>

@@ -99,6 +99,30 @@ class Twisty_Puzzle_Algorithm:
             return len(self.full_action_sequence) < len(other.full_action_sequence)
         return False
 
+    def get_inverse(self, inverse_moves_dict: dict[str, str]) -> "Twisty_Puzzle_Algorithm":
+        """
+        Calculate and return a new algorithm that is the inverse of the current algorithm.
+        If current algorithm has order 2, return self.
+        New algorithm name will be the same as the current algorithm, but with a ' added or removed at the end.
+
+        Args:
+            inverse_moves_dict (dict[str, str]): dictionary mapping base moves to their inverses
+
+        Returns:
+            Twisty_Puzzle_Algorithm: inverse of the current algorithm
+        """
+        if self.order == 2:
+            return self
+        inverse_action_sequence = [inverse_moves_dict[move] for move in reversed(self.base_action_sequence)]
+        inv_name = self.name + "'" if not self.name.endswith("'") else self.name[:-1]
+        return Twisty_Puzzle_Algorithm(
+            base_action_sequence=inverse_action_sequence,
+            n_repetitions=self.n_repetitions,
+            puzzle=self.puzzle,
+            alg_name=inv_name,
+            sympy_moves=self.sympy_moves,
+        )
+
     def compact_moves(self) -> str:
         """
         Returns:
@@ -125,7 +149,6 @@ class Twisty_Puzzle_Algorithm:
         print("  Cycle signature:")
         for cycle_signature in self.algorithm_signature[1]:
             print(f"    {cycle_signature.num} cycles of length {cycle_signature.cycle_signature.cycle_length} affecting {cycle_signature.cycle_signature.n_affected_pieces} pieces of type {cycle_signature.cycle_signature.piece_type}.")
-
 
     def _get_sympy_permutation(self,
             move_sequence: list[str],
@@ -333,6 +356,40 @@ def get_move_sequence_info(
     }
     return move_sequence_info
 
+def get_inverse_moves_dict(moves: dict[str, list[list[int]]]) -> dict[str, str]:
+    """
+    Given a dictionary of named moves as lists of their cycles, find the inverse of each move.
+
+    Args:
+        moves (dict[str, list[int]]): dictionary mapping move names to their cycles
+
+    Returns:
+        dict[str, str]: dictionary mapping move names to their inverses
+
+    Raises:
+        ValueError: if the inverse of a move cannot be found
+    """
+    inverse_moves_dict: dict[str, str] = dict()
+    for move_name, move in moves.items():
+        if max([len(cycle) for cycle in move]) == 2:
+            inverse_moves_dict[move_name] = move_name
+            continue
+        # check canonically named inverse move first
+        inverse_move_name: str = move_name + "'" if not move_name.endswith("'") else move_name[:-1]
+        inverse_move: list[list[int]] = [[cycle[0]] + cycle[:0:-1] for cycle in move]
+        if inverse_move == moves[inverse_move_name]:
+            inverse_moves_dict[move_name] = inverse_move_name
+            continue
+        # search for inverse move
+        for move_name2, move2 in moves.items():
+            if move_name2 == move_name: # skip the move itself
+                continue
+            if move2 == inverse_move:
+                inverse_moves_dict[move_name] = move_name2
+                break
+        else:
+            raise ValueError(f"Could not find inverse of move {move_name}.")
+
 
 def main(puzzle_name="rubiks_3x3"):
     """
@@ -353,7 +410,13 @@ def main(puzzle_name="rubiks_3x3"):
 
     print("Available moves:")
     puzzle.listmoves(print_perms=False)
-    
+
+    # print inverse moves dict
+    inverse_moves_dict = get_inverse_moves_dict(puzzle.moves)
+    print("Inverse moves:")
+    for move, inverse in inverse_moves_dict.items():
+        print(f"{move} -> {inverse}")
+
     user_input: str = ""
     while user_input.lower() != "exit":
         print()

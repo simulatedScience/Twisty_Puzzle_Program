@@ -1,3 +1,17 @@
+
+## latest workflow
+1. create puzzle  
+    option 1: Use existing puzzle  
+    option 2: Create new puzzle from Geogebra file and existing UI for adding moves  
+    option 3: Use `src/puzzles/cuboid_generator.py` to generate any non-shapeshifting cuboid puzzle with its moves
+2. calculate symmetries using `src/algorithm_generation/find_puzzle_symmetries.py`  
+   Running this file will prompt for the puzzle name, then calculate the symmetries for the puzzle. Follow the prompts to save the puzzle.
+3. generate and save algorithms using `src/algorithm_generation/algorithm_generation_CLI.py`  
+   1. *run `algorithm_generation_CLI.py`* the CLI will prompt for the puzzle name
+   2. *the program will automatically generate algorithms capable of solving the puzzle without using base moves*  
+   3. *export generated algorithms to a new version of the puzzle using the CLI of the program (command `exit`, then follow the prompts)*
+
+## old workflow
 1. create puzzle  
     option 1: Use existing puzzle  
     option 2: Create new puzzle from Geogebra file and existing UI for adding moves  

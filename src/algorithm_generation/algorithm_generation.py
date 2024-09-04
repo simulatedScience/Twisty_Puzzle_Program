@@ -105,6 +105,15 @@ def generate_algorithms(
                 )
             # keep track of whether a new algorithm was added
             if added_algorithms_step:
+                # TODO: add inverse of new algorithm
+                inverse_algorithm = algorithm.get_inverse()
+                added_algorithms_step_inv = filter_and_add_algorithm(
+                    new_algorithm=inverse_algorithm,
+                    found_algorithms=found_algorithms,
+                    rotations=sympy_rotations,
+                    max_pieces_affected=max_pieces_affected,
+                    iteration=iteration,
+                )
                 if full_group_reached(puzzle, found_algorithms, sympy_rotations):
                     algs_generate_full_group = True
                     break
@@ -276,10 +285,16 @@ def trim_algorithms_to_full_group(
     # sorting ensures that longer algorithms are discarded first.
     found_algorithms.sort(key=lambda alg: len(alg.full_action_sequence), reverse=True)
     necessary_algorithms: set[str] = set()
+    unique_algorithm_signatures: set[str] = set([alg.algorithm_signature for alg in found_algorithms])
     while removed_algorithm:
         for i, alg in enumerate(found_algorithms):
             if alg.name in necessary_algorithms:
                 # skip known necessary algorithms
+                continue
+            remaining_signatures = set([alg.algorithm_signature for alg in found_algorithms[:i] + found_algorithms[i+1:]])
+            if len(remaining_signatures) <= len(unique_algorithm_signatures):
+                # keep at least one algorithm of each unique signature
+                necessary_algorithms.add(alg.name)
                 continue
             # check if full group is still reached without the current algorithm
             if full_group_reached(
