@@ -6,6 +6,12 @@ One of the core contributions of this work is the automatic generation of algori
 - they are not too long (< ~200 moves)
 - they are reasonably easy to memorize for humans (< ~20 moves before repeating a pattern)
 
+***TODO: describe handling of inverses***
+notes:
+- an algorithm of order 2 is always self-inverse.
+- an algorithm of order >2 may be self-inverse under a spatial rotation. (i.e. $a r a r' = 1 \neq a^2$) Example for this is `4*(F F E)` on the 3x3 rubik's cube. This cycles 3 edges of the `E` slice in `E` direction. Turning the puzzle by 180° can flip the direction this cycles the pieces, thus becoming the inverse.
+
+
 ## How to generate algorithms
 1. generate move sequences with a few base moves
 2. find useful numbers of repetitions for these base move sequences, exploiting the permutation group structure of the puzzle
@@ -50,7 +56,7 @@ This algorithm signiture is not sufficient to reject an algorithm based on match
 However, saving algorithms with similar signature is problematic. For example, there are at least 36 unique  3-cycles of edges on a 3x3x3 rubiks's cube, that are in different equivalence classes under whole cube rotations. On a Megaminx, this number would be much larger. We don't want to store an algorithm for each one of those as it would bloat the action set for RL agents and inhibit learning in that step.  
 Leaving out the RL aspect and just using a greedy solver with many algorithms could work, but then large nxnxn puzzles, particularly many faced ones like dodecahedron shaped ones, would have enormous action sets, even with very tight restrictions on the number of pieces affected by an algorithm.  
 ___So we cannot ignore algorithms with similar signature but we also cannot store all of them.___  
-**Solution:** prune the action set once a sufficient one is found. Probably using orbit information.
+**Solution:** prune the action set once a sufficient one is found.
 
 See also: `algorithm_filtering.md`
 

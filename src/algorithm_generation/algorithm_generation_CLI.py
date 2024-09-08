@@ -82,6 +82,7 @@ def user_test_algorithms(
     Allow user to visualize the given algorithms on the puzzle.
     """
     list_algorithms(algorithms)
+    names_to_algorithms: dict[str, Twisty_Puzzle_Algorithm] = {alg.name: alg for alg in algorithms}
     print_command_help()
     while True:
         command = input(f"{colored_text('Enter a command:', COMMAND_COLORS['headline'])} ").strip().lower()
@@ -103,6 +104,7 @@ def user_test_algorithms(
             print(f"{colored_text('Algorithms reset.', COMMAND_COLORS['headline'])}")
             continue
 
+        # show algorithm with given number
         if command.startswith("show"):
             try:
                 alg_number = int(command.split()[1])
@@ -112,28 +114,33 @@ def user_test_algorithms(
             except (IndexError, ValueError):
                 print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
             continue
-
-        # if command.startswith("save"):
-        #     try:
-        #         alg_number = int(command.split()[1])
-        #         alg = algorithms[alg_number]
-        #         saved_algs[alg_number] = alg
-        #         print(f"{colored_text('Algorithm saved.', COMMAND_COLORS['headline'])}")
-        #     except (IndexError, ValueError):
-        #         print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
+        # # show algorithm with given number
+        # try:
+        #     alg_number = int(command)
+        #     if alg_number < 1 or alg_number > len(algorithms):
+        #         raise IndexError("Invalid algorithm number.")
+        #     alg = algorithms[alg_number-1]
+        #     print_algorithm(alg, alg_number)
+        #     show_algorithm_on_puzzle(puzzle, alg)
         #     continue
-
+        # except IndexError:
+        #     print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
+        #     pass
+        # except ValueError:
+        #     pass
+        # show algorithm by name
         try:
-            alg_number = int(command)
-            if alg_number < 1 or alg_number > len(algorithms):
-                raise IndexError("Invalid algorithm number.")
-            alg = algorithms[alg_number-1]
-            print_algorithm(alg, alg_number)
+            alg_name = "alg_" + command
+            # find algorithm by name
+            alg: Twisty_Puzzle_Algorithm = names_to_algorithms[alg_name]
+            print_algorithm(alg, alg_name)
             show_algorithm_on_puzzle(puzzle, alg)
-        except IndexError:
-            print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
+            continue
         except ValueError:
             print(f"{colored_text('Invalid command.', COMMAND_COLORS['headline'])}")
+            continue
+        except KeyError:
+            print(f"{colored_text('Algorithm not found.', COMMAND_COLORS['headline'])}")
 
 
 def add_moves_to_puzzle(
@@ -198,13 +205,13 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
             # max_time=3,
-            max_time=600,
+            max_time=300,
             max_base_sequence_length=20,
             max_move_sequence_order=200,
-            max_algorithm_moves=100,
+            max_algorithm_moves=100, # 100
             max_algorithm_order=6,
-            max_pieces_affected=4,
-            max_number_of_algorithms=30,
+            max_pieces_affected=4, # 4
+            max_number_of_algorithms=128, # 20
             max_iterations_without_new_algorithm=20000,
             verbosity=2,
         )

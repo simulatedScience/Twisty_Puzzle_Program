@@ -212,4 +212,4 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
 - [Number of states of even nxnxn cubes](https://www.quora.com/How-many-scrambled-possibilities-for-a-1000-x-1000-Rubik-s-cube-are-there/answer/David-Smith-2412?ch=10&share=2e1e997e&srid=hl1xV)  
   Number of reachable positions of a cube of sidelength $2n$:
   $$N_{2n} = \frac{1}{24} \cdot (8! \cdot 3^7) \cdot 24!^{n-1} \cdot \left(\frac{24!}{4!^6}\right)^{(n-1)^2}$$
-- 
+- [Parallel A* Graph Search](https://people.csail.mit.edu/rholladay/docs/parallel_search_report.pdf)

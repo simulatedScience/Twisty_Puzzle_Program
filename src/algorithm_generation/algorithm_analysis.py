@@ -114,7 +114,7 @@ class Twisty_Puzzle_Algorithm:
         if self.order == 2:
             return self
         inverse_action_sequence = [inverse_moves_dict[move] for move in reversed(self.base_action_sequence)]
-        inv_name = self.name + "'" if not self.name.endswith("'") else self.name[:-1]
+        inv_name = get_inverse_name(self.name)
         return Twisty_Puzzle_Algorithm(
             base_action_sequence=inverse_action_sequence,
             n_repetitions=self.n_repetitions,
@@ -370,6 +370,8 @@ def get_inverse_moves_dict(moves: dict[str, list[list[int]]]) -> dict[str, str]:
         ValueError: if the inverse of a move cannot be found
     """
     inverse_moves_dict: dict[str, str] = dict()
+    # ensure all cycles are properly sorted
+    moves = {move_name: Permutation(move).cyclic_form for move_name, move in moves.items()}
     for move_name, move in moves.items():
         if max([len(cycle) for cycle in move]) == 2:
             inverse_moves_dict[move_name] = move_name
@@ -377,7 +379,7 @@ def get_inverse_moves_dict(moves: dict[str, list[list[int]]]) -> dict[str, str]:
         # check canonically named inverse move first
         inverse_move_name: str = move_name + "'" if not move_name.endswith("'") else move_name[:-1]
         inverse_move: list[list[int]] = [[cycle[0]] + cycle[:0:-1] for cycle in move]
-        if inverse_move == moves[inverse_move_name]:
+        if inverse_move_name in moves and inverse_move == moves[inverse_move_name]:
             inverse_moves_dict[move_name] = inverse_move_name
             continue
         # search for inverse move
@@ -389,7 +391,10 @@ def get_inverse_moves_dict(moves: dict[str, list[list[int]]]) -> dict[str, str]:
                 break
         else:
             raise ValueError(f"Could not find inverse of move {move_name}.")
+    return inverse_moves_dict
 
+def get_inverse_name(name: str) -> str:
+    return name[:-1] if name.endswith("'") else name + "'"
 
 def main(puzzle_name="rubiks_3x3"):
     """
@@ -411,11 +416,11 @@ def main(puzzle_name="rubiks_3x3"):
     print("Available moves:")
     puzzle.listmoves(print_perms=False)
 
-    # print inverse moves dict
-    inverse_moves_dict = get_inverse_moves_dict(puzzle.moves)
-    print("Inverse moves:")
-    for move, inverse in inverse_moves_dict.items():
-        print(f"{move} -> {inverse}")
+    # # print inverse moves dict
+    # inverse_moves_dict = get_inverse_moves_dict(puzzle.moves)
+    # print("Inverse moves:")
+    # for move, inverse in inverse_moves_dict.items():
+    #     print(f"{move} -> {inverse}")
 
     user_input: str = ""
     while user_input.lower() != "exit":
