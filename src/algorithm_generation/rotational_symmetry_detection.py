@@ -120,6 +120,7 @@ def find_rotational_symmetries(
         epsilon_Q: float = 0.05,
         epsilon_s: float = 0.05, # should be 0.05 l_avg
         min_score_ratio: float = 0.7,
+        similar_axis_tol: float = 0.05
     ) -> list[tuple[np.ndarray, float]]:
     """
     Detect rotational symmetries in a 3D point cloud.
@@ -265,11 +266,21 @@ def find_rotational_symmetries(
         # symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
         symmetry_rotations.append((result.x[0], result.x[1:4], np.zeros(3)))
     # Step 5: Prune rotations that are too similar to existing ones
-    
+    pruned_rotations = []
+    for rotation in symmetry_rotations:
+        for (angle, axis, _) in pruned_rotations:
+            if np.linalg.norm(np.cross(rotation[1], axis)) < similar_axis_tol and rotation[0] - angle < min_angle:
+                break
+        else:
+            pruned_rotations.append(rotation)
     # Step 6: Find all possible rotation angles for each axis
     
     # Step 7: Shift back to original coordinates
-    symmetry_rotations = [(angle, axis, axis_support + X_shift) for angle, axis, axis_support in symmetry_rotations]
+    symmetry_rotations = [(angle, (axis/np.linalg.norm(axis)), axis_support + X_shift) for angle, axis, axis_support in pruned_rotations]
+    # for each rotation, print axis, support, angle and symmetry measure
+    for rotation in symmetry_rotations:
+        print(f"rotation around axis {rotation[1]} with support {rotation[2]} by {360*rotation[0]/(2*np.pi):.2f}°.")
+        print(f"Symmetry measure: {rotation_symmetry_measure(X, rotation, alpha)}")
     return symmetry_rotations
 
 def rotation_distance(epsilon_Q, epsilon_s, axis_support, quaternion, Q_i, s_i):

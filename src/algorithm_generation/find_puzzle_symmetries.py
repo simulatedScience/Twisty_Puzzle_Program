@@ -57,17 +57,30 @@ def rotation_to_permutation(X: np.ndarray, rotation: tuple[float, np.ndarray, np
     X_permuted = X_rotated + axis_support
     # for every point in X_permuted, find the closest point's index in X
     permutation = [find_closest(X, point) for point in X_permuted]
+    
+    def array_to_set(array: np.ndarray) -> set[tuple[float, float, float]]:
+        return {tuple(point) for point in array}
+    print(f"rotation around axis {axis} with support {axis_support} by {360*rotation_angle/(2*np.pi):.2f}°.")
+    print(f"X has {len(array_to_set(X))} points.")
+    print(f"X_permuted has {len(array_to_set(X_permuted))} points.")
+    
+    print("X:\n", X)
+    print("X_permuted:\n", X_permuted.round(3))
+    print(f"permutation has {len(set(permutation))} points.")
     if len(set(permutation)) != len(X):
-        raise ValueError("Did not find a bijection between the points of X and the rotated points.")
+        error_message: str = f"Did not find a bijection between the points of X and the rotated points.\n" + \
+            f"rotation around axis {axis} with support {axis_support} by {360*rotation_angle/(2*np.pi):.2f}° ({rotation_angle:.3} rad).\n" + \
+            f"{len(X) - len(set(permutation))} points remained unmapped."
+        raise ValueError(error_message)
     return permutation
 
-def find_closest(X, point):
+def find_closest(X: np.ndarray, point: np.ndarray) -> int:
     """
     Find the closest point in X to a given point.
 
     Args:
-        X (np.ndarray): set of points
-        point (np.ndarray): point to find the closest point to
+        X (np.ndarray): set of points. shape: (n, 3)
+        point (np.ndarray): point to find the closest point to. shape: (3,)
 
     Returns:
         int: index of the closest point in X
@@ -129,14 +142,14 @@ def add_rotation_moves_to_puzzle(
     rotations: list[tuple[float, np.ndarray, np.ndarray]] = find_rotational_symmetries(
         X=point_coordinates,
         num_planes = 3000, # number of planes to search for rotations
-        num_candidate_rotations = 40, # number of candidate rotations to consider
+        num_candidate_rotations = 20000, # number of candidate rotations to consider
         threshold = 0.1, # threshold for distance between planes to consider them equal
         min_angle = np.pi / 12.5, # minimum rotation angle in radians (= 1/)
-        num_best_rotations = 40, # number of best rotations to keep
+        num_best_rotations = 1000, # number of best rotations to keep
         alpha = 1.0, # parameter for the symilarity measure
         epsilon_Q = 0.05, # parameter for quarternion similarity
         epsilon_s = 0.05, # parameter for axis similarity
-        min_score_ratio=0.7, # minimum score ratio between best and other rotations
+        min_score_ratio=0.99, # minimum score ratio between best and other rotations
     )
     if verbosity >= 1:
         print(f"Found {len(rotations)} rotational symmetries.")
