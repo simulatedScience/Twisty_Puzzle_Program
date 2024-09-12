@@ -47,7 +47,7 @@ def test_find_rotational_symmetries(
         num_candidate_rotations: int = 5000,
         threshold: float = 0.1,
         min_angle: float = np.pi / 12.5,
-        num_best_rotations: int = 40,
+        num_best_rotations: int = 100,
         alpha: float = 1.0,
         anim_time: float = 1,
         anim_steps: int = 60,
@@ -216,7 +216,7 @@ def main(X, edges=None):
     # plane_2 = (np.array([0, 1, 1], dtype=np.float32), np.array([-1, 2, 1], dtype=np.float32))
     # test_find_plane_intersection(plane_1, plane_2)
     # plot_penalty_function()
-    test_find_rotational_symmetries(X, anim_time=1, anim_steps=40, anim_pause=0.5, edges=edges)
+    test_find_rotational_symmetries(X, anim_time=1, anim_steps=60, anim_pause=0.5, edges=edges)
     # test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
 
 def axis_tetragedron_vertices():
@@ -308,14 +308,45 @@ def dodecahedron_vertices():
 
     return vertices, edges
 
+def helicopter_cube_vertices():
+    # 6 cube faces with 8 points each:
+    #   4 as corners of a large square,
+    #   4 as corners of a small square
+    vertices = []
+    face_directions: np.ndarray = np.array([
+        (1, 0, 0), (-1, 0, 0),
+        (0, 1, 0), (0, -1, 0),
+        (0, 0, 1), (0, 0, -1),
+    ], dtype=np.float32)
+    large_square_radius: float = 1.
+    small_square_radius: float = 0.5
+    face_offset: float = 0.05
+    for face_direction in face_directions:
+        for i in range(4):
+            angle: float = i * np.pi / 2 + np.pi/4
+            for square_radius in [large_square_radius, small_square_radius]:
+                x: float = square_radius * np.cos(angle)
+                y: float = square_radius * np.sin(angle)
+                z: float = large_square_radius + face_offset
+                point_vec: np.ndarray = np.array([x, y, z], dtype=np.float32)
+                # rotate point_vec to align with face_direction
+                rotation, *_ = Rotation.align_vectors(np.array([0, 0, 1], dtype=np.float32), face_direction)
+                point_vec: np.ndarray = rotation.apply(point_vec)
+                vertices.append(point_vec)
+    vertices = np.array(vertices)
+    return vertices, []
+
+
 if __name__ == "__main__":
     # tetrahedron corners
     # X, edges = axis_tetragedron_vertices()
     # regular tetrahedron
     # X, edges = tetrahedron_vertices()
     # cube corners
-    X, edges = cube_vertices()
+    # X, edges = cube_vertices()
     # dodecahedron points
     # X, edges = dodecahedron_vertices()
     # X = X
+    # helicopter cube
+    X, edges = helicopter_cube_vertices()
     main(X, edges)

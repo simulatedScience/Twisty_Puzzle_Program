@@ -32,7 +32,7 @@ from tqdm.auto import tqdm
 # else:
 #     from .reward_functions import binary_reward, euclidean_distance_reward, correct_points_reward
     
-from reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory
+from reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 
 class Twisty_Puzzle_Env(Env):
     def __init__(self,
@@ -122,11 +122,9 @@ class Twisty_Puzzle_Env(Env):
         
         # terminated = np.all(self.state == self.solved_state)
         truncated = self.current_step >= self.max_moves
-        
-        # reward = 1 if terminated else 0
-        # reward, terminated = euclidean_distance_reward(self.state, action, self.solved_state)
-        reward, terminated = self.reward_func(self.state)
-        
+
+        reward, terminated = self.reward_func(self.state, truncated)
+
         if truncated or terminated:
             self.episode_success_history[self.episode_counter % self.last_n_episodes] = terminated
         
@@ -285,6 +283,8 @@ def main(
         reward_func = correct_points_reward_factory(solved_state)
     elif reward == "most_correct_points":
         reward_func = most_correct_points_reward_factory(solved_states)
+    elif reward == "sparse_most_correct_points":
+        reward_func = sparse_most_correct_points_reward_factory(solved_states)
     else:
         raise ValueError(f"Unknown reward function: {reward}. Expected one of ('binary', 'correct_points', 'most_correct_points').")
     
@@ -298,7 +298,7 @@ def main(
             exp_identifier=exp_identifier,
     )
     # env.scramble_length = start_scramble_depth
-    monitor_env = Monitor(env)
+    monitor_env = Monitor(env) # to log episode rewards
     env.monitor = monitor_env
     # env
     model_path = os.path.join(model_folder, f"{exp_identifier}.zip")
@@ -584,23 +584,49 @@ if __name__ == "__main__":
     #     pool.starmap(main, kwargs_list)
     # # In terminal, run "tensorboard --logdir dino_cube_plus_tb_logs" to view training progress
     
+    # success_thresholds = [.1]
+    # scramble_depths_rewards = [
+    #     (1, "binary"),
+    #     (8, "most_correct_points"),
+    #     (16, "most_correct_points"),
+    #     (32, "most_correct_points"),
+    # ]
+    # n_processes = 4
+    # kwargs_list  = [
+    #         (
+    #         "rubiks_ai_sym_algs", # puzzle_name
+    #         ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"], # base_actions
+    #         None,            # load_model
+    #         True,            # train_new
+    #         50_000_000,       # n_episodes
+    #         "rubiks_ai_sym_algs_models",  # model_folder
+    #         "rubiks_ai_sym_algs_tb_logs", # tb_log_folder
+    #         scramble_depth,  # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         reward,          # reward
+    #     ) for threshold in success_thresholds
+    #         for scramble_depth, reward in scramble_depths_rewards
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # # In terminal, run "tensorboard --logdir rubiks_ai_sym_algs_tb_logs" to view training progress
     success_thresholds = [.1]
     scramble_depths_rewards = [
-        (1, "binary"),
-        (8, "most_correct_points"),
-        (16, "most_correct_points"),
-        (32, "most_correct_points"),
+        (2, "binary"),
+        (1, "sparse_most_correct_points"),
+        (8, "sparse_most_correct_points"),
+        (16, "sparse_most_correct_points"),
     ]
     n_processes = 4
     kwargs_list  = [
             (
-            "rubiks_ai_sym_algs", # puzzle_name
-            ["f", "f'", "r", "r'", "t", "t'", "b", "b'", "l", "l'", "d", "d'"], # base_actions
+            "helicopter_cube_sym_algs", # puzzle_name
+            ["wg", "wo", "wb", "bo", "wr", "br", "gr", "yg", "yo", "yb", "yr", "go"], # base_actions
             None,            # load_model
             True,            # train_new
-            50_000_000,       # n_episodes
-            "rubiks_ai_sym_algs_models",  # model_folder
-            "rubiks_ai_sym_algs_tb_logs", # tb_log_folder
+            6_000_000,       # n_episodes
+            "helicopter_cube_sym_algs_models",  # model_folder
+            "helicopter_cube_sym_algs_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth
             threshold,       # success_threshold
             reward,          # reward
@@ -609,4 +635,4 @@ if __name__ == "__main__":
         ]
     with mp.Pool(n_processes) as pool:
         pool.starmap(main, kwargs_list)
-    # In terminal, run "tensorboard --logdir rubiks_ai_sym_algs_tb_logs" to view training progress
+    # In terminal, run "tensorboard --logdir helicopter_cube_sym_algs_tb_logs" to view training progress

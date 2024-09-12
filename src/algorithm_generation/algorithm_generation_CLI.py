@@ -204,14 +204,14 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             puzzle=puzzle,
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
-            # max_time=3,
-            max_time=300,
+            # max_time=3, # 3 seconds
+            max_time=1200, # 20 minutes
             max_base_sequence_length=20,
             max_move_sequence_order=200,
             max_algorithm_moves=100, # 100
             max_algorithm_order=6,
             max_pieces_affected=4, # 4
-            max_number_of_algorithms=128, # 20
+            max_number_of_algorithms=48, # 20
             max_iterations_without_new_algorithm=20000,
             verbosity=2,
         )
