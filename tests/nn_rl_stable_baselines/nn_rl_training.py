@@ -24,6 +24,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.env_util import make_vec_env
 from tqdm.auto import tqdm
 # import logging
 
@@ -268,6 +269,7 @@ def main(
         start_scramble_depth: int = 1,
         success_threshold: float = 0.9,
         reward: str = "binary",
+        device: str = "cpu",
     ):
     # exp_name = f"{puzzle_name}_model"
     exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_episodes}"
@@ -288,6 +290,20 @@ def main(
     else:
         raise ValueError(f"Unknown reward function: {reward}. Expected one of ('binary', 'correct_points', 'most_correct_points').")
     
+    def make_env():
+        env = Twisty_Puzzle_Env(
+                solved_state,
+                actions_dict,
+                base_actions=base_actions,
+                initial_scramble_length=start_scramble_depth,
+                success_threshold=success_threshold,
+                reward_func=reward_func,
+                exp_identifier=exp_identifier,
+        )
+        # env.scramble_length = start_scramble_depth
+        monitor_env = Monitor(env) # to log episode rewards
+        env.monitor = monitor_env
+        return monitor_env
     env = Twisty_Puzzle_Env(
             solved_state,
             actions_dict,
@@ -297,9 +313,6 @@ def main(
             reward_func=reward_func,
             exp_identifier=exp_identifier,
     )
-    # env.scramble_length = start_scramble_depth
-    monitor_env = Monitor(env) # to log episode rewards
-    env.monitor = monitor_env
     # env
     model_path = os.path.join(model_folder, f"{exp_identifier}.zip")
     if load_model:
@@ -307,22 +320,26 @@ def main(
         model = PPO.load(
             model_path,
             env,
-            device="cpu",
+            device=device,
         )
         # print(model.policy)
     elif not train_new and os.path.exists(model_path):
         print("Loading existing model...")
         model = PPO.load(
             model_path,
-            device="cpu"
+            device=device,
         )
     else:
         print("Training new model...")
+        # see https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html for make_vec_env example
+        vec_env = make_vec_env(make_env, n_envs=20000)
         model = PPO(
             "MlpPolicy",
-            monitor_env,
+            vec_env, # monitor_env,
             verbose=0,
-            device="cpu",
+            device=device,
+            batch_size=20000,
+            n_steps=50,
             tensorboard_log=f"{tb_log_folder}/{exp_identifier}",
         )
         # print(model.policy)
@@ -336,15 +353,15 @@ def main(
             save_path=os.path.join(model_folder, exp_identifier),
             name_prefix=f"{exp_identifier}",
         )
-        early_stopping_callback = EarlyStopCallback(
-            monitor_env,
-            max_difficulty=100, # Early Stopping at scramble depth 100
-        )
+        # early_stopping_callback = EarlyStopCallback(
+        #     monitor_env,
+        #     max_difficulty=100, # Early Stopping at scramble depth 100
+        # )
         model.learn(
             total_timesteps=n_episodes,
             reset_num_timesteps=False,
-            tb_log_name=f"{exp_identifier}_{n_episodes}_{env.scramble_length}",
-            callback=[checkpoint_callback, early_stopping_callback],
+            tb_log_name=f"",
+            callback=[checkpoint_callback]#, early_stopping_callback],
             # progress_bar=True,
             # log_interval=5000,
         )
@@ -610,6 +627,32 @@ if __name__ == "__main__":
     # with mp.Pool(n_processes) as pool:
     #     pool.starmap(main, kwargs_list)
     # # In terminal, run "tensorboard --logdir rubiks_ai_sym_algs_tb_logs" to view training progress
+    # success_thresholds = [.1]
+    # scramble_depths_rewards = [
+    #     (2, "binary"),
+    #     (1, "sparse_most_correct_points"),
+    #     (8, "sparse_most_correct_points"),
+    #     (16, "sparse_most_correct_points"),
+    # ]
+    # n_processes = 4
+    # kwargs_list  = [
+    #         (
+    #         "helicopter_cube_sym_algs", # puzzle_name
+    #         ["wg", "wo", "wb", "bo", "wr", "br", "gr", "yg", "yo", "yb", "yr", "go"], # base_actions
+    #         None,            # load_model
+    #         True,            # train_new
+    #         6_000_000,       # n_episodes
+    #         "helicopter_cube_sym_algs_models",  # model_folder
+    #         "helicopter_cube_sym_algs_tb_logs", # tb_log_folder
+    #         scramble_depth,  # start_scramble_depth
+    #         threshold,       # success_threshold
+    #         reward,          # reward
+    #     ) for threshold in success_thresholds
+    #         for scramble_depth, reward in scramble_depths_rewards
+    #     ]
+    # with mp.Pool(n_processes) as pool:
+    #     pool.starmap(main, kwargs_list)
+    # # In terminal, run "tensorboard --logdir helicopter_cube_sym_algs_tb_logs" to view training progress
     success_thresholds = [.1]
     scramble_depths_rewards = [
         (2, "binary"),
@@ -617,22 +660,23 @@ if __name__ == "__main__":
         (8, "sparse_most_correct_points"),
         (16, "sparse_most_correct_points"),
     ]
-    n_processes = 4
+    n_processes = 1
     kwargs_list  = [
             (
-            "helicopter_cube_sym_algs", # puzzle_name
-            ["wg", "wo", "wb", "bo", "wr", "br", "gr", "yg", "yo", "yb", "yr", "go"], # base_actions
+            "cube_2x2x2_sym_algs", # puzzle_name
+            ["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"], # base_actions
             None,            # load_model
             True,            # train_new
-            6_000_000,       # n_episodes
-            "helicopter_cube_sym_algs_models",  # model_folder
-            "helicopter_cube_sym_algs_tb_logs", # tb_log_folder
+            5_000_000,       # n_episodes
+            "cube_2x2x2_sym_algs_models",  # model_folder
+            "cube_2x2x2_sym_algs_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth
             threshold,       # success_threshold
             reward,          # reward
+            "cuda",
         ) for threshold in success_thresholds
             for scramble_depth, reward in scramble_depths_rewards
         ]
     with mp.Pool(n_processes) as pool:
         pool.starmap(main, kwargs_list)
-    # In terminal, run "tensorboard --logdir helicopter_cube_sym_algs_tb_logs" to view training progress
+    # In terminal, run "tensorboard --logdir cube_2x2x2_sym_algs_tb_logs" to view training progress

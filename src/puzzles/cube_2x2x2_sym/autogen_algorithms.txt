@@ -1,0 +1,5 @@
+alg_1 = 5*(D' L' F' L U L F' B R' B')
+alg_1' = 5*(B R B' F L' U' L' F L D)
+alg_2 = 5*(D U B' U' L F' D' L U L R L F U F' U L)
+alg_2' = 5*(L' U' F U' F' L' R' L' U' L' D F L' U B U' D')
+alg_3 = 2*(U' B F' R L L R' L' B R' L F' U' R' L)

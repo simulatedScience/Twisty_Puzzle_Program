@@ -10,8 +10,11 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3 import PPO 
 
-from nn_rl_environment import Twisty_Puzzle_Env, EarlyStopCallback
-from src.ai_modules.nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
+from nn_rl_environment import Twisty_Puzzle_Env, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
+# try:
+#     from .ai_modules.nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
+# except ImportError:
+from nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 
 def train_agent(
         puzzle_name: str,
@@ -25,7 +28,7 @@ def train_agent(
     ) -> tuple[str, torch.nn.Module]:
     # experiment folder named as yyyy-mm-dd_hh-mm-ss
     exp_folder: str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    exp_folder_path: str = os.path.join("ai_files", puzzle_name, exp_folder)
+    exp_folder_path: str = os.path.join("src", "ai_files", puzzle_name, exp_folder)
     model_snapshots_folder: str = os.path.join(exp_folder_path, "model_snapshots")
     tb_log_folder: str = os.path.join(exp_folder_path, "tb_logs")
     os.makedirs(exp_folder_path, exist_ok=True)
@@ -40,7 +43,7 @@ def train_agent(
             initial_scramble_length=start_scramble_depth,
             success_threshold=success_threshold,
             reward_func=reward_func,
-            exp_identifier=exp_identifier,
+            # exp_identifier=exp_identifier,
     )
     # env.scramble_length = start_scramble_depth
     monitor_env = Monitor(env)
@@ -85,6 +88,8 @@ def train_agent(
         # save training info
         save_training_info(
             exp_folder_path,
+            mode="w",
+            training_start=exp_folder,
             puzzle_name=puzzle_name,
             base_actions=base_actions,
             reward=reward,
@@ -107,6 +112,11 @@ def train_agent(
             n_steps += n_prev_episodes
         save_path: str = os.path.join(model_snapshots_folder, f"{n_steps}_steps.zip")
         model.save(save_path)
+        save_training_info(
+            exp_folder_path,
+            mode="a",
+            training_end=datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+        )
         print(f"="*75 + f"\nSaved final model to {save_path}")
 
     return exp_folder_path, model, env
@@ -123,6 +133,7 @@ def train_agent(
 
 def save_training_info(
         exp_folder_path: str,
+        mode: str = "w",
         **kwargs,
     ):
     """
@@ -130,8 +141,9 @@ def save_training_info(
 
     Args:
         exp_folder_path (str): path to the experiment folder
+        mode (str): mode for opening the file (e.g. "w" for write, "a" for append)
     """
-    with open(os.path.join(exp_folder_path, "training_info.json"), "w") as file:
+    with open(os.path.join(exp_folder_path, "training_info.json"), mode) as file:
         json.dump(kwargs, file, indent=4)
 
 def load_puzzle(puzzle_name: str):
@@ -204,7 +216,7 @@ def setup_training(
     # check for whole puzzle rotation moves
     _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
     # calculate rotations of the solved state
-    solved_states: torch.Tensor = [solved_state] + [Twisty_Puzzle_Env.apply_permutation(solved_state.copy(), actions_dict[rotation]) for rotation in rotations]
+    solved_states: torch.Tensor = get_rotated_solved_states(solved_state, [actions_dict[rot] for rot in rotations])
     # define reward function
     if reward == "binary":
         reward_func = binary_reward_factory(solved_state)
@@ -217,6 +229,28 @@ def setup_training(
     else:
         raise ValueError(f"Unknown reward function: {reward}. Expected one of ('binary', 'correct_points', 'most_correct_points').")
     return solved_state, actions_dict, reward_func
+
+def get_rotated_solved_states(
+        solved_state: list[int],
+        rotations: list[list[list[int]]],
+    ) -> torch.Tensor:
+    """
+    Generate all permutations of the solved state by applying the given rotations.
+    Return the permutations in full form as rows in a tensor.
+
+    Args:
+        solved_state (list[int]): the solved state of the puzzle
+        rotations (list[list[list[int]]]): list of rotations in cyclic form
+
+    Returns:
+        torch.Tensor: tensor of all rotated solved states. First row is the given solved state.
+    """
+    full_rotation_tensors: list[torch.Tensor] = [permutation_cycles_to_tensor(len(solved_state), rotation) for rotation in rotations]
+    solved_tensor: torch.Tensor = torch.tensor(solved_state, dtype=STICKER_DTYPE)
+    all_rotations: list[torch.Tensor] = [solved_tensor]
+    for rotation in full_rotation_tensors:
+        all_rotations.append(solved_tensor[rotation])
+    return torch.stack(all_rotations)
 
 def get_action_index_to_name(
         actions_dict: dict[str, list[list[int]]],
@@ -235,3 +269,4 @@ def get_action_index_to_name(
         i: name for i, name in enumerate(sorted(actions_dict.keys()))
     }
     return action_index_to_name
+

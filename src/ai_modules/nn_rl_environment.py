@@ -8,11 +8,13 @@ Author: Sebastian Jost
 
 
 import gymnasium as gym
+from gymnasium.spaces import MultiDiscrete, Discrete
 import torch
 from stable_baselines3.common.callbacks import BaseCallback
 
 
-STICKER_DTYPE: torch.dtype = torch.uint16
+STICKER_DTYPE: torch.dtype = torch.int32
+# STICKER_DTYPE: torch.dtype = torch.uint16
 
 class Twisty_Puzzle_Env(gym.Env):
     def __init__(self,
@@ -28,16 +30,24 @@ class Twisty_Puzzle_Env(gym.Env):
             ):
         self.device: str = device
         self.solved_state, self.actions, self.base_actions = puzzle_info_to_torch(solved_state, actions, base_actions, device=device)
-
-        self.num_base_actions = torch.uint16(len(self.base_actions))
-        self.max_moves = torch.uint16(max_moves, device=self.device)
-        self.episode_counter = torch.uint16(0)
-        self.scramble_length = torch.uint16(initial_scramble_length)
+        # move state and actions to device
+        self.solved_state.to(self.device)
+        self.actions.to(self.device)
+        self.base_actions.to(self.device)
+        # initialize other parameters for RL training on device
+        self.num_base_actions = torch.tensor(len(self.base_actions), device=self.device)
+        self.max_moves = torch.tensor(max_moves, device=self.device)
+        self.episode_counter = torch.tensor(0, device=self.device)
+        self.scramble_length = torch.tensor(initial_scramble_length, device=self.device)
         self.reward_func = reward_func
-        self.success_threshold = torch.float16(success_threshold)
-        
-        self.last_n_episodes = torch.uint16(1000)
+        self.success_threshold = torch.tensor(success_threshold, device=self.device)
+        # parameters for tracking success rate
+        self.last_n_episodes = torch.tensor(1000, device=self.device)
         self.episode_success_history = torch.zeros(self.last_n_episodes, dtype=torch.bool, device=self.device)
+
+        # define variables for gym environment (Observation and Action Space)
+        self.observation_space = MultiDiscrete([len(set(solved_state))] * len(solved_state))
+        self.action_space = Discrete(len(actions))
 
     def reset(self, seed = None, options=None) -> torch.Tensor:
         self.state: torch.Tensor = self.solved_state.clone()
@@ -122,16 +132,14 @@ def puzzle_info_to_torch(
     torch_state: torch.Tensor = torch.tensor(state, dtype=STICKER_DTYPE, device=device)
     state_length: int = len(state)
     actions_list = [permutation_cycles_to_tensor(state_length, actions[movename]) for movename in sorted(actions.keys())]
-    torch_actions: torch.Tensor = torch.tensor(actions_list, dtype=STICKER_DTYPE, device=device)
+    torch_actions: torch.Tensor = torch.stack(actions_list)
 
     if base_actions is None:
         base_actions = torch_actions
     else:
         sorted_actions: list[str] = sorted(actions.keys())
-        base_actions = torch.tensor(
-            [actions[sorted_actions.index(base_action)] for base_action in base_actions],
-            dtype=STICKER_DTYPE,
-            device=device
+        base_actions = torch.stack(
+            [actions_list[sorted_actions.index(base_action)] for base_action in base_actions],
         )
         del sorted_actions
 
@@ -158,3 +166,16 @@ def permutation_cycles_to_tensor(state_length: int, action: list[list[int]]) -> 
     return permutation
 
 
+if __name__ == "__main__":
+    # check environment with gym environment checker
+    from stable_baselines3.common.env_checker import check_env
+    check_env(Twisty_Puzzle_Env(
+        solved_state=[0, 1, 2, 3, 4, 5],
+        actions={"U": [[0, 1, 2], [3, 4, 5]]},
+        base_actions=["U"],
+        max_moves=10,
+        initial_scramble_length=1,
+        success_threshold=0.9,
+        reward_func=lambda state, truncated: (0., truncated),
+        device="cuda",
+        ))
