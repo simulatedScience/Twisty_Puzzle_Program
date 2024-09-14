@@ -100,7 +100,7 @@ def test_find_rotational_symmetries(
     # show rotations one after the other. Wait for user confirmation
     i = 0
     while i < len(rotations):
-        print(f"Showing rotation {i+1}/{len(rotations)}: Angle: {np.rad2deg(rotations[i][0]):.2f}°, symmetry measure: {rotation_symmetry_measure(X, rotations[i], alpha=alpha):.2f}, Axis: {rotations[i][1]}, Support: {rotations[i][2]}.")
+        print(f"Showing rotation {i+1}/{len(rotations)}: Angle: {np.rad2deg(rotations[i][0]):.2f}°, symmetry measure: {rotation_symmetry_measure(X, rotations[i], alpha=alpha):.2f}, Axis: {rotations[i][1].round(3)}, Support: {rotations[i][2]}.")
         angle, axis, axis_support = rotations[i]
         plt.pause(anim_pause)
         show_rotation(
@@ -336,6 +336,36 @@ def helicopter_cube_vertices():
     vertices = np.array(vertices)
     return vertices, []
 
+def cube_2x2_stickers():
+    offset_face = 10
+    X = np.array([
+        [ 1, 1, offset_face], # top face
+        [ 1,-1, offset_face],
+        [-1, 1, offset_face],
+        [-1,-1, offset_face],
+        [ 1, 1,-offset_face], # bottom face
+        [ 1,-1,-offset_face],
+        [-1, 1,-offset_face],
+        [-1,-1,-offset_face],
+        [ offset_face, 1, 1], # right face
+        [ offset_face,-1, 1],
+        [ offset_face, 1,-1],
+        [ offset_face,-1,-1],
+        [-offset_face, 1, 1], # left face
+        [-offset_face,-1, 1],
+        [-offset_face, 1,-1],
+        [-offset_face,-1,-1],
+        [ 1, offset_face, 1], # front face
+        [ 1, offset_face,-1],
+        [-1, offset_face, 1],
+        [-1, offset_face,-1],
+        [ 1,-offset_face, 1], # back face
+        [ 1,-offset_face,-1],
+        [-1,-offset_face, 1],
+        [-1,-offset_face,-1],
+    ])
+    return X, None
+
 
 if __name__ == "__main__":
     # tetrahedron corners
@@ -349,4 +379,6 @@ if __name__ == "__main__":
     # X = X
     # helicopter cube
     X, edges = helicopter_cube_vertices()
+    # rubiks 2x2
+    # X, edges = cube_2x2_stickers()
     main(X, edges)

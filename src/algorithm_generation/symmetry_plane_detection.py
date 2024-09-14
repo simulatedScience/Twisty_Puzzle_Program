@@ -7,26 +7,26 @@ References:
 [1] [Hruda et. al.](https://doi.org/10.1007/s00371-020-02034-w)
 """
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
 def init_planes(
         X: np.ndarray,
-        num_planes: int = 1000,
         threshold: float = 0.1,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
     """
     Generate a set of random planes for symmetry detection by choosing two random points from X and computing the normal vector of the plane spanned by these points. The plane passes through the midpoint between these two points. Repeat `num_planes` times and only keep planes that are not too similar to the existing planes.
     """
-    n: int = X.shape[0]
+    # n: int = X.shape[0]
     found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
-    # for idx_1, p1 in enumerate(X[:-1]):
-    #     for p2 in X[idx_1+1:]:
-    for _ in range(num_planes):
-            # choose two random points
-            idx1: int = np.random.randint(0, n-1)
-            idx2: int = np.random.randint(idx1 + 1, n)
-            # compute normal vector of plane across which one point is reflected to the other
-            p1, p2 = X[idx1], X[idx2]
+    for idx_1, p1 in enumerate(X[:-1]):
+        for p2 in X[idx_1+1:]:
+    # for _ in range(num_planes):
+    #         # choose two random points
+    #         idx1: int = np.random.randint(0, n-1)
+    #         idx2: int = np.random.randint(idx1 + 1, n)
+    #         # compute normal vector of plane across which one point is reflected to the other
+    #         p1, p2 = X[idx1], X[idx2]
 
             diff_vector: np.ndarray = p2 - p1
             normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
@@ -170,18 +170,16 @@ def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> 
 
 def find_symmetry_planes(
         X: np.ndarray,
-        num_planes: int = 1000,
         threshold: float = 0.1,
         alpha: float = 1.0,
         S: int = 5,
-        min_score_ratio: float = 0.95,
+        min_score_ratio: float = 0.99,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
     """
     Find the best symmetry planes and optimize over them.
 
     Args:
         X (np.ndarray): set of points
-        num_planes (int): number of planes to generate
         threshold (float): threshold to check if a plane is too similar to existing planes
         alpha (float): parameter to control the similarity function
         S (int): number of best planes to keep
@@ -189,7 +187,14 @@ def find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
-    planes = init_planes(X, num_planes, threshold)
+    # normalize X scaling such that points are at most distance 1 from the origin
+    # translate to the origin
+    X = X - np.mean(X, axis=0)
+    # scale to unit sphere
+    X = X / np.max(np.linalg.norm(X, axis=1))
+    # print parameters
+    print(f"find_symmetry_planes(X, {threshold}, {alpha}, {S}, {min_score_ratio})")
+    planes = init_planes(X, threshold)
     print(f"Initalized {len(planes)} planes.")
     best_planes = []
     best_scores = []
@@ -225,10 +230,16 @@ def find_symmetry_planes(
     pruned_symmetry_planes = []
     for plane in symmetry_planes:
         for other_plane in pruned_symmetry_planes:
-            if plane_distance(plane, other_plane) < threshold:
+            if (dist := plane_distance(plane, other_plane)) < threshold:
+                # if dist < 0:
+                #     print(f"unexpected plane distance: {dist} between planes\n[{plane}]\n[{other_plane}]")
+                # else:
+                #     print(f"plane distance: {dist} between planes\n[{plane}]\n[{other_plane}]")
                 break
         else:
             pruned_symmetry_planes.append(plane)
+    # DEBUG: plot symmetry planes
+    # plot_symmetry_planes(2*X, pruned_symmetry_planes)
     return pruned_symmetry_planes
 
 def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
@@ -291,3 +302,111 @@ def centroid(X: np.ndarray) -> np.ndarray:
         np.ndarray: centroid of the points
     """
     return np.mean(X, axis=0)
+
+def plot_symmetry_planes(X, symmetry_planes):
+    print(f"found {len(symmetry_planes)} best planes.")
+    # create a 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # plot the points
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c='b', marker='o')
+    plt.show()
+    # plot the best planes
+    for i, plane in enumerate(symmetry_planes):
+        # plot the plane
+        print(f"Plotting plane {i+1}/{len(symmetry_planes)}: {plane.round(3)}")
+        ax_plane = draw_plane(ax, plane, show_normal=False)
+        print(f"Symmetry measure: {reflect_symmetry_measure(X, plane, 1)}")
+        # update plot
+        plt.draw()
+        input("Press Enter to show next plane")
+        ax_plane.remove()
+    set_equal_aspect_3d(ax)
+    plt.title("Best planes for symmetry detection")
+    plt.show()
+    return symmetry_planes
+
+def draw_plane(
+        ax: plt.Axes,
+        ax_plane: np.ndarray,
+        size: float = 1,
+        show_normal: bool = True,
+        transparency: float = 1.0,
+        ):
+    """
+    Draw a plane in 3D given in standard form (a, b, c, d) (ax + by + cz + d = 0).
+    
+    Args:
+        ax (plt.Axes): matplotlib axis to plot on
+        plane (np.ndarray): plane in standard form (a, b, c, d)
+        size (float): size of the plane to draw
+        show_normal (bool): whether to plot the normal vector
+    """
+    # Extract plane coefficients
+    a, b, c, d = ax_plane
+    
+    # Normal vector of the plane
+    normal = np.array([a, b, c])
+    
+    # Ensure the normal vector is a unit vector
+    normal = normal / np.linalg.norm(normal)
+    
+    # Find a support vector (a point on the plane)
+    # We choose the point (x0, 0, 0) if a != 0
+    if a != 0:
+        support = np.array([-d / a, 0, 0])
+    elif b != 0:
+        support = np.array([0, -d / b, 0])
+    elif c != 0:
+        support = np.array([0, 0, -d / c])
+    else:
+        raise ValueError("Invalid plane coefficients. At least one of a, b, c must be non-zero.")
+    
+    # Define a grid in the plane
+    d = np.linspace(-size, size, 10)
+    D1, D2 = np.meshgrid(d, d)
+    
+    # Find a third vector perpendicular to the normal vector
+    n1 = np.array([1, 0, 0])
+    if np.allclose(normal, n1) or np.allclose(normal, -n1):
+        n1 = np.array([0, 1, 0])
+    v1 = np.cross(normal, n1)
+    v1 /= np.linalg.norm(v1)
+    
+    # Find another vector in the plane
+    v2 = np.cross(normal, v1)
+    v2 /= np.linalg.norm(v2)
+    
+    # Plane points
+    plane_points = support + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
+    ax_plane = ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=transparency, rstride=100, cstride=100)
+    
+    if show_normal:
+        # plot the normal vector
+        ax.quiver(support[0], support[1], support[2], normal[0], normal[1], normal[2], color='r')
+    return ax_plane
+
+def set_equal_aspect_3d(ax):
+    """
+    Sets equal scaling for all three axes of a 3D plot.
+
+    Parameters:
+    ax (Axes3D): A Matplotlib 3D Axes object.
+    """
+    # Get the current limits
+    x_limits = ax.get_xlim()
+    y_limits = ax.get_ylim()
+    z_limits = ax.get_zlim()
+
+    # Determine the new limits that make the axes scaled equally
+    all_limits = np.array([x_limits, y_limits, z_limits])
+    min_limit = all_limits[:, 0].min()
+    max_limit = all_limits[:, 1].max()
+
+    # Set the new limits
+    ax.set_xlim([min_limit, max_limit])
+    ax.set_ylim([min_limit, max_limit])
+    ax.set_zlim([min_limit, max_limit])
+
+    # Set the same scale for all axes
+    ax.set_box_aspect([1, 1, 1])  # aspect ratio is 1:1:1

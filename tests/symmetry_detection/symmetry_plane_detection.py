@@ -19,14 +19,14 @@ def init_planes(
     """
     n: int = X.shape[0]
     found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
-    # for idx_1, p1 in enumerate(X[:-1]):
-    #     for p2 in X[idx_1+1:]:
-    for _ in range(num_planes):
-            # choose two random points
-            idx1: int = np.random.randint(0, n-1)
-            idx2: int = np.random.randint(idx1 + 1, n)
-            # compute normal vector of plane across which one point is reflected to the other
-            p1, p2 = X[idx1], X[idx2]
+    for idx_1, p1 in enumerate(X[:-1]):
+        for p2 in X[idx_1+1:]:
+    # for _ in range(num_planes):
+    #         # choose two random points
+    #         idx1: int = np.random.randint(0, n-1)
+    #         idx2: int = np.random.randint(idx1 + 1, n)
+    #         # compute normal vector of plane across which one point is reflected to the other
+    #         p1, p2 = X[idx1], X[idx2]
 
             diff_vector: np.ndarray = p2 - p1
             normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
@@ -189,6 +189,12 @@ def find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
+    # normalize X scaling such that points are at most distance 1 from the origin
+    # translate to the origin
+    X = X - np.mean(X, axis=0)
+    # scale to unit sphere
+    X = X / np.max(np.linalg.norm(X, axis=1))
+    
     planes = init_planes(X, num_planes, threshold)
     print(f"Initalized {len(planes)} planes.")
     best_planes = []

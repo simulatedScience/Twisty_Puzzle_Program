@@ -151,8 +151,12 @@ def find_rotational_symmetries(
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = []
     k = 0
-    for idx_1, plane_1 in enumerate(planes[:-1]):
-        for idx_2, plane_2 in enumerate(planes[idx_1+1:]):
+    for idx_1, plane_1 in enumerate(planes):
+    # for idx_1, plane_1 in enumerate(planes[:-1]):
+        # for idx_2, plane_2 in enumerate(planes[idx_1+1:]):
+        for idx_2, plane_2 in enumerate(planes):
+            if idx_1 == idx_2:
+                continue
             k += 1
             # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
             rotation_angle: float = 2*np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle of rotation = 2*angle between normals

@@ -111,9 +111,8 @@ def rotation_symmetry_measure(X: np.ndarray, rotation: tuple[float, np.ndarray],
 
 def find_rotational_symmetries(
         X: np.ndarray,
-        num_planes: int = 3000,
         num_candidate_rotations: int = 30,
-        threshold: float = 0.1,
+        plane_similarity_threshold: float = 0.1,
         min_angle: float = np.pi / 12.5,
         num_best_rotations: int = 30,
         alpha: float = 1.0,
@@ -127,7 +126,6 @@ def find_rotational_symmetries(
 
     Args:
         X (np.ndarray): set of points
-        num_planes (int): number of planes to generate
         num_candidate_rotations (int): number of candidate rotations to generate
         threshold (float): threshold to check if a plane is too similar to existing planes
         min_angle (float): minimum angle between two planes to consider them for rotation detection in radians (Default: np.pi / 12.5 = just under 15°)
@@ -143,7 +141,7 @@ def find_rotational_symmetries(
     X_shift = centroid(X)
     X = X - X_shift
     # Step 1: Find reflectional symmetry planes
-    planes = find_symmetry_planes(X, num_planes, threshold, S=num_candidate_rotations)
+    planes = find_symmetry_planes(X, plane_similarity_threshold, alpha=alpha, S=num_candidate_rotations)
     print(f"Found {len(planes)} symmetry planes.")
     print(f"Searching {((len(planes)-1)**2+len(planes)-1)//2} rotation candidates.")
 
@@ -152,8 +150,10 @@ def find_rotational_symmetries(
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = []
     k = 0
-    for idx_1, plane_1 in enumerate(planes[:-1]):
-        for idx_2, plane_2 in enumerate(planes[idx_1+1:]):
+    for idx_1, plane_1 in enumerate(planes):
+        for idx_2, plane_2 in enumerate(planes):
+            if idx_1 >= idx_2:
+                continue
             k += 1
             # print(f"{np.dot(plane_1[1], plane_2[1]) = }")
             rotation_angle: float = 2*np.arccos(np.dot(plane_1[:3], plane_2[:3]))  # angle of rotation = 2*angle between normals
@@ -167,7 +167,7 @@ def find_rotational_symmetries(
                 continue # planes are parallel (should never happen here)
             if not rotation_angle or np.isnan(rotation_angle):
                 # This should never happen
-                # raise ValueError("Encountered invalid rotation_angle")
+                raise ValueError("Encountered invalid rotation_angle")
                 from symmetry_plane_detection import plane_distance
                 print(f"dot product of plane normals: {np.dot(plane_1[:3], plane_2[:3])}")
                 print(f"plane_1 {idx_1}: {(plane_1)}")
@@ -192,10 +192,13 @@ def find_rotational_symmetries(
                 plt.show()
                 continue
             axis_support, axis = intersection
+            print(f"Considering rotation candidate {k} with angle {rotation_angle*360/(2*np.pi):.2f}° and axis {axis.round(3)}")
             # make sure rotation_angle is in [min_angle, pi]
             rotation_angle = rotation_angle % (2*np.pi)
             if rotation_angle > np.pi:
+                # invert the rotation by flipping the axis and mapping the angle to [0, pi]
                 rotation_angle = 2*np.pi - rotation_angle
+                axis = -axis
             # Step 2.2: Prune rotation candidates if they are too similar to existing ones
             quaternion = R.from_rotvec(rotation_angle * axis).as_quat()
             # candidate: (quaternion, axis_support) = (Q,s) in paper [1]
@@ -210,7 +213,7 @@ def find_rotational_symmetries(
                     key_rots = R.from_quat([Q_i, quaternion])
                     slerp = Slerp([0, 1], key_rots)
                     Q_new = slerp(1 / new_weight).as_quat()
-                    # check norm of quaternion
+                    # # check norm of quaternion
                     # if np.abs(np.linalg.norm(quaternion[:3]) - 1) > 1e-10:
                     #     print(f"Encountered Q_avg with norm < 1: {quaternion}, norm = {np.linalg.norm(quaternion[:3])}")
                     #     continue
@@ -227,6 +230,7 @@ def find_rotational_symmetries(
                 # # else:
                 # axis2 = R.from_quat(quaternion)
                 pruned_candidates.append((quaternion, axis_support, 1)) # (Q, s, w(Q, s))
+            # pruned_candidates.append((quaternion, axis_support, 1)) # (Q, s, w(Q, s))
     # Step 3: Evaluate candidate rotations and find best ones
     best_rotations = []
     best_scores = []
@@ -246,10 +250,18 @@ def find_rotational_symmetries(
                 best_scores.append(score)
                 best_rotations.append((rotation_angle, axis, s))
 
-    # Step 4: remove rotations with score < best_score * min_score_ratio
-    best_score = max(best_scores)
-    best_rotations = [rotation for rotation, score in zip(best_rotations, best_scores) if score >= best_score * min_score_ratio]
-    del best_scores # best_scores no longer accurate since best_rotations has been pruned
+    # # Step 4: remove rotations with score < best_score * min_score_ratio
+    # best_score = max(best_scores)
+    # pruned_best_rotations = []
+    # for rotation, score in zip(best_rotations, best_scores):
+    #     if score >= best_score * min_score_ratio:
+    #         pruned_best_rotations.append(rotation)
+    #     else:
+    #         print(f"Pruned rotation with score {score} due to low score: {score} < {best_score} * {min_score_ratio}")
+    #         print(f"Rotation with angle {rotation[0]*360/(2*np.pi):.2f}° and axis {rotation[1].round(3)}")
+    # best_rotations = pruned_best_rotations
+    # # best_rotations = [rotation for rotation, score in zip(best_rotations, best_scores) if score >= best_score * min_score_ratio]
+    # del best_scores # best_scores no longer accurate since best_rotations has been pruned
 
     def objective(rotation_components):
         angle: float = rotation_components[0]
@@ -264,26 +276,56 @@ def find_rotational_symmetries(
     for rotation in best_rotations:
         result = minimize(objective, concat_rotation(rotation), method="L-BFGS-B")
         # symmetry_rotations.append((result.x[0], result.x[1:4], result.x[4:]))
-        symmetry_rotations.append((result.x[0], result.x[1:4], np.zeros(3)))
+        angle = result.x[0]
+        axis = result.x[1:4]
+        axis /= np.linalg.norm(axis) # normalize axis
+        axis_support = np.zeros(3)
+        symmetry_rotations.append((angle, axis, axis_support))
     # Step 5: Prune rotations that are too similar to existing ones
+    # note that angles are always between 0 and pi, inverses have an inverted axis
+    print(f"Found {len(symmetry_rotations)} symmetry rotations.\nPruning rotations with similar axis and angle...")
     pruned_rotations = []
     for rotation in symmetry_rotations:
-        for (angle, axis, _) in pruned_rotations:
-            if np.linalg.norm(np.cross(rotation[1], axis)) < similar_axis_tol and rotation[0] - angle < min_angle:
+        for i, (angle, axis, _) in enumerate(pruned_rotations):
+            # check if the axis AND angle are similar to an existing one 
+            if np.linalg.norm(rotation[1] - axis) < similar_axis_tol and abs(rotation[0] - angle) < min_angle:
+                print(f"Pruned rotation with angle {rotation[0]*360/(2*np.pi):.2f}° and axis {rotation[1].round(3)} due to similarity to rotation {i}")
                 break
         else:
+            print(f"Added rotation {len(pruned_rotations)} with angle {rotation[0]*360/(2*np.pi):.2f}° and axis {rotation[1].round(3)}")
             pruned_rotations.append(rotation)
     # Step 6: Find all possible rotation angles for each axis
     
     # Step 7: Shift back to original coordinates
     symmetry_rotations = [(angle, (axis/np.linalg.norm(axis)), axis_support + X_shift) for angle, axis, axis_support in pruned_rotations]
     # for each rotation, print axis, support, angle and symmetry measure
-    for rotation in symmetry_rotations:
-        print(f"rotation around axis {rotation[1]} with support {rotation[2]} by {360*rotation[0]/(2*np.pi):.2f}°.")
-        print(f"Symmetry measure: {rotation_symmetry_measure(X, rotation, alpha)}")
+    # for i, rotation in enumerate(symmetry_rotations):
+    #     print(f"rotation {i} aro>und axis {rotation[1]} with support {rotation[2]} by {360*rotation[0]/(2*np.pi):.2f}°.")
+    #     print(f"Symmetry measure: {rotation_symmetry_measure(X, rotation, alpha)}")
     return symmetry_rotations
 
-def rotation_distance(epsilon_Q, epsilon_s, axis_support, quaternion, Q_i, s_i):
+def rotation_distance(
+        epsilon_Q: float,
+        epsilon_s: float,
+        axis_support: np.ndarray,
+        quaternion: np.ndarray,
+        Q_i: np.ndarray,
+        s_i: np.ndarray,
+    ) -> bool:
+    """
+    Check if two rotations are similar based on the quaternion and axis support. Similarity is determined by the parameters epsilon_Q (for quaternion similarity) and epsilon_s (for axis support similarity).
+
+    Args:
+        epsilon_Q (float): tolerance for quaternion similarity
+        epsilon_s (float): tolerance for axis support similarity
+        axis_support (np.ndarray): axis support of the rotation
+        quaternion (np.ndarray): quaternion of the rotation
+        Q_i (np.ndarray): quaternion of the rotation to compare to
+        s_i (np.ndarray): axis support of the rotation to compare
+
+    Returns:
+        bool: True if the rotations are similar, False otherwise
+    """
     return np.linalg.norm(
         quaternion - Q_i * np.sign(np.dot(quaternion, Q_i))) < epsilon_Q and \
         np.linalg.norm(axis_support - s_i) < epsilon_s
