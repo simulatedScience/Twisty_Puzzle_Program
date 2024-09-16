@@ -332,13 +332,13 @@ def main(
     else:
         print("Training new model...")
         # see https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html for make_vec_env example
-        vec_env = make_vec_env(make_env, n_envs=20000)
+        vec_env = make_vec_env(make_env, n_envs=100)
         model = PPO(
             "MlpPolicy",
             vec_env, # monitor_env,
             verbose=0,
             device=device,
-            batch_size=20000,
+            batch_size=5000,
             n_steps=50,
             tensorboard_log=f"{tb_log_folder}/{exp_identifier}",
         )
@@ -655,12 +655,12 @@ if __name__ == "__main__":
     # # In terminal, run "tensorboard --logdir helicopter_cube_sym_algs_tb_logs" to view training progress
     success_thresholds = [.1]
     scramble_depths_rewards = [
-        (2, "binary"),
+        (1, "binary"),
         (1, "sparse_most_correct_points"),
         (8, "sparse_most_correct_points"),
         (16, "sparse_most_correct_points"),
     ]
-    n_processes = 1
+    n_processes = 4
     kwargs_list  = [
             (
             "cube_2x2x2_sym_algs", # puzzle_name
