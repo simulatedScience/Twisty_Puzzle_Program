@@ -1,20 +1,19 @@
 """
 This module implements a gymnasium environment to train neural network-based twisty puzzle agents using reinforcement learning.
 
-This implementation uses pytorch in the entire environment to enable parallelization on a GPU.
+This implementation uses numpy in the entire environment to enable efficient parallelization on a GPU.
 
 Author: Sebastian Jost
 """
-
-
 import gymnasium as gym
+import numpy as np
 from gymnasium.spaces import MultiDiscrete, Discrete
-import torch
 from stable_baselines3.common.callbacks import BaseCallback
 
 
-STICKER_DTYPE: torch.dtype = torch.int32
-# STICKER_DTYPE: torch.dtype = torch.uint16
+# STICKER_DTYPE: np.int32 = np.int32
+STICKER_DTYPE: np.dtype = np.uint16
+
 
 class Twisty_Puzzle_Env(gym.Env):
     def __init__(self,
@@ -26,41 +25,37 @@ class Twisty_Puzzle_Env(gym.Env):
             success_threshold=0.9,
             reward_func: callable = None,
             # exp_identifier: str | None = None,
-            device: str = "cuda",
             ):
-        self.device: str = device
-        self.solved_state, self.actions, self.base_actions = puzzle_info_to_torch(solved_state, actions, base_actions, device=device)
-        # move state and actions to device
-        self.solved_state.to(self.device)
-        self.actions.to(self.device)
-        self.base_actions.to(self.device)
-        # initialize other parameters for RL training on device
-        self.num_base_actions = torch.tensor(len(self.base_actions), device=self.device)
-        self.max_moves = torch.tensor(max_moves, device=self.device)
-        self.episode_counter = torch.tensor(0, device=self.device)
-        self.scramble_length = torch.tensor(initial_scramble_length, device=self.device)
-        self.reward_func = reward_func
-        self.success_threshold = torch.tensor(success_threshold, device=self.device)
+        self.solved_state, self.actions, self.base_actions = puzzle_info_to_np(solved_state, actions, base_actions)
+        # initialize other parameters
+        self.num_base_actions: int = len(self.base_actions)
+        self.max_moves: int = max_moves
+        self.episode_counter: int = 0
+        self.scramble_length: int = initial_scramble_length
+        self.reward_func: callable = reward_func
+        self.success_threshold: float = success_threshold
         # parameters for tracking success rate
-        self.last_n_episodes = torch.tensor(1000, device=self.device)
-        self.episode_success_history = torch.zeros(self.last_n_episodes, dtype=torch.bool, device=self.device)
+        self.last_n_episodes: int = 1000
+        self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
+        
+        self.scramble_actions: np.ndarray = np.zeros((0,), dtype=np.int32) # stores the most recent scramble actions
 
         # define variables for gym environment (Observation and Action Space)
         self.observation_space = MultiDiscrete([len(set(solved_state))] * len(solved_state))
         self.action_space = Discrete(len(actions))
 
-    def reset(self, seed = None, options=None) -> torch.Tensor:
-        self.state: torch.Tensor = self.solved_state.clone()
+    def reset(self, seed = None, options=None) -> np.ndarray:
+        self.state: np.ndarray = self.solved_state.copy()
         self.episode_counter += 1
-        self.move_counter: torch.Tensor = torch.tensor(0, dtype=STICKER_DTYPE, device=self.device)
+        self.move_counter: np.ndarray = STICKER_DTYPE(0)
         # Access the monitor wrapper to get episode rewards
         if self.episode_counter%1000 == 0: # and hasattr(self, 'monitor'):
-            self.mean_success_rate = torch.mean(self.episode_success_history)
+            self.mean_success_rate = np.mean(self.episode_success_history)
             if self.mean_success_rate >= self.success_threshold:
                 self.scramble_length += 1
                 # results = self.monitor.get_episode_rewards()
                 # # last_n_episodes = len(self.episode_success_history)  # Or any desired number of episodes
-                # mean_reward = torch.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
+                # mean_reward = np.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
                 # if self.scramble_length < 25 or self.scramble_length % 25 == 0:
                 #     print(f"[{self.exp_identifier}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
                 #     print(f"[{self.exp_identifier}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
@@ -69,8 +64,8 @@ class Twisty_Puzzle_Env(gym.Env):
         return self.state, {}
 
     def step(self, action_index):
-        permutation: torch.Tensor = self.actions[action_index]
-        self.state: torch.Tensor = self.state[permutation]
+        permutation: np.ndarray = self.actions[action_index]
+        self.state: np.ndarray = self.state[permutation]
         
         self.move_counter += 1
         
@@ -84,18 +79,18 @@ class Twisty_Puzzle_Env(gym.Env):
         
         return self.state, reward, terminated, truncated, {}
 
-    def scramble_puzzle(self, scramble_length: "torch.uint16") -> torch.Tensor:
+    def scramble_puzzle(self, scramble_length: int) -> np.ndarray:
         """
         Scrample the puzzle by applying `scrable_length` random moves.
 
         Args:
-            scramble_length (torch.uint16): number of random moves to apply
+            scramble_length (int): number of random moves to apply
 
         Returns:
-            torch.Tensor: the scrambled state
+            np.ndarray: the scrambled state
         """
-        random_actions = self.base_actions[torch.randint(self.num_base_actions, (scramble_length,))]
-        for action in random_actions:
+        self.scramble_actions = self.base_actions[np.random.random_integers(0, self.num_base_actions-1, (scramble_length,))]
+        for action in self.scramble_actions:
             self.state = self.state[action]
         return self.state
 
@@ -112,44 +107,45 @@ class EarlyStopCallback(BaseCallback):
         return True
 
 
-def puzzle_info_to_torch(
+def puzzle_info_to_np(
         state: list[int],
         actions: dict[str, list[tuple[int, ...]]],
         base_actions: list[str] = None,
-        device: str = "cuda",
-        ) -> tuple[torch.Tensor, torch.Tensor]:
+        ) -> tuple[np.ndarray, np.ndarray]:
     """
-    Convert the puzzle's state and actions to torch tensors.
+    Convert the puzzle's state and actions to numpy arrays.
     
     Args:
         state (list[int]): the puzzle's state as a list of sticker indizes
         actions (dict[str, list[tuple[int, ...]]]): the puzzle's actions given as names and permutations in cyclic form
         base_actions (list[str]): the base actions to use for scrambling the puzzle as list of names
-        device (str): the device to use for computations (e.g. "cuda" or "cpu")
+
+    Returns:
+        tuple[np.ndarray, np.ndarray, np.ndarray]: the puzzle's state and actions as numpy arrays
     """
     # uint16 is sufficient for puzzles with up to 65535 stickers (e.g. 100^3 cube).
     #   World record puzzle in 2024 has 49^2*6 = 14406 stickers (49^3 cube)
-    torch_state: torch.Tensor = torch.tensor(state, dtype=STICKER_DTYPE, device=device)
+    np_state: np.ndarray = np.array(state, dtype=STICKER_DTYPE)
     state_length: int = len(state)
     actions_list = [permutation_cycles_to_tensor(state_length, actions[movename]) for movename in sorted(actions.keys())]
-    torch_actions: torch.Tensor = torch.stack(actions_list)
+    np_actions: np.ndarray = np.stack(actions_list)
 
     if base_actions is None:
-        base_actions = torch_actions
+        base_actions = np_actions
     else:
         sorted_actions: list[str] = sorted(actions.keys())
-        base_actions = torch.stack(
+        base_actions = np.stack(
             [actions_list[sorted_actions.index(base_action)] for base_action in base_actions],
         )
         del sorted_actions
 
     return (
-        torch_state,
-        torch_actions,
+        np_state,
+        np_actions,
         base_actions,
         )
 
-def permutation_cycles_to_tensor(state_length: int, action: list[list[int]]) -> torch.Tensor:
+def permutation_cycles_to_tensor(state_length: int, action: list[list[int]]) -> np.ndarray:
     """
     Convert a permutation in cycle notation to a tensor.
 
@@ -157,9 +153,9 @@ def permutation_cycles_to_tensor(state_length: int, action: list[list[int]]) -> 
         action (list[list[int]]): permutation in cycle notation
 
     Returns:
-        torch.Tensor: permutation as a tensor
+        np.ndarray: permutation as a tensor
     """
-    permutation = torch.arange(state_length, dtype=STICKER_DTYPE)
+    permutation = np.arange(state_length, dtype=STICKER_DTYPE)
     for i, cycle in enumerate(action):
         for j, element in enumerate(cycle):
             permutation[element] = cycle[(j+1) % len(cycle)]
@@ -177,5 +173,4 @@ if __name__ == "__main__":
         initial_scramble_length=1,
         success_threshold=0.9,
         reward_func=lambda state, truncated: (0., truncated),
-        device="cuda",
         ))

@@ -5,10 +5,11 @@ import datetime
 import json
 import os
 
+import numpy as np
 import torch
+from stable_baselines3 import PPO 
 from stable_baselines3.common.monitor import Monitor 
 from stable_baselines3.common.callbacks import CheckpointCallback
-from stable_baselines3 import PPO 
 
 from nn_rl_environment import Twisty_Puzzle_Env, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
 # try:
@@ -216,7 +217,7 @@ def setup_training(
     # check for whole puzzle rotation moves
     _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
     # calculate rotations of the solved state
-    solved_states: torch.Tensor = get_rotated_solved_states(solved_state, [actions_dict[rot] for rot in rotations])
+    solved_states: np.ndarray = get_rotated_solved_states(solved_state, [actions_dict[rot] for rot in rotations])
     # define reward function
     if reward == "binary":
         reward_func = binary_reward_factory(solved_state)
@@ -233,7 +234,7 @@ def setup_training(
 def get_rotated_solved_states(
         solved_state: list[int],
         rotations: list[list[list[int]]],
-    ) -> torch.Tensor:
+    ) -> np.ndarray:
     """
     Generate all permutations of the solved state by applying the given rotations.
     Return the permutations in full form as rows in a tensor.
@@ -243,14 +244,14 @@ def get_rotated_solved_states(
         rotations (list[list[list[int]]]): list of rotations in cyclic form
 
     Returns:
-        torch.Tensor: tensor of all rotated solved states. First row is the given solved state.
+        np.ndarray: tensor of all rotated solved states. First row is the given solved state.
     """
-    full_rotation_tensors: list[torch.Tensor] = [permutation_cycles_to_tensor(len(solved_state), rotation) for rotation in rotations]
-    solved_tensor: torch.Tensor = torch.tensor(solved_state, dtype=STICKER_DTYPE)
-    all_rotations: list[torch.Tensor] = [solved_tensor]
+    full_rotation_tensors: list[np.ndarray] = [permutation_cycles_to_tensor(len(solved_state), rotation) for rotation in rotations]
+    solved_tensor: np.ndarray = np.array(solved_state, dtype=STICKER_DTYPE)
+    all_rotations: list[np.ndarray] = [solved_tensor]
     for rotation in full_rotation_tensors:
         all_rotations.append(solved_tensor[rotation])
-    return torch.stack(all_rotations)
+    return np.stack(all_rotations)
 
 def get_action_index_to_name(
         actions_dict: dict[str, list[list[int]]],
@@ -264,9 +265,8 @@ def get_action_index_to_name(
     Returns:
         dict[int, str]: A dictionary mapping action indices to their names. Indices are assigned by sorting the action names.
     """
-    # IMPORTANT: this conversion must be the consistent with the one in nn_rl_environment.puzzle_info_to_torch!
+    # IMPORTANT: this conversion must be the consistent with the one in nn_rl_environment.puzzle_info_to_np!
     action_index_to_name = {
         i: name for i, name in enumerate(sorted(actions_dict.keys()))
     }
     return action_index_to_name
-

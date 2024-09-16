@@ -12,16 +12,15 @@ import time
 import torch
 
 from nn_rl_environment import Twisty_Puzzle_Env
-from nn_rl_training import train_agent, get_action_index_to_name
+from nn_rl_training import train_agent, get_action_index_to_name, setup_training
 
 def test_agent(
         model: torch.nn.Module,
         env: Twisty_Puzzle_Env,
         action_index_to_name: dict[int, str],
-        log_file_path: str,
         num_tests: int = 5,
         scramble_length: int = 5,
-        exp_identifier: str = "",
+        exp_folder_path: str = "",
         verbosity: int = 1,
     ):
     """
@@ -37,6 +36,14 @@ def test_agent(
         id (str): An identifier for the test run.
         verbose (bool | None): Whether to print the results to stdout. If None, the results are printed if num_tests <= 5.
     """
+    tests_folder: str = os.path.join(exp_folder_path, "tests")
+    os.makedirs(tests_folder, exist_ok=True)
+    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+    log_file_path: str = os.path.join(tests_folder, log_file_name)
+    exp_identifier: str = os.path.basename(exp_folder_path)
+
+    if verbosity > 0:
+        print(f"Testing agent {exp_folder_path}...")
     if verbosity is None:
         verbosity = num_tests <= 5
     start_time = time.perf_counter()
@@ -46,7 +53,7 @@ def test_agent(
     success_count: int = 0
     with open(log_file_path, "w") as file:
         for i in range(num_tests):
-            obs, _ = env.reset(print_scramble=verbosity)
+            obs, _ = env.reset()
             done = False
             action_sequence = []
             while not done:
@@ -56,14 +63,14 @@ def test_agent(
                 action_sequence.append(action_index_to_name[int(action)])
             success_count += int(terminated)
             # log scramble, solve and result to file
-            file.write(f"Test {i+1} scramble: {env.scramble}\n")
+            file.write(f"Test {i+1} scramble: {env.scramble_actions}\n")
             file.write(f"Test {i+1} solve: {' '.join(action_sequence)}\n")
             file.write(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps\n")
             # print results to stdout
             if verbosity > 1:
                 print(f"Test {i+1} solve: {' '.join(action_sequence)}")
                 print(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps")
-    file.write(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
+        file.write(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
     if verbosity:
         print(f"[{exp_identifier}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
 
@@ -118,18 +125,15 @@ def train_and_test_agent(
         device=device,
         
     )
-    print(f"Testing agent {exp_folder_path}...")
-    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
-    log_file_path: str = os.path.join(exp_folder_path, "tests", log_file_name)
-    action_index_to_name: dict[int, str] = get_action_index_to_name(env)
+    solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
+    action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
     test_agent(
         model=model,
         env=env,
         action_index_to_name=action_index_to_name,
-        log_file_path=log_file_path,
         num_tests=num_tests,
         scramble_length=test_scramble_length,
-        exp_identifier=f"{exp_folder_path}",
+        exp_folder_path=exp_folder_path,
         verbosity=1,
     )
 
@@ -137,7 +141,7 @@ if __name__ == "__main__":
     train_and_test_agent(
         puzzle_name="cube_2x2x2_sym_algs",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-        n_steps=50_000,
+        n_steps=5_000,
         start_scramble_depth=1,
         success_threshold=0.1,
         reward="binary",
