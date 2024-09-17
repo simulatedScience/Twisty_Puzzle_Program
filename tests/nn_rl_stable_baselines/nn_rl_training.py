@@ -332,13 +332,13 @@ def main(
     else:
         print("Training new model...")
         # see https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html for make_vec_env example
-        vec_env = make_vec_env(make_env, n_envs=10000)
+        vec_env = make_vec_env(make_env, n_envs=5000)
         model = PPO(
             "MlpPolicy",
             vec_env, # monitor_env,
             verbose=1,
             device=device,
-            batch_size=1000,
+            batch_size=50000,
             n_steps=50,
             tensorboard_log=f"{tb_log_folder}/{exp_identifier}",
         )
@@ -656,18 +656,25 @@ if __name__ == "__main__":
     success_thresholds = [.1]
     scramble_depths_rewards = [
         (1, "binary"),
-        (1, "sparse_most_correct_points"),
-        (8, "sparse_most_correct_points"),
-        (16, "sparse_most_correct_points"),
+        (2, "binary"),
+        (4, "binary"),
+        (8, "binary"),
+        (12, "binary"),
+        (16, "binary"),
+        (20, "binary"),
+        (24, "binary"),
+        # (1, "sparse_most_correct_points"),
+        # (8, "sparse_most_correct_points"),
+        # (16, "sparse_most_correct_points"),
     ]
-    n_processes = 1
+    n_processes = 8
     kwargs_list  = [
             (
             "cube_2x2x2_sym_algs", # puzzle_name
             ["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"], # base_actions
             None,            # load_model
             True,            # train_new
-            5_00_000,       # n_episodes
+            5_000_000,       # n_episodes
             "cube_2x2x2_sym_algs_models",  # model_folder
             "cube_2x2x2_sym_algs_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth

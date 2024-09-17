@@ -38,7 +38,7 @@ def test_agent(
     """
     tests_folder: str = os.path.join(exp_folder_path, "tests")
     os.makedirs(tests_folder, exist_ok=True)
-    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
     log_file_path: str = os.path.join(tests_folder, log_file_name)
     exp_identifier: str = os.path.basename(exp_folder_path)
 
@@ -112,6 +112,7 @@ def train_and_test_agent(
         device: str = "cuda",
         batch_size: int = 1000,
         n_envs: int = 3000,
+        learning_rate: float = 0.0003,
         # test parameters
         num_tests: int = 100,
         test_scramble_length: int = 50,
@@ -127,6 +128,7 @@ def train_and_test_agent(
         device=device,
         batch_size=batch_size,
         n_envs=n_envs,
+        learning_rate=learning_rate,
     )
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
@@ -153,15 +155,18 @@ def train_and_test_agent(
 
 if __name__ == "__main__":
     train_and_test_agent(
-        puzzle_name="cube_2x2x2_sym_algs",
+        puzzle_name="cube_2x2x2",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-        n_steps=500_000,
-        start_scramble_depth=1,
+        load_model=None,
+        n_steps=5_000_000,
+        start_scramble_depth=6,
         success_threshold=0.1,
         reward="binary",
         device="cuda",
+        batch_size=25000,
+        n_envs=1000,
+        learning_rate=0.001,
         num_tests=100,
         test_scramble_length=50,
-        batch_size=1000,
-        n_envs=10000,
     )
+# tensorboard --logdir src/ai_files/cube_2x2x2

@@ -29,6 +29,7 @@ def train_agent(
         device: str = "cuda",
         batch_size: int = 1000,
         n_envs: int = 3000,
+        learning_rate: float = 0.0003,
         verbosity: int = 1,
     ) -> tuple[str, torch.nn.Module]:
     # experiment folder named as yyyy-mm-dd_hh-mm-ss
@@ -40,7 +41,7 @@ def train_agent(
 
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
 
-    exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_steps}"
+    exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_steps}_lr={learning_rate}_bs={batch_size}_ne={n_envs}"
     def make_env():
         env = Twisty_Puzzle_Env(
                 solved_state,
@@ -72,6 +73,7 @@ def train_agent(
             device=device,
             verbose=verbosity,
             tensorboard_log=tb_log_folder,
+            learning_rate=learning_rate,
             )
     else:
         print("Training new model...")
@@ -83,6 +85,7 @@ def train_agent(
             device=device,
             verbose=verbosity,
             tensorboard_log=tb_log_folder,
+            learning_rate=learning_rate,
         )
         # print(model.policy)
     # exp_identifier = f"{exp_name}_eps={n_episodes}"
@@ -111,6 +114,9 @@ def train_agent(
             start_scramble_depth=start_scramble_depth,
             success_threshold=success_threshold,
             device=device,
+            batch_size=batch_size,
+            n_envs=n_envs,
+            learning_rate=learning_rate,
         )
         # train model
         model.learn(
