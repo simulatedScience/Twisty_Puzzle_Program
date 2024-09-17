@@ -11,27 +11,60 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor 
 from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3.common.env_util import make_vec_env
+# vecenv, only for typehinting
+from stable_baselines3.common.vec_env import VecEnv
 
-from nn_rl_environment import Twisty_Puzzle_Env, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
+from nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
 # try:
 #     from .ai_modules.nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 # except ImportError:
 from nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 
 def train_agent(
+        # puzzle configuration
         puzzle_name: str,
         base_actions: list[str] = None,
+        # environment configuration
         load_model: str = None,
-        n_steps: int = 20_000,
+        max_moves: int = 50,
         start_scramble_depth: int = 1,
-        success_threshold: float = 0.9,
+        success_threshold: float = 0.1,
+        last_n_episodes: int = 1000,
         reward: str = "binary",
-        device: str = "cuda",
-        batch_size: int = 1000,
-        n_envs: int = 3000,
+        # rl training parameters
+        n_steps: int = 20_000,
+        batch_size: int = 10000,
         learning_rate: float = 0.0003,
+        # parallelization settings
+        n_envs: int = 5000,
+        device: str = "cuda",
         verbosity: int = 1,
-    ) -> tuple[str, torch.nn.Module]:
+    ) -> tuple[str, torch.nn.Module, VecEnv]:
+    """
+    Train an agent to solve a twisty puzzle using reinforcement learning (currently always uses PPO, this may change in the future).
+
+    Args:
+        puzzle_name (str): name of the puzzle, will be loaded from the puzzles folder
+        base_actions (list[str], optional): list of base action names to scramble with. Defaults to None (= use all actions for scrambles).
+        load_model (str, optional): path to a model to continue training. Defaults to None.
+        max_moves (int, optional): maximum number of moves to solve the puzzle. If this is exceeded, the episode is truncated. Defaults to 50.
+        start_scramble_depth (int, optional): initial scramble depth for the environment. Defaults to 1.
+        success_threshold (float, optional): minimum success rate to reach over the last `last_n_episodes` to increase the scramble depth by 1. Defaults to 0.1.
+        last_n_episodes (int, optional): number of episodes to consider for the success rate. Defaults to 1000.
+        reward (str, optional): reward function to use. Must be one of ('binary', 'correct_points', 'most_correct_points', 'sparse_most_correct_points'). Defaults to "binary".
+        n_steps (int, optional): number of steps to train the model. Defaults to 20,000.
+        batch_size (int, optional): batch size for training (= number of steps between model updates). Defaults to 10,000.
+        learning_rate (float, optional): learning rate for the optimizer. Defaults to 0.0003.
+        n_envs (int, optional): number of parallel environments to use. Defaults to 5,000.
+        device (str, optional): device to use for training (usually "cuda" or "cpu"). Defaults to "cuda".
+        verbosity (int, optional): verbosity level for training output. Defaults to 1.
+        
+
+    Returns:
+        str: path to the experiment folder
+        torch.nn.Module: trained model
+        VecEnv: parallel environment used for training
+    """
     # experiment folder named as yyyy-mm-dd_hh-mm-ss
     exp_folder: str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     exp_folder_path: str = os.path.join("src", "ai_files", puzzle_name, exp_folder)
@@ -69,7 +102,7 @@ def train_agent(
             model_path,
             env=vec_env,
             batch_size=batch_size,
-            n_steps=50,
+            n_steps=max_moves+1,
             device=device,
             verbose=verbosity,
             tensorboard_log=tb_log_folder,
@@ -81,7 +114,7 @@ def train_agent(
             "MlpPolicy",
             env=vec_env,
             batch_size=batch_size,
-            n_steps=50,
+            n_steps=100,
             device=device,
             verbose=verbosity,
             tensorboard_log=tb_log_folder,
@@ -94,9 +127,13 @@ def train_agent(
         # # Disable Stable Baselines3 Logging
         # logging.getLogger("stable_baselines3").setLevel(logging.WARNING)
         checkpoint_callback = CheckpointCallback(
-            save_freq=250_000,
+            save_freq=max(1_000_000 // n_envs, 1),
             save_path=model_snapshots_folder,
-            name_prefix=""
+            name_prefix="rl_model",
+        )
+        dynamic_difficulty_callback = Update_Scramble_Length_Callback(
+            success_threshold=success_threshold,
+            last_n_episodes=last_n_episodes,
         )
         # early_stopping_callback = EarlyStopCallback(
         #     monitor_env,
@@ -107,23 +144,29 @@ def train_agent(
             exp_folder_path,
             mode="w",
             training_start=exp_folder,
+            # what model was trained
             puzzle_name=puzzle_name,
             base_actions=base_actions,
-            reward=reward,
-            n_steps=n_steps,
+            # environment configuration
+            max_moves=max_moves,
             start_scramble_depth=start_scramble_depth,
             success_threshold=success_threshold,
-            device=device,
-            batch_size=batch_size,
-            n_envs=n_envs,
+            last_n_episodes=last_n_episodes,
+            reward=reward,
+            # rl training parameters
+            n_steps=n_steps,
             learning_rate=learning_rate,
+            batch_size=batch_size,
+            # parallelization settings
+            n_envs=n_envs,
+            device=device,
         )
         # train model
         model.learn(
             total_timesteps=n_steps,
             reset_num_timesteps=False,
             tb_log_name=f"{exp_identifier}",
-            callback=[checkpoint_callback], #early_stopping_callback],
+            callback=[checkpoint_callback, dynamic_difficulty_callback], #early_stopping_callback],
             # progress_bar=True,
             # log_interval=5000,
         )

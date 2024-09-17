@@ -102,33 +102,47 @@ def test_agent(
 #     # test_agent(...) # TODO
 
 def train_and_test_agent(
+        # puzzle configuration
         puzzle_name: str,
         base_actions: list[str] = None,
+        # environment configuration
         load_model: str = None,
-        n_steps: int = 50_000,
+        max_moves: int = 50,
         start_scramble_depth: int = 1,
         success_threshold: float = 0.1,
+        last_n_episodes: int = 1000,
         reward: str = "binary",
-        device: str = "cuda",
+        # rl training parameters
+        n_steps: int = 50_000,
         batch_size: int = 1000,
-        n_envs: int = 3000,
         learning_rate: float = 0.0003,
+        # parallelization settings
+        n_envs: int = 3000,
+        device: str = "cuda",
+        verbosity: int = 1,
         # test parameters
         num_tests: int = 100,
         test_scramble_length: int = 50,
     ):
     exp_folder_path, model, vec_env = train_agent(
+        # puzzle configuration
         puzzle_name=puzzle_name,
         base_actions=base_actions,
+        # environment configuration
         load_model=load_model,
-        n_steps=n_steps,
+        max_moves=max_moves,
         start_scramble_depth=start_scramble_depth,
         success_threshold=success_threshold,
+        last_n_episodes=last_n_episodes,
         reward=reward,
-        device=device,
+        # rl training parameters
+        n_steps=n_steps,
         batch_size=batch_size,
-        n_envs=n_envs,
         learning_rate=learning_rate,
+        # parallelization settings
+        n_envs=n_envs,
+        device=device,
+        verbosity=verbosity,
     )
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
@@ -155,18 +169,25 @@ def train_and_test_agent(
 
 if __name__ == "__main__":
     train_and_test_agent(
+        # puzzle configuration
         puzzle_name="cube_2x2x2",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+        # environment configuration
         load_model=None,
-        n_steps=5_000_000,
-        start_scramble_depth=6,
-        success_threshold=0.1,
+        max_moves=50,
+        start_scramble_depth=3,
+        success_threshold=1,
+        last_n_episodes=1000,
         reward="binary",
-        device="cuda",
+        # rl training parameters
+        n_steps=5_000_000,
         batch_size=25000,
-        n_envs=1000,
         learning_rate=0.001,
+        # parallelization settings
+        n_envs=1000,
+        device="cuda",
+        # test configuration
         num_tests=100,
-        test_scramble_length=50,
+        test_scramble_length=3,
     )
 # tensorboard --logdir src/ai_files/cube_2x2x2

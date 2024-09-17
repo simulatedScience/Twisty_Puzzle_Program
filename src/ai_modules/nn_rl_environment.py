@@ -36,7 +36,7 @@ class Twisty_Puzzle_Env(gym.Env):
         self.success_threshold: float = success_threshold
         # parameters for tracking success rate
         self.last_n_episodes: int = 1000
-        self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
+        # self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
         
         self.scramble_actions: np.ndarray = np.zeros((0,), dtype=np.int32) # stores the most recent scramble actions
 
@@ -44,26 +44,67 @@ class Twisty_Puzzle_Env(gym.Env):
         self.observation_space = MultiDiscrete([len(set(solved_state))] * len(solved_state))
         self.action_space = Discrete(len(actions))
 
-    def reset(self, seed = None, options=None) -> np.ndarray:
+    def is_terminated(self) -> bool:
+        """
+        Check if the episode was terminated.
+
+        Returns:
+            bool: True if the episode was terminated
+        """
+        return self.terminated
+
+    def set_scramble_length(self, scramble_length: int) -> None:
+        """
+        Set the scramble length for all future episodes to the given value.  
+        Note: This method is required to update the scramble depth when using a vectorized version of this environment for sb3-based rl-training.
+
+        Args:
+            scramble_length (int): number of moves to scramble the puzzle with. (positive integer)
+        """
+        self.scramble_length: int = scramble_length
+
+    def get_scramble_length(self) -> int:
+        """
+        Get the current scramble length.
+
+        Returns:
+            int: the current scramble length
+        """
+        return self.scramble_length
+
+    def reset(self, seed = None, options=None) -> tuple[np.ndarray, dict]:
+        """
+        Reset the environment to a random scrambled state. First, reset to solved, then apply `self.scramble_length` random base moves.
+
+        Args:
+            seed (int?, optional): unused parameter expected for gym environments. Defaults to None.
+            options (dict?, optional): unused parameter expected for gym environments. Defaults to None.
+
+        Returns:
+            np.ndarray: a random scrambled state of the puzzle (start state for RL episode)
+            dict: options dictionary (empty) (return value expected for gym environments)
+        """
         self.state: np.ndarray = self.solved_state.copy()
         self.episode_counter += 1
         self.move_counter: np.ndarray = STICKER_DTYPE(0)
+        self.terminated: bool = False
         # Access the monitor wrapper to get episode rewards
-        if self.episode_counter%1000 == 0: # and hasattr(self, 'monitor'):
-            self.mean_success_rate = np.mean(self.episode_success_history)
-            if self.mean_success_rate >= self.success_threshold:
-                self.scramble_length += 1
-                # results = self.monitor.get_episode_rewards()
-                # # last_n_episodes = len(self.episode_success_history)  # Or any desired number of episodes
-                # mean_reward = np.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
-                # if self.scramble_length < 25 or self.scramble_length % 25 == 0:
-                #     print(f"[{self.exp_identifier}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
-                #     print(f"[{self.exp_identifier}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
-                #     print(f"[{self.exp_identifier}] Current success rate: {self.mean_success_rate:.2%}")
+        # if self.episode_counter%1000 == 0: # and hasattr(self, 'monitor'):
+        #     self.mean_success_rate = np.mean(self.episode_success_history)
+        #     if self.mean_success_rate >= self.success_threshold:
+        #         self.scramble_length += 1
+        #         # results = self.monitor.get_episode_rewards()
+        #         # # last_n_episodes = len(self.episode_success_history)  # Or any desired number of episodes
+        #         # mean_reward = np.mean(results[-self.last_n_episodes:]) if len(results) > 0 else 0
+        #         # if self.scramble_length < 25 or self.scramble_length % 25 == 0:
+        #         #     print(f"[{self.exp_identifier}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
+        #         #     print(f"[{self.exp_identifier}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
+        #         #     print(f"[{self.exp_identifier}] Current success rate: {self.mean_success_rate:.2%}")
         self.state = self.scramble_puzzle(self.scramble_length)
         return self.state, {}
 
     def step(self, action_index):
+        
         permutation: np.ndarray = self.actions[action_index]
         self.state: np.ndarray = self.state[permutation]
         
@@ -72,12 +113,12 @@ class Twisty_Puzzle_Env(gym.Env):
         # terminated = np.all(self.state == self.solved_state)
         truncated = self.move_counter >= self.max_moves
 
-        reward, terminated = self.reward_func(self.state, truncated)
+        reward, self.terminated = self.reward_func(self.state, truncated)
 
-        if truncated or terminated:
-            self.episode_success_history[self.episode_counter % self.last_n_episodes] = terminated
+        # if truncated or self.terminated:
+        #     self.episode_success_history[self.episode_counter % self.last_n_episodes] = self.terminated
         
-        return self.state, reward, terminated, truncated, {}
+        return self.state, reward, self.terminated, truncated, {}
 
     def scramble_puzzle(self, scramble_length: int) -> np.ndarray:
         """
@@ -105,6 +146,46 @@ class EarlyStopCallback(BaseCallback):
             print(f"Early stopping: Difficulty {self.env.scramble_length} > {self.max_difficulty} reached. Last success rate: {np.mean(self.env.episode_success_history):.2%}")
             return False
         return True
+    
+class Update_Scramble_Length_Callback(BaseCallback):
+    """
+    This callback updates the scramble length of the environment whenever the past n episodes reach a given success rate.
+    """
+    def __init__(self, success_threshold: float = 0.1, last_n_episodes: int = 1000, verbose=0):
+        super().__init__(verbose)
+        # self.terminated_array: np.ndarray = np.zeros(last_n_episodes, dtype=np.bool_)
+        self.last_n_episodes: int = last_n_episodes
+        self.success_threshold: float = success_threshold
+
+    # def _on_rollout_start(self) -> None:
+    #     self.terminated_array: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
+
+    def _on_step(self) -> bool:
+        """
+        Store the information if the episode was terminated.
+        """
+        # for i, env in enumerate(self.locals["envs"]):
+        #     self.terminated_array[i] = self.training_env.env_method("is_terminated")
+        return True
+
+    def _on_rollout_end(self) -> None:
+        """
+        Measure the success rate over the last n episodes and update the scramble length if the success rate is above the threshold.
+        """
+        # count True in last `self.last_n_episodes` values in `dones`
+        # mean_success_rate: float = 1 - self.locals["dones"][-self.last_n_episodes:].sum() / self.last_n_episodes
+        mean_success_rate: float = np.array(self.training_env.env_method("is_terminated")[-self.last_n_episodes:]).mean()
+        old_scramble_length: int = self.training_env.env_method("get_scramble_length")[0]
+        # print(f"n_calls: {self.n_calls}")
+        print(f"Current success rate: {mean_success_rate:6.1%}, old scramble length: {old_scramble_length}")
+        if mean_success_rate >= self.success_threshold:
+            self.training_env.env_method("set_scramble_length", old_scramble_length + 1)
+            if self.verbose > 0:
+                n_episodes: int = self.n_calls * self.training_env.n_envs
+                print(f"Increased scramble length to {old_scramble_length + 1} after {self.num_timesteps} timesteps ({n_episodes} episodes).")
+                print(f"Current success rate: {mean_success_rate:6.1%}")
+        elif self.num_timesteps % 1_000_000 == 0 and self.verbose > 0:
+            print(f"Current success rate: {mean_success_rate:6.1%}")
 
 
 def puzzle_info_to_np(

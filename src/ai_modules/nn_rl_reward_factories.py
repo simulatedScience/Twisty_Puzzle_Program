@@ -13,11 +13,11 @@ def binary_reward_factory(solved_state: np.ndarray) -> callable:
         Returns:
             (float): The reward in range [0, 1]. This will always be 0 or 1.
         """
-        done = np.all(state == solved_state, axis=-1)
+        done: bool = np.all(state == solved_state, axis=-1)
         if isinstance(done, (bool, np.bool_)):
-            reward = 1. if done else 0.
+            reward: float = 1. if done else 0.
         elif isinstance(done, np.ndarray):
-            reward = np.where(done, 1., 0.)
+            reward: float = np.where(done, 1., 0.)
         else:
             raise ValueError(f"Unexpected type for done: {type(done)}")
         return reward, done
@@ -36,8 +36,8 @@ def correct_points_reward_factory(solved_state) -> callable:
             (float): The reward in range [0, 1].
         """
         correct_points = np.sum(state == solved_state, axis=-1)
-        reward = correct_points/state.shape[-1]
-        done = 1-reward < 1e-5
+        reward: float = correct_points/state.shape[-1]
+        done: bool = 1-reward < 1e-5
         if done:
             reward = 500.
         # print("correct points reward: ",
@@ -63,10 +63,10 @@ def most_correct_points_reward_factory(solved_states: np.ndarray) -> callable:
         """
         max_correct_points: int = 0
         for solved_state in solved_states:
-            correct_points = np.sum(state == solved_state, axis=-1)
-            max_correct_points = np.max(max_correct_points, correct_points)
-        reward = max_correct_points/state.shape[-1]
-        done = 1-reward < 1e-5
+            correct_points: int = np.sum(state == solved_state, axis=-1)
+            max_correct_points: int = np.max(max_correct_points, correct_points)
+        reward: float = max_correct_points/state.shape[-1]
+        done: bool = 1-reward < 1e-5
         if done:
             reward = 500.
         return reward, done
@@ -86,10 +86,10 @@ def sparse_most_correct_points_reward_factory(solved_states: np.ndarray) -> call
         """
         max_correct_points: int = 0
         for solved_state in solved_states:
-            correct_points = np.sum(state == solved_state, axis=-1)
-            max_correct_points = np.max(max_correct_points, correct_points)
-        reward = max_correct_points/state.shape[-1]
-        done = 1-reward < 1e-5
+            correct_points: int = np.sum(state == solved_state, axis=-1)
+            max_correct_points: int = np.max(max_correct_points, correct_points)
+        reward: float = max_correct_points/state.shape[-1]
+        done: bool = 1-reward < 1e-5
         if not (truncated or done):
             reward = 0.
         elif done:
