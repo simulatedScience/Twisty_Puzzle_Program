@@ -110,11 +110,13 @@ def train_and_test_agent(
         success_threshold: float = 0.1,
         reward: str = "binary",
         device: str = "cuda",
+        batch_size: int = 1000,
+        n_envs: int = 3000,
         # test parameters
         num_tests: int = 100,
         test_scramble_length: int = 50,
     ):
-    exp_folder_path, model, env = train_agent(
+    exp_folder_path, model, vec_env = train_agent(
         puzzle_name=puzzle_name,
         base_actions=base_actions,
         load_model=load_model,
@@ -123,10 +125,22 @@ def train_and_test_agent(
         success_threshold=success_threshold,
         reward=reward,
         device=device,
-        
+        batch_size=batch_size,
+        n_envs=n_envs,
     )
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
+    
+    
+    env = Twisty_Puzzle_Env(
+            solved_state,
+            actions_dict,
+            base_actions=base_actions,
+            initial_scramble_length=start_scramble_depth,
+            success_threshold=success_threshold,
+            reward_func=reward_func,
+    )
+    
     test_agent(
         model=model,
         env=env,
@@ -141,11 +155,13 @@ if __name__ == "__main__":
     train_and_test_agent(
         puzzle_name="cube_2x2x2_sym_algs",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-        n_steps=5_000,
+        n_steps=500_000,
         start_scramble_depth=1,
         success_threshold=0.1,
         reward="binary",
         device="cuda",
         num_tests=100,
         test_scramble_length=50,
+        batch_size=1000,
+        n_envs=10000,
     )

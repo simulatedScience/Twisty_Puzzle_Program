@@ -10,3 +10,7 @@
 
 - Gemini (Gemini 1.5 Flash) ~17.08.2024 [Implementing early stopping with StableBaselines 3](https://g.co/gemini/share/031b42019a6e)  
   _This chat helped me learn about early stopping, which I simultaneously read up on in the StableBaselines documentation, then used a combination of what I learned from both sources in `tests/nn_rl_stable_baselines/nn_rl_training.py`. Code from this chat was not directly copied, but due to the simplicity of the problem is still similar._
+
+- GPT-4o 16.09.2024 [parallel RL training with sb3 on GPU](https://chatgpt.com/share/66e93a8c-4228-8007-bb84-da1a41ac4412)
+  _unused, read [sb3 documentation](https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html) instead for more reliable information. Provided some inspiration for other RL methods to try if necessary._
+  

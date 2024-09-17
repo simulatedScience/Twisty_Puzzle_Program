@@ -332,13 +332,13 @@ def main(
     else:
         print("Training new model...")
         # see https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html for make_vec_env example
-        vec_env = make_vec_env(make_env, n_envs=100)
+        vec_env = make_vec_env(make_env, n_envs=10000)
         model = PPO(
             "MlpPolicy",
             vec_env, # monitor_env,
-            verbose=0,
+            verbose=1,
             device=device,
-            batch_size=5000,
+            batch_size=1000,
             n_steps=50,
             tensorboard_log=f"{tb_log_folder}/{exp_identifier}",
         )
@@ -660,14 +660,14 @@ if __name__ == "__main__":
         (8, "sparse_most_correct_points"),
         (16, "sparse_most_correct_points"),
     ]
-    n_processes = 4
+    n_processes = 1
     kwargs_list  = [
             (
             "cube_2x2x2_sym_algs", # puzzle_name
             ["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"], # base_actions
             None,            # load_model
             True,            # train_new
-            5_000_000,       # n_episodes
+            5_00_000,       # n_episodes
             "cube_2x2x2_sym_algs_models",  # model_folder
             "cube_2x2x2_sym_algs_tb_logs", # tb_log_folder
             scramble_depth,  # start_scramble_depth

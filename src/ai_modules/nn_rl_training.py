@@ -10,6 +10,7 @@ import torch
 from stable_baselines3 import PPO 
 from stable_baselines3.common.monitor import Monitor 
 from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.env_util import make_vec_env
 
 from nn_rl_environment import Twisty_Puzzle_Env, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
 # try:
@@ -26,6 +27,9 @@ def train_agent(
         success_threshold: float = 0.9,
         reward: str = "binary",
         device: str = "cuda",
+        batch_size: int = 1000,
+        n_envs: int = 3000,
+        verbosity: int = 1,
     ) -> tuple[str, torch.nn.Module]:
     # experiment folder named as yyyy-mm-dd_hh-mm-ss
     exp_folder: str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -37,18 +41,20 @@ def train_agent(
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
 
     exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_steps}"
-    env = Twisty_Puzzle_Env(
-            solved_state,
-            actions_dict,
-            base_actions=base_actions,
-            initial_scramble_length=start_scramble_depth,
-            success_threshold=success_threshold,
-            reward_func=reward_func,
-            # exp_identifier=exp_identifier,
-    )
-    # env.scramble_length = start_scramble_depth
-    monitor_env = Monitor(env)
-    env.monitor = monitor_env
+    def make_env():
+        env = Twisty_Puzzle_Env(
+                solved_state,
+                actions_dict,
+                base_actions=base_actions,
+                initial_scramble_length=start_scramble_depth,
+                success_threshold=success_threshold,
+                reward_func=reward_func,
+        )
+        # env.scramble_length = start_scramble_depth
+        monitor_env = Monitor(env)
+        env.monitor = monitor_env
+        return monitor_env
+    vec_env = make_vec_env(make_env, n_envs=n_envs)
     # env
     if load_model:
         # load model with highest step count to continue training
@@ -60,15 +66,22 @@ def train_agent(
         print(f"Loading model from {model_path}...")
         model = PPO.load(
             model_path,
-            env=monitor_env,
-            device=device)
+            env=vec_env,
+            batch_size=batch_size,
+            n_steps=50,
+            device=device,
+            verbose=verbosity,
+            tensorboard_log=tb_log_folder,
+            )
     else:
         print("Training new model...")
         model = PPO(
             "MlpPolicy",
-            monitor_env,
-            verbose=1,
+            env=vec_env,
+            batch_size=batch_size,
+            n_steps=50,
             device=device,
+            verbose=verbosity,
             tensorboard_log=tb_log_folder,
         )
         # print(model.policy)
@@ -82,10 +95,10 @@ def train_agent(
             save_path=model_snapshots_folder,
             name_prefix=""
         )
-        early_stopping_callback = EarlyStopCallback(
-            monitor_env,
-            max_difficulty=100, # Early Stopping at scramble depth 100
-        )
+        # early_stopping_callback = EarlyStopCallback(
+        #     monitor_env,
+        #     max_difficulty=100, # Early Stopping at scramble depth 100
+        # )
         # save training info
         save_training_info(
             exp_folder_path,
@@ -103,8 +116,8 @@ def train_agent(
         model.learn(
             total_timesteps=n_steps,
             reset_num_timesteps=False,
-            tb_log_name=f"{exp_identifier}_{n_steps}_{env.scramble_length}",
-            callback=[checkpoint_callback, early_stopping_callback],
+            tb_log_name=f"{exp_identifier}",
+            callback=[checkpoint_callback], #early_stopping_callback],
             # progress_bar=True,
             # log_interval=5000,
         )
@@ -120,7 +133,7 @@ def train_agent(
         )
         print(f"="*75 + f"\nSaved final model to {save_path}")
 
-    return exp_folder_path, model, env
+    return exp_folder_path, model, vec_env
 
 # def get_exp_name(
 #         puzzle_name: str,
