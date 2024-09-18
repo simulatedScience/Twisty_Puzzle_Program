@@ -22,7 +22,7 @@ class Twisty_Puzzle_Env(gym.Env):
             base_actions: list[str] = None,
             max_moves: int = 50,
             initial_scramble_length=1, # 1 seems to work best
-            success_threshold=0.9,
+            success_threshold=0.1,
             reward_func: callable = None,
             # exp_identifier: str | None = None,
             ):
@@ -160,7 +160,7 @@ class Update_Scramble_Length_Callback(BaseCallback):
         self.last_n_episodes: int = last_n_episodes
         self.success_threshold: float = success_threshold
         # manually track episode success
-        self.episode_success_history: np.ndarray = np.zeros(last_n_episodes, dtype=np.bool_)
+        self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
         self.episode_index: int = 0
 
     # def _on_rollout_start(self) -> None:
@@ -187,24 +187,24 @@ class Update_Scramble_Length_Callback(BaseCallback):
         """
         Measure the success rate over the last n episodes and update the scramble length if the success rate is above the threshold.
         """
-        # in locals['infos'] get the envs that have key 'terminal_observation'. From those, count how many have 'TimeLimit.truncated' == True and == False to calculate the success rate
-        
-        # count True in last `self.last_n_episodes` values in `dones`
-        # mean_success_rate: float = 1 - self.locals["dones"][-self.last_n_episodes:].sum() / self.last_n_episodes
-        mean_success_rate: float = np.mean(self.training_env.env_method("is_terminated")[-self.last_n_episodes:])
+        # # in locals['infos'] get the envs that have key 'terminal_observation'. From those, count how many have 'TimeLimit.truncated' == True and == False to calculate the success rate
+        # new_episodes_terminated: list[float] = [value['terminated'] for value in self.locals["infos"] if 'episode' in value]
+        # # mean_success_rate: float = np.mean(new_episodes_terminated)
+        # print(f"New episodes terminated: {len(new_episodes_terminated)} => success rate: {mean_success_rate:6.1%}")
+
+        mean_success_rate: float = np.mean(self.episode_success_history)
         old_scramble_length: int = self.training_env.env_method("get_scramble_length")[0]
-        # print(f"n_calls: {self.n_calls}")
-        print(f"Mean reward over {len(self.locals['rewards'])} eps: {np.mean(self.locals['rewards']):.2}")
-        print(f"Current success rate: {mean_success_rate:6.1%}, old scramble length: {old_scramble_length}")
-        print(f"Manual terminated mean: {np.mean(self.episode_success_history):6.1%}")
+        print(f"Manual mean over past {self.last_n_episodes} episodes with sd={old_scramble_length}: {mean_success_rate:6.1%}")
         if mean_success_rate >= self.success_threshold:
             self.training_env.env_method("set_scramble_length", old_scramble_length + 1)
+            # reset success history to avoid immediate increase of scramble length
+            self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
             if self.verbose > 0:
-                n_episodes: int = self.n_calls * self.training_env.n_envs
-                print(f"Increased scramble length to {old_scramble_length + 1} after {self.num_timesteps} timesteps ({n_episodes} episodes).")
+                # n_episodes: int = self.n_calls * self.training_env.n_envs
+                print(f"Increased scramble length to {old_scramble_length + 1} after {self.num_timesteps}")
                 print(f"Current success rate: {mean_success_rate:6.1%}")
-        elif self.num_timesteps % 1_000_000 == 0 and self.verbose > 0:
-            print(f"Current success rate: {mean_success_rate:6.1%}")
+        # elif self.num_timesteps % 1_000_000 == 0 and self.verbose > 0:
+        #     print(f"Current success rate: {mean_success_rate:6.1%}")
 
 
 def puzzle_info_to_np(

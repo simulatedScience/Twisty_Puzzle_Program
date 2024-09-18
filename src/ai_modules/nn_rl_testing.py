@@ -175,8 +175,8 @@ if __name__ == "__main__":
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=4,
-        success_threshold=1,
+        start_scramble_depth=2,
+        success_threshold=0.1,
         last_n_episodes=1000,
         reward="binary",
         # rl training parameters
