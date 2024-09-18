@@ -175,19 +175,19 @@ if __name__ == "__main__":
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=2,
+        start_scramble_depth=4,
         success_threshold=1,
         last_n_episodes=1000,
         reward="binary",
         # rl training parameters
         n_steps=5_000_000,
-        batch_size=5000,
+        batch_size=50000,
         learning_rate=0.001,
         # parallelization settings
-        n_envs=100,
+        n_envs=1000,
         device="cuda",
         # test configuration
         num_tests=100,
-        test_scramble_length=2,
+        test_scramble_length=50,
     )
 # tensorboard --logdir src/ai_files/cube_2x2x2
