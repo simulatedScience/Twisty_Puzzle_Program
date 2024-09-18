@@ -53,6 +53,9 @@ class Twisty_Puzzle_Env(gym.Env):
         """
         return self.terminated
 
+    def reset_terminated(self) -> None:
+        self.terminated = False
+
     def set_scramble_length(self, scramble_length: int) -> None:
         """
         Set the scramble length for all future episodes to the given value.  
@@ -87,7 +90,7 @@ class Twisty_Puzzle_Env(gym.Env):
         self.state: np.ndarray = self.solved_state.copy()
         self.episode_counter += 1
         self.move_counter: np.ndarray = STICKER_DTYPE(0)
-        self.terminated: bool = False
+        # self.terminated: bool = False
         # Access the monitor wrapper to get episode rewards
         # if self.episode_counter%1000 == 0: # and hasattr(self, 'monitor'):
         #     self.mean_success_rate = np.mean(self.episode_success_history)
@@ -118,7 +121,7 @@ class Twisty_Puzzle_Env(gym.Env):
         # if truncated or self.terminated:
         #     self.episode_success_history[self.episode_counter % self.last_n_episodes] = self.terminated
         
-        return self.state, reward, self.terminated, truncated, {}
+        return self.state, reward, self.terminated, truncated, {'terminated': self.terminated}
 
     def scramble_puzzle(self, scramble_length: int) -> np.ndarray:
         """
@@ -153,31 +156,37 @@ class Update_Scramble_Length_Callback(BaseCallback):
     """
     def __init__(self, success_threshold: float = 0.1, last_n_episodes: int = 1000, verbose=0):
         super().__init__(verbose)
-        # self.terminated_array: np.ndarray = np.zeros(last_n_episodes, dtype=np.bool_)
+        self.terminated_array: np.ndarray = np.zeros(last_n_episodes, dtype=np.bool_)
         self.last_n_episodes: int = last_n_episodes
         self.success_threshold: float = success_threshold
 
-    # def _on_rollout_start(self) -> None:
-    #     self.terminated_array: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
+    def _on_rollout_start(self) -> None:
+        self.terminated_array: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
+        # reset terminated flag in all envs
+        self.training_env.env_method("reset_terminated")
 
     def _on_step(self) -> bool:
         """
         Store the information if the episode was terminated.
         """
-        # for i, env in enumerate(self.locals["envs"]):
-        #     self.terminated_array[i] = self.training_env.env_method("is_terminated")
+        for i, terminated in enumerate(self.training_env.env_method("is_terminated")):
+            self.terminated_array[i] = terminated# if not self.terminated_array[i] else self.terminated_array[i]
         return True
 
     def _on_rollout_end(self) -> None:
         """
         Measure the success rate over the last n episodes and update the scramble length if the success rate is above the threshold.
         """
+        # in locals['infos'] get the envs that have key 'terminal_observation'. From those, count how many have 'TimeLimit.truncated' == True and == False to calculate the success rate
+        
         # count True in last `self.last_n_episodes` values in `dones`
         # mean_success_rate: float = 1 - self.locals["dones"][-self.last_n_episodes:].sum() / self.last_n_episodes
-        mean_success_rate: float = np.array(self.training_env.env_method("is_terminated")[-self.last_n_episodes:]).mean()
+        mean_success_rate: float = np.mean(self.training_env.env_method("is_terminated")[-self.last_n_episodes:])
         old_scramble_length: int = self.training_env.env_method("get_scramble_length")[0]
         # print(f"n_calls: {self.n_calls}")
+        print(f"Mean reward over {len(self.locals['rewards'])} eps: {np.mean(self.locals['rewards']):.2}")
         print(f"Current success rate: {mean_success_rate:6.1%}, old scramble length: {old_scramble_length}")
+        print(f"Manual terminated mean: {np.mean(self.terminated_array):6.1%}")
         if mean_success_rate >= self.success_threshold:
             self.training_env.env_method("set_scramble_length", old_scramble_length + 1)
             if self.verbose > 0:
