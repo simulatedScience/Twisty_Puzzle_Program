@@ -64,7 +64,7 @@ def most_correct_points_reward_factory(solved_states: np.ndarray) -> callable:
         max_correct_points: int = 0
         for solved_state in solved_states:
             correct_points: int = np.sum(state == solved_state, axis=-1)
-            max_correct_points: int = np.max(max_correct_points, correct_points)
+            max_correct_points: int = max_correct_points if max_correct_points > correct_points else correct_points
         reward: float = max_correct_points/state.shape[-1]
         done: bool = 1-reward < 1e-5
         if done:
@@ -87,7 +87,7 @@ def sparse_most_correct_points_reward_factory(solved_states: np.ndarray) -> call
         max_correct_points: int = 0
         for solved_state in solved_states:
             correct_points: int = np.sum(state == solved_state, axis=-1)
-            max_correct_points: int = np.max(max_correct_points, correct_points)
+            max_correct_points: int = max_correct_points if max_correct_points > correct_points else correct_points
         reward: float = max_correct_points/state.shape[-1]
         done: bool = 1-reward < 1e-5
         if not (truncated or done):

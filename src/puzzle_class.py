@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 # from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
 from sympy import factorint
+from sympy.combinatorics import Permutation
 
 from .smart_scramble import smart_scramble
 
@@ -327,11 +328,16 @@ but was of type '{type(shape_str)}'")
             del(self.active_arrows)
         except AttributeError:
             pass
+        if not self.active_move_cycles:
+            print("no move defined.")
+            return
+        # reduce permutation to proper cycle notation (merge cycles with overlapping elements)
+        reduced_cycles = Permutation(self.active_move_cycles).cyclic_form
         # save move
-        self.moves[self.active_move_name] = deepcopy(self.active_move_cycles)
-
+        self.moves[self.active_move_name] = [cycle[:] for cycle in reduced_cycles]
         print(f"saved move {colored(self.active_move_name, arg_color)}.")
-        cycle_lengths = [len(cycle) for cycle in self.active_move_cycles]
+        # add inverse move
+        cycle_lengths = [len(cycle) for cycle in reduced_cycles]
         if update_group and (max(cycle_lengths) == 2 or not add_inverse):
             self._update_perm_group()
             print(f"updated state validator")
@@ -352,7 +358,8 @@ but was of type '{type(shape_str)}'")
         """
         if move_name in self.moves:
             raise ValueError(f"Move {move_name} already exists.")
-        self.moves[move_name] = deepcopy(move_cycles)
+        self.moves[move_name] = [cycle[:] for cycle in move_cycles] # save copy of cycles as move
+        # self.moves[move_name] = deepcopy(move_cycles)
         if verbose:
             print(f"saved move {colored(move_name, arg_color)}.")
 
@@ -374,9 +381,27 @@ but was of type '{type(shape_str)}'")
             old_name - (str) - name of the move to be renamed
             new_name - (str) - new name for that move
         """
+        # check if any element appears in multiple cycles
+        move_elements: set[int] = set()
+        for cycle in self.moves[old_name]:
+            for element in cycle:
+                if element in move_elements:
+                    break
+                move_elements.add(element)
+            else:
+                continue
+            # at least one element appears in multiple cycles
+            print(f"Updating cyclic form of move {old_name}:")
+            print(f"old cycles: {self.moves[old_name]}")
+            self.moves[old_name] = Permutation(self.moves[old_name]).cyclic_form
+            print(f"new cycles: {self.moves[old_name]}")
+            break
         self.moves_changed = True
         self.moves[new_name] = self.moves[old_name]
-        del(self.moves[old_name])
+        if old_name != new_name:
+            del(self.moves[old_name])
+        return
+        
 
 
     def del_move(self, move_name):

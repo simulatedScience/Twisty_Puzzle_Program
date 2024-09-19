@@ -142,7 +142,7 @@ def train_and_test_agent(
         # parallelization settings
         n_envs=n_envs,
         device=device,
-        verbosity=verbosity,
+        verbosity=0,
     )
     solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
@@ -170,22 +170,24 @@ def train_and_test_agent(
 if __name__ == "__main__":
     train_and_test_agent(
         # puzzle configuration
-        puzzle_name="cube_2x2x2",
+        puzzle_name="cube_2x2x2_sym_algs",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=2,
+        start_scramble_depth=12,
         success_threshold=0.1,
         last_n_episodes=1000,
-        reward="binary",
+        reward="sparse_most_correct_points",
+        # reward="binary",
         # rl training parameters
-        n_steps=5_000_000,
-        batch_size=50000,
+        n_steps=20_000_000,
         learning_rate=0.001,
+        batch_size=50000,
         # parallelization settings
         n_envs=1000,
         device="cuda",
+        verbosity=1,
         # test configuration
         num_tests=100,
         test_scramble_length=50,

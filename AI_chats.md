@@ -13,4 +13,6 @@
 
 - GPT-4o 16.09.2024 [parallel RL training with sb3 on GPU](https://chatgpt.com/share/66e93a8c-4228-8007-bb84-da1a41ac4412)
   _unused, read [sb3 documentation](https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html) instead for more reliable information. Provided some inspiration for other RL methods to try if necessary._
-  
+
+- GPT-4o 19.09.2024 [fix incorrect inverses in definition of Geaer Cube Ultimate](https://chatgpt.com/share/66ec2d4e-31c0-8007-b686-8d2637191c0e)  
+  _Saved some simple but tedious work to correct an error resulting from a minor bug. Diong this without an LLM would have taken a few minutes._
