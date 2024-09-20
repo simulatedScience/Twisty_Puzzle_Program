@@ -37,3 +37,6 @@ doc/puzzle_solver/stepwise_rubiks_cube_solution.jpg
 /helicopter_cube_sym_algs_tb_logs
 /cube_2x2x2_sym_algs_tb_logs
 /src/ai_files
+# ignore images, but not links to images
+/puzzle_images/*.jpg
+/puzzle_images/*.png
