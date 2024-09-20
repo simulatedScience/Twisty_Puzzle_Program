@@ -194,23 +194,50 @@ if __name__ == "__main__":
 #     )
 # # tensorboard --logdir src/ai_files/cube_2x2x2
 
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     puzzle_name="cuboid_3x3x2_sym_algs2",
+    #     base_actions=["L", "R", "F", "B", "D", "D'", "U", "U'", "M", "S"],
+    #     # environment configuration
+    #     load_model=None,
+    #     max_moves=50,
+    #     start_scramble_depth=6,
+    #     success_threshold=0.2,
+    #     last_n_episodes=1000,
+    #     reward="most_correct_points",
+    #     # reward="binary",
+    #     # rl training parameters
+    #     n_steps=20_000_000,
+    #     learning_rate=0.002,
+    #     batch_size=10000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=100,
+    #     test_scramble_length=50,
+    # )
+    # # tensorboard --logdir src/ai_files/cuboid_3x3x2
+
 
     train_and_test_agent(
         # puzzle configuration
-        puzzle_name="dino_cube_plus", # puzzle_name
+        # puzzle_name="dino_cube_plus", # puzzle_name
+        puzzle_name="dino_cube_plus_sym_algs", # puzzle_name
         base_actions=["wob", "wob'", "wbr", "wbr'", "wrg", "wrg'", "wgo", "wgo'", "yrb", "yrb'", "ybo", "ybo'", "yog", "yog'", "ygr", "ygr'"], # base_actions
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=2,
-        success_threshold=0.1,
+        start_scramble_depth=16,
+        success_threshold=0.2,
         last_n_episodes=1000,
-        reward="binary",
         # reward="binary",
+        reward="most_correct_points",
         # rl training parameters
         n_steps=20_000_000,
         learning_rate=0.001,
-        batch_size=50000,
+        batch_size=25000,
         # parallelization settings
         n_envs=1000,
         device="cuda",
@@ -219,4 +246,4 @@ if __name__ == "__main__":
         num_tests=100,
         test_scramble_length=50,
     )
-# tensorboard --logdir src/ai_files/dino_cube_plus_sym_algs
+    # tensorboard --logdir src/ai_files/dino_cube_plus_sym_algs

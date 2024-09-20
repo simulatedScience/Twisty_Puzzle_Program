@@ -10,7 +10,9 @@ We want to evaluate how general the solution strategy is by comparing the solves
   small perturbations in the start state should only lead to small perturbations in the solution
 
 - **action analysis**  
-  To understand if the agent uses the available algorithms, we use historgrams showing how often each action is taken during an average solve.
+  To understand if the agent uses the available algorithms, we use historgrams showing how often each action is taken during an average solve.  
+  Importantly, include histograms how often base actions, rotations or algorithms are chosen.
+  Early observations (as of 2024-09-20) show that curriculum learning leads to agents favoring base actions. The lower the initial scramble depth, the less likely the agent seems to be to use algorithms. Adding the algorithms and rotations to the action space seems to affect binary agent's training time very little (see _2024-09-20 dino_cube_plus_ experiments)
 
 - **reward evolution**  
   We can plot how the reward changes during each solve. We might expect similar curves for similar scrambles?
@@ -22,3 +24,13 @@ We want to evaluate how general the solution strategy is by comparing the solves
   Most other ML solvers aim and often achieve the shortest possible solutions (minimal number of moves). This is something we specifically did not want here and by investigating solution lengths, we can quite easily check this.
 
 
+## Show the order in which pieces are solved on average:
+1. Let the agent solve many different scrambles and record all solves.
+2. for each solves, analyse when each pieces is moved to its correct position and orientation (all piece points in correct place).
+3. Average over all solves  to get a heatmap of the order in which pieces are solved.
+4. color the puzzle pieces according to the heatmap
+
+**Thoughts/ Optional features:**
+- a piece being first moved to its correct position may not be a good metric, as pieces that are not currently being solved, may accidentally be moved to their correct position while solving other pieces.  
+  -> instead of recording when pieces first reach their final position, record after which point they remain in the correct place for most of the remaining solve (e.g. in correct place after >50% of the remaining moves) => add parameter `correct_position_threshold`.
+- Implement various human solvers or record many human solves to compare the agent's strategy to human strategies.
