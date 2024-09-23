@@ -78,7 +78,7 @@ def test_reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.nda
 def test_find_symmetry_planes(
         X: np.ndarray,
         num_planes: int = 1000,
-        threshold: float = 0.1,
+        plane_similarity_threshold: float = 0.1,
         alpha: float = 1.0,
         S: int = 5,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
@@ -95,7 +95,13 @@ def test_find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
-    best_planes = find_symmetry_planes(X, num_planes, threshold, alpha, S)
+    best_planes = find_symmetry_planes(
+        X=X,
+        plane_similarity_threshold=plane_similarity_threshold,
+        S=S,
+        min_score_ratio=0.9,
+        num_init_planes=num_planes,
+        )
     print(f"found {len(best_planes)} best planes.")
     # create a 3D plot
     fig = plt.figure()
@@ -105,13 +111,46 @@ def test_find_symmetry_planes(
     # plot the best planes
     for i, plane in enumerate(best_planes):
         # plot the plane
-        symmetry = reflect_symmetry_measure(X, plane, alpha)
-        print(f"Symmetry measure for plane {i}: {symmetry}")
+        symmetry_measure = reflect_symmetry_measure(X, plane, alpha)
+        print(f"Symmetry measure for plane {i}: {symmetry_measure}")
         draw_plane(ax, plane, show_normal=False)
     set_equal_aspect_3d(ax)
     plt.title("Best planes for symmetry detection")
     plt.show()
+    draw_reflected_points(
+        X=X,
+        planes=best_planes,
+    )
     return best_planes
+
+def draw_reflected_points(X: np.ndarray, planes: list[tuple[np.ndarray, np.ndarray]]):
+    """
+    For all given planes, draw the reflected points in 3D one after the other. Wait for user input in between.
+    """
+    # create a 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    plt.ion()
+    # plot the points
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c='b', marker='o')
+    set_equal_aspect_3d(ax)
+    # plot the planes
+    for i, plane in enumerate(planes):
+        # plot the plane
+        ax_artists = draw_plane(ax, plane, show_normal=False)
+        # draw the reflected points
+        reflected_X = reflect_points_across_plane(X, plane)
+        symmetry_measure: float = reflect_symmetry_measure(X, plane, alpha=1.0)
+        print(f"Symmetry measure for plane {i}: {symmetry_measure:.3f}, plane: {plane}")
+        ax_artists.append(ax.scatter(reflected_X[:, 0], reflected_X[:, 1], reflected_X[:, 2], c='r', marker='o'))
+        plt.title(f"Reflected points for plane {i}")
+        plt.pause(.1)
+        input("Press Enter to continue...")
+        # remove the last points
+        for artist in ax_artists:
+            artist.remove()
+
+
 
 def draw_plane(
         ax: plt.Axes,
@@ -119,7 +158,7 @@ def draw_plane(
         size: float = 1,
         show_normal: bool = True,
         transparency: float = 1.0,
-        ):
+        ) -> list[plt.Artist]:
     """
     Draw a plane in 3D given in standard form (a, b, c, d) (ax + by + cz + d = 0).
     
@@ -131,13 +170,13 @@ def draw_plane(
     """
     # Extract plane coefficients
     a, b, c, d = plane
-    
+
     # Normal vector of the plane
     normal = np.array([a, b, c])
-    
+
     # Ensure the normal vector is a unit vector
     normal = normal / np.linalg.norm(normal)
-    
+
     # Find a support vector (a point on the plane)
     # We choose the point (x0, 0, 0) if a != 0
     if a != 0:
@@ -164,13 +203,16 @@ def draw_plane(
     v2 = np.cross(normal, v1)
     v2 /= np.linalg.norm(v2)
     
+    ax_objects: list[plt.Artist] = []
     # Plane points
     plane_points = support + D1[..., np.newaxis] * v1 + D2[..., np.newaxis] * v2
-    ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=transparency, rstride=100, cstride=100)
-    
+    ax_objects.append(ax.plot_surface(plane_points[..., 0], plane_points[..., 1], plane_points[..., 2], color='g', alpha=transparency, rstride=100, cstride=100))
+
     if show_normal:
         # plot the normal vector
-        ax.quiver(support[0], support[1], support[2], normal[0], normal[1], normal[2], color='r')
+        ax_objects.append(ax.quiver(support[0], support[1], support[2], normal[0], normal[1], normal[2], color='r'))
+
+    return ax_objects
 
 def set_equal_aspect_3d(ax):
     """
@@ -235,7 +277,8 @@ def dodecahedron_vertices():
     return vertices, edges
 
 def cube_2x2_stickers():
-    offset_face = 100
+    offset_face = 1 + 2**0.5
+    # offset_face = 2
     X = np.array([
         [ 1, 1, offset_face], # top face
         [ 1,-1, offset_face],
@@ -309,7 +352,7 @@ def main():
     # test_reflect_points_across_plane(X, plane)
     
     # test_find_symmetry_planes(X, num_planes=5000, threshold=0.1, alpha=1.0, S=200)
-    test_find_symmetry_planes(X, num_planes=5000, threshold=0.1, alpha=1.0, S=20000)
+    test_find_symmetry_planes(X, num_planes=5000, plane_similarity_threshold=0.2, alpha=1.0, S=20000)
 
 if __name__ == "__main__":
     main()

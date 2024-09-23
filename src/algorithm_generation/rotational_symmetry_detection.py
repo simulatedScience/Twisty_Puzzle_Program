@@ -137,11 +137,17 @@ def find_rotational_symmetries(
     Returns:
         list[tuple[np.ndarray, float]]: list of rotational symmetries (axis, angle) detected
     """
+    # calculate alpha = 20/l_avg
+    alpha: float = 20 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
     # Step 0: center point cloud around origin
     X_shift = centroid(X)
     X = X - X_shift
     # Step 1: Find reflectional symmetry planes
-    planes = find_symmetry_planes(X, plane_similarity_threshold, alpha=alpha, S=num_candidate_rotations)
+    planes = find_symmetry_planes(
+        X=X,
+        plane_similarity_threshold=plane_similarity_threshold,
+        S=num_candidate_rotations,
+        min_score_ratio=min_score_ratio)
     print(f"Found {len(planes)} symmetry planes.")
     print(f"Searching {((len(planes)-1)**2+len(planes)-1)//2} rotation candidates.")
 

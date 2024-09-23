@@ -12,56 +12,96 @@ from scipy.optimize import minimize
 
 def init_planes(
         X: np.ndarray,
-        threshold: float = 0.1,
-    ) -> list[tuple[np.ndarray, np.ndarray]]:
+        plane_similarity_threshold: float = 0.1,
+        num_planes: int = 100_000,
+        verbosity: int = 1,
+    ) -> list[np.ndarray]:
     """
     Generate a set of random planes for symmetry detection by choosing two random points from X and computing the normal vector of the plane spanned by these points. The plane passes through the midpoint between these two points. Repeat `num_planes` times and only keep planes that are not too similar to the existing planes.
-    """
-    # n: int = X.shape[0]
-    found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
-    for idx_1, p1 in enumerate(X[:-1]):
-        for p2 in X[idx_1+1:]:
-    # for _ in range(num_planes):
-    #         # choose two random points
-    #         idx1: int = np.random.randint(0, n-1)
-    #         idx2: int = np.random.randint(idx1 + 1, n)
-    #         # compute normal vector of plane across which one point is reflected to the other
-    #         p1, p2 = X[idx1], X[idx2]
 
-            diff_vector: np.ndarray = p2 - p1
-            normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
-            # compute midpoint
-            midpoint: np.ndarray = p1 + diff_vector / 2
-            # TODO: check if plane is not too similar to existing planes
-            new_plane = plane_point_normal2standard_form((midpoint, normal))
-            new_plane_key = tuple(new_plane)
-            # plane_key is a 4-tuple describing the plane in standard form (0 = ax+by+cz+d)
-            # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
-            add_new_plane: bool = True
-            for plane_key, (plane, num) in list(found_planes.items()):
-                # print(f"{plane_distance(new_plane, plane) = }")
-                if (dist := plane_distance(new_plane, plane)) < threshold:
-                    if dist < threshold/10: # planes are almost identical, no furhter averaging needed
-                        # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
-                        add_new_plane: bool = False
-                        break
-                    avg_plane: np.ndarray = average_planes(new_plane, plane)
-                    avg_plane_key: tuple[float] = tuple(avg_plane)
-                    found_planes[avg_plane_key] = (avg_plane, num + 1)
-                    if not avg_plane_key == plane_key:
-                        del found_planes[plane_key]
-                    new_plane_key = avg_plane_key
-                    new_plane = avg_plane
-                    add_new_plane: bool = False
-                    # break
-            if add_new_plane:
-                found_planes[new_plane_key] = (new_plane, 1)
-            # if prev_len == len(found_planes):
-            #     print(f"Added plane: {new_plane}")
-            # else:
-            #     print(f"Old planes: {prev_len}, new planes: {len(found_planes)}")
-    planes = [plane for plane, _ in found_planes.values()] # extract planes in standard form
+    Args:
+        X (np.ndarray): set of points as array of shape (n, 3)
+        plane_similarity_threshold (float): threshold for distance between planes to consider them equal
+        num_planes (int): number of random planes to generate (ignored if `X` has no more than 500 points. In that case, consider all possible planes defined by two points)
+
+    Returns:
+        list[np.ndarray]: list of planes in standard form (a, b, c, -d) (ax + by + cz + d = 0)
+    """
+    n_points: int = X.shape[0]
+    found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]] = {}
+    if n_points > 500: # if there are too many points, only calculate a fixed number of random planes
+        if verbosity > 0:
+            print(f"Searching {num_planes} random planes for symmetries.")
+        for _ in range(num_planes):
+            # choose two random points
+            idx1: int = np.random.randint(0, n_points-1)
+            idx2: int = np.random.randint(idx1 + 1, n_points)
+            point_1, point_2 = X[idx1], X[idx2]
+            add_plane(
+                point_1=point_1,
+                point_2=point_2,
+                found_planes=found_planes,
+                plane_similarity_threshold=plane_similarity_threshold,
+                )
+    else: # use all pairs of points to calculate planes
+        if verbosity > 0:
+            print(f"Searching all {X.shape[0] * (X.shape[0] - 1) // 2} planes for symmetries.")
+        for idx_1, point_1 in enumerate(X[:-1]):
+            for point_2 in X[idx_1+1:]:
+                add_plane(
+                    point_1=point_1,
+                    point_2=point_2,
+                    found_planes=found_planes,
+                    plane_similarity_threshold=plane_similarity_threshold,
+                    )
+    planes: list[np.ndarray] = [plane for plane, _ in found_planes.values()] # extract planes in standard form
     return planes
+
+def add_plane(
+        point_1: np.ndarray,
+        point_2: np.ndarray,
+        found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]],
+        plane_similarity_threshold: float = 0.1,
+        ):
+    """
+    Given two points and a list of current planes, compute the plane between the two points and add it to the list of planes if it is not too similar to the existing planes.
+    If it is similar, average the similar planes and update the list of planes accordingly.
+
+    Args:
+        point_1 (np.ndarray): first point
+        point_2 (np.ndarray): second point
+        found_planes (dict[tuple[float, float, float, float], tuple[np.ndarray, int]]): dictionary of found planes
+        plane_similarity_threshold (float): threshold for distance between planes to consider them equal
+    """
+    # compute normal vector of plane as the normalized difference vector between the two points
+    diff_vector: np.ndarray = point_2 - point_1
+    normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
+    # compute midpoint
+    midpoint: np.ndarray = point_1 + diff_vector / 2
+    # TODO: check if plane is not too similar to existing planes
+    new_plane = plane_point_normal2standard_form((midpoint, normal))
+    new_plane_key = tuple(new_plane)
+    # plane_key is a 4-tuple describing the plane in standard form (0 = ax+by+cz+d)
+    # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
+    add_new_plane: bool = True
+    for plane_key, (plane, num) in list(found_planes.items()):
+        # print(f"{plane_distance(new_plane, plane) = }")
+        if (dist := plane_distance(new_plane, plane)) < plane_similarity_threshold:
+            if dist < plane_similarity_threshold/10: # planes are almost identical, no furhter averaging needed
+                # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
+                add_new_plane: bool = False
+                break
+            avg_plane: np.ndarray = average_planes(new_plane, plane)
+            avg_plane_key: tuple[float] = tuple(avg_plane)
+            found_planes[avg_plane_key] = (avg_plane, num + 1)
+            if not avg_plane_key == plane_key:
+                del found_planes[plane_key]
+            new_plane_key = avg_plane_key
+            new_plane = avg_plane
+            add_new_plane: bool = False
+            # break
+    if add_new_plane:
+        found_planes[new_plane_key] = (new_plane, 1)
 
 def average_planes(
         plane_1: np.ndarray,
@@ -130,9 +170,10 @@ def dist_similarity_function(dist: float, alpha: float = 15) -> float:
     Returns:
         float: similarity between two points
     """
-    value = (1 - 1 / 2.6 * alpha * dist)**5 * \
-        (8 * (1 / 2.6 * alpha * dist)**2 + 5 * (1 / 2.6 * alpha * dist) + 1)
-    return np.where(alpha * dist <= 2.6, value, 0)
+    alpha_term = 1 / 2.6 * alpha * dist
+    value = (1 - alpha_term)**5 * \
+        (8 * (alpha_term)**2 + 5 * (alpha_term) + 1)
+    return np.where(alpha * dist <= 2.6, value, 0) # clamp to 0 if distance is > 2.6/alpha
     # if alpha * dist > 2.6:
     #     return 0
     # else:
@@ -162,18 +203,19 @@ def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> 
     similarity_measures = dist_similarity_function(pairwise_distances, alpha)
     # Sum all the similarity measures
     similarity_measure = np.sum(similarity_measures)
-    if hasattr(reflect_symmetry_measure, "run_count"):
-        reflect_symmetry_measure.run_count += 1
-    else:
-        reflect_symmetry_measure.run_count = 1
+    # if hasattr(reflect_symmetry_measure, "run_count"):
+    #     reflect_symmetry_measure.run_count += 1
+    # else:
+    #     reflect_symmetry_measure.run_count = 1
     return similarity_measure
 
 def find_symmetry_planes(
         X: np.ndarray,
-        threshold: float = 0.1,
-        alpha: float = 1.0,
+        plane_similarity_threshold: float = 0.1,
         S: int = 5,
         min_score_ratio: float = 0.99,
+        num_init_planes: int = 100_000,
+        verbosity: int = 1,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
     """
     Find the best symmetry planes and optimize over them.
@@ -187,21 +229,24 @@ def find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
-    # normalize X scaling such that points are at most distance 1 from the origin
     # translate to the origin
     X = X - np.mean(X, axis=0)
-    # scale to unit sphere
-    X = X / np.max(np.linalg.norm(X, axis=1))
+    # calculate alpha as 15/l_avg, the average distance between points in X
+    alpha = 15 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
+    print(f"Set alpha to {alpha:.3f}.")
+    # normalize X scaling such that points are at most distance 1 from the origin
+    # # scale to unit sphere
+    # X = X / np.max(np.linalg.norm(X, axis=1))
     # print parameters
-    print(f"find_symmetry_planes(X, {threshold}, {alpha}, {S}, {min_score_ratio})")
-    planes = init_planes(X, threshold)
+    print(f"find_symmetry_planes(X, {plane_similarity_threshold}, {alpha}, {S}, {min_score_ratio}, {num_init_planes}, {verbosity})")
+    planes: list[tuple[np.ndarray, np.ndarray]] = init_planes(X, plane_similarity_threshold, num_planes=num_init_planes, verbosity=verbosity)
     print(f"Initalized {len(planes)} planes.")
     best_planes = []
     best_scores = []
     # choose planes with best symmetry measure
     for plane in planes:
         score = reflect_symmetry_measure(X, plane, alpha)
-        if len(best_planes) < S:
+        if len(best_planes) < S or score == min(best_scores):
             best_scores.append(score)
             best_planes.append(plane)
         elif score > min(best_scores):
@@ -226,11 +271,13 @@ def find_symmetry_planes(
         symmetry_plane[:3] = symmetry_plane[:3] / np.linalg.norm(symmetry_plane[:3])
         # TODO: sort symmetry_planes by decreasing -results.fun
         symmetry_planes.append(symmetry_plane)
+
+    symmetry_planes: list[np.ndarray] = prune_by_symmetry_measure(X, symmetry_planes, alpha, min_score_ratio, verbosity)
     # prune similar planes
     pruned_symmetry_planes = []
     for plane in symmetry_planes:
         for other_plane in pruned_symmetry_planes:
-            if (dist := plane_distance(plane, other_plane)) < threshold:
+            if (dist := plane_distance(plane, other_plane)) < plane_similarity_threshold:
                 # if dist < 0:
                 #     print(f"unexpected plane distance: {dist} between planes\n[{plane}]\n[{other_plane}]")
                 # else:
@@ -241,6 +288,35 @@ def find_symmetry_planes(
     # DEBUG: plot symmetry planes
     # plot_symmetry_planes(2*X, pruned_symmetry_planes)
     return pruned_symmetry_planes
+
+def prune_by_symmetry_measure(
+    X: np.ndarray,
+    planes: list[np.ndarray],
+    alpha: float = 1.0,
+    min_score_ratio: float = 0.99,
+    verbosity: int = 1,
+    ) -> list[np.ndarray]:
+    """
+    Prune a list of planes by their symmetry measure. Keep only the planes whose symmetry measure is at least `min_score_ratio` times the best symmetry measure among the planes.
+
+    Args:
+        X (np.ndarray): set of points
+        planes (list[np.ndarray]): list of planes
+        alpha (float): parameter to control the similarity function
+        min_score_ratio (float): minimum score ratio between best and other planes
+        verbosity (int): verbosity level
+
+    Returns:
+        list[np.ndarray]: pruned list of planes
+    """
+    all_scores: list[float] = [reflect_symmetry_measure(X, plane, alpha) for plane in planes]
+    scores_string: str = '\n  '.join([f'plane {i} {score:.3f}' for i, score in enumerate(all_scores)])
+    print(f"symmetry_measures:\n  {scores_string}")
+    best_score: float = max(all_scores)
+    pruned_planes: list[np.ndarray] = [plane for plane, score in zip(planes, all_scores) if score >= best_score * min_score_ratio]
+    if verbosity > 0:
+        print(f"Keeping {len(pruned_planes)}/{len(planes)} planes with symmetry measures > {min_score_ratio:6.1%} of {best_score:.3f}.")
+    return pruned_planes
 
 def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     """
