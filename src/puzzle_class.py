@@ -808,7 +808,7 @@ but was of type '{type(shape_str)}'")
 #####     END V-learning     #####
 #####     START NN-V-learning     #####
 
-    def train_v_nn(self,
+    def load_nn(self,
             num_episodes=None,
             max_moves=None,
             learning_rate=None,
@@ -817,35 +817,10 @@ but was of type '{type(shape_str)}'")
             keep_nn=True,
             k_for_her=5):
         """
-        train the neural network for the current puzzle
+        Load a trained RL agent's neural network from a given file.
+        
+        
         """
-        # #load q-table and init important ai variables
-        # if not hasattr(self, "ai_q_class"):
-        #     self.train_q_learning(num_episodes=0)
-        raise NotImplementedError("NNs are currently disabled.")
-        if not hasattr(self, "ai_nn_class"):
-            ai_state, _ = state_for_ai(self.SOLVED_STATE)
-
-            self.ai_nn_class = Puzzle_NN_V_HER_AI(
-                    deepcopy(self.moves),
-                    ai_state,
-                    name=self.PUZZLE_NAME,
-                    keep_nn=keep_nn)
-            self.ai_nn_class.initialize_nn()
-            # self.ai_nn_class.initialize_nn_conv()
-
-        # profile = cProfile.Profile()
-        # profile.runcall(self.ai_nn_class.train_nn_her, 
-        #         num_episodes=num_episodes,
-        #         max_moves=max_moves,
-        #         learning_rate=learning_rate,
-        #         discount_factor=discount_factor,
-        #         base_exploration_rate=base_exploration_rate,
-        #         keep_nn=keep_nn,
-        #         k_for_her=k_for_her)
-        # ps = pstats.Stats(profile)
-        # ps.sort_stats(("tottime"))
-        # ps.print_stats(10)
         self.ai_nn_class.train_nn_her(
                 num_episodes=num_episodes,
                 max_moves=max_moves,

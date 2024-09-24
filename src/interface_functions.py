@@ -570,7 +570,7 @@ def interface_train_v_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff880
         num_episodes = 0
     learning_rate, discount_factor, exploration_rate = float_args
 
-    puzzle.train_v_nn(
+    puzzle.load_nn(
             num_episodes=num_episodes, # default 0
             max_moves=max_moves, # default 50
             learning_rate=learning_rate, # default 0.1

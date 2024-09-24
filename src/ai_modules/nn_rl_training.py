@@ -4,6 +4,7 @@ This module implements the training routine for neural network-based twisty puzz
 import datetime
 import json
 import os
+import shutil
 
 import numpy as np
 import torch
@@ -143,7 +144,6 @@ def train_agent(
         save_training_info(
             exp_folder_path,
             mode="w",
-            training_start=exp_folder,
             # what model was trained
             puzzle_name=puzzle_name,
             base_actions=base_actions,
@@ -160,6 +160,7 @@ def train_agent(
             # parallelization settings
             n_envs=n_envs,
             device=device,
+            training_start=exp_folder,
         )
         # train model
         model.learn(
@@ -196,6 +197,7 @@ def train_agent(
 
 def save_training_info(
         exp_folder_path: str,
+        puzzle_name: str,
         mode: str = "w",
         **kwargs,
     ):
@@ -204,8 +206,19 @@ def save_training_info(
 
     Args:
         exp_folder_path (str): path to the experiment folder
+        puzzle_name (str): name of the puzzle
         mode (str): mode for opening the file (e.g. "w" for write, "a" for append)
     """
+    if not puzzle_name:
+        raise ValueError("An existing puzzle name is required to save training information.")
+
+    # copy puzzle definition file to experiment folder
+    puzzle_def_path: str = os.path.join("src", "puzzles", puzzle_name, "puzzle_definition.xml")
+    try:
+        shutil.copy(puzzle_def_path, os.path.join(exp_folder_path, "puzzle_definition.xml"))
+        print(f"Copied puzzle definition file to {exp_folder_path}.")
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(f"Expected puzzle definition file at '{puzzle_def_path}', but did not find one.") from exc
     with open(os.path.join(exp_folder_path, "training_info.json"), mode) as file:
         json.dump(kwargs, file, indent=4)
 

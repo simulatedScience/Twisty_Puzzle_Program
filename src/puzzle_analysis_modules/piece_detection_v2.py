@@ -1,17 +1,27 @@
 """
 Calculate the pieces of a twisty puzzle based on the defined moves.
 This is version 2, version 1 had too many cases that did not work correctly.
+
+Author: Sebastian Jost
+
 """
 import random
 import time
 from ..ai_modules.twisty_puzzle_model import perform_action
 
 
-def detect_pieces(moves, n_points, inverse_dict=None, max_moves=1000):
+def detect_pieces(
+        moves: list[list[list[int]]],
+        n_points: int,
+        inverse_dict=None,
+        max_moves=1000
+        ):
     """
     calculate all pieces of a puzzle, including those only seperable through move sequences that are longer than one move.
     This is achieved by randomly performing [max_moves] moves and cutting pieces every time it's possible. This takes a little bit of time but shouldn't exceed 1s on most common puzzles.
     Due to the choice of using random moves, it is possible that not all pieces are calculated correctly, but that's very, very unlikely unless the puzzle is built specifically to break this algorithm. In that case, just use more moves.
+    
+    
     """
     start_time = time.perf_counter()
     visited_states = set()
