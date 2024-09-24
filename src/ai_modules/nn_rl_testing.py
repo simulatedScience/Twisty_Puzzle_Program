@@ -250,21 +250,21 @@ if __name__ == "__main__":
 
     train_and_test_agent(
         # puzzle configuration
-        puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
-        # puzzle_name="gear_cube_extreme", # puzzle_name
+        # puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
+        puzzle_name="gear_cube_extreme", # puzzle_name
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=16,
+        start_scramble_depth=2,
         success_threshold=0.2,
         last_n_episodes=1000,
-        # reward="binary",
-        reward="most_correct_points",
+        reward="binary",
+        # reward="most_correct_points",
         # rl training parameters
         n_steps=100_000_000,
-        learning_rate=0.001,
-        batch_size=25000,
+        learning_rate=0.002,
+        batch_size=50000,
         # parallelization settings
         n_envs=1000,
         device="cuda",
