@@ -38,7 +38,7 @@ class Twisty_Puzzle_Env(gym.Env):
         self.last_n_episodes: int = 1000
         # self.episode_success_history: np.ndarray = np.zeros(self.last_n_episodes, dtype=np.bool_)
         
-        self.scramble_actions: np.ndarray = np.zeros((0,), dtype=np.int32) # stores the most recent scramble actions
+        self.scramble_action_indices: np.ndarray = None # stores the most recent scramble actions
 
         # define variables for gym environment (Observation and Action Space)
         self.observation_space = MultiDiscrete([len(set(solved_state))] * len(solved_state))
@@ -133,8 +133,8 @@ class Twisty_Puzzle_Env(gym.Env):
         Returns:
             np.ndarray: the scrambled state
         """
-        self.scramble_actions = self.base_actions[np.random.random_integers(0, self.num_base_actions-1, (scramble_length,))]
-        for action in self.scramble_actions:
+        self.scramble_action_indices = np.random.random_integers(0, self.num_base_actions-1, (scramble_length,))
+        for action in self.base_actions[self.scramble_action_indices]:
             self.state = self.state[action]
         return self.state
 

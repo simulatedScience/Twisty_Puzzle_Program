@@ -298,7 +298,7 @@ def filter_and_add_algorithm(
     else: # similar algorithms exist, but no exact match
     #     print("="*75) if DEBUG else None
         suffix = " = " + colored_text(str(new_algorithm.sympy_permutation.cyclic_form), color="#5588ff") if DEBUG else ""
-        print(f"Adding new new_algorithm with similar signature to existing ones:\n  {new_algorithm}"
+        print(f"Adding new algorithm with similar signature to existing ones:\n  {new_algorithm}"
               + suffix)
     #     if DEBUG:
     #         # print cyclic forms and index in found_algorithms for all potential matches

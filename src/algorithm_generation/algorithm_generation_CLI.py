@@ -205,7 +205,7 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
             # max_time=3, # 3 seconds
-            max_time=1200, # 20 minutes
+            max_time=120, # 2 minutes
             max_base_sequence_length=20,
             max_move_sequence_order=200,
             max_algorithm_moves=100, # 100

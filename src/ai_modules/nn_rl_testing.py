@@ -6,6 +6,7 @@ This mainly consists of a program that lets an agent play many episodes of a twi
 Author: Sebastian Jost
 """
 import datetime
+import json
 import os
 import time
 
@@ -38,7 +39,7 @@ def test_agent(
     """
     tests_folder: str = os.path.join(exp_folder_path, "tests")
     os.makedirs(tests_folder, exist_ok=True)
-    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+    log_file_name: str = f"test_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.json"
     log_file_path: str = os.path.join(tests_folder, log_file_name)
     exp_identifier: str = os.path.basename(exp_folder_path)
 
@@ -51,28 +52,44 @@ def test_agent(
         print(f"[{exp_identifier}] Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
     success_count: int = 0
+    test_run_info: list[tuple[str, str, bool, int]] = []
+    # with open(log_file_path, "w") as file:
+    for i in range(num_tests):
+        obs, _ = env.reset()
+        done = False
+        action_sequence = []
+        while not done:
+            action, _ = model.predict(obs, deterministic=False)
+            obs, _, terminated, truncated, _ = env.step(int(action))
+            done = terminated or truncated
+            action_sequence.append(action_index_to_name[int(action)])
+        success_count += int(terminated)
+        # log scramble, solve and result to file
+        # use JSON format instead: store tuples (scramble, solve, success, move_count)
+        test_run_info.append(
+            {
+                "scramble": ' '.join([action_index_to_name[action] for action in env.scramble_action_indices]), # scramble sequence
+                "agent_moves:": ' '.join(action_sequence), # solve sequence
+                "success": bool(terminated), # success
+                "n_moves": int(env.move_counter), # move count
+            }
+        )
+        # print results to stdout
+        if verbosity > 1:
+            print(f"Test {i+1} solve: {' '.join(action_sequence)}")
+            print(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps")
+    test_time_s: int = time.perf_counter()-start_time
+    json_test_info: dict[str, str | int | list[tuple[str, str, bool, int]]] = {
+        "summary": f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}",
+        "num_tests": num_tests,
+        "run_info": test_run_info,
+        "test_time": test_time_s,
+    }
+    
     with open(log_file_path, "w") as file:
-        for i in range(num_tests):
-            obs, _ = env.reset()
-            done = False
-            action_sequence = []
-            while not done:
-                action, _ = model.predict(obs, deterministic=False)
-                obs, _, terminated, truncated, _ = env.step(int(action))
-                done = terminated or truncated
-                action_sequence.append(action_index_to_name[int(action)])
-            success_count += int(terminated)
-            # log scramble, solve and result to file
-            file.write(f"Test {i+1} scramble: {env.scramble_actions}\n")
-            file.write(f"Test {i+1} solve: {' '.join(action_sequence)}\n")
-            file.write(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps\n")
-            # print results to stdout
-            if verbosity > 1:
-                print(f"Test {i+1} solve: {' '.join(action_sequence)}")
-                print(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps")
-        file.write(f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}")
+        json.dump(json_test_info, file, indent=4)
     if verbosity:
-        print(f"[{exp_identifier}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {time.perf_counter()-start_time:.2f} s.")
+        print(f"[{exp_identifier}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {test_time_s:.2f} s.")
 
 # def test_from_file(
 #         exp_folder_path: str,
@@ -256,15 +273,15 @@ if __name__ == "__main__":
         # environment configuration
         load_model=None,
         max_moves=50,
-        start_scramble_depth=2,
+        start_scramble_depth=1,
         success_threshold=0.2,
         last_n_episodes=1000,
         reward="binary",
         # reward="most_correct_points",
         # rl training parameters
-        n_steps=100_000_000,
-        learning_rate=0.002,
-        batch_size=50000,
+        n_steps=1_000_000,
+        learning_rate=0.001,
+        batch_size=25000,
         # parallelization settings
         n_envs=1000,
         device="cuda",

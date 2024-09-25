@@ -1,0 +1,3 @@
+alg_1 = 11*(gow U)
+alg_2 = 15*(gwr' U' rw gw)
+alg_3 = 18*(br gry' gr U')
