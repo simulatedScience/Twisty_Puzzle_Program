@@ -212,7 +212,7 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             max_algorithm_order=6,
             max_pieces_affected=4, # 4
             max_number_of_algorithms=48, # 20
-            max_iterations_without_new_algorithm=20000,
+            max_iterations_without_new_algorithm=1000,
             verbosity=2,
         )
         ps = pstats.Stats(profile)

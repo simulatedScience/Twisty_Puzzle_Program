@@ -24,14 +24,17 @@ def generate_algorithms(
         puzzle: "Twisty_Puzzle",
         sympy_base_moves: dict[str, Permutation],
         sympy_rotations: dict[str, Permutation],
+        # end conditions
         max_time: float = 10, # seconds
+        max_number_of_algorithms: int = 30,
+        max_iterations_without_new_algorithm: int = 10000,
+        # algorithm acceptance criteria
         max_base_sequence_length=16,
         max_move_sequence_order: int = 200,
         max_algorithm_moves: int = 150,
         max_algorithm_order: int = 6,
         max_pieces_affected: int | None = None, # automatic
-        max_number_of_algorithms: int = 30,
-        max_iterations_without_new_algorithm: int = 10000,
+        recursive: bool = False,
         verbosity: int = 2,
     ):
     """
@@ -45,6 +48,23 @@ def generate_algorithms(
         - time runs out or
         - maximum number of algorithms is reached
         - algorithms with rotations generate entire puzzle group
+        
+    Args:
+        puzzle (Twisty_Puzzle): object describing the puzzle (points, moves, etc.)
+        sympy_base_moves (dict[str, Permutation]): dictionary mapping each move to their Permutation object
+        sympy_rotations (dict[str, Permutation]): dictionary mapping each rotation to their Permutation object
+        # end conditions
+        max_time (float): maximum time to generate algorithms for
+        max_number_of_algorithms (int): maximum number of algorithms to return (possibly +1 if an inverse is added for the last alg.)
+        max_iterations_without_new_algorithm (int): maximum number of iterations without adding a new algorithm
+        # algorithm acceptance criteria
+        max_base_sequence_length (int): maximum number of moves in base sequence
+        max_move_sequence_order (int): maximum order of the base move sequence
+        max_algorithm_moves (int): maximum number of moves in an algorithm
+        max_algorithm_order (int): maximum order of an algorithm
+        max_pieces_affected (int): maximum number of pieces affected by an algorithm
+        recursive (bool): whether to allow algorithms in base sequences (can improve the found algorithms, but takes longer). Default: False
+        verbosity (int): verbosity level
     """
     if max_pieces_affected is None:
         raise NotImplementedError("Automatic calculation of max_pieces_affected is not implemented yet.\n" + 
@@ -55,7 +75,7 @@ def generate_algorithms(
     # found_algorithms: list[Twisty_Puzzle_Algorithm] = puzzle.algorithms
     iterations_since_new_algorithm: int = 0
     num_base_sequences: int = 0
-    base_moves: dict[str, list[list[str]]] = {name: puzzle.moves[name] for name in sympy_base_moves.keys()}
+    current_moves: dict[str, list[list[str]]] = {name: puzzle.moves[name] for name in sympy_base_moves.keys()}
     
     n_points: int = len(puzzle.SOLVED_STATE)
     base_move_orbits: list[set[int]] = calculate_point_orbits(
@@ -70,14 +90,15 @@ def generate_algorithms(
             and iterations_since_new_algorithm < max_iterations_without_new_algorithm:
         # generate efficient base sequence for algorithms
         sequence_length: int = random.randint(2, max_base_sequence_length)
-        # if DEBUG:
-        #     base_sequence = ["U", "F"]
-        # else:
         base_sequence: list[str] = smart_scramble(
             puzzle.SOLVED_STATE,
-            base_moves,
+            current_moves,
             sequence_length)
         num_base_sequences += 1
+        if recursive:
+            base_sequence = [found_algorithms[move_name].full_action_sequence if move_name in found_algorithms else [move_name] for move_name in base_sequence]
+            base_sequence = [move for sublist in base_sequence for move in sublist]
+            print(f"Replaced algorithms to get base sequence: {' '.join(base_sequence)}")
         # get cycles of base sequence
         repetitions_candidates, base_sequence_info = get_repetition_candidates(
             sympy_moves=sympy_base_moves,
@@ -108,12 +129,17 @@ def generate_algorithms(
                 max_pieces_affected=max_pieces_affected,
                 iteration=iteration,
                 )
+            if reason == "similar_signature" and algs_generate_full_group:
+                added_algorithms_step = False # once full group is reached, only add algorithms with new signatures
             # keep track of whether a new algorithm was added
             if added_algorithms_step:
+                if recursive:
+                    current_moves[algorithm.name] = algorithm.sympy_permutation.cyclic_form
+                    sympy_base_moves[algorithm.name] = algorithm.sympy_permutation
                 num_unique_algorithms += 1
                 # add inverse of new algorithm
-                inverse_algorithm = algorithm.get_inverse(inverse_moves_dict)
-                if inverse_algorithm.name != algorithm.name: # don't add inverses for self-inverse algorithms (order 2)
+                if algorithm.order > 2: # add inverse algorithm if order >2
+                    inverse_algorithm = algorithm.get_inverse(inverse_moves_dict)
                     added_algorithms_step_inv, reason_inv = filter_and_add_algorithm(
                         new_algorithm=inverse_algorithm,
                         found_algorithms=found_algorithms,
@@ -122,27 +148,24 @@ def generate_algorithms(
                         iteration=iteration,
                     )
                     if added_algorithms_step_inv:
+                        if recursive:
+                            current_moves[inverse_algorithm.name] = inverse_algorithm.sympy_permutation.cyclic_form
+                            sympy_base_moves[inverse_algorithm.name] = inverse_algorithm.sympy_permutation
+                            inverse_moves_dict[inverse_algorithm.name] = algorithm.name
+                            inverse_moves_dict[algorithm.name] = inverse_algorithm.name
                         print(f"Added inverse algorithm: {inverse_algorithm}")
                     else:
                         print(f"Failed to add inverse algorithm: {inverse_algorithm}.\n Reason: {reason_inv}")
-                        # print("="*75)
-                        # print algorithm and inverse cyclces
-                        print(f"Algorithm cycles: {algorithm.sympy_permutation.cyclic_form}")
-                        print(f"Inverse cycles:   {inverse_algorithm.sympy_permutation.cyclic_form}")
-                        # print existing algorithms
-                        # print("Existing algorithms:")
-                        # for alg in found_algorithms:
-                        #     # if alg.name == algorithm.name:
-                        #     #     continue # skip new algorithm
-                        #     print(f"  {alg.name:14}: {alg.sympy_permutation.cyclic_form}")
-                        # print("="*75)
-                #         print()
-                # else:
-                #     print(f"Algorithm is self-inverse: {algorithm}")
+                        # print(f"Algorithm cycles: {algorithm.sympy_permutation.cyclic_form}")
+                        # print(f"Inverse cycles:   {inverse_algorithm.sympy_permutation.cyclic_form}")
+                        inverse_moves_dict[algorithm.name] = algorithm.name # algorithm is self-inverse under rotation
+                else:
+                    inverse_moves_dict[algorithm.name] = algorithm.name # algorithm is self-inverse
                 algs_generate_full_group, current_group_order = full_group_reached(puzzle, found_algorithms, sympy_rotations)
-                if algs_generate_full_group:
-                    break
-                iterations_since_new_algorithm = 0
+                # if algs_generate_full_group:
+                #     break
+                if not algs_generate_full_group:
+                    iterations_since_new_algorithm = 0
                 # trim unnecessary algorithms when the maximum number of algorithms is reached
                 if len(found_algorithms) >= max_number_of_algorithms:
                     print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached. Trimming algorithms.")
@@ -156,7 +179,35 @@ def generate_algorithms(
         else:
             iterations_since_new_algorithm += 1
             continue
-        break
+        # break
+    # print end condition
+    if verbosity:
+        print(f"Stopped after finding {len(found_algorithms)}/{max_number_of_algorithms} algorithms before trimming.")
+        print(f"Stopped with {iterations_since_new_algorithm} iterations since adding a new algorithm.")
+        if algs_generate_full_group:
+            print(f"Full group was reached.")
+        print(f"Algorithm generation took {time.time()-end_time+max_time:.2f}/{max_time} s.")
+        
+        print(f"while_checks:",
+                len(found_algorithms) < max_number_of_algorithms,
+                time.time() < end_time,
+                iterations_since_new_algorithm < max_iterations_without_new_algorithm,
+                sep="\n  ")
+    # if verbosity:
+    #     print()
+    #     if len(found_algorithms) >= max_number_of_algorithms:
+    #         print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached.")
+    #     if time.time() >= end_time:
+    #         print(f"Maximum time ({max_time} seconds) reached.")
+    #     if iterations_since_new_algorithm >= max_iterations_without_new_algorithm:
+    #         print(f"Maximum iterations without new algorithm ({max_iterations_without_new_algorithm}) reached.")
+    #     if algs_generate_full_group:
+    #         print(f"Full group reached.")
+    #     print()
+    if verbosity >= 2:
+        print(f"Searched {num_base_sequences} base sequences to find {len(found_algorithms)} algorithms in {time.time()-end_time+max_time:.2f} s.")
+        print()
+    
     # trim algorithms to minimal full set
     found_algorithms = trim_algorithms_to_current_group(
         puzzle=puzzle,
@@ -164,19 +215,6 @@ def generate_algorithms(
         found_algorithms=found_algorithms,
         sympy_rotations=sympy_rotations,
     )
-    # print end condition
-    if verbosity:
-        print()
-        if len(found_algorithms) >= max_number_of_algorithms:
-            print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached.")
-        if time.time() >= end_time:
-            print(f"Maximum time ({max_time} seconds) reached.")
-        if iterations_since_new_algorithm >= max_iterations_without_new_algorithm:
-            print(f"Maximum iterations without new algorithm ({max_iterations_without_new_algorithm}) reached.")
-        if algs_generate_full_group:
-            print(f"Full group reached.")
-    if verbosity >= 2:
-        print(f"Searched {num_base_sequences} base sequences to find {len(found_algorithms)} algorithms in {time.time()-end_time+max_time:.2f} s.")
     return found_algorithms
 
 def get_repetition_candidates(
@@ -295,6 +333,7 @@ def filter_and_add_algorithm(
             print(f"Adding new algorithm:\n  {new_algorithm}")
         found_algorithms.append(new_algorithm)
         accepted_new_algorithm = True
+        reason: str = "new algorithm"
     else: # similar algorithms exist, but no exact match
     #     print("="*75) if DEBUG else None
         suffix = " = " + colored_text(str(new_algorithm.sympy_permutation.cyclic_form), color="#5588ff") if DEBUG else ""
@@ -315,7 +354,8 @@ def filter_and_add_algorithm(
     #             print(colored_text(f"  {rot_name:6} -> {rotated_alg_perm.cyclic_form}", color=color))
         found_algorithms.append(new_algorithm)
         accepted_new_algorithm = True
-    return accepted_new_algorithm, "added"
+        reason: str = "similar signature"
+    return accepted_new_algorithm, reason
 
 def trim_algorithms_to_current_group(
         puzzle: "Twisty_Puzzle",
