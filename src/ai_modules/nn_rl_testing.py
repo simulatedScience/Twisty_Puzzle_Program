@@ -60,7 +60,7 @@ def test_agent(
         done = False
         action_sequence = []
         while not done:
-            action, _ = model.predict(obs, deterministic=False)
+            action, _ = model.predict(obs, deterministic=True)
             obs, _, terminated, truncated, _ = env.step(int(action))
             done = terminated or truncated
             action_sequence.append(action_index_to_name[int(action)])
@@ -125,7 +125,7 @@ def test_from_file(
     )
     env = Twisty_Puzzle_Env(
         solved_state=solved_state,
-        actions_dict=actions_dict,
+        actions=actions_dict,
         base_actions=exp_config["base_actions"],
         max_moves=test_max_moves if test_max_moves else exp_config["max_moves"],
         initial_scramble_length=exp_config["start_scramble_depth"],
@@ -146,9 +146,10 @@ def test_from_file(
     except FileNotFoundError:
         # load model with highest step count to continue training
         for root, _, files in os.walk(model_snapshots_folder):
-            filename_stepcounts: dict[str, int] = {file: int(file.split("_")[0]) for file in files if file.endswith(".zip")}
+            filename_stepcounts: dict[str, int] = {file: int(file.split("_")[-2]) for file in files if file.endswith(".zip")}
             if filename_stepcounts:
-                model_path = max(filename_stepcounts, key=filename_stepcounts.get)
+                model_path: str = max(filename_stepcounts, key=filename_stepcounts.get)
+                model_path = os.path.join(model_snapshots_folder, model_path)
                 break
         # load model from file
         model = PPO.load(
@@ -337,30 +338,38 @@ if __name__ == "__main__":
     # )
     # # tensorboard --logdir src/ai_files/dino_cube_plus_sym_algs
 
-    train_and_test_agent(
-        # puzzle configuration
-        puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
-        # puzzle_name="gear_cube_extreme", # puzzle_name
-        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-        # environment configuration
-        load_model=None,
-        max_moves=50,
-        start_scramble_depth=32,
-        # start_scramble_depth=1,
-        success_threshold=0.25,
-        last_n_episodes=1000,
-        reward="most_correct_points",
-        # reward="binary",
-        # rl training parameters
-        n_steps=50_000_000,
-        learning_rate=0.001,
-        batch_size=25000,
-        # parallelization settings
-        n_envs=1000,
-        device="cuda",
-        verbosity=1,
-        # test configuration
-        num_tests=250,
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
+    #     # puzzle_name="gear_cube_extreme", # puzzle_name
+    #     base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+    #     # environment configuration
+    #     load_model=None,
+    #     max_moves=50,
+    #     start_scramble_depth=32,
+    #     # start_scramble_depth=1,
+    #     success_threshold=0.25,
+    #     last_n_episodes=1000,
+    #     reward="most_correct_points",
+    #     # reward="binary",
+    #     # rl training parameters
+    #     n_steps=50_000_000,
+    #     learning_rate=0.001,
+    #     batch_size=25000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=250,
+    #     test_scramble_length=200,
+    # )
+    # # tensorboard --logdir src/ai_files/gear_cube_extreme_sym_algs
+
+    test_from_file(
+        "src/ai_files/gear_cube_extreme_sym_algs/2024-09-27_18-27-53",
+        model_snapshot_steps=-1,
         test_scramble_length=200,
+        test_max_moves=100,
+        num_tests=1000,
     )
-    # tensorboard --logdir src/ai_files/gear_cube_extreme_sym_algs

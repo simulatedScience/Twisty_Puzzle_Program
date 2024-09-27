@@ -16,3 +16,6 @@
 
 - GPT-4o 19.09.2024 [fix incorrect inverses in definition of Geaer Cube Ultimate](https://chatgpt.com/share/66ec2d4e-31c0-8007-b686-8d2637191c0e)  
   _Saved some simple but tedious work to correct an error resulting from a minor bug. Diong this without an LLM would have taken a few minutes._
+
+- GPT-4o 27.09.2024 [Write simple data analysis code for test files](https://chatgpt.com/share/66f727ba-c71c-8007-8f86-aa279a19b6db)  
+  _Saved time for coding some plots and basic evaluations I have coded similarly many times before. Some manual adjustments were made for style of code and plots._

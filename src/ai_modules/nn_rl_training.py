@@ -175,7 +175,7 @@ def train_agent(
         if load_model:
             n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
             n_steps += n_prev_episodes
-        save_path: str = os.path.join(model_snapshots_folder, f"{n_steps}_steps.zip")
+        save_path: str = os.path.join(model_snapshots_folder, f"rl_model_{n_steps}_steps.zip")
         model.save(save_path)
         save_training_info(
             exp_folder_path,
