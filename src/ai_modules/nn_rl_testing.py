@@ -80,15 +80,17 @@ def test_agent(
             print(f"Test {i+1} solve: {' '.join(action_sequence)}")
             print(f"{'Solved' if terminated else 'Failed'} after {env.move_counter} steps")
     test_time_s: int = time.perf_counter()-start_time
+    # save all test results to file
     json_test_info: dict[str, str | int | list[tuple[str, str, bool, int]]] = {
         "summary": f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}",
         "num_tests": num_tests,
-        "run_info": test_run_info,
+        "test_max_moves": env.max_moves,
         "test_time": test_time_s,
+        "run_info": test_run_info,
     }
-    
     with open(log_file_path, "w") as file:
         json.dump(json_test_info, file, indent=4)
+    # print results to stdout
     if verbosity:
         print(f"[{exp_identifier}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {test_time_s:.2f} s.")
 
@@ -96,6 +98,7 @@ def test_from_file(
         exp_folder_path: str,
         model_snapshot_steps: int = -1, # automatically choose highest step count model
         test_scramble_length: int = 50,
+        test_max_moves: int = None, # use same as during training
         num_tests: int = 100,
     ):
     """
@@ -110,7 +113,10 @@ def test_from_file(
         exp_config: dict = json.load(file)
     # load puzzle from file
     puzzle_definition_path: str = os.path.join(exp_folder_path, "puzzle_definition.xml")
-    
+
+    if not test_max_moves:
+        test_max_moves: int = exp_config["max_moves"]
+        print(f"Using test_max_moves={test_max_moves} from training configuration.")
     # create environment
     solved_state, actions_dict, reward_func = setup_training(
             puzzle_name=puzzle_definition_path,
@@ -121,7 +127,7 @@ def test_from_file(
         solved_state=solved_state,
         actions_dict=actions_dict,
         base_actions=exp_config["base_actions"],
-        max_moves=exp_config["max_moves"],
+        max_moves=test_max_moves if test_max_moves else exp_config["max_moves"],
         initial_scramble_length=exp_config["start_scramble_depth"],
         success_threshold=exp_config["success_threshold"],
         reward_func=reward_func,
@@ -185,7 +191,23 @@ def train_and_test_agent(
         # test parameters
         num_tests: int = 100,
         test_scramble_length: int = 50,
-    ):
+        test_max_moves: int = None,
+    ) -> str:
+    """
+    Train a new model on a given puzzle using PPO, then test it with the given parameters.
+    
+    Args:
+        puzzle_name (str): The name of the puzzle to train and test the agent on.
+        base_actions (list[str]): The list of base actions to use for the puzzle.
+        # TODO: describe training parameters
+
+        num_tests (int): The number of random scrambles to test the agent on. Defaults to 100.
+        test_scramble_length (int): The length of each test scramble. Defaults to 50.
+        test_max_moves (int): The maximum number of moves the agent is allowed to take during testing. Defaults to value used in training: `max_moves`.
+
+    Returns:
+        str: The path to the experiment folder.
+    """
     exp_folder_path, model, vec_env = train_agent(
         # puzzle configuration
         puzzle_name=puzzle_name,
@@ -210,10 +232,14 @@ def train_and_test_agent(
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
     
     
+    if not test_max_moves:
+        test_max_moves: int = max_moves
+        print(f"Using test_max_moves={test_max_moves} from training configuration.")
     env = Twisty_Puzzle_Env(
             solved_state,
             actions_dict,
             base_actions=base_actions,
+            max_moves=test_max_moves,
             initial_scramble_length=start_scramble_depth,
             success_threshold=success_threshold,
             reward_func=reward_func,
@@ -228,6 +254,7 @@ def train_and_test_agent(
         exp_folder_path=exp_folder_path,
         verbosity=1,
     )
+    return exp_folder_path
 
 if __name__ == "__main__":
 #     train_and_test_agent(
