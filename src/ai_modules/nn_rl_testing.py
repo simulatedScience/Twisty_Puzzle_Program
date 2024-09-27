@@ -11,6 +11,7 @@ import os
 import time
 
 import torch
+from stable_baselines3 import PPO
 
 from nn_rl_environment import Twisty_Puzzle_Env
 from nn_rl_training import train_agent, get_action_index_to_name, setup_training
@@ -91,32 +92,76 @@ def test_agent(
     if verbosity:
         print(f"[{exp_identifier}] Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}. \ttesting took {test_time_s:.2f} s.")
 
-# def test_from_file(
-#         exp_folder_path: str,
-#         model_snapshot_steps: int = -1, # automatically choose highest step count model
-#     ):
-#     """
-#     load a model snapshot from the given experiment and test it with the given parameters.
+def test_from_file(
+        exp_folder_path: str,
+        model_snapshot_steps: int = -1, # automatically choose highest step count model
+        test_scramble_length: int = 50,
+        num_tests: int = 100,
+    ):
+    """
+    load a model snapshot from the given experiment and test it with the given parameters.
 
-#     Args:
-#         exp_folder_path (str): The path to the experiment folder.
-#         model_snapshot_steps (int): The step count of the model snapshot to load. If -1, the model with the highest step count is loaded.
-#     """
-#     model_name: str = f"{model_snapshot_steps}_steps.zip"
-#     try:
-#         model_path = os.path.join(exp_folder_path, "model_snapshots", model_name)
-#         model = PPO.load(
-#             model_path,
-#             env=env,
-#             device=device)
-#     except FileNotFoundError:
-#         # load model with highest step count to continue training
-#         for root, _, files in os.walk(model_snapshots_folder):
-#             filename_stepcounts: dict[str, int] = {file: int(file.split("_")[0]) for file in files if file.endswith(".zip")}
-#             if filename_stepcounts:
-#                 model_path = max(filename_stepcounts, key=filename_stepcounts.get)
-#                 break
-#     # test_agent(...) # TODO
+    Args:
+        exp_folder_path (str): The path to the experiment folder.
+        model_snapshot_steps (int): The step count of the model snapshot to load. If -1, the model with the highest step count is loaded.
+    """
+    # load experiment configuration
+    with open(os.path.join(exp_folder_path, "training_info.json"), "r") as file:
+        exp_config: dict = json.load(file)
+    # load puzzle from file
+    puzzle_definition_path: str = os.path.join(exp_folder_path, "puzzle_definition.xml")
+    
+    # create environment
+    solved_state, actions_dict, reward_func = setup_training(
+            puzzle_name=puzzle_definition_path,
+            base_actions=exp_config["base_actions"],
+            reward=exp_config["reward"]
+    )
+    env = Twisty_Puzzle_Env(
+        solved_state=solved_state,
+        actions_dict=actions_dict,
+        base_actions=exp_config["base_actions"],
+        max_moves=exp_config["max_moves"],
+        initial_scramble_length=exp_config["start_scramble_depth"],
+        success_threshold=exp_config["success_threshold"],
+        reward_func=reward_func,
+    )
+
+    model_name: str = f"{model_snapshot_steps}_steps.zip"
+    model_snapshots_folder: str = os.path.join(exp_folder_path, "model_snapshots")
+    try:
+        model_path = os.path.join(model_snapshots_folder, model_name)
+        # load model from file
+        model = PPO.load(
+            model_path,
+            env=env,
+            device=exp_config["device"],
+        )
+    except FileNotFoundError:
+        # load model with highest step count to continue training
+        for root, _, files in os.walk(model_snapshots_folder):
+            filename_stepcounts: dict[str, int] = {file: int(file.split("_")[0]) for file in files if file.endswith(".zip")}
+            if filename_stepcounts:
+                model_path = max(filename_stepcounts, key=filename_stepcounts.get)
+                break
+        # load model from file
+        model = PPO.load(
+            model_path,
+            env=env,
+            device=exp_config["device"],
+        )
+    # set up actions dictionary for human-readable action logging
+    action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
+    # test the agent
+    test_agent(
+        model=model,
+        env=env,
+        action_index_to_name=action_index_to_name,
+        num_tests=num_tests,
+        scramble_length=test_scramble_length,
+        exp_folder_path=exp_folder_path,
+        verbosity=1,
+    )
 
 def train_and_test_agent(
         # puzzle configuration
@@ -173,7 +218,7 @@ def train_and_test_agent(
             success_threshold=success_threshold,
             reward_func=reward_func,
     )
-    
+
     test_agent(
         model=model,
         env=env,
@@ -272,7 +317,7 @@ if __name__ == "__main__":
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # environment configuration
         load_model=None,
-        max_moves=100,
+        max_moves=50,
         start_scramble_depth=32,
         # start_scramble_depth=1,
         success_threshold=0.25,
@@ -280,7 +325,7 @@ if __name__ == "__main__":
         reward="most_correct_points",
         # reward="binary",
         # rl training parameters
-        n_steps=200_000_000,
+        n_steps=50_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings

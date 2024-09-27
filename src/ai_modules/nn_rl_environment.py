@@ -16,9 +16,21 @@ STICKER_DTYPE: np.dtype = np.uint16
 
 
 class Twisty_Puzzle_Env(gym.Env):
+    """
+    Initialize a twisty puzzle environment for RL training, optimized for parallelization on a GPU.
+
+    Args:
+        solved_state (list[int]): the solved state of the puzzle as a list of color indices
+        actions (dict[str, list[list[int]]]): the puzzle's actions given as names and permutations in cyclic form
+        base_actions (list[str], optional): the base actions to use for scrambling the puzzle as list of action names. Defaults to None.
+        max_moves (int, optional): maximum number of moves allowed in an episode before it is terminated. Defaults to 50.
+        initial_scramble_length (int, optional): number of moves to scramble the puzzle with at the beginning of each episode. This can be increased dynmically during training using the `Update_Scramble_Length_Callback`. Defaults to 1.
+        success_threshold (float, optional): success rate threshold for increasing the scramble length. Defaults to 0.1.
+        reward_func (callable, optional): reward function to use. Should have call signature `reward_func(state: np.ndarray, truncated: bool) -> tuple[float, bool]` (returning the reward and terminated signal). Defaults to None.
+    """
     def __init__(self,
             solved_state: list[int],
-            actions: dict[str, list[tuple[int, ...]]],
+            actions: dict[str, list[list[int]]],
             base_actions: list[str] = None,
             max_moves: int = 50,
             initial_scramble_length=1, # 1 seems to work best

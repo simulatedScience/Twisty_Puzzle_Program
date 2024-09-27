@@ -40,3 +40,5 @@ doc/puzzle_solver/stepwise_rubiks_cube_solution.jpg
 # ignore images, but not links to images
 /puzzle_images/*.jpg
 /puzzle_images/*.png
+doc/puzzle_simulator/automatic piece detection v2.pdf
+doc/puzzle_simulator/automatic piece detection.pdf

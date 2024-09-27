@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import os
 import vpython as vpy
 
-def load_puzzle(puzzlename):
+def load_puzzle(puzzle_name):
     """
     load puzzle from .xml
 
@@ -19,7 +19,11 @@ def load_puzzle(puzzlename):
         (dict) - dict of moves with movenames as keys and 
             list of lists of ints as cycles
     """
-    with open(os.path.join(os.path.dirname(__file__), "..", "puzzles", puzzlename, "puzzle_definition.xml")) as puzzle_file:
+    if not "puzzle_definition.xml" in puzzle_name:
+        puzzle_path: str = os.path.join(os.path.dirname(__file__), "..", "puzzles", puzzle_name, "puzzle_definition.xml")
+    else:
+        puzzle_path: str = puzzle_name
+    with open(puzzle_path) as puzzle_file:
         puzzle_tree = ET.parse(puzzle_file)
     point_dicts = get_points(puzzle_tree)
     moves_dict = get_moves(puzzle_tree)
