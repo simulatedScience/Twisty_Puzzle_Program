@@ -272,15 +272,15 @@ if __name__ == "__main__":
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # environment configuration
         load_model=None,
-        max_moves=50,
-        start_scramble_depth=16,
+        max_moves=100,
+        start_scramble_depth=32,
         # start_scramble_depth=1,
-        success_threshold=0.2,
+        success_threshold=0.25,
         last_n_episodes=1000,
         reward="most_correct_points",
         # reward="binary",
         # rl training parameters
-        n_steps=100_000_000,
+        n_steps=200_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings
@@ -288,7 +288,7 @@ if __name__ == "__main__":
         device="cuda",
         verbosity=1,
         # test configuration
-        num_tests=200,
-        test_scramble_length=100,
+        num_tests=250,
+        test_scramble_length=200,
     )
     # tensorboard --logdir src/ai_files/gear_cube_extreme_sym_algs

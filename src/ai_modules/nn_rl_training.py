@@ -81,6 +81,7 @@ def train_agent(
                 solved_state,
                 actions_dict,
                 base_actions=base_actions,
+                max_moves=max_moves,
                 initial_scramble_length=start_scramble_depth,
                 success_threshold=success_threshold,
                 reward_func=reward_func,
