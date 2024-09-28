@@ -95,7 +95,7 @@ def plot_action_histogram(
     
     # Create the bar plot
     plt.figure(figsize=(12, 6))
-    label_actions = [f"${action}$" for action in actions]
+    label_actions = [f"{action}" for action in actions]
     bars = plt.bar(label_actions, counts_percentage, color=colors)
     # Add text labels on top of each bar
     for bar in bars:
@@ -131,6 +131,7 @@ if __name__ == "__main__":
         title="Select a test file",
         filetypes=[("JSON Test files", "*.json")],
     )
+    print(f"Selected file: {test_file}")
     with open(test_file) as file:
         data = json.load(file)
     # Example usage:
