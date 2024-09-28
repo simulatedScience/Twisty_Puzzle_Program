@@ -209,6 +209,10 @@ def save_training_info(
         exp_folder_path (str): path to the experiment folder
         puzzle_name (str): name of the puzzle (necessary in "w" mode, otherwise not.)
         mode (str): mode for opening the file (e.g. "w" for write, "a" for append)
+        **kwargs (dict[str, Any]): all information to save in the file
+    
+    Raises:
+        ValueError: if the mode is not one of ("w", "a")
     """
     if mode == "w":
         if not puzzle_name:
@@ -220,8 +224,20 @@ def save_training_info(
             print(f"Copied puzzle definition file to {exp_folder_path}.")
         except FileNotFoundError as exc:
             raise FileNotFoundError(f"Expected puzzle definition file at '{puzzle_def_path}', but did not find one.") from exc
-    with open(os.path.join(exp_folder_path, "training_info.json"), mode) as file:
-        json.dump(kwargs, file, indent=4)
+    if mode == "w":
+        with open(os.path.join(exp_folder_path, "training_info.json"), mode) as file:
+            json.dump(kwargs, file, indent=4)
+    elif mode == "a":
+        # load data
+        with open(os.path.join(exp_folder_path, "training_info.json"), "r") as file:
+            data = json.load(file)
+        # update data
+        data.update(kwargs)
+        # save data
+        with open(os.path.join(exp_folder_path, "training_info.json"), "w") as file:
+            json.dump(data, file, indent=4)
+    else:
+        raise ValueError(f"Unknown mode '{mode}'. Expected one of ('w', 'a').")
 
 def load_puzzle(puzzle_name: str):
     """

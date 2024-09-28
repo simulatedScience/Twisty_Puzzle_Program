@@ -22,6 +22,7 @@ def test_agent(
         action_index_to_name: dict[int, str],
         num_tests: int = 5,
         scramble_length: int = 5,
+        deterministic: bool = True,
         exp_folder_path: str = "",
         verbosity: int = 1,
     ):
@@ -32,10 +33,10 @@ def test_agent(
         model (torch.nn.Module): The agent to test.
         env (Twisty_Puzzle_Env): The environment to test the agent in.
         action_index_to_name (dict[int, str]): A dictionary mapping action indices to action names.
-        log_file_path (str): The path to the log file to write the results to.
         num_tests (int): The number of tests to run.
         scramble_length (int): The length of the scrambles to test the agent on.
-        id (str): An identifier for the test run.
+        deterministic (bool): Whether to use deterministic actions.
+        exp_folder_path (str): The path to the experiment folder where test results will be saved.
         verbose (bool | None): Whether to print the results to stdout. If None, the results are printed if num_tests <= 5.
     """
     tests_folder: str = os.path.join(exp_folder_path, "tests")
@@ -60,7 +61,7 @@ def test_agent(
         done = False
         action_sequence = []
         while not done:
-            action, _ = model.predict(obs, deterministic=True)
+            action, _ = model.predict(obs, deterministic=deterministic)
             obs, _, terminated, truncated, _ = env.step(int(action))
             done = terminated or truncated
             action_sequence.append(action_index_to_name[int(action)])
@@ -85,6 +86,7 @@ def test_agent(
         "summary": f"Success rate: {success_count}/{num_tests} = {success_count/num_tests:.1%}",
         "num_tests": num_tests,
         "test_max_moves": env.max_moves,
+        "deterministic": deterministic,
         "test_time": test_time_s,
         "run_info": test_run_info,
     }
@@ -100,6 +102,7 @@ def test_from_file(
         test_scramble_length: int = 50,
         test_max_moves: int = None, # use same as during training
         num_tests: int = 100,
+        deterministic: bool = True,
     ):
     """
     load a model snapshot from the given experiment and test it with the given parameters.
@@ -166,6 +169,7 @@ def test_from_file(
         action_index_to_name=action_index_to_name,
         num_tests=num_tests,
         scramble_length=test_scramble_length,
+        deterministic=deterministic,
         exp_folder_path=exp_folder_path,
         verbosity=1,
     )
@@ -311,47 +315,47 @@ if __name__ == "__main__":
     # # tensorboard --logdir src/ai_files/cuboid_3x3x2
 
 
-    # train_and_test_agent(
-    #     # puzzle configuration
-    #     # puzzle_name="dino_cube_plus", # puzzle_name
-    #     puzzle_name="dino_cube_plus_sym_algs", # puzzle_name
-    #     base_actions=["wob", "wob'", "wbr", "wbr'", "wrg", "wrg'", "wgo", "wgo'", "yrb", "yrb'", "ybo", "ybo'", "yog", "yog'", "ygr", "ygr'"], # base_actions
-    #     # environment configuration
-    #     load_model=None,
-    #     max_moves=50,
-    #     start_scramble_depth=16,
-    #     success_threshold=0.2,
-    #     last_n_episodes=1000,
-    #     # reward="binary",
-    #     reward="most_correct_points",
-    #     # rl training parameters
-    #     n_steps=20_000_000,
-    #     learning_rate=0.001,
-    #     batch_size=25000,
-    #     # parallelization settings
-    #     n_envs=1000,
-    #     device="cuda",
-    #     verbosity=1,
-    #     # test configuration
-    #     num_tests=100,
-    #     test_scramble_length=50,
-    # )
-    # # tensorboard --logdir src/ai_files/dino_cube_plus_sym_algs
+    train_and_test_agent(
+        # puzzle configuration
+        # puzzle_name="dino_cube_plus", # puzzle_name
+        puzzle_name="dino_cube_plus_sym_algs", # puzzle_name
+        base_actions=["wob", "wob'", "wbr", "wbr'", "wrg", "wrg'", "wgo", "wgo'", "yrb", "yrb'", "ybo", "ybo'", "yog", "yog'", "ygr", "ygr'"], # base_actions
+        # environment configuration
+        load_model=None,
+        max_moves=100,
+        start_scramble_depth=1,
+        success_threshold=0.2,
+        last_n_episodes=1000,
+        reward="binary",
+        # reward="most_correct_points",
+        # rl training parameters
+        n_steps=20_000_000,
+        learning_rate=0.001,
+        batch_size=25000,
+        # parallelization settings
+        n_envs=1000,
+        device="cuda",
+        verbosity=1,
+        # test configuration
+        num_tests=100,
+        test_scramble_length=50,
+    )
+    # tensorboard --logdir src/ai_files/dino_cube_plus_sym_algs
 
     # train_and_test_agent(
     #     # puzzle configuration
-    #     puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
-    #     # puzzle_name="gear_cube_extreme", # puzzle_name
+    #     # puzzle_name="gear_cube_extreme_sym_algs", # puzzle_name
+    #     puzzle_name="gear_cube_extreme", # puzzle_name
     #     base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
     #     # environment configuration
     #     load_model=None,
-    #     max_moves=50,
-    #     start_scramble_depth=32,
-    #     # start_scramble_depth=1,
+    #     max_moves=200,
+    #     # start_scramble_depth=32,
+    #     start_scramble_depth=1,
     #     success_threshold=0.25,
     #     last_n_episodes=1000,
-    #     reward="most_correct_points",
-    #     # reward="binary",
+    #     # reward="most_correct_points",
+    #     reward="binary",
     #     # rl training parameters
     #     n_steps=50_000_000,
     #     learning_rate=0.001,
@@ -366,10 +370,39 @@ if __name__ == "__main__":
     # )
     # # tensorboard --logdir src/ai_files/gear_cube_extreme_sym_algs
 
-    test_from_file(
-        "src/ai_files/gear_cube_extreme_sym_algs/2024-09-27_18-27-53",
-        model_snapshot_steps=-1,
-        test_scramble_length=200,
-        test_max_moves=100,
-        num_tests=1000,
-    )
+    
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     puzzle_name="cube_3x3x3_sym_algs",
+    #     base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "E", "E'", "S", "S'"],
+    #     # environment configuration
+    #     load_model=None,
+    #     max_moves=100,
+    #     start_scramble_depth=32,
+    #     success_threshold=0.1,
+    #     last_n_episodes=1000,
+    #     reward="most_correct_points",
+    #     # reward="binary",
+    #     # rl training parameters
+    #     n_steps=200_000_000,
+    #     learning_rate=0.001,
+    #     batch_size=50000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=100,
+    #     test_scramble_length=50,
+    # )
+    # # tensorboard --logdir src/ai_files/cube_3x3x3_sym_algs
+
+    # test_from_file(
+    #     # "src/ai_files/gear_cube_extreme_sym_algs/2024-09-28_13-12-56",
+    #     "src/ai_files/dino_cube_plus/2024-09-20_20-24-20",
+    #     model_snapshot_steps=-1,
+    #     test_scramble_length=200,
+    #     test_max_moves=100,
+    #     num_tests=100,
+    #     deterministic=False,
+    # )

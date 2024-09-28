@@ -83,6 +83,9 @@ def plot_action_histogram(
     rot_total = sum(rot_counter.values()) / total_actions
     base_total = sum(base_counter.values()) / total_actions
     print(f"Total alg: {alg_total:.1%}, rot: {rot_total:.1%}, base: {base_total:.1%}")
+    pie_data: list[float] = [alg_total, rot_total, base_total]
+    # add_pie_chart(
+    #     data=pie_data, colors)
     
     # Calculate relative frequencies (as percentages)
     counts_percentage = [(count / total_actions) * 100 for count in counts]
