@@ -376,23 +376,23 @@ if __name__ == "__main__":
         puzzle_name="cube_3x3x3_sym_algs",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "E", "E'", "S", "S'"],
         # environment configuration
-        load_model=None,
+        load_model="2024-09-28_23-37-59",
         max_moves=100,
-        start_scramble_depth=32,
-        success_threshold=0.1,
+        start_scramble_depth=16,
+        success_threshold=0.25,
         last_n_episodes=1000,
         reward="most_correct_points",
         # reward="binary",
         # rl training parameters
         n_steps=200_000_000,
         learning_rate=0.001,
-        batch_size=50000,
+        batch_size=25000,
         # parallelization settings
         n_envs=1000,
         device="cuda",
         verbosity=1,
         # test configuration
-        num_tests=200,
+        num_tests=500,
         test_scramble_length=100,
     )
     # tensorboard --logdir src/ai_files/cube_3x3x3_sym_algs

@@ -91,11 +91,32 @@ def train_agent(
         env.monitor = monitor_env
         return monitor_env
     vec_env = make_vec_env(make_env, n_envs=n_envs)
+    training_info: dict[str, str | int | float] = {
+        # what model was trained
+        "puzzle_name":puzzle_name,
+        "base_actions":base_actions,
+        # environment configuration
+        "load_model": load_model,
+        "max_moves":max_moves,
+        "start_scramble_depth":start_scramble_depth,
+        "success_threshold":success_threshold,
+        "last_n_episodes":last_n_episodes,
+        "reward":reward,
+        # rl training parameters
+        "n_steps":n_steps,
+        "learning_rate":learning_rate,
+        "batch_size":batch_size,
+        # parallelization settings
+        "n_envs":n_envs,
+        "device":device,
+        "training_start":exp_folder,
+    }
     # env
     if load_model:
+        load_models_folder: str = os.path.join("src", "ai_files", puzzle_name, load_model, "model_snapshots")
         # load model with highest step count to continue training
-        for root, _, files in os.walk(model_snapshots_folder):
-            filename_stepcounts: dict[str, int] = {file: int(file.split("_")[0]) for file in files if file.endswith(".zip")}
+        for root, _, files in os.walk(load_models_folder):
+            filename_stepcounts: dict[str, int] = {file: int(file.split("_")[-2]) for file in files if file.endswith(".zip")}
             if filename_stepcounts:
                 model_path = max(filename_stepcounts, key=filename_stepcounts.get)
                 break
@@ -110,6 +131,7 @@ def train_agent(
             tensorboard_log=tb_log_folder,
             learning_rate=learning_rate,
             )
+        training_info = {"continued_training_from": model_path, **training_info}
     else:
         print("Training new model...")
         model = PPO(
@@ -145,23 +167,7 @@ def train_agent(
         save_training_info(
             exp_folder_path,
             mode="w",
-            # what model was trained
-            puzzle_name=puzzle_name,
-            base_actions=base_actions,
-            # environment configuration
-            max_moves=max_moves,
-            start_scramble_depth=start_scramble_depth,
-            success_threshold=success_threshold,
-            last_n_episodes=last_n_episodes,
-            reward=reward,
-            # rl training parameters
-            n_steps=n_steps,
-            learning_rate=learning_rate,
-            batch_size=batch_size,
-            # parallelization settings
-            n_envs=n_envs,
-            device=device,
-            training_start=exp_folder,
+            **training_info,
         )
         # train model
         model.learn(
@@ -181,6 +187,7 @@ def train_agent(
             exp_folder_path,
             mode="a",
             training_end=datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+            # final_scramble_depth=vec_env.envs[0].scramble_length,
         )
         print(f"="*75 + f"\nSaved final model to {save_path}")
 
@@ -239,7 +246,7 @@ def save_training_info(
     else:
         raise ValueError(f"Unknown mode '{mode}'. Expected one of ('w', 'a').")
 
-def load_puzzle(puzzle_name: str):
+def load_puzzle(puzzle_name: str) -> tuple[list[int], dict[str, list[list[int]]]]:
     """
     Load solved state and actions from puzzle definition file
     
@@ -301,11 +308,17 @@ def filter_actions(
     return base_actions, puzzle_rotations, algorithms
 
 def setup_training(
-        puzzle_name: str,
+        puzzle_name: str = "",
+        solved_state: list[int] = None,
+        actions_dict: dict[str, list[list[int]]] = None,
         base_actions: list[str] = None,
         reward: str = "binary",
     ):
-    solved_state, actions_dict = load_puzzle(puzzle_name)
+    """
+    
+    """
+    if not solved_state or not actions_dict:
+        solved_state, actions_dict = load_puzzle(puzzle_name)
     # check for whole puzzle rotation moves
     _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
     # calculate rotations of the solved state

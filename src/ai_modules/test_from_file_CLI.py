@@ -29,6 +29,7 @@ def test_from_file_cli(
         test_max_moves (int, optional): default values for CLI: maximum number of moves to test. Defaults to None.
         num_tests (int, optional): default values for CLI: number of tests to run. Defaults to 100.
     """
+    raise NotImplementedError("TODO")
     # 1. request the user to pick a model file or experiment folder to test.
     while True:
         try:
@@ -56,7 +57,7 @@ def test_from_file_cli(
     )
     
     
-def pick_model(ai_files_path: str) -> str, int:
+def pick_model(ai_files_path: str) -> tuple[str, int]:
     root = tk.Tk()
     root.withdraw()
     file_path = askopenfilename(
@@ -64,6 +65,7 @@ def pick_model(ai_files_path: str) -> str, int:
         title="Select a model file or experiment folder to test",
         filetypes=[("All files", "*.*"), ("model files", "*.zip")],
     )
+    raise NotImplementedError("TODO")
     if file_path == "":
         # abort with suitable exit error
         raise SystemExit("No file selected.")
