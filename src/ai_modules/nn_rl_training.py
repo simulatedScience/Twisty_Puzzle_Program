@@ -15,11 +15,12 @@ from stable_baselines3.common.env_util import make_vec_env
 # vecenv, only for typehinting
 from stable_baselines3.common.vec_env import VecEnv
 
-from nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
-# try:
-#     from .ai_modules.nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
-# except ImportError:
-from nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
+try:
+    from nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
+    from nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
+except ModuleNotFoundError:
+    from .nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
+    from .nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 
 def train_agent(
         # puzzle configuration

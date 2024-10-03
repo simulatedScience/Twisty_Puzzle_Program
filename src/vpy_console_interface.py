@@ -47,7 +47,7 @@ def main_interaction():
         - 'plot' [average length]      - plot the success of the Q-table over time
         - 'move_q'                     - make a move based on current Q-table
         - 'solve_q' [max_time]         - solve puzzle based on current Q-table
-        - 'train_nn'                   - train Neural Network for current puzzle (see help for options)
+        - 'load_nn'                    - load a trained neural network (RL-agent) from file
         - 'move_nn'                    - make a move based on current Neural Network
         - 'solve_nn'                   - solve puzzle based on current Neural Network
         - 'clipshape'                  - define a shape for the puzzle
@@ -96,7 +96,7 @@ def main_interaction():
                         "train_v": interface_train_v,
                         "move_v": interface_move_v,
                         "solve_v": interface_solve_v,
-                        "train_nn": interface_train_v_nn,
+                        "load_nn": interface_load_nn,
                         "move_nn": interface_move_nn,
                         "solve_nn": interface_solve_nn,
                         "clipshape": interface_clip_shape,
@@ -170,7 +170,7 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "train_v",
                           "move_v",
                           "solve_v",
-                          "train_nn",
+                          "move_nn",
                           "solve_nn",
                           "clipshape",
                           "drawpieces"]

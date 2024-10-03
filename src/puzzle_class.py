@@ -40,6 +40,7 @@ from .ai_modules.ai_data_preparation import state_for_ai
 from .ai_modules.greedy_solver import Greedy_Puzzle_Solver
 from .ai_modules.q_puzzle_class import Puzzle_Q_AI
 from .ai_modules.v_puzzle_class import Puzzle_V_AI
+from .ai_modules.nn_solver_interface import NN_Solver
 # from .ai_modules.nn_puzzle_class import Puzzle_Network
 # from .ai_modules.nn_v_her_puzzle_class import Puzzle_NN_V_HER_AI
 
@@ -808,40 +809,83 @@ but was of type '{type(shape_str)}'")
 #####     END V-learning     #####
 #####     START NN-V-learning     #####
 
+    def _get_ai_nn_state(self):
+        """
+        return the current puzzle state for the ai based on self.color_list_nn
+        """
+        ai_state = []
+
+        for color in [obj.color for obj in self.vpy_objects]:
+            for i, index_color in enumerate(self.color_list_nn):
+                if index_color == color:
+                    ai_state.append(i)
+
+        return ai_state
+        
+
     def load_nn(self,
-            num_episodes=None,
-            max_moves=None,
-            learning_rate=None,
-            discount_factor=None,
-            base_exploration_rate=None,
-            keep_nn=True,
-            k_for_her=5):
+            model_path: str,
+            arg_color: str = "#0066ff"
+        ):
         """
         Load a trained RL agent's neural network from a given file.
         
         
         """
-        self.ai_nn_class.train_nn_her(
-                num_episodes=num_episodes,
-                max_moves=max_moves,
-                learning_rate=learning_rate,
-                discount_factor=discount_factor,
-                base_exploration_rate=base_exploration_rate,
-                keep_nn=keep_nn,
-                k_for_her=k_for_her)
+        # if no specific model is chosen, automatically choose the latest one.
+        if not model_path:
+            model_path = self.PUZZLE_NAME
+        
+        ai_solved_state, self.color_list_nn = state_for_ai(self.SOLVED_STATE)
+        self.color_list_nn.reverse()
+        # set up the neural network solver
+        self.nn_solver: NN_Solver = NN_Solver(
+            ACTIONS_DICT=self.moves,
+            SOLVED_STATE=ai_solved_state,
+            model_path=model_path,
+        )
+        print(f"Loaded RL agent from {colored(model_path, arg_color)}.")
 
 
-    def move_nn(self, arg_color="#0066ff"):
+    def move_nn(self, num_moves, max_anim_time: float = 25., arg_color="#0066ff"):
         """
         make one move based on the current Q-table of the AI
+        
+        Args:
+            num_moves (int): (maximum) number of moves to make. May take fewer moves if the puzzle is solved.
+            max_anim_time (float): maximum time in seconds for all animations. Defaults to 25..
+            arg_color (str): color for printing the moves
+        
+        Raises:
+            AttributeError: 
         """
-        ai_state = self._get_ai_state()
-        ai_move = self.ai_nn_class.choose_nn_move(
-                ai_state,
-                self.ai_nn_class.SOLVED_STATE,
-                self.moves.keys())
-        self.perform_move(ai_move)
-        print(f"made move: {colored(ai_move, arg_color)}")
+        # disable animations that take more than `max_anim_time` seconds
+        old_anim_time: float = self.animation_time
+        if num_moves * self.animation_time > max_anim_time:
+            print(f"Not showing animation for {num_moves} moves.")
+            self.animation_time = 0
+        # execute `num_moves` moves using the V-table
+        max_move_name_len = max([len(move) for move in self.moves.keys()])
+        
+        ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
+        # init greedy solver
+        for i in range(num_moves):
+            # get move from the greedy solver
+            ai_state: list[int] = self._get_ai_nn_state()
+            ai_move = self.nn_solver.choose_action(ai_state)
+            self.perform_move(ai_move)
+            # print move info
+            ai_move_str = f"{ai_move:{max_move_name_len}}"
+            print(f"made move: {colored(ai_move_str, arg_color)}.")
+            # check if puzzle is solved
+            if self._get_ai_state() == ai_solved_state:
+                print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
+                break
+        # reset animation time
+        if self.animation_time != old_anim_time:
+            self.animation_time = old_anim_time
+        if not hasattr(self, "nn_solver"):
+            raise AttributeError(f"Load a NN-based solver before trying to use it. Use {colored('load_nn', arg_color)}.")
 
 
     def solve_nn(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
@@ -850,8 +894,8 @@ but was of type '{type(shape_str)}'")
         """
         solve_moves = solve_puzzle(self._get_ai_state(),
                                    self.moves,
-                                   self.ai_nn_class.SOLVED_STATE,
-                                   self.ai_nn_class,
+                                   self.nn_solver.SOLVED_STATE,
+                                   self.nn_solver,
                                    max_time=max_time,
                                    WEIGHT=WEIGHT)
         if not solve_moves == "":

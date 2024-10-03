@@ -7,6 +7,8 @@ import os
 from .interaction_modules.colored_text import colored_text as colored
 # from interaction_modules.methods import *
 from .puzzle_class import Twisty_Puzzle
+from .ai_modules.nn_solver_interface import AI_FILES_FOLDER_NAME
+from .ai_modules.test_from_file_CLI import pick_model
 
 def interface_import(filepath, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
@@ -230,7 +232,7 @@ def interface_reset(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#
 
 def interface_move_greedy(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
-    make a given number of moves based on the greedy algorithm (defualt: 1 move)
+    make a given number of moves based on the greedy algorithm (default: 1 move)
     """
     user_args = user_args.split(' ')
     n_args = 1
@@ -461,54 +463,47 @@ def interface_solve_v(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800",
 
 #####     END V-Learning     #####
 
-#####     START NN-HER-Q-Learning     #####
-def interface_train_q_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+#####     START NN agent functions     #####
+def interface_load_nn(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
     train neural network using HER
     """
+    ai_files_folder_path: str = os.path.join("src", AI_FILES_FOLDER_NAME)
+    model_path: str = pick_model(ai_files_folder_path)
+
+    # try:
+    puzzle.load_nn(
+        model_path=model_path,
+        arg_color=arg_color,
+    )
+    # except FileNotFoundError as exception:
+    #     print(f"{colored(f'Error: {exception}', error_color)}\n Invalid model path. Try again.")
+
+
+def interface_move_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    make a given number of moves based on a loaded NN policy (default: 1 move)
+    """
     user_args = user_args.split(' ')
-    defaults = [0, 50, 0.1, 0.99, 0.8, 5, True]
-    n_args = 7
+    n_args = 1
+    default_args = [1]
+    data_types = [int]
     # make user_args the correct length (n_args)
     if len(user_args) > n_args:
         user_args = user_args[:n_args]
     elif len(user_args) < n_args:
         user_args += ['']*(n_args-len(user_args))
-
+    final_args = [] # final arguments in correct datatype
+    for arg, default, dtype in zip(user_args, default_args, data_types):
+        try:
+            final_args.append(dtype(arg))
+        except ValueError:
+            final_args.append(default)
+    num_moves = final_args[0]
     try:
-        int_args = [int(arg) if not arg=='' else default for arg,default in zip(user_args[:2]+user_args[5:6], defaults[:2]+defaults[5:6])]
-        float_args = [float(arg) if not arg=='' else default for arg,default in zip(user_args[2:5], defaults[2:5])]
-    except ValueError:
-        print(f"{colored('Error:', error_color)} Invalid argument types.")
-        return
-    if user_args[5].lower() == "false":
-        keep_nn = False
-    else:
-        keep_nn = True
-
-    num_episodes, max_moves, k_for_her = int_args
-    if num_episodes == None:
-        num_episodes = 0
-    learning_rate, discount_factor, exploration_rate = float_args
-
-    puzzle.train_q_nn(
-            num_episodes=num_episodes, # default 0
-            max_moves=max_moves, # default 50
-            learning_rate=learning_rate, # default 0.1
-            discount_factor=discount_factor, # default 0.99
-            base_exploration_rate=exploration_rate, # default 0.8
-            k_for_her=k_for_her, # default 5
-            keep_nn=keep_nn) # default True
-
-
-def interface_move_nn(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
-    """
-    make a move based on the current neural network
-    """
-    try:
-        puzzle.move_nn(arg_color=arg_color)
-    except AttributeError:
-        print(f"{colored('Error:', error_color)} Train the Q-table before requesting a move.")
+        puzzle.move_nn(num_moves=num_moves, arg_color=arg_color)
+    except AttributeError as exception:
+        print(f"{colored('Error: ', error_color)} {exception}")
 
 
 def interface_solve_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
@@ -538,45 +533,3 @@ def interface_solve_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800"
         print(f"{colored('Error:', error_color)} Train the Neural Network before requesting a move.")
 
 #####     END NN-HER-Q-Learning     #####
-
-#####     START NN-HER-V-Learning     #####
-
-def interface_train_v_nn(user_args, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
-    """
-    train neural network using HER
-    """
-    user_args = user_args.split(' ')
-    defaults = [0, 50, 0.1, 0.99, 0.8, 5, True]
-    n_args = 7
-    # make user_args the correct length (n_args)
-    if len(user_args) > n_args:
-        user_args = user_args[:n_args]
-    elif len(user_args) < n_args:
-        user_args += ['']*(n_args-len(user_args))
-
-    try:
-        int_args = [int(arg) if not arg=='' else default for arg,default in zip(user_args[:2]+user_args[5:6], defaults[:2]+defaults[5:6])]
-        float_args = [float(arg) if not arg=='' else default for arg,default in zip(user_args[2:5], defaults[2:5])]
-    except ValueError:
-        print(f"{colored('Error:', error_color)} Invalid argument types.")
-        return
-    if user_args[5].lower() == "false":
-        keep_nn = False
-    else:
-        keep_nn = True
-
-    num_episodes, max_moves, k_for_her = int_args
-    if num_episodes == None:
-        num_episodes = 0
-    learning_rate, discount_factor, exploration_rate = float_args
-
-    puzzle.load_nn(
-            num_episodes=num_episodes, # default 0
-            max_moves=max_moves, # default 50
-            learning_rate=learning_rate, # default 0.1
-            discount_factor=discount_factor, # default 0.99
-            base_exploration_rate=exploration_rate, # default 0.8
-            k_for_her=k_for_her, # default 5
-            keep_nn=keep_nn) # default True
-
-#####     END NN-HER-V-Learning     #####

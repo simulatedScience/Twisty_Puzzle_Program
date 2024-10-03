@@ -221,7 +221,7 @@ class Update_Scramble_Length_Callback(BaseCallback):
 
 def puzzle_info_to_np(
         state: list[int],
-        actions: dict[str, list[tuple[int, ...]]],
+        actions_dict: dict[str, list[tuple[int, ...]]],
         base_actions: list[str] = None,
         ) -> tuple[np.ndarray, np.ndarray]:
     """
@@ -239,13 +239,13 @@ def puzzle_info_to_np(
     #   World record puzzle in 2024 has 49^2*6 = 14406 stickers (49^3 cube)
     np_state: np.ndarray = np.array(state, dtype=STICKER_DTYPE)
     state_length: int = len(state)
-    actions_list = [permutation_cycles_to_tensor(state_length, actions[movename]) for movename in sorted(actions.keys())]
+    actions_list = [permutation_cycles_to_tensor(state_length, actions_dict[movename]) for movename in sorted(actions_dict.keys())]
     np_actions: np.ndarray = np.stack(actions_list)
 
     if base_actions is None:
         base_actions = np_actions
     else:
-        sorted_actions: list[str] = sorted(actions.keys())
+        sorted_actions: list[str] = sorted(actions_dict.keys())
         base_actions = np.stack(
             [actions_list[sorted_actions.index(base_action)] for base_action in base_actions],
         )

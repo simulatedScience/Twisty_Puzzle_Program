@@ -13,8 +13,12 @@ import time
 import torch
 from stable_baselines3 import PPO
 
-from nn_rl_environment import Twisty_Puzzle_Env
-from nn_rl_training import train_agent, get_action_index_to_name, setup_training
+try:
+    from nn_rl_environment import Twisty_Puzzle_Env
+    from nn_rl_training import train_agent, get_action_index_to_name, setup_training
+except ModuleNotFoundError:
+    from .nn_rl_environment import Twisty_Puzzle_Env
+    from .nn_rl_training import train_agent, get_action_index_to_name, setup_training
 
 def test_agent(
         model: torch.nn.Module,
