@@ -3,11 +3,11 @@ a class for storing information about twisty puzzles and performing various task
 """
 import cProfile
 import pstats
-
-import random
 from copy import deepcopy
+import random
+
+import numpy as np
 import matplotlib.pyplot as plt
-# from sympy.combinatorics import Permutation
 # from sympy.combinatorics.perm_groups import PermutationGroup
 import vpython as vpy
 from sympy import factorint
@@ -242,7 +242,7 @@ but was of type '{type(shape_str)}'")
             max_moves - (int) - the number of random moves
         """
         # scramble_hist = ""
-        scramble_list = smart_scramble(self.SOLVED_STATE, self.moves, max_moves)
+        scramble_list = smart_scramble(self.SOLVED_STATE, self.base_moves, max_moves)
         scramble_hist = " ".join(scramble_list)
         # print scramble moves
         print(f"scrambled with the following moves:\n{colored(scramble_hist, arg_color)}")
@@ -463,6 +463,7 @@ but was of type '{type(shape_str)}'")
                 must not include spaces or other invalid characters for filenames
         """
         self.POINT_INFO_DICTS, self.moves, state_space_size = load_puzzle(puzzle_name)
+        self.base_moves = {name: cycles for name, cycles in self.moves.items() if not name[:4] in ("rot_", "alg_")}
         self.canvas = create_canvas()
         self.vpy_objects = draw_points(self.POINT_INFO_DICTS)
 
@@ -813,15 +814,16 @@ but was of type '{type(shape_str)}'")
         """
         return the current puzzle state for the ai based on self.color_list_nn
         """
-        ai_state = []
-
-        for color in [obj.color for obj in self.vpy_objects]:
-            for i, index_color in enumerate(self.color_list_nn):
-                if index_color == color:
-                    ai_state.append(i)
+        # ai_state = []
+        # for color in [obj.color for obj in self.vpy_objects]:
+        #     for i, index_color in enumerate(self.color_list_nn):
+        #         if index_color == color:
+        #             ai_state.append(i)
+        ai_state: list[int] = [
+            self.color_list_nn.index(vpy_vec_to_tuple(obj.color)) for obj in self.vpy_objects
+        ]
 
         return ai_state
-        
 
     def load_nn(self,
             model_path: str,
@@ -836,8 +838,11 @@ but was of type '{type(shape_str)}'")
         if not model_path:
             model_path = self.PUZZLE_NAME
         
-        ai_solved_state, self.color_list_nn = state_for_ai(self.SOLVED_STATE)
-        self.color_list_nn.reverse()
+        self.color_list_nn: list[vpy.vector] = [vpy_vec_to_tuple(color) for color in self.SOLVED_STATE]
+        self.color_list_nn = list(set(self.color_list_nn))
+        ai_solved_state = [self.color_list_nn.index(vpy_vec_to_tuple(color)) for color in self.SOLVED_STATE]
+        # ai_solved_state, self.color_list_nn = state_for_ai(self.SOLVED_STATE)
+        # self.color_list_nn.reverse()
         # set up the neural network solver
         self.nn_solver: NN_Solver = NN_Solver(
             ACTIONS_DICT=self.moves,
@@ -859,6 +864,11 @@ but was of type '{type(shape_str)}'")
         Raises:
             AttributeError: 
         """
+        # DEBUG:
+        
+        
+        
+        
         # disable animations that take more than `max_anim_time` seconds
         old_anim_time: float = self.animation_time
         if num_moves * self.animation_time > max_anim_time:
@@ -867,18 +877,19 @@ but was of type '{type(shape_str)}'")
         # execute `num_moves` moves using the V-table
         max_move_name_len = max([len(move) for move in self.moves.keys()])
         
-        ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
-        # init greedy solver
+        # ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
+        # TODO remove this comment
         for i in range(num_moves):
             # get move from the greedy solver
             ai_state: list[int] = self._get_ai_nn_state()
             ai_move = self.nn_solver.choose_action(ai_state)
             self.perform_move(ai_move)
+            reward, done = self.nn_solver.reward_func(np.array(self._get_ai_nn_state()), truncated=False)
             # print move info
             ai_move_str = f"{ai_move:{max_move_name_len}}"
-            print(f"made move: {colored(ai_move_str, arg_color)}.")
+            print(f"made move: {colored(ai_move_str, arg_color)}  Reward for new state: {reward}")
             # check if puzzle is solved
-            if self._get_ai_state() == ai_solved_state:
+            if done or self._get_ai_nn_state() == self.nn_solver.solved_state:
                 print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
                 break
         # reset animation time
@@ -920,3 +931,15 @@ but was of type '{type(shape_str)}'")
         #     solve_moves += ai_move + ' '
 
 #####     END NN-learning     #####
+
+def vpy_vec_to_tuple(vec: vpy.vector) -> tuple[float, float, float]:
+    """
+    Convert a vpython vector to a tuple of floats
+
+    Args:
+        vec (vpy.vector): vpython vector
+
+    Returns:
+        tuple[float, float, float]: tuple of three floats
+    """
+    return (vec.x, vec.y, vec.z)

@@ -14,6 +14,7 @@ from stable_baselines3 import PPO
 
 from .nn_rl_environment import Twisty_Puzzle_Env, puzzle_info_to_np
 from .nn_rl_training import setup_training, get_action_index_to_name
+from src.algorithm_generation.algorithm_generation import get_inverse_moves_dict
 
 AI_FILES_FOLDER_NAME: str = "ai_files"
 MODEL_SNAPSHOT_FOLDER_NAME: str = "model_snapshots"
@@ -35,15 +36,20 @@ class NN_Solver():
             SOLVED_STATE (list[int]): the solved state of the puzzle as list of color indices
             model_path (str): path to the trained model or puzzle name. If only a puzzle name is given, load the latest model for that puzzle. Otherwise, load the model from the given path.
         """
-        self.solved_state, self.actions_dict, _ = puzzle_info_to_np(SOLVED_STATE, ACTIONS_DICT, base_actions=None)
+        self.solved_state: list[int] = SOLVED_STATE
+        self.actions_dict: dict[str, list[list[int]]] = ACTIONS_DICT
+
+        self.np_solved_state, self.np_actions, _ = puzzle_info_to_np(SOLVED_STATE, ACTIONS_DICT, base_actions=None)
         self.action_index_to_name: dict[int, str] = get_action_index_to_name(ACTIONS_DICT)
+        
+        self.inverse_moves_dict: dict[str, str] = get_inverse_moves_dict(ACTIONS_DICT)
         
         self.deterministic: bool = deterministic
         
         exp_folder_path: str = get_experiment_folder(model_path)
         if not AI_FILES_FOLDER_NAME in model_path:
             model_path: str = exp_folder_path
-        self.env: gym.Env = load_environment(
+        self.env, self.reward_func = load_environment(
             solved_state=SOLVED_STATE,
             actions_dict=ACTIONS_DICT,
             exp_folder_path=exp_folder_path)
@@ -67,13 +73,19 @@ class NN_Solver():
         action, _ = self.model.predict(np_state, deterministic=self.deterministic)
         # 3. get name of chosen action
         action_name = self.action_index_to_name[int(action)]
+        # invert action if AI was trained before 2024_10_05 because until then, permutations were applied incorrectly
+        if True: # placeholder condition
+            action = self.actions_dict[action_name]
+            max_cycle_order = max([len(cycle) for cycle in action])
+            if max_cycle_order > 2:
+                action_name: str = self.inverse_moves_dict[action_name]
         return action_name
 
 def load_environment(
             solved_state: list[int],
             actions_dict: dict[str, list[list[int]]],
             exp_folder_path: str,
-    ) -> gym.Env:
+    ) -> tuple[gym.Env, callable]:
     """
     Load puzzle environment from the given path
     """
@@ -108,7 +120,7 @@ def load_environment(
         success_threshold=exp_config["success_threshold"],
         reward_func=reward_func,
     )
-    return env
+    return env, reward_func
 
 def load_model(model_path: str, env: gym.Env) -> PPO:
     """
