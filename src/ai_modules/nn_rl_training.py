@@ -269,7 +269,7 @@ def load_puzzle(puzzle_name: str) -> tuple[list[int], dict[str, list[list[int]]]
         sys.path.insert(0, project_root)
         from src.interaction_modules.load_from_xml import load_puzzle as load_xml_puzzle
     try:
-        point_dicts, moves_dict, state_space_size = load_xml_puzzle(puzzle_name)
+        point_dicts, actions_dict, state_space_size = load_xml_puzzle(puzzle_name)
     except FileNotFoundError:
         raise FileNotFoundError(f"Could not find the puzzle '{puzzle_name}'.")
     # convert point colors to solved state for the environment
@@ -280,7 +280,7 @@ def load_puzzle(puzzle_name: str) -> tuple[list[int], dict[str, list[list[int]]]
     point_colors = [(color.x, color.y, color.z) for color in point_colors]
     colors = list(set(point_colors))
     solved_state: list[int] = [colors.index(color) for color in point_colors]
-    return solved_state, moves_dict
+    return solved_state, actions_dict
 
 def filter_actions(
         actions_dict: dict[str, list[list[int]]],

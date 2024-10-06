@@ -74,11 +74,11 @@ class NN_Solver():
         # 3. get name of chosen action
         action_name = self.action_index_to_name[int(action)]
         # invert action if AI was trained before 2024_10_05 because until then, permutations were applied incorrectly
-        if True: # placeholder condition
-            action = self.actions_dict[action_name]
-            max_cycle_order = max([len(cycle) for cycle in action])
-            if max_cycle_order > 2:
-                action_name: str = self.inverse_moves_dict[action_name]
+        # if True: # placeholder condition
+        #     action = self.actions_dict[action_name]
+        #     max_cycle_order = max([len(cycle) for cycle in action])
+        #     if max_cycle_order > 2:
+        #         action_name: str = self.inverse_moves_dict[action_name]
         return action_name
 
 def load_environment(

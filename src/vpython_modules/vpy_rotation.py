@@ -69,11 +69,17 @@ def calc_rotate_cycle(points, cycle, POINT_POS, PUZZLE_COM=vpy.vec(0, 0, 0)):
 
     cycle_points = []
     rot_info_list = []
-    for i, j in zip(cycle, cycle[1:]+[cycle[0]]):
+    for i, j in zip(cycle[1:]+[cycle[0]], cycle):
         point_A = points[i]
         point_B = points[j]
-        rot_info_list.append(calc_rotate_pair(
-            point_A, point_B, COM, PUZZLE_COM=PUZZLE_COM))
+        rot_info_list.append(
+            calc_rotate_pair(
+                point_A,
+                point_B,
+                COM,
+                PUZZLE_COM=PUZZLE_COM,
+            )
+        )
         cycle_points.append(point_A)
 
     return cycle_points, rot_info_list
@@ -167,7 +173,8 @@ def apply_cycle(points, cycle):
         changes the list 'points' in-place by applying the permutation
     """
     j = cycle[0]
-    for i in cycle:
+    # for i in cycle:
+    for i in cycle[-1:0:-1]:
         points[i], points[j] = points[j], points[i] # swap points i and j
 
 
