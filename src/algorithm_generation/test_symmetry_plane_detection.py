@@ -98,7 +98,7 @@ def test_find_symmetry_planes(
     best_planes = find_symmetry_planes(
         X=X,
         plane_similarity_threshold=plane_similarity_threshold,
-        S=S,
+        keep_n_best_planes=S,
         min_score_ratio=0.9,
         num_init_planes=num_planes,
         )

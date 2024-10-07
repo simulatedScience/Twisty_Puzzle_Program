@@ -146,7 +146,7 @@ def find_rotational_symmetries(
     planes = find_symmetry_planes(
         X=X,
         plane_similarity_threshold=plane_similarity_threshold,
-        S=num_candidate_rotations,
+        keep_n_best_planes=num_candidate_rotations,
         min_score_ratio=min_score_ratio)
     print(f"Found {len(planes)} symmetry planes.")
     print(f"Searching {((len(planes)-1)**2+len(planes)-1)//2} rotation candidates.")

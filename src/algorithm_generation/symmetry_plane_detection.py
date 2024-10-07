@@ -212,7 +212,7 @@ def reflect_symmetry_measure(X: np.ndarray, plane: np.ndarray, alpha: float) -> 
 def find_symmetry_planes(
         X: np.ndarray,
         plane_similarity_threshold: float = 0.1,
-        S: int = 5,
+        keep_n_best_planes: int = 5,
         min_score_ratio: float = 0.99,
         num_init_planes: int = 100_000,
         verbosity: int = 1,
@@ -230,33 +230,26 @@ def find_symmetry_planes(
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
     # translate to the origin
-    X = X - np.mean(X, axis=0)
+    # X = X - np.mean(X, axis=0)
     # calculate alpha as 15/l_avg, the average distance between points in X
     alpha = 15 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
     print(f"Set alpha to {alpha:.3f}.")
-    # normalize X scaling such that points are at most distance 1 from the origin
-    # # scale to unit sphere
-    # X = X / np.max(np.linalg.norm(X, axis=1))
     # print parameters
-    print(f"find_symmetry_planes(X, {plane_similarity_threshold}, {alpha}, {S}, {min_score_ratio}, {num_init_planes}, {verbosity})")
+    print(f"find_symmetry_planes(X, {plane_similarity_threshold}, {alpha}, {keep_n_best_planes}, {min_score_ratio}, {num_init_planes}, {verbosity})")
     planes: list[tuple[np.ndarray, np.ndarray]] = init_planes(X, plane_similarity_threshold, num_planes=num_init_planes, verbosity=verbosity)
     print(f"Initalized {len(planes)} planes.")
-    best_planes = []
-    best_scores = []
     # choose planes with best symmetry measure
-    for plane in planes:
-        score = reflect_symmetry_measure(X, plane, alpha)
-        if len(best_planes) < S or score == min(best_scores):
-            best_scores.append(score)
-            best_planes.append(plane)
-        elif score > min(best_scores):
-            min_index = np.argmin(best_scores)
-            best_scores[min_index] = score
-            best_planes[min_index] = plane
-    print(f"Selected {len(best_planes)}/{S} possible symmetry planes.")
-    best_score = max(best_scores)
-    best_planes = [plane for plane, score in zip(best_planes, best_scores) if score >= best_score * min_score_ratio]
-    del best_scores # free memory, this list is no longer accurate or needed.
+    plane_scores = [reflect_symmetry_measure(X, plane, alpha) for plane in planes]
+    # sort planes by score
+    sorted_planes_scores_scores: list[tuple[np.ndarray, float]] = sorted(zip(planes, plane_scores), key=lambda x: x[1], reverse=True)
+    # keep the given number of planes and all other planes that have no worse scores than that.
+    threshold_score: float = sorted_planes_scores_scores[min(keep_n_best_planes-1, len(sorted_planes_scores_scores)-1)][1]
+    # discard any planes with score lower than given ratio of the best score
+    best_score = sorted_planes_scores_scores[0][1]
+    best_planes = [plane for plane, score in sorted_planes_scores_scores if score >= threshold_score and score >= best_score * min_score_ratio]
+    print(f"Selected {len(best_planes)}/{keep_n_best_planes} possible symmetry planes.")
+    # best_planes = [plane for plane, score in zip(best_planes, best_scores) if score >= best_score * min_score_ratio]
+    # del best_scores # free memory, this list is no longer accurate or needed.
     print(f"Optimizing {len(best_planes)} best planes.")
     # optimize with the best planes as starting points
     def objective(plane):
@@ -363,8 +356,6 @@ def reflect_points_across_plane(X: np.ndarray, plane: np.ndarray) -> np.ndarray:
     X_reflected = X - 2 * projection
     
     return X_reflected
-    # a, b, c, d = plane
-    # return X - 2 * (np.dot(X, np.array([a, b, c])) + d)[:, np.newaxis] * np.array([a, b, c])
 
 
 def centroid(X: np.ndarray) -> np.ndarray:
