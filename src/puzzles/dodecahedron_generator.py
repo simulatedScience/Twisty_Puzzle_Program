@@ -13,9 +13,16 @@ Moves are named according to the colors of the faces they affect with carefully 
 
 Authors: Sebastian Jost & GPT-4o (07.10.2024)
 """
-
-import numpy as np
+import os
 from collections import defaultdict
+
+
+import lxml.etree as let
+import numpy as np
+from scipy.spatial.transform import Rotation
+from sympy.combinatorics import Permutation
+
+from cuboid_generator import _save_moves
 
 COLORS: dict[str, str] = {
     "W": "#ffffff", # white
@@ -67,6 +74,36 @@ def sort_counterclockwise(points, com):
     angles = [angle_between_vectors(v_ref, p - com, com) for p in points]
     sorted_points = points[np.argsort(angles)]
     return sorted_points
+
+def permutation_from_rotation(
+        points: np.ndarray,
+        angle: float,
+        axis: np.ndarray,
+        axis_support: np.ndarray = np.zeros(3),
+        ) -> np.ndarray:
+    """
+    Rotate points around an axis by a given angle to find which points they are mapped to by the rotation.
+    
+    Args:
+        points (np.ndarray): 3D coordinates of the points to rotate.
+        rotation_angle (float): angle in radians to rotate the points by.
+        axis (np.ndarray): 3D vector defining the rotation axis.
+        axis_support (np.ndarray): 3D vector defining the point on the axis.
+    
+    Returns:
+        np.ndarray: permutation of the points in full list form
+    """
+    identity_perm: np.ndarray = np.arange(len(points))
+    # rotate points
+    r: Rotation = Rotation.from_rotvec(angle * axis)
+    points_rotated: np.ndarray = r.apply(points - axis_support) + axis_support
+    # find closest point in points to each rotated point
+    permutation: np.ndarray = np.array([np.argmin(np.linalg.norm(points - point, axis=1)) for point in points_rotated])
+    return permutation
+
+def colors_to_rgb(colors: list[str]):
+    """ convert list of hex values to list of rgb tuples """
+    return [tuple(int(color.lstrip("#")[i:i+2], 16)/255 for i in (0, 2, 4)) for color in colors]
 
 # Step 1: Construct a regular dodecahedron
 def dodecahedron_vertices():
@@ -130,7 +167,7 @@ def add_midpoints_to_pentagon(pentagon, com):
     return np.vstack((pentagon, midpoints, com))
 
 # Step 8: Add colors to pentagons and compile final megaminx points
-def generate_dodecahedron_points(face_scale_factor=0.7):
+def generate_dodecahedron_points(face_scale_factor: float = 0.7) -> tuple[np.ndarray, list[str]]:
     dodecahedron_points = dodecahedron_vertices()
     icosahedron_points = icosahedron_vertices()
     pentagons = find_active_pentagons(dodecahedron_points, icosahedron_points, face_scale_factor=face_scale_factor)
@@ -158,7 +195,8 @@ def add_moves(dodecahedron_points, point_colors):
     moves: dict[str, list[int]] = {}
     
     for i, dir in enumerate(icosahedron_points):
-        move_name = color_keys[i]
+        dir: np.ndarray = normalize(dir)
+        move_name: str = color_keys[i]
         distances = np.dot(dodecahedron_points, dir)
         # sort color list by distance
         indices = np.argsort(distances)
@@ -169,20 +207,81 @@ def add_moves(dodecahedron_points, point_colors):
         distance_indices: dict[float, list[int]] = {d: [] for d in unique_distances}
         for i, d in enumerate(distances):
             distance_indices[d].append(i)
-            plt.scatter(x=[d], y=[len(distance_indices[d])], c=point_colors[i], s=50)
-        distance_colors: dict[float, list[str]] = {d: [point_colors[i] for i in distance_indices[d]] for d in unique_distances}
-        plt.show()
-        # plot distance_colors
-        # 2d plot: x=distance, y=index of point at that distance, color=point color
-        
-        
+        # get points affected by move
+        affected_points = sorted(distance_indices.keys())[-2:]
+        affected_points_flat = [i for d in affected_points for i in distance_indices[d]]
+        # get permutation by rotating affected points around dir by 72°
+        for angle, name in ((2*np.pi / 5, move_name), (-2*np.pi / 5, move_name+"'")):
+            identity_perm: np.ndarray = np.arange(len(dodecahedron_points))
+            identity_perm[affected_points_flat] = permutation_from_rotation(
+                dodecahedron_points,
+                angle=angle,
+                axis=dir,
+            )[affected_points_flat] 
+            move_perm = Permutation(identity_perm)
+            moves[name] = move_perm.cyclic_form
+    return moves
+
+def save_as_puzzle(
+        sticker_coords: np.ndarray,
+        colors: np.ndarray,
+        moves: dict[str, list[list[str]]],
+        point_size: int = 10,
+        # puzzles_path: str = "Twisty_Puzzle_Program/src/puzzles/",
+        puzzles_path: str = ".",
+    ):
+    colors = colors_to_rgb(colors)
+    
+    puzzle_name: str = "megaminx"
+    filename: str = "puzzle_definition.xml"
+    # create directory with puzzle name
+    puzzle_folder_path: str = os.path.join(puzzles_path, puzzle_name)
+    os.makedirs(puzzle_folder_path, exist_ok=True)
+    
+    root_elem = let.Element("puzzledefinition", name=puzzle_name)
+    root_elem.tail = "\n\t"
+    # save puzzle points
+    _save_points(root_elem, sticker_coords, colors, point_size)
+    
+    # save puzzle moves
+    _save_moves(root_elem, moves)
+    
+    puzzle_tree = let.ElementTree(root_elem)
+    xml_string = let.tostring(puzzle_tree,
+                              pretty_print=True,
+                              xml_declaration=True,
+                              encoding='UTF-8')
+    with open(os.path.join(puzzle_folder_path, filename), "wb") as file:
+        file.write(xml_string)
+    print(f"Saved puzzle to {os.path.join(puzzle_folder_path)}")
+
+def _save_points(
+        root_elem: let.Element,
+        sticker_coords: np.ndarray,
+        colors: np.ndarray,
+        point_size: int = 10,
+    ) -> None:
+    """
+    Add the points to the given ElementTree 'puzzle_tree' in a 'points' subelement. Each point stores its `coords` (x,y,z) and `color` (r,g,b).
+
+    Args:
+        root_elem (let.Element): The root object where points will be saved.
+        sticker_coords (np.ndarray): The coordinates of the stickers (shape: (s, 3)), s = number of stickers)
+        colors (np.ndarray): The colors of the stickers. (shape: (s, 3))
+    """
+    points_elem = let.SubElement(root_elem, "points")
+    for point, color in zip(sticker_coords, colors):
+        x, y, z = [str(coord) for coord in point[:3]]
+        r, g, b = [str(c) for c in color]
+        point_elem = let.SubElement(points_elem, "point", size=str(point_size))
+        let.SubElement(point_elem, "coords", x=x, y=y, z=z)
+        let.SubElement(point_elem, "color", r=r, g=g, b=b)
 
 if __name__ == "__main__":
     # plot points in  3d
     import matplotlib.pyplot as plt
     from mpl_toolkits.mplot3d import Axes3D
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
+    
 
     # # show icosahedron vertices
     # points = icosahedron_vertices()
@@ -196,6 +295,18 @@ if __name__ == "__main__":
 
     points, colors = generate_dodecahedron_points()
     moves = add_moves(points, colors)
+    print("Moves:")
+    for name, perm in moves.items():
+        print(f"{name}: {perm}")
+    save_as_puzzle(
+        sticker_coords=points,
+        colors=colors,
+        moves=moves,
+        point_size=10,
+        puzzles_path="src/puzzles/"
+    )
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
     ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=300, alpha=1)
     
     ax.set_aspect("equal")
