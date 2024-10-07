@@ -10,182 +10,193 @@ Moves are named according to the colors of the faces they affect with carefully 
 | R - C   | red       - crimson | #ff0000 - #aa1133 |
 | Y - A   | yellow    - amber   | #ffee00 - #ee9900 |
 | W - G   | white     - grey    | #eeeeee - #999999 |
+
+Authors: Sebastian Jost & GPT-4o (07.10.2024)
 """
 
 import numpy as np
+from collections import defaultdict
 
 COLORS: dict[str, str] = {
-    "F": "#ff66ff", # fuchsia
-    "P": "#800080", # purple
+    "W": "#ffffff", # white
     "L": "#88ff00", # lime
     "O": "#888800", # olive
-    "T": "#11bbaa", # turquoise
-    "B": "#3355dd", # blue
+    "G": "#999999", # grey
     "R": "#ff0000", # red
+    "F": "#ff66ff", # fuchsia
+    "P": "#800080", # purple
     "C": "#aa1133", # crimson
     "Y": "#ffee00", # yellow
+    "B": "#3355dd", # blue
+    "T": "#11bbaa", # turquoise
     "A": "#ee9900", # amber
-    "W": "#eeeeee", # white
-    "G": "#999999", # grey
 }
 
-# def generate_dodecahedron_points(radius: float = 1, sidelength: int = 2) -> tuple[np.ndarray, np.ndarray]:
-#     """
-#     Generate the points and colors of a dodecahedron puzzle.
 
-#     Args:
-#         radius (float): the radius of the dodecahedron (Default: 1)
-#         sidelength (int): the sidelength of the dodecahedron (Default: 2 -> Megaminx)
+# Helper functions
+def normalize(v):
+    """ Normalize a 3D vector. """
+    return v / np.linalg.norm(v)
 
-#     Returns:
-#         tuple[np.ndarray, np.ndarray]: the points and colors of the dodecahedron
-#     """
-#     # golden ratio as useful constant
-#     phi = (1 + np.sqrt(5)) / 2
+def mid_point(p1, p2):
+    """ Calculate the midpoint between two 3D points. """
+    return (p1 + p2) / 2.0
 
-#     # define base face points
-#     corner = np.array([1., 0., 0.])
-#     ## rotate corner to get five
+def angle_between_vectors(v1, v2, com):
+    """ Calculate the angle between two vectors in the xy-plane. """
+    angle = np.arccos(
+        np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2)))
+    # check if rotation is clockwise or counterclockwise
+    if np.dot(np.cross(v1, v2), com) < 0:
+        angle = 2 * np.pi - angle
+    if np.isnan(angle):
+        angle = 0
+    return angle
 
+def center_of_mass(points):
+    """ Calculate the center of mass of a set of 3D points. """
+    return np.mean(points, axis=0)
 
-def generate_pentagon_points(center: np.ndarray, normal: np.ndarray, radius: float, sidelength: int) -> np.ndarray:
+def scale_towards_com(points, com, face_scale_factor=0.8):
+    """ Scale points toward the center of mass. """
+    return com + face_scale_factor * (points - com)
+
+def sort_counterclockwise(points, com):
+    """ Sort points counterclockwise relative to the COM and the first point. """
+    v_ref = points[0] - com
+    angles = [angle_between_vectors(v_ref, p - com, com) for p in points]
+    sorted_points = points[np.argsort(angles)]
+    return sorted_points
+
+# Step 1: Construct a regular dodecahedron
+def dodecahedron_vertices():
     """
-    Generate the points of a regular pentagon given the center, normal, and sidelength.
-    
-    Args:
-        center (np.ndarray): The center of the pentagon.
-        normal (np.ndarray): The normal vector for the pentagon plane.
-        radius (float): Radius of the dodecahedron (distance from the center of the dodecahedron to the center of each pentagon).
-        sidelength (int): Number of divisions along each edge (2 for Megaminx, 1 for Kilominx, etc.).
+    Define vertices of a regular dodecahedron.
 
     Returns:
-        np.ndarray: A set of points representing the pentagon stickers.
+        np.ndarray: 3D coordinates of the vertices of a regular dodecahedron.
     """
-    # Define the 2D pentagon vertices (centered at the origin)
-    angle = 2 * np.pi / 5
-    vertices_2d = np.array([[np.cos(i * angle), np.sin(i * angle)] for i in range(5)]) * radius
-    
-    # If the sidelength is more than 1 (e.g., Kilominx), subdivide each pentagon edge
-    if sidelength > 1:
-        subdivisions = []
-        for i in range(5):
-            start = vertices_2d[i]
-            end = vertices_2d[(i + 1) % 5]
-            for j in range(sidelength):
-                subdivisions.append(start + (end - start) * j / sidelength)
-        vertices_2d = np.array(subdivisions)
-
-    # Project the 2D pentagon into 3D by rotating it to match the normal
-    up_vector = np.array([0, 0, 1])
-    if not np.allclose(normal, up_vector):
-        # Create a rotation matrix to rotate the pentagon from the XY plane to the plane defined by the normal
-        axis = np.cross(up_vector, normal)
-        axis = axis / np.linalg.norm(axis)
-        angle = np.arccos(np.dot(up_vector, normal))
-        rotation_matrix = rotation_matrix_from_axis_angle(axis, angle)
-        vertices_3d = np.dot(rotation_matrix, np.hstack((vertices_2d, np.zeros((vertices_2d.shape[0], 1)))).T).T
-    else:
-        vertices_3d = np.hstack((vertices_2d, np.zeros((vertices_2d.shape[0], 1))))
-
-    # Translate the pentagon to the specified center
-    vertices_3d += center
-
-    return vertices_3d
-
-def rotation_matrix_from_axis_angle(axis: np.ndarray, angle: float) -> np.ndarray:
-    """
-    Compute the rotation matrix for a given axis and angle using Rodrigues' rotation formula.
-    
-    Args:
-        axis (np.ndarray): The axis of rotation.
-        angle (float): The angle of rotation in radians.
-        
-    Returns:
-        np.ndarray: The 3x3 rotation matrix.
-    """
-    K = np.array([[0, -axis[2], axis[1]],
-                  [axis[2], 0, -axis[0]],
-                  [-axis[1], axis[0], 0]])
-    I = np.eye(3)
-    return I + np.sin(angle) * K + (1 - np.cos(angle)) * np.dot(K, K)
-
-def icosahedron_corners(radius: float = 1) -> np.ndarray:
-    """
-    Generate the corners of an icosahedron with the given radius.
-    
-    Args:
-        radius (float): The radius of the icosahedron. (Default: 1)
-        
-    Returns:
-        np.ndarray: The icosahedron corners.
-    """
-    phi = (1 + np.sqrt(5)) / 2
-    
-    # Vertices of a unit icosahedron, unscaled
-    vertices = np.array([
-        [-1,  phi,  0], [ 1,  phi,  0], [-1, -phi,  0], [ 1, -phi,  0],
-        [ 0, -1,  phi], [ 0,  1,  phi], [ 0, -1, -phi], [ 0,  1, -phi],
-        [ phi,  0, -1], [ phi,  0,  1], [-phi,  0, -1], [-phi,  0,  1]
+    phi = (1 + np.sqrt(5)) / 2  # golden ratio
+    dodecahedron_points = np.array([
+        # 8 vertices of embedded cube
+        [-1, -1, -1], [-1, -1, 1], [-1, 1, -1], [-1, 1, 1],
+        [1, -1, -1], [1, -1, 1], [1, 1, -1], [1, 1, 1],
+        # pairs of vertices above each cube face
+        [0, -1 / phi, -phi], [0, -1 / phi, phi],
+        [0, 1 / phi, -phi], [0, 1 / phi, phi],
+        [-1 / phi, -phi, 0], [-1 / phi, phi, 0],
+        [1 / phi, -phi, 0], [1 / phi, phi, 0],
+        [-phi, 0, -1 / phi], [phi, 0, -1 / phi],
+        [-phi, 0, 1 / phi], [phi, 0, 1 / phi]
     ])
+    return dodecahedron_points
 
-    # Normalize and scale by the radius
-    vertices = radius * vertices / np.linalg.norm(vertices[0])
+# Step 2: Construct a regular icosahedron
+def icosahedron_vertices():
+    phi = (1 + np.sqrt(5)) / 2  # golden ratio
+    icosahedron_points = np.array([
+        [0,  phi,  1],
+        [0,  phi, -1],
+        [0, -phi,  1],
+        [0, -phi, -1],
+        [ 1, 0,  phi],
+        [-1, 0,  phi],
+        [ 1, 0, -phi],
+        [-1, 0, -phi],
+        [ phi,  1, 0],
+        [ phi, -1, 0],
+        [-phi,  1, 0],
+        [-phi, -1, 0],
+    ])
+    return icosahedron_points
 
-    return vertices
+# Step 3: Find the active pentagons using icosahedron vertex as direction
+def find_active_pentagons(dodecahedron_points, icosahedron_points, face_scale_factor=0.8):
+    pentagons = defaultdict(list)
+    for i, dir in enumerate(icosahedron_points):
+        distances = np.dot(dodecahedron_points, dir)
+        indices = np.argsort(distances)[-5:]  # Get the top 5 points furthest in the direction
+        pentagon_points = dodecahedron_points[indices]
+        com = center_of_mass(pentagon_points)
+        scaled_pentagon = scale_towards_com(pentagon_points, com, face_scale_factor=face_scale_factor)
+        sorted_pentagon = sort_counterclockwise(scaled_pentagon, com)
+        pentagons[i].append((sorted_pentagon, com))
+    return pentagons
 
-def generate_dodecahedron_points(radius: float = 1, offset_fac=2) -> np.ndarray:
-    """
-    Generate the points of a dodecahedron puzzle given the radius.
+# Step 7: Add midpoints between consecutive points
+def add_midpoints_to_pentagon(pentagon, com):
+    num_points = len(pentagon)
+    midpoints = [mid_point(pentagon[i], pentagon[(i + 1) % num_points]) for i in range(num_points)]
+    return np.vstack((pentagon, midpoints, com))
+
+# Step 8: Add colors to pentagons and compile final megaminx points
+def generate_dodecahedron_points(face_scale_factor=0.7):
+    dodecahedron_points = dodecahedron_vertices()
+    icosahedron_points = icosahedron_vertices()
+    pentagons = find_active_pentagons(dodecahedron_points, icosahedron_points, face_scale_factor=face_scale_factor)
+    megaminx_points: list[np.ndarray] = []
+    point_colors: list[str] = []
+    color_keys = list(COLORS.keys())
     
-    Args:
-        radius (float): The radius of the dodecahedron. (Default: 1)
+    for i, (pentagon_data) in pentagons.items():
+        pentagon, com = pentagon_data[0]
+        # Add midpoints
+        pentagon_with_midpoints = add_midpoints_to_pentagon(pentagon, com)
+        # Assign color and store the result
+        color = COLORS[color_keys[i % len(COLORS)]]
+        megaminx_points += pentagon_with_midpoints.tolist()
+        point_colors += [color] * len(pentagon_with_midpoints)
+    
+    return np.array(megaminx_points), point_colors
+
+# Step 9: add moves for each face
+def add_moves(dodecahedron_points, point_colors):
+    color_keys = list(COLORS.keys())
+    icosahedron_points = icosahedron_vertices()
+    
+    # For each axis defined by an icosahedron vertex, find the points that are furthest (and second furthest) in that direction. These are points affected by the move.
+    moves: dict[str, list[int]] = {}
+    
+    for i, dir in enumerate(icosahedron_points):
+        move_name = color_keys[i]
+        distances = np.dot(dodecahedron_points, dir)
+        # sort color list by distance
+        indices = np.argsort(distances)
+        # group distances
+        distances = np.round(distances, 3)
+        unique_distances = np.unique(distances)
+        # find all points for each distance
+        distance_indices: dict[float, list[int]] = {d: [] for d in unique_distances}
+        for i, d in enumerate(distances):
+            distance_indices[d].append(i)
+            plt.scatter(x=[d], y=[len(distance_indices[d])], c=point_colors[i], s=50)
+        distance_colors: dict[float, list[str]] = {d: [point_colors[i] for i in distance_indices[d]] for d in unique_distances}
+        plt.show()
+        # plot distance_colors
+        # 2d plot: x=distance, y=index of point at that distance, color=point color
         
-    Returns:
-        np.ndarray: The dodecahedron points.
-    """
-    face_centers: np.ndarray = icosahedron_corners(radius)
-    reference_pentagon: np.ndarray = generate_pentagon_points(
-        center=np.zeros(3),
-        normal=np.array([0, 0, 1]),
-        radius=radius,
-        sidelength=2,
-    )
-    # translate and rotate a copy of the reference pentagon to each face center
-    dodecahedron_points: list[np.ndarray] = []
-    for i, center in enumerate(face_centers):
-        # pentagon normal
-        normal = center / np.linalg.norm(center)
-        # rotate the reference pentagon to the face normal
-        rotation_matrix = rotation_matrix_from_axis_angle(np.cross([0, 0, 1], normal), np.arccos(np.dot([0, 0, 1], normal)))
-        rotated_pentagon = np.dot(rotation_matrix, reference_pentagon.T).T
-        # translate to the face center
-        rotated_pentagon += center
-        # rotate pentagon around the face normal
-        #  ensure the pentagon edges line up with each other
-        # TOOD
-        ???
-        # translate outwards along the face normal
-        rotated_pentagon += offset_fac * normal
-        # add to the list of dodecahedron points
-        dodecahedron_points += [point for point in rotated_pentagon]
-    return np.array(dodecahedron_points)
+        
 
 if __name__ == "__main__":
-    # points = generate_pentagon_points(
-    #     center=np.array([0, 0, 0]),
-    #     normal=np.array([0, 0, 1]),
-    #     radius=1,
-    #     sidelength=2,
-    # )
-    # points = icosahedron_corners(radius=1)
-    points = generate_dodecahedron_points(radius=1)
-    
-    colors = [COLORS["F"]]*len(points)
     # plot points in  3d
     import matplotlib.pyplot as plt
     from mpl_toolkits.mplot3d import Axes3D
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=100, alpha=1)
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+
+    # # show icosahedron vertices
+    # points = icosahedron_vertices()
+    # colors = [COLORS["F"]]*len(points)
+    # ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=100, alpha=1)
+    
+    # # show dodecahedron vertices
+    # points = dodecahedron_vertices()
+    # colors = [COLORS["F"]]*len(points)
+    # ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=100, alpha=1)
+
+    points, colors = generate_dodecahedron_points()
+    moves = add_moves(points, colors)
+    ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=300, alpha=1)
+    
     ax.set_aspect("equal")
     plt.show()
