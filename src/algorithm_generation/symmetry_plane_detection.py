@@ -229,13 +229,10 @@ def find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
-    # translate to the origin
-    # X = X - np.mean(X, axis=0)
     # calculate alpha as 15/l_avg, the average distance between points in X
     alpha = 15 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
     print(f"Set alpha to {alpha:.3f}.")
     # print parameters
-    print(f"find_symmetry_planes(X, {plane_similarity_threshold}, {alpha}, {keep_n_best_planes}, {min_score_ratio}, {num_init_planes}, {verbosity})")
     planes: list[tuple[np.ndarray, np.ndarray]] = init_planes(X, plane_similarity_threshold, num_planes=num_init_planes, verbosity=verbosity)
     print(f"Initalized {len(planes)} planes.")
     # choose planes with best symmetry measure
@@ -247,10 +244,7 @@ def find_symmetry_planes(
     # discard any planes with score lower than given ratio of the best score
     best_score = sorted_planes_scores_scores[0][1]
     best_planes = [plane for plane, score in sorted_planes_scores_scores if score >= threshold_score and score >= best_score * min_score_ratio]
-    print(f"Selected {len(best_planes)}/{keep_n_best_planes} possible symmetry planes.")
-    # best_planes = [plane for plane, score in zip(best_planes, best_scores) if score >= best_score * min_score_ratio]
-    # del best_scores # free memory, this list is no longer accurate or needed.
-    print(f"Optimizing {len(best_planes)} best planes.")
+    print(f"Selected {len(best_planes)}/{keep_n_best_planes} possible symmetry planes to optimize.")
     # optimize with the best planes as starting points
     def objective(plane):
         # normalize the normal vector
