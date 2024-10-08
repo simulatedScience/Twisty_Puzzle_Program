@@ -213,3 +213,33 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   Number of reachable positions of a cube of sidelength $2n$:
   $$N_{2n} = \frac{1}{24} \cdot (8! \cdot 3^7) \cdot 24!^{n-1} \cdot \left(\frac{24!}{4!^6}\right)^{(n-1)^2}$$
 - [Parallel A* Graph Search](https://people.csail.mit.edu/rholladay/docs/parallel_search_report.pdf)
+- [Reflection symmetry detection]()
+```BibTex
+@article{ref_sym_detection,
+author = {Hruda, Lukas and Kolingerova, Ivana and Váša, Libor},
+year = {2022},
+month = {02},
+pages = {},
+title = {Robust, fast and flexible symmetry plane detection based on differentiable symmetry measure},
+volume = {38},
+journal = {The Visual Computer},
+doi = {10.1007/s00371-020-02034-w},
+abstract = {Reflectional symmetry is a potentially very useful feature which many real-world objects exhibit. It is instrumental in a variety of applications such as object alignment, compression, symmetrical editing or reconstruction of incomplete objects. In this paper, we propose a novel differentiable symmetry measure, which allows using gradient-based optimization to find symmetry in geometric objects. We further propose a new method for symmetry plane detection in 3D objects based on this idea. The method performs well on perfectly as well as approximately symmetrical objects, it is robust to noise and to missing parts. Furthermore, it works on discrete point sets and therefore puts virtually no constraints on the input data. Due to flexibility of the symmetry measure, the method is also easily extensible, e.g., by adding more information about the input object and using it to further improve its performance. The proposed method was tested with very good results on many objects, including incomplete objects and noisy objects, and was compared to other state-of-the-art methods which it outperformed in most aspects.}
+}
+```
+- [Rotational symmetry detection]()
+```BibTex
+@article{rot_sym_detection,
+title = {Rotational symmetry detection in 3D using reflectional symmetry candidates and quaternion-based rotation parameterization},
+journal = {Computer Aided Geometric Design},
+volume = {98},
+pages = {102138},
+year = {2022},
+issn = {0167-8396},
+doi = {https://doi.org/10.1016/j.cagd.2022.102138},
+url = {https://www.sciencedirect.com/science/article/pii/S0167839622000747},
+author = {Lukáš Hruda and Ivana Kolingerová and Miroslav Lávička and Martin Maňák},
+keywords = {Symmetry detection, Rotation, Rotational symmetry, Rotation parameterization, Quaternion},
+abstract = {The property of symmetry in 3D objects is helpful in various applications such as object alignment, compression, symmetrical editing or reconstruction of incomplete objects. However, its robust and efficient detection is a challenging task. The two most commonly occurring types of symmetry are probably reflectional and rotational symmetry. While reflectional symmetry detection methods are quite plentiful, this does not seem to be the case with rotational symmetry detection. In this paper a use of approximate reflectional symmetries to derive plausible approximate rotational symmetries is proposed that can be integrated with multiple different approaches for reflectional symmetry detection. One such specific approach, based on maximizing a given symmetry measure, is chosen and combined with this idea. A modification of the maximization step for rotations is further proposed using a simple, yet efficient, quaternion-based parameterization of the rotation transformation which seems novel in the field of symmetry detection. The results confirm that this combination provides a robust and efficient solution for finding rotational symmetry in a 3D point set and can handle approximate symmetry, noisy input or even partial data.}
+}
+```
