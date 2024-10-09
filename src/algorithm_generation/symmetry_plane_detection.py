@@ -91,7 +91,7 @@ def add_plane(
                 # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
                 add_new_plane: bool = False
                 break
-            avg_plane: np.ndarray = average_planes(new_plane, plane)
+            avg_plane: np.ndarray = average_planes(new_plane/num, plane)
             avg_plane_key: tuple[float] = tuple(avg_plane)
             found_planes[avg_plane_key] = (avg_plane, num + 1)
             if not avg_plane_key == plane_key:
@@ -230,7 +230,7 @@ def find_symmetry_planes(
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
     # calculate alpha as 15/l_avg, the average distance between points in X
-    alpha = 15 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
+    alpha = 20 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
     print(f"Set alpha to {alpha:.3f}.")
     # print parameters
     planes: list[tuple[np.ndarray, np.ndarray]] = init_planes(X, plane_similarity_threshold, num_planes=num_init_planes, verbosity=verbosity)
