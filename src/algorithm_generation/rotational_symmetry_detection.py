@@ -115,9 +115,8 @@ def find_rotational_symmetries(
         plane_similarity_threshold: float = 0.1,
         min_angle: float = np.pi / 12.5,
         num_best_rotations: int = 30,
-        alpha: float = 1.0,
         epsilon_Q: float = 0.05,
-        epsilon_s: float = 0.05, # should be 0.05 l_avg
+        epsilon_s: float = 0.05, # will be multiplied with d_avg
         min_score_ratio: float = 0.7,
         similar_axis_tol: float = 0.05
     ) -> list[tuple[np.ndarray, float]]:
@@ -132,13 +131,15 @@ def find_rotational_symmetries(
         num_best_rotations (int): number of best rotations to keep
         alpha (float): parameter to control the similarity function
         epsilon_Q (float): tolerance for quaternion similarity
-        epsilon_s (float): tolerance for axis support similarity
+        epsilon_s (float): tolerance for axis support similarity, will be multiplied with d_avg
         min_score_ratio (float): minimum score relative to the best score to keep a rotation
     Returns:
         list[tuple[np.ndarray, float]]: list of rotational symmetries (axis, angle) detected
     """
-    # calculate alpha = 20/l_avg
-    alpha: float = 20 / np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
+    # calculate alpha = 20/average distance between points
+    d_avg: float = np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
+    epsilon_s *= d_avg
+    alpha: float = 20 / d_avg
     # Step 0: center point cloud around origin
     X_shift = centroid(X)
     X = X - X_shift

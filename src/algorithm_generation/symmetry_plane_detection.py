@@ -61,7 +61,7 @@ def add_plane(
         point_1: np.ndarray,
         point_2: np.ndarray,
         found_planes: dict[tuple[float, float, float, float], tuple[np.ndarray, int]],
-        plane_similarity_threshold: float = 0.1,
+        plane_similarity_threshold: float = 0.1, # $\delta$ in [1]
         ):
     """
     Given two points and a list of current planes, compute the plane between the two points and add it to the list of planes if it is not too similar to the existing planes.
