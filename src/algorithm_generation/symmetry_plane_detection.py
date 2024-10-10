@@ -252,7 +252,7 @@ def find_symmetry_planes(
         return -reflect_symmetry_measure(X, plane, alpha)
     symmetry_planes = []
     for plane in best_planes:
-        result = minimize(objective, plane, method="L-BFGS-B")
+        result = minimize(objective, plane, method="BFGS")
         symmetry_plane = result.x
         # normalize the normal vector
         symmetry_plane[:3] = symmetry_plane[:3] / np.linalg.norm(symmetry_plane[:3])
