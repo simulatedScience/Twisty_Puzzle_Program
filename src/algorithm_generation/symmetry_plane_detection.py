@@ -238,12 +238,12 @@ def find_symmetry_planes(
     # choose planes with best symmetry measure
     plane_scores = [reflect_symmetry_measure(X, plane, alpha) for plane in planes]
     # sort planes by score
-    sorted_planes_scores_scores: list[tuple[np.ndarray, float]] = sorted(zip(planes, plane_scores), key=lambda x: x[1], reverse=True)
+    sorted_planes_scores: list[tuple[np.ndarray, float]] = sorted(zip(planes, plane_scores), key=lambda x: x[1], reverse=True)
     # keep the given number of planes and all other planes that have no worse scores than that.
-    threshold_score: float = sorted_planes_scores_scores[min(keep_n_best_planes-1, len(sorted_planes_scores_scores)-1)][1]
+    threshold_score: float = sorted_planes_scores[min(keep_n_best_planes-1, len(sorted_planes_scores)-1)][1]
     # discard any planes with score lower than given ratio of the best score
-    best_score = sorted_planes_scores_scores[0][1]
-    best_planes = [plane for plane, score in sorted_planes_scores_scores if score >= threshold_score and score >= best_score * min_score_ratio]
+    best_score = sorted_planes_scores[0][1]
+    best_planes = [plane for plane, score in sorted_planes_scores if score >= threshold_score and score >= best_score * min_score_ratio]
     print(f"Selected {len(best_planes)}/{keep_n_best_planes} possible symmetry planes to optimize.")
     # optimize with the best planes as starting points
     def objective(plane):
