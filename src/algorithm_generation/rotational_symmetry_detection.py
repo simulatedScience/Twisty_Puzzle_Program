@@ -156,38 +156,27 @@ def find_rotational_symmetries(
     #   2.1 find intersections of pairs of planes
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = init_rotation_candidates(X, min_angle, epsilon_Q, epsilon_s, planes)
-    # Step 3: Evaluate candidate rotations and find best ones
+    # Step 3: Evaluate candidate rotations with score < best_score * min_score_ratio. Keep at most ~num_best_rotations
     best_rotations = []
     best_scores = []
-    for Q, s, _ in pruned_candidates: # weights (w(Q, s)) are no longer needed
+    symmetry_measures: list[float] = [0] * len(pruned_candidates)
+    for index, (Q, axis_support, _) in enumerate(pruned_candidates): # weights (w(Q, s)) are no longer needed
         axis = R.from_quat(Q)
         axis = axis.as_rotvec()
         rotation_angle = np.linalg.norm(axis)
         axis /= rotation_angle
-        X_translated = X - s
+        X_translated = X - axis_support
         score = rotation_symmetry_measure(X_translated, rotation=(rotation_angle, axis), alpha=alpha)
-        if len(best_scores) < num_best_rotations or score > min(best_scores):
-            if len(best_scores) >= num_best_rotations:
-                min_index = np.argmin(best_scores)
-                best_scores[min_index] = score
-                best_rotations[min_index] = (rotation_angle, axis, s)
-            else:
-                best_scores.append(score)
-                best_rotations.append((rotation_angle, axis, s))
+        pruned_candidates[index] = (score, rotation_angle, axis, axis_support)
+    sorted_candidates: list[tuple[float, float, np.ndarray, np.ndarray]] = sorted(pruned_candidates, key=lambda x: x[0], reverse=True)
+    score_threshold: float = sorted_candidates[min(num_best_rotations, len(sorted_candidates)-1)][0]
+    best_score: float = sorted_candidates[0][0]
+    best_rotations: list[tuple[float, np.ndarray, np.ndarray]] = [
+            rotation for score, *rotation in sorted_candidates
+            if score >= score_threshold and score >= best_score * min_score_ratio
+    ]
 
-    # # Step 4: remove rotations with score < best_score * min_score_ratio
-    # best_score = max(best_scores)
-    # pruned_best_rotations = []
-    # for rotation, score in zip(best_rotations, best_scores):
-    #     if score >= best_score * min_score_ratio:
-    #         pruned_best_rotations.append(rotation)
-    #     else:
-    #         print(f"Pruned rotation with score {score} due to low score: {score} < {best_score} * {min_score_ratio}")
-    #         print(f"Rotation with angle {rotation[0]*360/(2*np.pi):.2f}° and axis {rotation[1].round(3)}")
-    # best_rotations = pruned_best_rotations
-    # # best_rotations = [rotation for rotation, score in zip(best_rotations, best_scores) if score >= best_score * min_score_ratio]
-    # del best_scores # best_scores no longer accurate since best_rotations has been pruned
-
+    # Step 4: Refine the best rotations by maximizing the symmetry measure individually
     def objective(rotation_components):
         angle: float = rotation_components[0]
         axis: np.ndarray = rotation_components[1:4]
