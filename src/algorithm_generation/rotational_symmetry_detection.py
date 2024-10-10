@@ -156,7 +156,7 @@ def find_rotational_symmetries(
     #   2.1 find intersections of pairs of planes
     #   2.2 prune candidates that are too similar to existing ones
     pruned_candidates = init_rotation_candidates(X, min_angle, epsilon_Q, epsilon_s, planes)
-    # Step 3: Evaluate candidate rotations with score < best_score * min_score_ratio. Keep at most ~num_best_rotations
+    # Step 3: Evaluate candidate rotations with score < best_score * min_score_ratio. Keep at most about num_best_rotations
     best_rotations = []
     best_scores = []
     symmetry_measures: list[float] = [0] * len(pruned_candidates)
