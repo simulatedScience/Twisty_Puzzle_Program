@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="square_two">
+<puzzledefinition name="square_two_sym">
   <points>
     <point size="4.0">
       <coords x="0.0" y="1.0" z="0.8"/>
@@ -243,6 +243,54 @@
     </point>
   </points>
   <moves>
+    <move name="rot_1">
+      <cycle>0, 13</cycle>
+      <cycle>1, 12</cycle>
+      <cycle>2, 14</cycle>
+      <cycle>3, 15</cycle>
+      <cycle>4, 16</cycle>
+      <cycle>5, 17</cycle>
+      <cycle>6, 18</cycle>
+      <cycle>7, 19</cycle>
+      <cycle>8, 20</cycle>
+      <cycle>9, 21</cycle>
+      <cycle>10, 22</cycle>
+      <cycle>11, 23</cycle>
+      <cycle>24, 39</cycle>
+      <cycle>25, 40</cycle>
+      <cycle>26, 41</cycle>
+      <cycle>27, 42</cycle>
+      <cycle>28, 43</cycle>
+      <cycle>29, 44</cycle>
+      <cycle>30, 45</cycle>
+      <cycle>31, 46</cycle>
+      <cycle>32, 47</cycle>
+      <cycle>33, 36</cycle>
+      <cycle>34, 37</cycle>
+      <cycle>35, 38</cycle>
+      <cycle>48, 53</cycle>
+      <cycle>49, 52</cycle>
+      <cycle>50, 51</cycle>
+      <cycle>54, 59</cycle>
+      <cycle>55, 58</cycle>
+      <cycle>56, 57</cycle>
+    </move>
+    <move name="U">
+      <cycle>11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 1</cycle>
+      <cycle>34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 35</cycle>
+    </move>
+    <move name="U'">
+      <cycle>1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11</cycle>
+      <cycle>35, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34</cycle>
+    </move>
+    <move name="D">
+      <cycle>38, 37, 36, 47, 46, 45, 44, 43, 42, 41, 40, 39</cycle>
+      <cycle>12, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13</cycle>
+    </move>
+    <move name="D'">
+      <cycle>39, 40, 41, 42, 43, 44, 45, 46, 47, 36, 37, 38</cycle>
+      <cycle>13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 12</cycle>
+    </move>
     <move name="S">
       <cycle>33, 36</cycle>
       <cycle>34, 37</cycle>
@@ -259,22 +307,6 @@
       <cycle>0, 13</cycle>
       <cycle>1, 12</cycle>
       <cycle>50, 51</cycle>
-    </move>
-    <move name="D'">
-      <cycle>38, 37, 36, 47, 46, 45, 44, 43, 42, 41, 40, 39</cycle>
-      <cycle>12, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13</cycle>
-    </move>
-    <move name="D">
-      <cycle>39, 40, 41, 42, 43, 44, 45, 46, 47, 36, 37, 38</cycle>
-      <cycle>13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 12</cycle>
-    </move>
-    <move name="U">
-      <cycle>1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11</cycle>
-      <cycle>35, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34</cycle>
-    </move>
-    <move name="U'">
-      <cycle>11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 1</cycle>
-      <cycle>34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 35</cycle>
     </move>
   </moves>
 </puzzledefinition>
