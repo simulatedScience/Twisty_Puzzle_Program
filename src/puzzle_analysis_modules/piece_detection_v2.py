@@ -111,13 +111,13 @@ def split_moves(moves: dict[str, list[list[int]]], n_points: int, inverse_dict: 
     cycle_sets = set()
     move_pieces = list()
     if inverse_dict != None:
-        calculated_moves = list()
+        calculated_moves: set[str] = set()
     for move_name, cycles in moves.items():
         if inverse_dict != None:
             # skip move if it's inverse was already investigated
             if inverse_dict[move_name] in calculated_moves:
                 continue
-            calculated_moves.append(move_name)
+            calculated_moves.add(move_name)
         pieces, moveset, new_cycle_sets = \
                 split_move(cycles, n_points)
         # save sets of all points affected by each move
