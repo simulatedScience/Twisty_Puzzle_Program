@@ -1,0 +1,8 @@
+alg_1 = 24*(A G' A B Y' B' P)
+alg_1' = 24*(P' B Y B' A' G A')
+alg_2 = 18*(P Y Y Y B)
+alg_2' = 18*(B' Y' Y' Y' P')
+alg_3 = 9*(G' G' G' A')
+alg_4 = 9*(O G')
+alg_5 = 18*(L' B O' O' O' L B' O' R' O)
+alg_5' = 18*(O' R O B L' O O O B' L)
