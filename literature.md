@@ -134,10 +134,8 @@ note={}
   - states how many states of each puzzle were seen during training with different methods!
     - ~50% of 2x2x2 with Deep Value Networks (DVN), only 4.5-20% with Fourier Bases
     - 100% of Pyraminx states with all methods
-  ```
-  Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS) 2021, San Diego, California, USA. PMLR: Volume 130. Copyright 2021
-  ```
-  ```BibTex
+
+  ```Bibtex
   @InProceedings{pmlr-v130-pan21a,
     title = 	 { Fourier Bases for Solving Permutation Puzzles },
     author =       {Pan, Horace and Kondor, Risi},
@@ -160,7 +158,21 @@ note={}
 
 - **An Algorithm for Solving the Factorization Problem in Permutation Groups**
   - [paper](https://doi.org/10.1006/JSCO.1998.0202) by Torsten Minkwith (1998), Karlsruhe, [pdf](https://www.sciencedirect.com/science/article/pii/S0747717198902024?via%3Dihub)
-  - 
+```BibTex
+@article{MINKWITZ199889,
+  title = {An Algorithm for Solving the Factorization Problem in Permutation Groups},
+  journal = {Journal of Symbolic Computation},
+  volume = {26},
+  number = {1},
+  pages = {89-95},
+  year = {1998},
+  issn = {0747-7171},
+  doi = {https://doi.org/10.1006/jsco.1998.0202},
+  url = {https://www.sciencedirect.com/science/article/pii/S0747717198902024},
+  author = {T. Minkwitz},
+  abstract = {The factorization problem in permutation groups is to represent an elementgof some permutation groupGas a word over a given setSof generators ofG. For practical purposes, the word should be as short as possible, but must not be minimal. Like many other problems in computational group theory, the problem can be solved from a strong generating set (SGS) and a base ofG. Different algorithms to compute an SGS and a base have been published. The classical algorithm is the Schreier–Sims method. However, for factorization an SGS is needed that has all its elements represented as words overS. The existing methods are not suitable, because they lead to an exponential growth of word lengths. This article presents a simple algorithm to solve the factorization problem. It is based on computing an SGS with elements represented by relatively short words over the generators.}
+}
+```
 
 - **Modelling Perumtation puzzles** - Solving Puzzles related to Permutation Groups
   - [paper](https://dl.acm.org/doi/abs/10.1145/281508.281611), [pdf](https://dl.acm.org/doi/pdf/10.1145/281508.281611)
