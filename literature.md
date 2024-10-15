@@ -61,11 +61,36 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   - [demonstration](https://deepcube.igb.uci.edu/)
   - [paper](https://deepcube.igb.uci.edu/static/files/SolvingTheRubiksCubeWithDeepReinforcementLearningAndSearch_Final.pdf)
   - Solve the Rubik's cube, sliding tile puzzles, and other combinatorial puzzles using a combination of deep reinforcement learning and Batch-weighted A* search.
+```BibTex
+@article{deepCubeA,
+title = {Solving the Cubik's cube with Deep Reinforcement Learning and Search},
+journal = {Nature Machine Intelligence},
+year = {2019},
+volume = {1},
+pages = {356–363},
+doi = {https://doi.org/10.1038/s42256-019-0070-z},
+url = {https://deepcube.igb.uci.edu/},
+author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pierre}
+}
+```
 
 - **DeepCube** - Solving the Rubik's Cube Without Human Knowledge/  
   Solving the Rubik's Cube with Approximate Policy Iteration
   - [paper](https://openreview.net/pdf?id=Hyfn2jCcKm) ([preprint](https://arxiv.org/pdf/1805.07470.pdf))
   - Learn to solve the Rubik's cube using Approximate Policy Iteration (API) with a deep neural network as a function approximator.
+```BibTex
+@article{
+EfficientCube,
+title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
+author={Kyo Takano},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2023},
+url={https://openreview.net/forum?id=bnBeNFB27b},
+note={}
+}
+```
+
 
 - **Efficientcube** - Self-Supervision is All You Need for Solving Rubik's Cube
   - [code](https://github.com/kyo-takano/efficientcube)

@@ -15,7 +15,10 @@
   _unused, read [sb3 documentation](https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html) instead for more reliable information. Provided some inspiration for other RL methods to try if necessary._
 
 - GPT-4o 19.09.2024 [fix incorrect inverses in definition of Geaer Cube Ultimate](https://chatgpt.com/share/66ec2d4e-31c0-8007-b686-8d2637191c0e)  
-  _Saved some simple but tedious work to correct an error resulting from a minor bug. Diong this without an LLM would have taken a few minutes._
+  _Saved some simple but tedious work to correct an error resulting from a minor bug. Doing this without an LLM would have taken a few minutes._
 
 - GPT-4o 27.09.2024 [Write simple data analysis code for test files](https://chatgpt.com/share/66f727ba-c71c-8007-8f86-aa279a19b6db)  
-  _Saved time for coding some plots and basic evaluations I have coded similarly many times before. Some manual adjustments were made for style of code and plots._
+  _Saved time for coding some plots and basic evaluations. I have coded very similar graphs many times before, so ChatGPT was used purely to save time. I uploaded my test data file for one puzzle and described what graphs I wanted. After several messages and some manual adjustments for style of code and plots, the code was mostly copied to `src/au_modules/poilcy_analysis.py`._
+
+- GPT-4o 15.10.2024 [vectorize binary multi-goal reward](https://chatgpt.com/share/670e3661-e8a0-8007-addc-691e70718889)  
+  _Very simple modification to existing code. The output was partially used in `src/ai_modules/nn_rl_reward_factories.py` (added `[:, None]` to `state` for vectorization)._
