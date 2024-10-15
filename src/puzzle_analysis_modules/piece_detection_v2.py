@@ -13,23 +13,29 @@ from ..ai_modules.twisty_puzzle_model import perform_action
 def detect_pieces(
         moves: list[list[list[int]]],
         n_points: int,
-        inverse_dict=None,
-        max_moves=1000
+        inverse_dict: dict[str, str] = None,
+        max_moves: int = 1000
         ):
     """
     calculate all pieces of a puzzle, including those only seperable through move sequences that are longer than one move.
     This is achieved by randomly performing [max_moves] moves and cutting pieces every time it's possible. This takes a little bit of time but shouldn't exceed 1s on most common puzzles.
     Due to the choice of using random moves, it is possible that not all pieces are calculated correctly, but that's very, very unlikely unless the puzzle is built specifically to break this algorithm. In that case, just use more moves.
-    
-    
+
+    Args:
+        moves (list[list[list[int]]]): list of moves as lists of cycles
+        n_points (int): number of points in the puzzle
+        inverse_dict (dict[str, str]): dictionary that assigns inverse moves
+        max_moves (int): number of moves to perform
     """
-    start_time = time.perf_counter()
-    visited_states = set()
-    current_state = list(range(n_points))
-    pieces_template =(get_piece_template(moves, n_points,\
-            inverse_dict=inverse_dict))
+    start_time: float = time.perf_counter()
+    visited_states: set[tuple[int]] = set()
+    current_state: list[int] = list(range(n_points))
+    current_pieces: list[set[int]] = get_piece_template(
+            moves,
+            n_points,
+            inverse_dict=inverse_dict)
     moves_list = list(moves.values())
-    for _ in range(max_moves):
+    for n_moves in range(max_moves):
         # choose and apply random move
         move = random.choice(moves_list)
         perform_action(current_state, move)
@@ -39,136 +45,135 @@ def detect_pieces(
             visited_states.add(state_tuple)
             # get new pieces
             new_pieces = list()
-            for piece in pieces_template:
+            for piece in current_pieces:
                 new_piece = {current_state[i] for i in piece}
-                if not new_piece in pieces_template:
+                if not new_piece in current_pieces:
                     new_pieces.append(new_piece)
             # if new pieces were found, intersect them with the previous ones.
             if len(new_pieces) > 0:
-                pieces_template = (intersect_pieces([pieces_template, new_pieces], n_points))
+                current_pieces = (intersect_pieces([current_pieces, new_pieces]))
     end_time = time.perf_counter()
-    # print(f"calculation of {max_moves} moves took {end_time - start_time:7} s.")
-    anaylse_pieces(pieces_template)
-    return pieces_template
-
+    # print(f"calculation of {max_moves} moves took {end_time - start_time:.2f} s.")
+    anaylse_pieces(current_pieces)
+    return current_pieces
 
 def get_piece_template(moves, n_points, inverse_dict=None):
     """
     calculate all puzzle pieces necessary to perform each move at least once.
     """
-    move_pieces, movesets, cycle_sets = \
-            split_moves(moves, n_points, inverse_dict=inverse_dict)
-    puzzle_pieces = intersect_pieces(move_pieces, n_points)
+    move_pieces: list[list[set[int]]] = split_moves(moves, n_points, inverse_dict=inverse_dict)
+
+    puzzle_pieces = intersect_pieces(move_pieces)
+
     return puzzle_pieces
 
-
-def intersect_pieces(move_pieces, n_points):
+def intersect_pieces(piece_sets: list[list[set[int]]]) -> list[set[int]]:
     """
+    Given a list of (partial) partitions `piece_sets` of the point set, calculate the largest partition Pi such that every given partition can be formed by joining elements of Pi.
+    
     calculate the puzzle pieces with all moves taken into consideration.
     the pieces enforced by each move are given.
+
+    Args:
+        partitions (list[list[set[int]]): list of (partial) partitions of the point set. Partitions may include either all points or only a subset of them. Order of the pieces is irrelevant.
+        
+    Returns:
+        list[set[int]]: list of partitions of the point set.
     """
-    puzzle_pieces = move_pieces[0]
+    updated_pieces = piece_sets[0]
     empty_set = set()
-    for pieces in move_pieces[1:]:
-        for piece in pieces:
+    for pieces in piece_sets[1:]:
+        for piece_a in pieces:
             i = 0
-            n_pieces = len(puzzle_pieces)
+            n_pieces = len(updated_pieces)
             while i != n_pieces:
-                intersect = puzzle_pieces[i] & piece # calculate intersection A&B
-                if intersect != empty_set:
-                    if intersect != puzzle_pieces[i]:
-                        puzzle_pieces[i] -= intersect   # replace piece A with A\B
-                        puzzle_pieces.append(intersect) # add piece A&B
+                intersection = updated_pieces[i] & piece_a # calculate intersection B&A
+                if intersection != empty_set: # piece_a intersects with a current piece
+                    if intersection != updated_pieces[i]: # and is not equal to it
+                        updated_pieces[i] -= intersection   # replace piece B with B\A
+                        updated_pieces.append(intersection) # add piece B&A
                         n_pieces += 1
-                    # if intersect != piece:          # add piece B\A
-                    #     puzzle_pieces.append(piece-intersect)
-                    #     n_pieces += 1
                 i += 1
-    return puzzle_pieces
+    return updated_pieces
 
 
-def split_moves(moves: dict[str, list[list[int]]], n_points: int, inverse_dict: dict[str, str]=None):
+def split_moves(
+        moves: dict[str, list[list[int]]],
+        n_points: int,
+        inverse_dict: dict[str, str]=None,
+    ) -> tuple[list[set[int]], list[set[int]], set[frozenset]]:
     """
-    calculate the pieces necessary to make each move at least once.
+    For each move, calculate the pieces it necessitates by itself. Returns a list of partitions of {1, ..., `n_points`}.
 
-    inputs:
-    -------
-        moves - (dict) - dictionary with move names and cycle lists
-            keys are (str)s,
-            values are (list)s of (list)s of (int)s -
+    Args:
+        moves (dict[str, list[list[int]]]): dictionary with move names and cycle lists
             every move is represented as a list of cycles
                 describing the move
-        n_points - (int) - number of points in the puzzle
-        inverse_dict - (dict[str, str]) - dictionary that assigns inverse moves
-            for each move where one exists.
-            keys and values are both move names and therefore (str)s
+        n_points (int): number of points in the puzzle
+        inverse_dict (dict[str, str]): dictionary that assigns inverse moves for each move where one exists.
+            keys and values are both move names
 
-    returns:
-    --------
-        (list) of (set)s
+    Returns:
+        list[list[set[int]]]: list of pieces necessitated by each move. May be shorter than the number of moves since inverse moves are skipped because they yield the same pieces as the original move.
     """
-    movesets = list()
-    cycle_sets = set()
     move_pieces = list()
-    if inverse_dict != None:
+    if inverse_dict:
         calculated_moves: set[str] = set()
     for move_name, cycles in moves.items():
-        if inverse_dict != None:
-            # skip move if it's inverse was already investigated
-            if inverse_dict[move_name] in calculated_moves:
+        # skip move if it's inverse was already investigated
+        if inverse_dict:
+            if move_name in inverse_dict and inverse_dict[move_name] in calculated_moves:
                 continue
             calculated_moves.add(move_name)
-        pieces, moveset, new_cycle_sets = \
-                split_move(cycles, n_points)
-        # save sets of all points affected by each move
-        movesets.append(moveset)
-        # save sets of all points affected by each cycle in any move
-        cycle_sets |= new_cycle_sets
         # save pieces forced by each move
-        move_pieces.append(pieces)
-    return move_pieces, movesets, cycle_sets
+        move_pieces.append(split_move(cycles, n_points))
+    return move_pieces
 
 
-def split_move(move, n_points):
+def split_move(move: list[list[int]], n_points: int) -> tuple[list[set[int]], set[int], set[frozenset]]:
     """
-    calculate the pieces that are enforced just by applying the given move.
+    Calculate the pieces that are enforced just by applying the given move.
+    This splits the puzzle into:
+    - one piece for the points unaffected by the move
+    - one piece for each unique cycle length in the move
 
-    inputs:
-    -------
-        move - (list) of (list)s of (int)s - list of cycles as lists of integers representing a move
-        moveset - (set) of (int)s - set of all indices changed by the move
-        n_points - (int) - number of points in the puzzle
+    Algorithm:
+    1. sort cycles by length
+    2. join cycles of the same length into one piece for each cycle length
 
-    returns:
-    --------
-        (list) of (set)s of (int)s - list of pieces as sets of integers
-        (set) of (int)s - set of all points affected by the given move
-        (set) of (frozenset)s - set of all cycles as sets of all affected points
+    Args:
+        move (list[list[int]]): list of cycles as lists of integers representing a move
+        n_points (int): number of points in the puzzle
+
+    Returns:
+        list[set[int]]: list of pieces as sets of integers
+        set[int]: set of all points affected by the given move
+        set[frozenset[int]]: set of all cycles as sets of all affected points
     """
-    moveset = set()
-    cycle_sets = set()
-    pieces = list()
+    move_pieces = list()
     sorted_cycles = sorted(move, key=len)
     last_len = 0
     for cycle in sorted_cycles:
+        if len(cycle) == 1: # ignore cycles with only one point
+            continue
         if last_len != len(cycle):
-            pieces.append(set())
-        cycle_set = frozenset(cycle)
-        pieces[-1] |= cycle_set
-        moveset |= cycle_set
-        cycle_sets.add(cycle_set)
+            move_pieces.append(set())
+        # add cycle to the last piece that collects cycles of the same length
+        move_pieces[-1] |= set(cycle)
         last_len = len(cycle)
-    del(last_len, sorted_cycles)
 
     # generate one piece for the unchanged part of the puzzle
     unchanged_piece = set()
     for n in range(n_points):
-        if not n in moveset:
+        for piece in move_pieces:
+            if n in piece:
+                break
+        else:
             unchanged_piece.add(n)
-    pieces.append(unchanged_piece)
-    del(unchanged_piece)
+    if len(unchanged_piece) > 0:
+        move_pieces.append(unchanged_piece)
 
-    return pieces, moveset, cycle_sets
+    return move_pieces
 
 
 def anaylse_pieces(pieces):

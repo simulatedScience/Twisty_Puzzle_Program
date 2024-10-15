@@ -89,15 +89,15 @@ def get_piece_template(
             split_moves(moves, n_points, inverse_dict=inverse_dict)
     puzzle_pieces = intersect_pieces(move_pieces, n_points)
     
-    # generate one piece for the unchanged part of the puzzle
-    unchanged_piece = set()
-    for n in range(n_points):
-        for piece in puzzle_pieces:
-            if n in piece:
-                break
-        else:
-            unchanged_piece.add(n)
-    puzzle_pieces.append(unchanged_piece)
+    # # generate one piece for the unchanged part of the puzzle
+    # unchanged_piece = set()
+    # for n in range(n_points):
+    #     for piece in puzzle_pieces:
+    #         if n in piece:
+    #             break
+    #     else:
+    #         unchanged_piece.add(n)
+    # puzzle_pieces.append(unchanged_piece)
 
     return puzzle_pieces
 
@@ -149,7 +149,7 @@ def split_moves(moves: dict[str, list[list[int]]], n_points: int, inverse_dict: 
             keys and values are both move names and therefore (str)s
 
     Returns:
-        (list) of (set)s
+        (list[set]): list of pieces as sets of integers
     """
     movesets = list()
     cycle_sets = set()
@@ -206,13 +206,13 @@ def split_move(move, n_points):
         last_len = len(cycle)
     del(last_len, sorted_cycles)
 
-    # # generate one piece for the unchanged part of the puzzle
-    # unchanged_piece = set()
-    # for n in range(n_points):
-    #     if not n in moveset:
-    #         unchanged_piece.add(n)
-    # pieces.append(unchanged_piece)
-    # del(unchanged_piece)
+    # generate one piece for the unchanged part of the puzzle
+    unchanged_piece = set()
+    for n in range(n_points):
+        if not n in moveset:
+            unchanged_piece.add(n)
+    pieces.append(unchanged_piece)
+    del(unchanged_piece)
 
     return pieces, moveset, cycle_sets
 

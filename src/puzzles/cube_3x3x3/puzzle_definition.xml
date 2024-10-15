@@ -1,219 +1,219 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="cube_3x3x3">
+<puzzledefinition name="cube_3x3x3" state_space_size="1038048078587756544000">
   <points>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="-1.5" z="-1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="-1.5" z="-1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="-1.5" z="-1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="-1.5" z="0.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="-1.5" z="0.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="-1.5" z="0.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="-1.5" z="1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="-1.5" z="1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="-1.5" z="1.0"/>
       <color r="0.1" g="0.8" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="-1.0" z="-1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="0.0" z="-1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="1.0" z="-1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="-1.0" z="0.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="0.0" z="0.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="1.0" z="0.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="-1.0" z="1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="0.0" z="1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.5" y="1.0" z="1.0"/>
       <color r="0.9" g="0.1" b="0.1"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="1.5" z="-1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="1.5" z="-1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="1.5" z="-1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="1.5" z="0.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="1.5" z="0.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="1.5" z="0.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="1.5" z="1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="1.5" z="1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="1.5" z="1.0"/>
       <color r="0.1" g="0.5" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="1.0" z="-1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="0.0" z="-1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="-1.0" z="-1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="1.0" z="0.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="0.0" z="0.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="-1.0" z="0.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="1.0" z="1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="0.0" z="1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.5" y="-1.0" z="1.0"/>
       <color r="1.0" g="0.5" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="-1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="-1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="-1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="0.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="0.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="0.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="1.0" z="1.5"/>
       <color r="0.9" g="0.9" b="0.9"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="0.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="0.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="0.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="-1.0" y="-1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="0.0" y="-1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
-    <point size="10">
+    <point size="10.0">
       <coords x="1.0" y="-1.0" z="-1.5"/>
       <color r="1.0" g="0.8" b="0.0"/>
     </point>
