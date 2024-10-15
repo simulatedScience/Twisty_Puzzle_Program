@@ -23,6 +23,27 @@ def binary_reward_factory(solved_state: np.ndarray) -> callable:
         return reward, done
     return binary_reward
 
+def multi_binary_reward_factory(solved_states: np.ndarray) -> callable:
+    def binary_reward(state: np.ndarray, truncated: bool) -> tuple[float, bool]:
+        """
+        Return a reward of 1 if the state is equal to the solved state, otherwise 0.
+
+        Args:
+            state (np.ndarray): The current state of the environment.
+            truncated (bool): Whether the episode was truncated.
+
+        Returns:
+            (float): The reward in range [0, 1]. This will always be 0 or 1.
+        """
+        if state.ndim == 1:
+            done: bool = np.any(np.all(state == solved_states, axis=-1))
+            reward: float = 1. if done else 0.
+        else:
+            done: np.ndarray = np.any(np.all(state[:, None] == solved_states, axis=-1), axis=-1)
+            reward: float = np.where(done, 1., 0.)
+        return reward, done
+    return binary_reward
+
 def correct_points_reward_factory(solved_state) -> callable:
     def correct_points_reward(state: np.ndarray, truncated: bool) -> tuple[float, bool]:
         """
