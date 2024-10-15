@@ -145,6 +145,7 @@ def user_test_algorithms(
 
 def add_moves_to_puzzle(
         puzzle: Twisty_Puzzle,
+        algorithms: dict[str, Twisty_Puzzle_Algorithm],
         new_moves: dict[str, list[int]],
         new_puzzle_name: str = "",
         suffix: str = "_algs"
@@ -154,7 +155,8 @@ def add_moves_to_puzzle(
 
     Args:
         puzzle (Twisty_Puzzle): Puzzle to add moves to.
-        moves (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of moves to add to the puzzle.
+        algorithms (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of current algorithms.
+        new_moves (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of moves to add to the puzzle.
         new_puzzle_name (str, optional): Name of the new puzzle. Defaults to "".
         suffix (str, optional): Suffix to add to the puzzle name if no name is given. Ignored if `new_puzzle_name` is given. Defaults to "_algs
     """
@@ -183,6 +185,13 @@ def add_moves_to_puzzle(
         puzzle.moves[move_name] = move_perm
     puzzle.save_puzzle(new_puzzle_name)
     print(f"{colored_text(f'Puzzle {new_puzzle_name} saved.', COMMAND_COLORS['headline'])}")
+    
+    # save algorithms' compact form to basic text file insie src/puzzles/new_puzzle_name/autogen_algorithms.txt
+    filepath = os.path.join("src", "puzzles", new_puzzle_name, "autogen_algorithms.txt")
+    with open(filepath, "w") as file:
+        for alg_name, alg in algorithms.items():
+            file.write(str(alg) + "\n")
+    print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
 
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):
@@ -228,13 +237,6 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
     # for alg_name, alg in current_algorithms.items():
     #     print_algorithm(alg, alg_name)
 
-    # save algorithms' compact form to basic text file insie src/puzzles/puzzle_name/autogen_algorithms.txt
-    filepath = os.path.join("src", "puzzles", puzzle_name, "autogen_algorithms.txt")
-    with open(filepath, "w") as file:
-        for alg_name, alg in current_algorithms.items():
-            file.write(str(alg) + "\n")
-    print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
-    
     # save puzzle with new algorithms
     if input("Do you want to save the puzzle with the new algorithms? (y/N): ").strip().lower() == "y":
         algorithm_moves: dict[str, list[int]] = {name: alg.sympy_permutation.cyclic_form for name, alg in current_algorithms.items()}
