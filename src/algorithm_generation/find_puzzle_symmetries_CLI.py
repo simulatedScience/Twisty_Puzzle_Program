@@ -121,6 +121,8 @@ def filter_rotations(
         #     valid_rotation_names.append(rot_name)
     return valid_rotation_names
 
+
+
 def add_rotation_moves_to_puzzle(
         puzzle: "Twisty_Puzzle",
         new_puzzle_name: str = "",
@@ -137,12 +139,14 @@ def add_rotation_moves_to_puzzle(
         suffix (str): suffix to add to the puzzle's name (ignored if `new_puzzle_name` is given)
         verbosity (int): verbosity level
     """
-    point_coordinates: np.ndarray = load_puzzle_points(puzzle)
+    point_coordinates: np.ndarray = get_puzzle_points(puzzle)
+    # reduce points to COMs for each move, ignoring inverse moves
+    # point_coordinates: np.ndarray = reduce_to_coms(point_coordinates, puzzle)
     # calculate rotational symmetries
     rotations: list[tuple[float, np.ndarray, np.ndarray]] = find_rotational_symmetries(
         X=point_coordinates,
         keep_n_best_planes = 20000, # number of candidate rotations to consider
-        plane_similarity_threshold = 0.1, # threshold for distance between planes to consider them equal
+        plane_similarity_threshold = 0.05, # threshold for distance between planes to consider them equal
         min_angle = np.pi / 12.5, # minimum rotation angle in radians (= 1/)
         num_best_rotations = 1000, # number of best rotations to keep
         epsilon_Q = 0.05, # parameter for quarternion similarity
@@ -167,6 +171,7 @@ def add_rotation_moves_to_puzzle(
         print(f"Adding {len(named_rotations)} rotational symmetries to the puzzle.")
     add_moves_to_puzzle(
         puzzle=puzzle,
+        algorithms={},
         new_moves=named_rotations,
         new_puzzle_name=new_puzzle_name,
         suffix=suffix,
@@ -174,7 +179,7 @@ def add_rotation_moves_to_puzzle(
     os._exit(0)
     
 
-def load_puzzle_points(puzzle: "Twisty_Puzzle") -> tuple[np.ndarray, np.ndarray]:
+def get_puzzle_points(puzzle: "Twisty_Puzzle") -> np.ndarray:
     """
     Load the points and colors of a puzzle.
 
@@ -182,7 +187,7 @@ def load_puzzle_points(puzzle: "Twisty_Puzzle") -> tuple[np.ndarray, np.ndarray]
         puzzle_name (str): name of the puzzle
 
     Returns:
-        tuple[np.ndarray, np.ndarray]: points and colors of the puzzle
+        np.ndarray: 3D coordinates of all points of the puzzle
     """
     point_dicts = puzzle.POINT_INFO_DICTS
     points: list[vpy.vector] = [point["coords"] for point in point_dicts]
