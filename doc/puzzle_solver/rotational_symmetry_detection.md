@@ -78,3 +78,15 @@ In similarity function $s_X(T)$, set $\alpha = \frac{\textbf{20}}{l_{avg}}$ with
 3.  (Optimization) prune similar rotations (see [ROT] Sec. 2.3)
 4.  Start optimization of $Q, s$ with $s_X(Q, s)$ as objective function.
 5.  Search around found rotation axes to detect lowest/ all angles of circular symmetries (see [ROT] Sec. 2.5)
+
+## Potential modification
+
+To reduce the point count, we could break down the puzzle into one point per move. For each move, calculate the COM of all points affected by it. Add this point to the new point set Y.
+Then detect symmetries on Y. Then, use the symmetry axes of Y to get permutations of X using `rotations_to_permutations()`.
+
+This naive approach might not work if multiple moves have the same COM. For example:
+-  a 3x3x3 cube where opposite faces always turn together. In this case, all moves have COM equal to the whole puzzle's COM.
+   -  Idea: generate a plane to separate the move into two halves, then only consider one half for the COM calculation. (Reliably generating such a plane could be hard. E.g. find the plane that minimizes the sum of all point's distances to the plane., but this may not be reliable.)
+- Concentric moves can have the same COM.
+- a nxnxn with n>=5: one move simultaneously turns two layers with an odd number of layers in between, another move turns the layer in the center between the first two.
+  - Similar to case 1, this could possibly be resolved by finding a plane to remove a few points from each move's COM calculation.
