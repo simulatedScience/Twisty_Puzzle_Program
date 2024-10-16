@@ -21,8 +21,10 @@ import lxml.etree as let
 import numpy as np
 from scipy.spatial.transform import Rotation
 from sympy.combinatorics import Permutation
-
-from cuboid_generator import _save_moves
+if __name__ != "__main__":
+    from .cuboid_generator import _save_moves
+else:
+    from cuboid_generator import _save_moves
 
 COLORS: dict[str, str] = {
     "W": "#ffffff", # white
