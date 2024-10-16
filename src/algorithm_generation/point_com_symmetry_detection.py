@@ -17,6 +17,7 @@ This module implements an alternative method for rotational symmetry detection t
             apply R to all other points and record the symmetry measure.
 8. choose all rotations with close to maximum symmetry measure.
 """
+from collections import Counter
 
 import numpy as np
 
@@ -35,23 +36,61 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
         reduced_moves[move_name] = move_cycles
     X: np.ndarray = get_puzzle_points(puzzle)
     move_coms = reduce_to_coms(X, reduced_moves)
+    move_signatures: dict[str, tuple[tuple[int, int], ...]] = get_move_signatures(reduced_moves)
+    # group move_coms bs move signature
+    signatures_to_names: dict[tuple[tuple[int, int], ...], list[str]] = {}
+    for move_name, move_signature in move_signatures.items():
+        if move_signature not in signatures_to_names:
+            signatures_to_names[move_signature] = []
+        signatures_to_names[move_signature].append(move_name)
+    # find the smallest set of move COMs
+    smallest_com_set: list[np.ndarray] = min(signatures_to_names.values(), key=lambda move_names: len(move_names))
+    # select two points from the smallest set
+    p1: np.ndarray = move_coms[smallest_com_set[0]]
+    if len(smallest_com_set) > 1:
+        p2: np.ndarray = move_coms[smallest_com_set[1]]
+        smallest_com_set2 = smallest_com_set[1:]
+    else:
+        # get second smallest set of COMs
+        smallest_com_set2 = min([move_names for move_names in signatures_to_names.values() if not move_names == smallest_com_set], key=lambda move_names: len(move_names))
+        p2: np.ndarray = move_coms[smallest_com_set2[0]]
+    for t1 in (move_coms[move_name] for move_name in smallest_com_set):
+        if np.all(t1 == p1):
+            continue
+        for t2 in (move_coms[move_name] for move_name in smallest_com_set2):
+            if np.all(t2 == p2):
+                continue
+            # check if angle between p1 and p2 matches angle between t1 and t2
+            if _angle_between(p1, p2) != _angle_between(t1, t2):
+                continue
+            # calculate rotation matrix R
+            R = _calculate_rotation_matrix(p1, p2, t1, t2)
+            # apply R to all other points and record the symmetry measure
+            for move_name, move_com in move_coms.items():
+                if move_name in smallest_com_set or move_name in smallest_com_set2:
+                    continue
+                rotated_points = np.dot(R, X.T).T
+                # calculate symmetry measure
+
     return move_coms # TODO: for now
 
 def reduce_to_coms(X: np.ndarray, moves: dict[str, list[list[int]]], com_tol: float = 1e-10) -> dict[str, np.ndarray]:
     """
     Reduce the point set of a given puzzle by calculating the center of mass of the points affected by each move.
+    If multiple moves have the same center of mass (up to com_tol), remove all of them from the output.
 
     Args:
         X (np.ndarray): set of points
         puzzle (Twisty_Puzzle): puzzle to reduce the points for
-        com_tol (float): if two new points are closer than this, return empty dict
-            -> recommend fallback to symmetry detection with all points.
+        com_tol (float): if two move-COMs are closer than this, remove them both.
+            -> we recommend fallback to symmetry detection with all points.
 
     Returns:
-        dict[str, np.ndarray]: dictionary of move names and their center of mass. Empty if any two COMs are closer than `com_tol`.
+        dict[str, np.ndarray]: dictionary of move names and their center of mass.
     """
     seen_moves: set[str] = set()
     move_coms: dict[str, np.ndarray] = dict()
+    ignore_moves: set[str] = set()
     for move_name, move_cycles in moves.items():
         seen_moves.add(move_name)
         # flatten cycles
@@ -63,16 +102,50 @@ def reduce_to_coms(X: np.ndarray, moves: dict[str, list[list[int]]], com_tol: fl
         for com_name, com in move_coms.items():
             if np.linalg.norm(move_com - com) < com_tol:
                 print(f"Warning: COMs of moves {move_name} and {com_name} are too close.")
+                ignore_moves.add(move_name)
+                ignore_moves.add(com_name)
                 continue
         move_coms[move_name] = move_com
+    for move_name in ignore_moves:
+        del move_coms[move_name]
     return move_coms
 
-def get_move_signatures(moves: dict[str, list[list[int]]]) -> dict[str, tuple[int, tuple[int, int]]]:
+def get_move_signatures(moves: dict[str, list[list[int]]]) -> dict[str, tuple[tuple[int, int], ...]]:
     """
+    For each move, calculate its move signature: a tuple ([(cycle_length_1, n_cycles_1), (cycle_length_2, n_cycles_2), ...]). For each different cycle length, this counts how many cycles of that length are in the move.
 
+    Args:
+        moves (dict[str, list[list[int]]]): dictionary with move names and cycle lists
+            every move is represented as a list of cycles
+                describing the move 
     """
-    raise NotImplementedError
+    move_signatures: dict[str, tuple[int, tuple[int, int]]] = dict()
+    for move_name, move_cycles in moves.items():
+        move_cycle_lengths: list[int] = [len(cycle) for cycle in move_cycles]
+        # count how often each cycle length appears
+        cycle_counts: Counter = Counter(move_cycle_lengths)
+        # create a tuple of cycle lengths and their counts
+        move_signature: tuple[tuple[int, int], ...] = tuple((length, count) for length, count in cycle_counts.items())
+        move_signatures[move_name] = move_signature
+    return move_signatures
+
+def _angle_between(p1: np.ndarray, p2: np.ndarray) -> float:
+    """
+    Calculate the angle between two points.
+    """
+    return np.arccos(np.dot(p1, p2) / (np.linalg.norm(p1) * np.linalg.norm(p2)))
+
+def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t2: np.ndarray) -> np.ndarray:
+    """
+    Calculate the rotation matrix that rotates p1 to t1 and p2 to t2.
+    """
+    # calculate rotation axis
+    rotation_axis: np.ndarray = np.cross(p1, t1)
+    # calculate rotation angle
+    rotation_angle: float = _angle_between(p1, t1)
+    # rotate around p1 such that p2 moves to t2
     
+
 def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
     """
     Flatten a list of cycles into a list of point indices.
