@@ -187,11 +187,12 @@ def add_moves_to_puzzle(
     print(f"{colored_text(f'Puzzle {new_puzzle_name} saved.', COMMAND_COLORS['headline'])}")
     
     # save algorithms' compact form to basic text file insie src/puzzles/new_puzzle_name/autogen_algorithms.txt
-    filepath = os.path.join("src", "puzzles", new_puzzle_name, "autogen_algorithms.txt")
-    with open(filepath, "w") as file:
-        for alg_name, alg in algorithms.items():
-            file.write(str(alg) + "\n")
-    print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
+    if algorithms:
+        filepath = os.path.join("src", "puzzles", new_puzzle_name, "autogen_algorithms.txt")
+        with open(filepath, "w") as file:
+            for alg_name, alg in algorithms.items():
+                file.write(str(alg) + "\n")
+        print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
 
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):

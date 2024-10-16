@@ -6,6 +6,8 @@ author: Sebastian Jost
 References:
 [1] [Hruda et. al.](https://doi.org/10.1007/s00371-020-02034-w)
 """
+from functools import cache
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
@@ -85,7 +87,6 @@ def add_plane(
     # values: plane as 4D numpy vector and int counting how many planes were averaged to get this one
     add_new_plane: bool = True
     for plane_key, (plane, num) in list(found_planes.items()):
-        # print(f"{plane_distance(new_plane, plane) = }")
         if (dist := plane_distance(new_plane, plane)) < plane_similarity_threshold:
             if dist < plane_similarity_threshold/10: # planes are almost identical, no furhter averaging needed
                 # print(f"Planes are almost identical: {new_plane} and {plane},\n\tdistance: {dist}")
