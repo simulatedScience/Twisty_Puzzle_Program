@@ -192,7 +192,8 @@ def define_moves(
             move_names: tuple[str, str, str],
         ) -> dict[str, list[list[int]]]:
         """
-        
+        Define moves with names according to described convention based on known indices of all points.
+        Changing the order of any points will likely break this method.
         """
         # add faces with internal rotations to start indices
         endpoints_pos,  = np.where(points[:, sort_by_coordinate] == max(points[:, sort_by_coordinate]))
@@ -268,10 +269,12 @@ def define_moves(
                 name: str = prefix + move_names[2]
                 # invert cycles
                 group = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
-            named_moves[name] = group
-            # add inverse if order is > 2
+            # invert cycles to get correct rotation direction (clockwise without ', counter-clockwise with ')
+            inv_group: list[list[int]] = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
+            named_moves[name] = inv_group
+            # add inverse move if order is > 2
             if True in [len(cycle) > 2 for cycle in group]:
-                named_moves[name + "'"] = [[cycle[0]] + cycle[-1:0:-1] for cycle in group]
+                named_moves[name + "'"] = group
             # print(f"new move: {name} = {group}")
         # return named moves
         return named_moves
@@ -437,17 +440,7 @@ def plot_points(
     fig.set_facecolor("#777") # mid gray
     plt.show()
 
-if __name__ == "__main__":
-    # generate 2x3x4 cuboid
-    # shape = (6, 3, 5)
-    # shape = (3, 3, 3)
-    # shape = (4, 4, 4)
-    # shape = (9, 9, 9)
-    # shape = (5, 5, 5)
-    # shape = (6, 5, 6)
-    # shape = (3, 3, 2)
-    # shape = (2, 2, 2)
-    shape = (3, 3, 4)
+def main(shape: tuple[int, int, int]):
     sticker_coords, colors = generate_cuboid(
         size=shape,
         cuby_size=1.,
@@ -474,3 +467,16 @@ if __name__ == "__main__":
         puzzle_name=None,
         puzzles_path=os.path.join("src", "puzzles"),
     )
+
+if __name__ == "__main__":
+    # generate 2x3x4 cuboid
+    # shape = (6, 3, 5)
+    # shape = (9, 9, 9)
+    # shape = (6, 5, 6)
+    # shape = (3, 3, 2)
+    # shape = (3, 3, 4)
+    # shape = (2, 2, 2)
+    # shape = (3, 3, 3)
+    # shape = (4, 4, 4)
+    shape = (5, 5, 5)
+    main(shape)

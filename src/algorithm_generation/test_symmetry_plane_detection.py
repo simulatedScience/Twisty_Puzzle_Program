@@ -2,6 +2,9 @@
 Detect reflectional symmetries in a 3D point cloud. Implemented Algorithm based on (Hruda et. al.)[https://doi.org/10.1007/s00371-020-02034-w]
 author: Sebastian Jost
 """
+import cProfile
+import pstats
+
 import numpy as np
 import matplotlib.pyplot as plt
 from symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes, plane_point_normal2standard_form
@@ -80,7 +83,7 @@ def test_find_symmetry_planes(
         num_planes: int = 1000,
         plane_similarity_threshold: float = 0.1,
         alpha: float = 1.0,
-        S: int = 5,
+        keep_n_best_planes: int = 5,
     ) -> list[tuple[np.ndarray, np.ndarray]]:
     """
     Given a set of points X, test the find_symmetry_planes function by drawing the computed planes and points X in 3D.
@@ -95,13 +98,19 @@ def test_find_symmetry_planes(
     Returns:
         list[tuple[np.ndarray, np.ndarray]]: list of best symmetry planes
     """
-    best_planes = find_symmetry_planes(
-        X=X,
-        plane_similarity_threshold=plane_similarity_threshold,
-        keep_n_best_planes=S,
-        min_score_ratio=0.9,
-        num_init_planes=num_planes,
+    profile = cProfile.Profile()
+    best_planes = profile.runcall(
+            find_symmetry_planes,
+            X=X,
+            plane_similarity_threshold=plane_similarity_threshold,
+            keep_n_best_planes=keep_n_best_planes,
+            min_score_ratio=0.9,
+            num_init_planes=num_planes,
         )
+    ps = pstats.Stats(profile)
+    ps.sort_stats(("tottime"))
+    ps.print_stats(10)
+
     print(f"found {len(best_planes)} best planes.")
     # create a 3D plot
     fig = plt.figure()
@@ -335,8 +344,16 @@ def main():
     #     [-1,-1,-1],
     # ])
     # X, edges = dodecahedron_vertices()
-    X, edges = cube_2x2_stickers()
+    # X, edges = cube_2x2_stickers()
     # test_init_planes(X, num_planes=10, threshold=.01)
+    
+    import os, sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
+    from src.puzzles.dodecahedron_generator import generate_dodecahedron_points
+    X, colors = generate_dodecahedron_points(face_scale_factor=0.8)
     
     # symmetry plane
     # support: np.ndarray = np.array([0, 0, 0])
@@ -352,7 +369,7 @@ def main():
     # test_reflect_points_across_plane(X, plane)
     
     # test_find_symmetry_planes(X, num_planes=5000, threshold=0.1, alpha=1.0, S=200)
-    test_find_symmetry_planes(X, num_planes=5000, plane_similarity_threshold=0.2, alpha=1.0, S=20000)
+    test_find_symmetry_planes(X, num_planes=5000, plane_similarity_threshold=0.1, alpha=1.0, keep_n_best_planes=20000)
 
 if __name__ == "__main__":
     main()
