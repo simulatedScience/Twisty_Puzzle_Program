@@ -90,23 +90,8 @@ def rotation_symmetry_measure(X: np.ndarray, rotation: tuple[float, np.ndarray],
     similarity_measures = dist_similarity_function(pairwise_distances, alpha)
     # Sum all the similarity measures
     similarity_measure = np.sum(similarity_measures)
-    
-    # similarity_measure = 0
-    # for i in range(n):
-    #     distances = np.linalg.norm(transformed_X[i] - X, axis=1)
-    #     similarity_measures = dist_similarity_function(distances, alpha)
-    #     similarity_measure += np.sum(similarity_measures)
-    
-        # for j in range(n):
-        #     distance = np.linalg.norm(transformed_X[i] - X[j])
-        #     similarity_measure += dist_similarity_function(distance, alpha)
     # small angle penalization
     similarity_measure *= penalty(rotation[0])
-    
-    if hasattr(rotation_symmetry_measure, "run_count"):
-        rotation_symmetry_measure.run_count += 1
-    else:
-        rotation_symmetry_measure.run_count = 1
     return similarity_measure
 
 def find_rotational_symmetries(

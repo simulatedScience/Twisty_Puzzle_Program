@@ -22,13 +22,15 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial.transform import Rotation
+from sympy.combinatorics import Permutation
 
 from algorithm_analysis import get_inverse_moves_dict
-from find_puzzle_symmetries_CLI import get_puzzle_points
+from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
+from symmetry_plane_detection import dist_similarity_function
 
 DEBUG: bool = True
 
-def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
+def find_rotational_symmetries(puzzle: "Twisty_Puzzle", min_sym_measure=0.7):
     """
     remove inverse moves
     """
@@ -39,15 +41,19 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
             continue
         reduced_moves[move_name] = move_cycles
     X: np.ndarray = get_puzzle_points(puzzle)
-    
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection="3d")
-    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points", s=200, alpha=0.3)
-    
+    com_x = np.mean(X, axis=0)
     move_coms = reduce_to_coms(X, reduced_moves)
     
-    Y = np.array(list(move_coms.values()))
-    ax.scatter(Y[:, 0], Y[:, 1], Y[:, 2], c="#f00", label="move COMs")
+    # calculate alpha = 20/average distance between points
+    d_avg: float = np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
+    alpha: float = 20 / d_avg
+    
+    if DEBUG:
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection="3d")
+        ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points", s=200, alpha=0.3)
+        Y = np.array(list(move_coms.values()))
+        ax.scatter(Y[:, 0], Y[:, 1], Y[:, 2], c="#f00", label="move COMs")
     
     move_signatures: dict[str, tuple[tuple[int, int], ...]] = get_move_signatures(reduced_moves)
     # remove signatures for discarded moves
@@ -64,11 +70,15 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
     p1: np.ndarray = move_coms[smallest_com_set[0]]
     if len(smallest_com_set) > 1:
         p2: np.ndarray = move_coms[smallest_com_set[1]]
-        smallest_com_set2 = smallest_com_set[1:]
+        smallest_com_set2 = smallest_com_set
     else:
         # get second smallest set of COMs
         smallest_com_set2 = min([move_names for move_names in signatures_to_names.values() if not move_names == smallest_com_set], key=lambda move_names: len(move_names))
         p2: np.ndarray = move_coms[smallest_com_set2[0]]
+
+    symmetries: list[tuple[np.ndarray, float]] = [] # store rotation matrices and symmetry measures of good symmetries
+    min_sym_measure: float = X.shape[0] * min_sym_measure
+
     for t1 in (move_coms[move_name] for move_name in smallest_com_set):
         if np.all(t1 == p1):
             continue
@@ -79,34 +89,60 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
             if _angle_between(p1, p2) != _angle_between(t1, t2):
                 continue
             # calculate rotation matrix R
-            R = _calculate_rotation_matrix(p1, p2, t1, t2)
+            R: Rotation = _calculate_rotation_matrix(p1, p2, t1, t2)
             # apply R to all other points and record the symmetry measure
             for move_name, move_com in move_coms.items():
                 # if move_name in smallest_com_set or move_name in smallest_com_set2:
                 #     continue
                 rotated_points: np.ndarray = (R @ (X - p1).T).T + t1
                 if DEBUG:
+                    print()
                     print(f"p1 = {p1}")
                     print(f"p2 = {p2}")
                     print(f"t1 = {t1}")
                     print(f"t2 = {t2}")
                     # plot p1, p2, t1, t2 as vectors with base at COM(X)
-                    com_x = np.mean(X, axis=0)
+                    rot_artists = []
                     for v, label, color in zip(
                             (p1, p2, t1, t2),
                             ("p1", "p2", "t1", "t2"),
                             ("#00f", "#58f", "#2ee", "#2c8")):
-                        ax.quiver(com_x[0], com_x[1], com_x[2], v[0], v[1], v[2], color=color, label=label)
+                        rot_artists.append(ax.quiver(com_x[0], com_x[1], com_x[2], v[0], v[1], v[2], color=color, label=label))
                     # plot rotated points
                     scaled_points = rotated_points
-                    ax.scatter(scaled_points[:, 0], scaled_points[:, 1], scaled_points[:, 2], c="#2f2", label="rotated points*1.05", s=30, alpha=1)
-                    plt.legend()
-                    plt.show()
+                    rot_artists.append(ax.scatter(scaled_points[:, 0], scaled_points[:, 1], scaled_points[:, 2], c="#2f2", label="rotated points*1.05", s=30, alpha=1))
+                    # plt.legend()
+                    plt.pause(1)
                 
                 # rotated_points: np.ndarray = R @ X
                 # calculate symmetry measure
+                sym_measure: float = _rotation_symmetry_measure(X, rotated_points, alpha)
+                if sym_measure > min_sym_measure:
+                    rotvec = Rotation.from_matrix(R).as_rotvec()
+                    symmetries.append((np.linalg.norm(rotvec), rotvec, com_x))
+                # else:
+                #     print(f"Symmetry measure {sym_measure} too low. Required {min_sym_measure}.")
+                if DEBUG:
+                    # delete last symmetry drawing
+                    for artist in rot_artists:
+                        artist.remove()
+                        plt.pause(0.02)
 
-    return move_coms # TODO: for now
+    rotation_moves: dict[str, list[int]] = rotations_to_moves(X, symmetries)
+    # filter duplicates
+    unique_move_perms: set[tuple[int]] = set()
+    for move_name, move_perm in rotation_moves.items():
+        tuple_perm = tuple(move_perm)
+        if tuple_perm in unique_move_perms:
+            continue
+        unique_move_perms.add(tuple_perm)
+    
+    unique_rotation_moves: dict[str, list[int]] = {f"rot_{i}": move_perm for i, move_perm in enumerate(unique_move_perms)}
+
+    print(f"Found {len(unique_rotation_moves)} rotational symmetries.")
+    for move_name, move_perm in unique_rotation_moves.items():
+        print(f"{move_name}: {Permutation(move_perm).cyclic_form}")
+    return unique_rotation_moves
 
 def reduce_to_coms(X: np.ndarray, moves: dict[str, list[list[int]]], com_tol: float = 1e-10) -> dict[str, np.ndarray]:
     """
@@ -163,15 +199,46 @@ def get_move_signatures(moves: dict[str, list[list[int]]]) -> dict[str, tuple[tu
         move_signatures[move_name] = move_signature
     return move_signatures
 
+def _rotation_symmetry_measure(
+        X: np.ndarray,
+        transformed_X: np.ndarray,
+        alpha: float) -> float:
+    """
+    Calculate the symmetry measure of a rotation. Maximum (best) value is the number of points in X.
+
+    Args:
+        X (np.ndarray): set of points
+        transformed_X (np.ndarray): set of points after (rotation) transformation
+        alpha (float): parameter to control the similarity function
+
+    Returns:
+        float: symmetry measure. Higher = better symmetry.
+    """
+    pairwise_distances = np.linalg.norm(transformed_X[:, np.newaxis] - X, axis=2)
+    # Apply the distance similarity function to all distances
+    similarity_measures = dist_similarity_function(pairwise_distances, alpha)
+    # Sum all the similarity measures
+    similarity_measure = np.sum(similarity_measures)
+    return similarity_measure
+
 def _angle_between(p1: np.ndarray, p2: np.ndarray) -> float:
     """
     Calculate the angle between two points.
     """
     return np.arccos(np.dot(p1, p2) / (np.linalg.norm(p1) * np.linalg.norm(p2)))
 
-def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t2: np.ndarray) -> np.ndarray:
+def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t2: np.ndarray) -> Rotation:
     """
     Calculate the rotation matrix that rotates p1 to t1 and p2 to t2.
+    
+    Args:
+        p1 (np.ndarray): point 1
+        p2 (np.ndarray): point 2
+        t1 (np.ndarray): target point 1
+        t2 (np.ndarray): target point 2
+    
+    Returns:
+        Rotation: rotation object for the final rotation. Use e.g. `R.apply(X)` or `R.as_matrix() @ X` to apply the rotation.
     """
     # normalize vectors
     p1 /= np.linalg.norm(p1)
@@ -196,6 +263,7 @@ def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t
     rot_p2: Rotation = Rotation.from_rotvec(rotation_angle2 * t1)
     # combine rotations into one matrix such that R(x) = rot2(rot1(x))
     R = rot_p2.as_matrix() @ rot_p1.as_matrix()
+    # R = Rotation.from_matrix(R)
     return R
 
 def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
