@@ -243,6 +243,7 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
         algorithm_moves: dict[str, list[int]] = {name: alg.sympy_permutation.cyclic_form for name, alg in current_algorithms.items()}
         add_moves_to_puzzle(
             puzzle=puzzle,
+            algorithms=current_algorithms,
             new_moves=algorithm_moves,
             suffix="_algs",
         )

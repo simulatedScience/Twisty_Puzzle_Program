@@ -262,6 +262,7 @@ def find_symmetry_planes(
 
     symmetry_planes: list[np.ndarray] = prune_by_symmetry_measure(X, symmetry_planes, alpha, min_score_ratio, verbosity)
     # prune similar planes
+    print(f"Pruning {len(symmetry_planes)} symmetry planes.")
     pruned_symmetry_planes = []
     for plane in symmetry_planes:
         for other_plane in pruned_symmetry_planes:
