@@ -1,0 +1,7 @@
+alg_1 = 4*(E S)
+alg_2 = 20*(F' E' B B)
+alg_2' = 20*(B' B' E F)
+alg_3 = 12*(2L' U' 2L D' U')
+alg_3' = 12*(U D 2L' U 2L)
+alg_4 = 12*(2R F 2L' 2R)
+alg_5 = 20*(U 2F 2L')

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="cube_5x5x5_sym" state_space_size="61983270549287025099907672756192406062034134561301691171474691309654209724416000000000000000">
+<puzzledefinition name="cube_5x5x5_sym_algs">
   <points>
     <point size="10.0">
       <coords x="-2.0" y="-2.5" z="-2.0"/>
@@ -2236,6 +2236,40 @@
       <cycle>78, 80, 96, 94</cycle>
       <cycle>81, 91, 93, 83</cycle>
       <cycle>82, 86, 92, 88</cycle>
+    </move>
+    <move name="alg_1">
+      <cycle>12, 137, 37</cycle>
+      <cycle>62, 112, 87</cycle>
+    </move>
+    <move name="alg_2">
+      <cycle>10, 85, 22</cycle>
+      <cycle>64, 102, 89</cycle>
+    </move>
+    <move name="alg_2'">
+      <cycle>10, 22, 85</cycle>
+      <cycle>64, 89, 102</cycle>
+    </move>
+    <move name="alg_3">
+      <cycle>63, 111, 107, 113, 117</cycle>
+    </move>
+    <move name="alg_3'">
+      <cycle>63, 117, 113, 107, 111</cycle>
+    </move>
+    <move name="alg_4">
+      <cycle>7, 136</cycle>
+      <cycle>11, 17</cycle>
+      <cycle>63, 138</cycle>
+      <cycle>111, 113</cycle>
+    </move>
+    <move name="alg_5">
+      <cycle>1, 26</cycle>
+      <cycle>46, 53</cycle>
+      <cycle>71, 121</cycle>
+      <cycle>73, 123</cycle>
+      <cycle>78, 96</cycle>
+      <cycle>109, 126</cycle>
+      <cycle>115, 140</cycle>
+      <cycle>144, 146</cycle>
     </move>
   </moves>
 </puzzledefinition>

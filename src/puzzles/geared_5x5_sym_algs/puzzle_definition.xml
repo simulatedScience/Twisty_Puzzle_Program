@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="geared_5x5_sym" state_space_size="33699705808082359171882817836137841513636145173364736000000000000">
+<puzzledefinition name="geared_5x5_sym_algs">
   <points>
     <point size="9.0">
       <coords x="3.0" y="-0.01987951807228914" z="-0.01626506024096387"/>
@@ -3698,6 +3698,100 @@
       <cycle>231, 245, 239, 237</cycle>
       <cycle>232, 243, 241, 234</cycle>
       <cycle>233, 242, 238, 236</cycle>
+    </move>
+    <move name="alg_1">
+      <cycle>63, 142, 141</cycle>
+      <cycle>217, 234, 243</cycle>
+      <cycle>218, 238, 233</cycle>
+    </move>
+    <move name="alg_1'">
+      <cycle>63, 141, 142</cycle>
+      <cycle>217, 243, 234</cycle>
+      <cycle>218, 233, 238</cycle>
+    </move>
+    <move name="alg_2">
+      <cycle>64, 141</cycle>
+      <cycle>104, 142</cycle>
+      <cycle>156, 233</cycle>
+      <cycle>157, 243</cycle>
+      <cycle>173, 238</cycle>
+      <cycle>174, 234</cycle>
+    </move>
+    <move name="alg_3">
+      <cycle>60, 75, 107, 145, 91</cycle>
+    </move>
+    <move name="alg_3'">
+      <cycle>60, 91, 145, 107, 75</cycle>
+    </move>
+    <move name="alg_4">
+      <cycle>62, 135, 134, 149, 85</cycle>
+      <cycle>66, 72, 78, 102, 115</cycle>
+      <cycle>155, 230, 165, 240, 219</cycle>
+      <cycle>158, 237, 176, 166, 215</cycle>
+    </move>
+    <move name="alg_4'">
+      <cycle>62, 85, 149, 134, 135</cycle>
+      <cycle>66, 115, 102, 78, 72</cycle>
+      <cycle>155, 219, 240, 165, 230</cycle>
+      <cycle>158, 215, 166, 176, 237</cycle>
+    </move>
+    <move name="alg_5">
+      <cycle>58, 125, 100, 82, 146</cycle>
+      <cycle>193, 203, 221, 241, 212</cycle>
+      <cycle>197, 207, 222, 242, 199</cycle>
+    </move>
+    <move name="alg_5'">
+      <cycle>58, 146, 82, 100, 125</cycle>
+      <cycle>193, 212, 241, 221, 203</cycle>
+      <cycle>197, 199, 242, 222, 207</cycle>
+    </move>
+    <move name="alg_6">
+      <cycle>62, 148</cycle>
+      <cycle>63, 141</cycle>
+      <cycle>64, 113</cycle>
+      <cycle>66, 111</cycle>
+      <cycle>72, 115</cycle>
+      <cycle>85, 135</cycle>
+      <cycle>155, 178</cycle>
+      <cycle>156, 181</cycle>
+      <cycle>157, 168</cycle>
+      <cycle>158, 166</cycle>
+      <cycle>215, 245</cycle>
+      <cycle>217, 243</cycle>
+      <cycle>218, 233</cycle>
+      <cycle>219, 230</cycle>
+    </move>
+    <move name="alg_7">
+      <cycle>58, 100</cycle>
+      <cycle>59, 82</cycle>
+      <cycle>125, 126</cycle>
+      <cycle>136, 146</cycle>
+      <cycle>184, 197</cycle>
+      <cycle>185, 193</cycle>
+      <cycle>199, 207</cycle>
+      <cycle>203, 212</cycle>
+      <cycle>216, 222</cycle>
+      <cycle>221, 227</cycle>
+      <cycle>232, 241</cycle>
+      <cycle>236, 242</cycle>
+    </move>
+    <move name="alg_8">
+      <cycle>62, 85</cycle>
+      <cycle>66, 115</cycle>
+      <cycle>72, 108</cycle>
+      <cycle>74, 102</cycle>
+      <cycle>78, 111</cycle>
+      <cycle>79, 149</cycle>
+      <cycle>89, 135</cycle>
+      <cycle>134, 148</cycle>
+      <cycle>150, 176</cycle>
+      <cycle>155, 219</cycle>
+      <cycle>158, 223</cycle>
+      <cycle>165, 178</cycle>
+      <cycle>166, 215</cycle>
+      <cycle>171, 230</cycle>
+      <cycle>228, 240</cycle>
+      <cycle>237, 245</cycle>
     </move>
   </moves>
 </puzzledefinition>
