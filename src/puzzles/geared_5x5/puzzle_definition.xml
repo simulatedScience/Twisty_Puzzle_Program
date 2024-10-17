@@ -1209,6 +1209,8 @@
       <cycle>187, 231, 210, 229</cycle>
       <cycle>215, 237</cycle>
       <cycle>228, 230</cycle>
+      <cycle>182, 198</cycle>
+      <cycle>186, 211</cycle>
     </move>
     <move name="U'">
       <cycle>5, 43</cycle>
@@ -1252,6 +1254,8 @@
       <cycle>187, 229, 210, 231</cycle>
       <cycle>215, 237</cycle>
       <cycle>228, 230</cycle>
+      <cycle>182, 198</cycle>
+      <cycle>186, 211</cycle>
     </move>
     <move name="L'">
       <cycle>13, 44</cycle>
