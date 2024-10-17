@@ -19,10 +19,14 @@ This module implements an alternative method for rotational symmetry detection t
 """
 from collections import Counter
 
+import matplotlib.pyplot as plt
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from algorithm_analysis import get_inverse_moves_dict
 from find_puzzle_symmetries_CLI import get_puzzle_points
+
+DEBUG: bool = True
 
 def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
     """
@@ -35,8 +39,19 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
             continue
         reduced_moves[move_name] = move_cycles
     X: np.ndarray = get_puzzle_points(puzzle)
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection="3d")
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points", s=200, alpha=0.3)
+    
     move_coms = reduce_to_coms(X, reduced_moves)
+    
+    Y = np.array(list(move_coms.values()))
+    ax.scatter(Y[:, 0], Y[:, 1], Y[:, 2], c="#f00", label="move COMs")
+    
     move_signatures: dict[str, tuple[tuple[int, int], ...]] = get_move_signatures(reduced_moves)
+    # remove signatures for discarded moves
+    move_signatures = {move_name: move_signatures[move_name] for move_name in move_coms.keys()}
     # group move_coms bs move signature
     signatures_to_names: dict[tuple[tuple[int, int], ...], list[str]] = {}
     for move_name, move_signature in move_signatures.items():
@@ -67,9 +82,28 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle"):
             R = _calculate_rotation_matrix(p1, p2, t1, t2)
             # apply R to all other points and record the symmetry measure
             for move_name, move_com in move_coms.items():
-                if move_name in smallest_com_set or move_name in smallest_com_set2:
-                    continue
-                rotated_points = np.dot(R, X.T).T
+                # if move_name in smallest_com_set or move_name in smallest_com_set2:
+                #     continue
+                rotated_points: np.ndarray = (R @ (X - p1).T).T + t1
+                if DEBUG:
+                    print(f"p1 = {p1}")
+                    print(f"p2 = {p2}")
+                    print(f"t1 = {t1}")
+                    print(f"t2 = {t2}")
+                    # plot p1, p2, t1, t2 as vectors with base at COM(X)
+                    com_x = np.mean(X, axis=0)
+                    for v, label, color in zip(
+                            (p1, p2, t1, t2),
+                            ("p1", "p2", "t1", "t2"),
+                            ("#00f", "#58f", "#2ee", "#2c8")):
+                        ax.quiver(com_x[0], com_x[1], com_x[2], v[0], v[1], v[2], color=color, label=label)
+                    # plot rotated points
+                    scaled_points = rotated_points
+                    ax.scatter(scaled_points[:, 0], scaled_points[:, 1], scaled_points[:, 2], c="#2f2", label="rotated points*1.05", s=30, alpha=1)
+                    plt.legend()
+                    plt.show()
+                
+                # rotated_points: np.ndarray = R @ X
                 # calculate symmetry measure
 
     return move_coms # TODO: for now
@@ -139,12 +173,30 @@ def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t
     """
     Calculate the rotation matrix that rotates p1 to t1 and p2 to t2.
     """
+    # normalize vectors
+    p1 /= np.linalg.norm(p1)
+    p2 /= np.linalg.norm(p2)
+    t1 /= np.linalg.norm(t1)
     # calculate rotation axis
     rotation_axis: np.ndarray = np.cross(p1, t1)
     # calculate rotation angle
-    rotation_angle: float = _angle_between(p1, t1)
-    # rotate around p1 such that p2 moves to t2
-    
+    rotation_angle1: float = _angle_between(p1, t1)
+    # rotation of p1 onto t1
+    rot_p1: Rotation = Rotation.from_rotvec(rotation_angle1 * rotation_axis/np.linalg.norm(rotation_axis))
+    # rotate around t1 such that p2 moves to t2
+    t1_rot_p2: np.ndarray = rot_p1.apply(p2)
+    # project onto plane with normal a
+    t1_rot_p2 -= np.dot(t1_rot_p2, t1) * t1
+    t2 -= np.dot(t2, t1) * t1
+    # normalize
+    t1_rot_p2 /= np.linalg.norm(t1_rot_p2)
+    t2 /= np.linalg.norm(t2)
+    # get rotation angle
+    rotation_angle2 = _angle_between(t1_rot_p2, t2)
+    rot_p2: Rotation = Rotation.from_rotvec(rotation_angle2 * t1)
+    # combine rotations into one matrix such that R(x) = rot2(rot1(x))
+    R = rot_p2.as_matrix() @ rot_p1.as_matrix()
+    return R
 
 def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
     """
@@ -163,14 +215,14 @@ if __name__ == "__main__":
     puzzle, puzzle_name = load_twisty_puzzle()
     move_coms = find_rotational_symmetries(puzzle)
     # plot move COMs
-    import matplotlib.pyplot as plt
-    # create 3D axes
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection="3d")
-    X = get_puzzle_points(puzzle)
-    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points")
+    # import matplotlib.pyplot as plt
+    # # create 3D axes
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection="3d")
+    # X = get_puzzle_points(puzzle)
+    # ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points")
 
-    move_coms = np.array(list(move_coms.values()))
-    ax.scatter(move_coms[:, 0], move_coms[:, 1], move_coms[:, 2], c="#f00", label="move COMs")
-    ax.legend()
-    plt.show()
+    # move_coms = np.array(list(move_coms.values()))
+    # ax.scatter(move_coms[:, 0], move_coms[:, 1], move_coms[:, 2], c="#f00", label="move COMs")
+    # ax.legend()
+    # plt.show()

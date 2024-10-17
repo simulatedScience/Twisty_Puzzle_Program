@@ -34,7 +34,6 @@ def init_planes(
     if n_points > 500: # if there are too many points, only calculate a fixed number of random planes
         if verbosity > 0:
             print(f"Searching {num_planes} random planes for symmetries.")
-        normal_diff_vectors = set()
         for _ in range(num_planes):
             # choose two random points
             idx1: int = np.random.randint(0, n_points-1)
@@ -45,13 +44,10 @@ def init_planes(
                 point_2=point_2,
                 found_planes=found_planes,
                 plane_similarity_threshold=plane_similarity_threshold,
-                    normal_diff_vectors = normal_diff_vectors,
                 )
     else: # use all pairs of points to calculate planes
         if verbosity > 0:
             print(f"Searching all {X.shape[0] * (X.shape[0] - 1) // 2} planes for symmetries.")
-
-        normal_diff_vectors = set()
         for idx_1, point_1 in enumerate(X[:-1]):
             for point_2 in X[idx_1+1:]:
                 add_plane(
@@ -59,7 +55,6 @@ def init_planes(
                     point_2=point_2,
                     found_planes=found_planes,
                     plane_similarity_threshold=plane_similarity_threshold,
-                    normal_diff_vectors = normal_diff_vectors,
                     )
     planes: list[np.ndarray] = [plane for plane, _ in found_planes.values()] # extract planes in standard form
     return planes
@@ -86,11 +81,6 @@ def add_plane(
     # compute normal vector of plane as the normalized difference vector between the two points
     diff_vector: np.ndarray = point_2 - point_1
     normal: np.ndarray = diff_vector / np.linalg.norm(diff_vector)
-    normal_diff_tuple: tuple[float, float, float] = tuple(round(x, 5) for x in normal)
-    if normal_diff_tuple in normal_diff_vectors:
-        return
-    else:
-        normal_diff_vectors.add(normal_diff_tuple)
     # compute midpoint
     midpoint: np.ndarray = point_1 + diff_vector / 2
     # TODO: check if plane is not too similar to existing planes

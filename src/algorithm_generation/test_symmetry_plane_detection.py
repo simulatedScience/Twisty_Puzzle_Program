@@ -353,7 +353,7 @@ def main():
     parent2dir = os.path.dirname(parentdir)
     sys.path.insert(0,parent2dir)
     from src.puzzles.dodecahedron_generator import generate_dodecahedron_points
-    X, colors = generate_dodecahedron_points(face_scale_factor=0.8)
+    X, colors = generate_dodecahedron_points(face_scale_factor=0.7)
     
     # symmetry plane
     # support: np.ndarray = np.array([0, 0, 0])
