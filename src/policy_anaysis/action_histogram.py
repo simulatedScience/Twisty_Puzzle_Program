@@ -1,5 +1,4 @@
 from collections import Counter
-import json
 
 import matplotlib.pyplot as plt
 
@@ -121,19 +120,14 @@ def plot_action_histogram(
 
 
 if __name__ == "__main__":
-    import tkinter as tk
-    from tkinter.filedialog import askopenfilename
+    import os, sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
+    from src.interaction_modules.ai_file_management import load_test_file
     
-    root = tk.Tk()
-    root.withdraw()
-    test_file = askopenfilename(
-        initialdir="./src/ai_files",
-        title="Select a test file",
-        filetypes=[("JSON Test files", "*.json")],
-    )
-    print(f"Selected file: {test_file}")
-    with open(test_file) as file:
-        data = json.load(file)
+    data, test_file_path = load_test_file()
     # Example usage:
     successful_runs = get_successful_runs(data['run_info'])
     average_successful_moves = average_moves(successful_runs)
