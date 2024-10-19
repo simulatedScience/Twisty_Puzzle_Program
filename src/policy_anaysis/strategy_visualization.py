@@ -1,5 +1,10 @@
 """
+This module implements tools to analyse how an agent solves a twisty puzzle: which points are solved first and how many moves it takes (on average) to solve each point. A point is considered solved if it remains in the correct position for a certain percentage of the remaining solve time.
+Combined with the analysis in `algorithm_utilization`, this can be used by humans to replicate the agent's solutions or derive human-readable instructions to solve the puzzle.
 
+## Problem:
+`get_inverse_moves_dict` may not always provide the inverse of an algorithm.
+During algorithm generation, we don't add an inverse if the algorithm is self-inverse under rotation. So if a rotation r exists such that a^-1 = r a r^-1, then a' is self-inverse under rotation and we don't add a' to the inverse moves dict. In that case inversion requires multiple moves, which is currently not supported by `get_inverse_moves_dict` or this code.
 """
 
 import os, sys, inspect
