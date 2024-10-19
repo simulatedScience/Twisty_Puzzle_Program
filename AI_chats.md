@@ -22,3 +22,6 @@
 
 - GPT-4o 15.10.2024 [vectorize binary multi-goal reward](https://chatgpt.com/share/670e3661-e8a0-8007-addc-691e70718889)  
   _Very simple modification to existing code. The output was partially used in `src/ai_modules/nn_rl_reward_factories.py` (added `[:, None]` to `state` for vectorization)._
+
+- GPT-4o 18.10.2024 [Implement agent strategy visualization](https://chatgpt.com/share/67137121-e160-8007-882a-f3d933753d44)  
+  _Helped to implement a visualization I came up with. Output code was not working. I went through it, changing anything I wouldn't have done the same way and fixed the core logic of the implementation. The method used to store intermediate values was changed by me since the AI generated solution deviated from my original intent, eventhough both were correct approaches._s
