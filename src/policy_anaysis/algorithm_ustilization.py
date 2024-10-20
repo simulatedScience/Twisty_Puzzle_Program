@@ -128,13 +128,13 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
         # Set plot labels in bold font
         ax.set_xlabel(xlabel, fontweight="bold")
         ax.set_ylabel(ylabel, fontweight="bold")
-        
+    fig.tight_layout()
+    fig.subplots_adjust(wspace=0.15)
     
     # Set plot labels and title
     fig.suptitle(title, fontweight="bold")
     
     # Display the plot
-    plt.tight_layout()
     plt.show()
 
 # Example usage:
