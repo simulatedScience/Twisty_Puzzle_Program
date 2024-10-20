@@ -40,47 +40,50 @@ def get_algorithm_utilization_data(test_data: dict[str, any], puzzle: Twisty_Puz
     """
     solved_state, _ = state_for_ai(puzzle.SOLVED_STATE)
     moves_dict: dict[str, list[list[int]]] = puzzle.moves
+    inverse_dict: dict[str, str] = get_inverse_moves_dict(puzzle.moves)
     
     # Initialize dictionaries to store data for algorithms
     moves_to_solved_algs: dict[str, list[int]] = {}
-    correct_points_algs: dict[str, list[int]] = {}
+    unsolved_points_algs: dict[str, list[int]] = {}
     
     for run_num, run in enumerate(test_data["run_info"]):
         if run["success"] == False:
             continue
-
         agent_moves: list[str] = run["agent_moves:"].split()
+        # Reverse the solve sequence
+        reverse_moves: list[str] = [inverse_dict[move] for move in reversed(agent_moves)]
 
         # Copy the solved state to track the current state
         current_state: list[int] = solved_state[:]
-        for move in run["scramble"].split():
-            perform_action(current_state, moves_dict[move])
-        current_solved_state: list[int] = current_state[:]
-        for move in agent_moves:
-            perform_action(current_state, moves_dict[move])
+        current_solved_state: list[int] = solved_state[:]
+        moves_to_solved: int = 1
 
         # Apply each move and collect data when an algorithm move (starting with "alg_") is found
-        for move_num, move in enumerate(agent_moves):
+        for move_num, move in enumerate(reverse_moves):
             # Apply the move
             perform_action(current_state, moves_dict[move])
+            # apply rotations to solved state as well
+            if move.startswith("rot_"):
+                perform_action(current_solved_state, moves_dict[move])
+            else:
+                moves_to_solved += 1
             
             # Track the number of correct points
-            correct_points = sum([current_val == solved_val for current_val, solved_val in zip(current_state, solved_state)])
+            n_unseolved_points: int = sum([current_val != solved_val for current_val, solved_val in zip(current_state, current_solved_state)])
 
-            if move.startswith("alg_"):
-                moves_to_solved: int = len(agent_moves) - move_num
-                # If this algorithm is not yet tracked, initialize an empty list
-                if move not in moves_to_solved_algs:
-                    moves_to_solved_algs[move] = []
-                    correct_points_algs[move] = []
-                
-                # Record data for this algorithm occurrence
-                moves_to_solved_algs[move].append(moves_to_solved)  # Moves to the solved state
-                correct_points_algs[move].append(correct_points)  # Number of correct points
+            # if move.startswith("alg_"):
+            # If this algorithm is not yet tracked, initialize an empty list
+            if move not in moves_to_solved_algs:
+                moves_to_solved_algs[move] = []
+                unsolved_points_algs[move] = []
+            
+            # Record data for this algorithm occurrence
+            moves_to_solved_algs[move].append(moves_to_solved)  # Moves to the solved state
+            unsolved_points_algs[move].append(n_unseolved_points)  # Number of correct points
     
-    return moves_to_solved_algs, correct_points_algs
+    return moves_to_solved_algs, unsolved_points_algs
 
-def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, ylabel: str):
+def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, ylabels: str):
     """
     Create a horizontal boxplot from a dictionary.
     
@@ -90,25 +93,45 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
         xlabel (str): label for the x-axis
         ylabel (str): label for the y-axis
     """
-    fig, ax = plt.subplots(figsize=(10, len(data) * 0.5))
-    
-    # Sort algorithms by their names to have a consistent order in the plot
-    sorted_data = {k: v for k, v in sorted(data.items())}
-    
-    # Prepare data for the boxplot
-    labels = list(sorted_data.keys())
-    values = list(sorted_data.values())
-    
-    # Create the horizontal boxplot
-    ax.boxplot(values, vert=False, patch_artist=True)
-    
-    # Set y-ticks as algorithm names
-    ax.set_yticklabels(labels)
+    fig, axes = plt.subplots(
+        # figsize=(10, len(data) * 0.5),
+        nrows=1,
+        ncols=3,)
+
+    base_color: str = "#2d2"
+    rot_color: str = "#58f"
+    alg_color: str = "#d22"
+    # split data by keys: (starts with "rot_", starts with "alg_", others)
+    rot_data: dict[str, list[int]] = {k: v for k, v in data.items() if k.startswith("rot_")}
+    alg_data: dict[str, list[int]] = {k: v for k, v in data.items() if k.startswith("alg_")}
+    other_data: dict[str, list[int]] = {k: v for k, v in data.items() if not k in rot_data and not k in alg_data}
+
+    labels: list[str] = []
+
+    for data, color, ax, ylabel in zip((alg_data, rot_data, other_data), (alg_color, rot_color, base_color), axes, ylabels):
+        # Sort algorithms by their names to have a consistent order in the plot
+        # sort data by mean of values
+        sorted_data = {k: v for k, v in sorted(data.items(), key=lambda item: np.mean(item[1]))}
+        
+        # Prepare data for the boxplot
+        labels = list(sorted_data.keys())
+        values = list(sorted_data.values())
+        
+        # Create the horizontal boxplot
+        bplot: dict[str, list[plt.Line2D]] = ax.boxplot(values, vert=False, patch_artist=True)
+        # fill with colors
+        for patch in bplot['boxes']:
+            patch.set_facecolor(color)
+        
+        # Set y-ticks as algorithm names
+        ax.set_yticklabels(labels)
+        # Set plot labels in bold font
+        ax.set_xlabel(xlabel, fontweight="bold")
+        ax.set_ylabel(ylabel, fontweight="bold")
+        
     
     # Set plot labels and title
-    ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
+    fig.suptitle(title, fontweight="bold")
     
     # Display the plot
     plt.tight_layout()
@@ -117,9 +140,43 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
 # Example usage:
 # Load or generate the test data (test_data) and the puzzle object (puzzle)
 
-# Step 1: Analyze the algorithms and collect data
-moves_to_solved_algs, correct_points_algs = get_algorithm_utilization_data(test_data, puzzle)
+def main(
+        test_file_path: str | None = None,
+        ):
+    """
+    Load a test file and analyze when each algorithm is used during the solves.
+    Visualize the data using stacked boxplots for each algorithm.
 
-# Step 2: Create boxplots
-plot_boxplot_from_dict(moves_to_solved_algs, "Moves to Solved State for Each Algorithm", "Moves to Solved State", "Algorithm")
-plot_boxplot_from_dict(correct_points_algs, "Correct Points for Each Algorithm", "Correct Points", "Algorithm")
+    Args:
+        test_file_path (str | None): path to the test file to analyze. If None, a file dialog will open.
+    """
+    test_data, test_file_path = load_test_file(test_file_path)
+    base_path = test_file_path.split("/")[:-2]
+    if not base_path:
+        base_path = test_file_path.split("\\")[:-2]
+    # load corresponding puzzle
+    puzzle_definition_path: str = os.path.join(*base_path, "puzzle_definition.xml")
+    puzzle_definition_path = puzzle_definition_path[:2] + "/" + puzzle_definition_path[2:]
+    print(puzzle_definition_path)
+    # print(ref_path)
+    puzzle = Twisty_Puzzle()
+    puzzle.load_puzzle(puzzle_definition_path)
+
+    # Analyze the algorithms and collect data
+    moves_to_solved_algs, unsolved_points_algs = get_algorithm_utilization_data(test_data, puzzle)
+
+    # Create boxplots
+    plot_boxplot_from_dict(
+        moves_to_solved_algs,
+        title="Moves to Solved State for Each Action",
+        xlabel="Moves to Solved State",
+        ylabels=("algorithm", "rotation", "move"))
+    plot_boxplot_from_dict(
+        unsolved_points_algs,
+        title="Unsolved Points for Each Action",
+        xlabel="Unsolved Points",
+        ylabels=("algorithm", "rotation", "move"))
+
+if __name__ == "__main__":
+    # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\ai_files\cube_3x3x3_sym_algs\2024-09-28_23-37-59\tests\test_2024-09-29_05-31-09.json")
+    main()

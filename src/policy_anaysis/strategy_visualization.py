@@ -52,7 +52,6 @@ def analyze_strategy(
         if run["success"] == False:
             continue
         agent_moves: list[str] = run["agent_moves:"].split()
-        
         # Reverse the solve sequence
         reverse_moves: list[str] = [inverse_dict[move] for move in reversed(agent_moves)]
         
@@ -69,6 +68,7 @@ def analyze_strategy(
         for move_num, move in enumerate(reverse_moves):
             # Apply the move
             perform_action(current_state, moves_dict[move])
+            # apply rotations to solved state as well
             if move.startswith("rot_"):
                 perform_action(current_solved_state, moves_dict[move])
             
