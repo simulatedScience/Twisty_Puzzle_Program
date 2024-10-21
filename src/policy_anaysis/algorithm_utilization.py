@@ -22,6 +22,7 @@ from src.ai_modules.ai_data_preparation import state_for_ai
 from src.algorithm_generation.algorithm_analysis import get_inverse_moves_dict
 from src.interaction_modules.ai_file_management import load_test_file
 from src.puzzle_class import Twisty_Puzzle
+from src.interaction_modules.ai_file_management import get_policy_savepath
 
 
 def get_algorithm_utilization_data(test_data: dict[str, any], puzzle: Twisty_Puzzle) -> tuple[dict[str, list[int]], dict[str, list[int]]]:
@@ -93,10 +94,6 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
         xlabel (str): label for the x-axis
         ylabel (str): label for the y-axis
     """
-    fig, axes = plt.subplots(
-        # figsize=(10, len(data) * 0.5),
-        nrows=1,
-        ncols=3,)
 
     base_color: str = "#2d2"
     rot_color: str = "#58f"
@@ -105,10 +102,20 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
     rot_data: dict[str, list[int]] = {k: v for k, v in data.items() if k.startswith("rot_")}
     alg_data: dict[str, list[int]] = {k: v for k, v in data.items() if k.startswith("alg_")}
     other_data: dict[str, list[int]] = {k: v for k, v in data.items() if not k in rot_data and not k in alg_data}
+    
+    n_plots: int = bool(rot_data) + bool(alg_data) + bool(other_data)
+    fig, axes = plt.subplots(
+        figsize=(5*n_plots, len(data) * 0.25),
+        nrows=1,
+        ncols=3,)
 
     labels: list[str] = []
 
     for data, color, ax, ylabel in zip((alg_data, rot_data, other_data), (alg_color, rot_color, base_color), axes, ylabels):
+        if not data:
+            # remove axes if data is empty
+            fig.delaxes(ax)
+            continue
         # Sort algorithms by their names to have a consistent order in the plot
         # sort data by mean of values
         sorted_data = {k: v for k, v in sorted(data.items(), key=lambda item: np.mean(item[1]))}
@@ -122,14 +129,18 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
         # fill with colors
         for patch in bplot['boxes']:
             patch.set_facecolor(color)
-        
         # Set y-ticks as algorithm names
         ax.set_yticklabels(labels)
         # Set plot labels in bold font
         ax.set_xlabel(xlabel, fontweight="bold")
         ax.set_ylabel(ylabel, fontweight="bold")
     fig.tight_layout()
-    fig.subplots_adjust(wspace=0.15)
+    fig.subplots_adjust(
+        left=0.1, #0.05
+        bottom=0.1,
+        right=0.99,
+        top=0.92,
+        wspace=0.25)
     
     # Set plot labels and title
     fig.suptitle(title, fontweight="bold")
@@ -176,6 +187,7 @@ def main(
         title="Unsolved Points for Each Action",
         xlabel="Unsolved Points",
         ylabels=("algorithm", "rotation", "move"))
+    os._exit(0)
 
 if __name__ == "__main__":
     # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\ai_files\cube_3x3x3_sym_algs\2024-09-28_23-37-59\tests\test_2024-09-29_05-31-09.json")

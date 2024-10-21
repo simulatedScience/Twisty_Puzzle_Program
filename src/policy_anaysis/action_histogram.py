@@ -1,6 +1,12 @@
+"""
+Let the user choose a test file, then analyse all successful episodes in it to create a histogram of actions used by the agents. Actions are grouped by category (algorithms, rotations, base moves) and displayed as a bar plot. An additional pie chart shows the relative frequency of each category.
+"""
+
 from collections import Counter
 
 import matplotlib.pyplot as plt
+
+# from src.interaction_modules.ai_file_management import get_policy_savepath
 
 def get_successful_runs(run_info):
     """Return all successful runs from run_info."""
@@ -58,7 +64,7 @@ def plot_action_histogram(
         rot_counter,
         base_counter,
         total_actions,
-        color_list=['blue', 'green', 'red']
+        color_list=['#d22', '#58f', '#2d2']
     ):
     """
     Plot a histogram with color coding for algorithms, rotations, and base moves (in percentages).
@@ -116,6 +122,7 @@ def plot_action_histogram(
                ['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves'], loc='upper right')
     
     plt.tight_layout()
+    # save_path: str = get_policy_savepath()
     plt.show()
 
 

@@ -152,7 +152,8 @@ def main(
     print([round(dev, 2) for dev in avg_deviations])
     if show_on_puzzle:
         show_avg_deviations(avg_deviations, puzzle, color=color)
-        puzzle.draw_3d_pieces()
+        # puzzle.set_clip_poly("cube", 0.7)
+        # puzzle.draw_3d_pieces()
 
     return avg_deviations
 

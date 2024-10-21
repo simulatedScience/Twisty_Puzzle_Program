@@ -1,0 +1,3 @@
+alg_1 = 5*(wgo wob yrb)
+alg_1' = 5*(yrb' wob' wgo')
+alg_2 = 2*(ybo' wbr' ybo yrb wob ybo wob yrb')

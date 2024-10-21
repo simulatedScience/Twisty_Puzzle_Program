@@ -216,9 +216,9 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             sympy_rotations=sympy_rotations,
             # max_time=3, # 3 seconds
             max_time=300, # 2 minutes
-            max_base_sequence_length=30, # 20
+            max_base_sequence_length=20, # 20
             max_move_sequence_order=200, # 200
-            max_algorithm_moves=200, # 100
+            max_algorithm_moves=100, # 100
             max_algorithm_order=6, # 6
             max_pieces_affected=4, # 4
             max_number_of_algorithms=48, # 20

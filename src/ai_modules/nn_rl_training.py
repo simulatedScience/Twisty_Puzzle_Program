@@ -74,7 +74,10 @@ def train_agent(
     tb_log_folder: str = os.path.join(exp_folder_path, "tb_logs")
     os.makedirs(exp_folder_path, exist_ok=True)
 
-    solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
+    solved_state, actions_dict, reward_func = setup_training(
+        puzzle_name=puzzle_name,
+        base_actions=base_actions,
+        reward=reward)
 
     exp_identifier = f"{puzzle_name}_rew={reward}_sd={start_scramble_depth}_st={success_threshold}_eps={n_steps}_lr={learning_rate}_bs={batch_size}_ne={n_envs}"
     def make_env():
@@ -321,7 +324,10 @@ def setup_training(
     if not solved_state or not actions_dict:
         solved_state, actions_dict = load_puzzle(puzzle_name)
     # check for whole puzzle rotation moves
-    _, rotations, algorithms = filter_actions(actions_dict, base_actions, rotations_prefix="rot_")
+    _, rotations, algorithms = filter_actions(
+        actions_dict=actions_dict,
+        base_action_names=base_actions,
+        rotations_prefix="rot_")
     # calculate rotations of the solved state
     solved_states: np.ndarray = get_rotated_solved_states(solved_state, [actions_dict[rot] for rot in rotations])
     # define reward function

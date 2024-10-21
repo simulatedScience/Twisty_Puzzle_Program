@@ -237,7 +237,10 @@ def train_and_test_agent(
         device=device,
         verbosity=0,
     )
-    solved_state, actions_dict, reward_func = setup_training(puzzle_name, base_actions, reward)
+    solved_state, actions_dict, reward_func = setup_training(
+        puzzle_name=puzzle_name,
+        base_actions=base_actions,
+        reward=reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
     
     
@@ -375,30 +378,30 @@ if __name__ == "__main__":
     # # tensorboard --logdir src/ai_files/gear_cube_extreme_sym_algs
 
     
-    train_and_test_agent(
-        # puzzle configuration
-        puzzle_name="cube_3x3x3_sym_algs",
-        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "E", "E'", "S", "S'"],
-        # environment configuration
-        load_model="2024-09-28_23-37-59",
-        max_moves=100,
-        start_scramble_depth=16,
-        success_threshold=0.25,
-        last_n_episodes=1000,
-        reward="most_correct_points",
-        # reward="binary",
-        # rl training parameters
-        n_steps=200_000_000,
-        learning_rate=0.001,
-        batch_size=25000,
-        # parallelization settings
-        n_envs=1000,
-        device="cuda",
-        verbosity=1,
-        # test configuration
-        num_tests=500,
-        test_scramble_length=100,
-    )
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     puzzle_name="cube_3x3x3_sym_algs",
+    #     base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "E", "E'", "S", "S'"],
+    #     # environment configuration
+    #     load_model="2024-09-28_23-37-59",
+    #     max_moves=100,
+    #     start_scramble_depth=16,
+    #     success_threshold=0.25,
+    #     last_n_episodes=1000,
+    #     reward="most_correct_points",
+    #     # reward="binary",
+    #     # rl training parameters
+    #     n_steps=200_000_000,
+    #     learning_rate=0.001,
+    #     batch_size=25000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=500,
+    #     test_scramble_length=100,
+    # )
     # tensorboard --logdir src/ai_files/cube_3x3x3_sym_algs
 
     # test_from_file(
@@ -409,4 +412,76 @@ if __name__ == "__main__":
     #     test_max_moves=100,
     #     num_tests=100,
     #     deterministic=False,
+    # )
+
+##############################################################################################
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     # puzzle_name="dino_cube_sym_algs",
+    #     # base_actions=["wrg", "wrg'", "wgo", "wgo'", "yog", "yog'", "ygr", "ygr'", "wbr", "wbr'", "wob", "wob'", "yrb", "yrb'", "ybo", "ybo'"],
+    #     puzzle_name="skewb_sym_algs",
+    #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "oyb", "oyb'", "ryg", "ryg'"],
+    #     # environment configuration
+    #     load_model=None,
+    #     max_moves=200,
+    #     start_scramble_depth=16,
+    #     # start_scramble_depth=3,
+    #     success_threshold=0.25,
+    #     last_n_episodes=1000,
+    #     reward="most_correct_points",
+    #     # reward="binary",
+    #     # rl training parameters
+    #     n_steps=30_000_000,
+    #     learning_rate=0.003,
+    #     batch_size=25000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=1000,
+    #     test_scramble_length=100,
+    # )
+    # tensorboard --logdir src/ai_files/dino_cube_sym_algs
+    # tensorboard --logdir src/ai_files/
+
+    test_from_file(
+        # "src/ai_files/dino_cube_sym_algs/2024-10-21_19-56-31",
+        "src/ai_files/skewb_sym_algs/2024-10-21_22-23-45",
+        # "src/ai_files/skewb/2024-10-21_22-23-39",
+        model_snapshot_steps=-1,
+        # "src/ai_files/skewb_sym_algs/2024-10-21_21-35-49",
+        # model_snapshot_steps=10_000_000,
+        test_scramble_length=200,
+        test_max_moves=200,
+        num_tests=1000,
+        deterministic=False,
+    )
+    
+    # # binary reward training
+    # train_and_test_agent(
+    #     # puzzle configuration
+    #     # puzzle_name="gear_cube_extreme", # puzzle_name
+    #     # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+    #     puzzle_name="skewb_sym_algs",
+    #     # puzzle_name="skewb",
+    #     base_actions=["wbr", "wbr'", "wgo", "wgo'", "oyb", "oyb'", "ryg", "ryg'"],
+    #     # environment configuration
+    #     load_model=None,
+    #     max_moves=200,
+    #     start_scramble_depth=2,
+    #     success_threshold=0.25,
+    #     last_n_episodes=1000,
+    #     reward="binary",
+    #     # rl training parameters
+    #     n_steps=30_000_000,
+    #     learning_rate=0.003,
+    #     batch_size=25000,
+    #     # parallelization settings
+    #     n_envs=1000,
+    #     device="cuda",
+    #     verbosity=1,
+    #     # test configuration
+    #     num_tests=250,
+    #     test_scramble_length=200,
     # )

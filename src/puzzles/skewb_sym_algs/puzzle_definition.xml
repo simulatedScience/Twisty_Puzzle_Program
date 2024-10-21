@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="skewb_sym" state_space_size="3149280">
+<puzzledefinition name="skewb_sym_algs" state_space_size="37791360">
   <points>
     <point size="4.0">
       <coords x="0.3464466094067262" y="0.3464466094067262" z="0.7"/>
@@ -322,6 +322,64 @@
       <cycle>21, 23, 22</cycle>
       <cycle>24, 25, 26</cycle>
       <cycle>27, 28, 29</cycle>
+    </move>
+    <move name="alg_1">
+      <cycle>12, 13, 14</cycle>
+      <cycle>18, 19, 20</cycle>
+    </move>
+    <move name="alg_1'">
+      <cycle>12, 14, 13</cycle>
+      <cycle>18, 20, 19</cycle>
+    </move>
+    <move name="alg_2">
+      <cycle>9, 10, 11</cycle>
+      <cycle>15, 16, 17</cycle>
+      <cycle>21, 22, 23</cycle>
+    </move>
+    <move name="alg_2'">
+      <cycle>9, 11, 10</cycle>
+      <cycle>15, 17, 16</cycle>
+      <cycle>21, 23, 22</cycle>
+    </move>
+    <move name="alg_3">
+      <cycle>25, 26</cycle>
+      <cycle>27, 29</cycle>
+    </move>
+    <move name="alg_4">
+      <cycle>4, 9</cycle>
+      <cycle>5, 10</cycle>
+      <cycle>6, 11</cycle>
+      <cycle>15, 21</cycle>
+      <cycle>16, 22</cycle>
+      <cycle>17, 23</cycle>
+    </move>
+    <move name="alg_5">
+      <cycle>25, 26</cycle>
+      <cycle>27, 28</cycle>
+    </move>
+    <move name="alg_6">
+      <cycle>0, 7, 8</cycle>
+      <cycle>12, 14, 13</cycle>
+      <cycle>15, 17, 16</cycle>
+      <cycle>21, 22, 23</cycle>
+    </move>
+    <move name="alg_6'">
+      <cycle>0, 8, 7</cycle>
+      <cycle>12, 13, 14</cycle>
+      <cycle>15, 16, 17</cycle>
+      <cycle>21, 23, 22</cycle>
+    </move>
+    <move name="alg_7">
+      <cycle>4, 10, 17</cycle>
+      <cycle>5, 11, 15</cycle>
+      <cycle>6, 9, 16</cycle>
+      <cycle>18, 20, 19</cycle>
+    </move>
+    <move name="alg_7'">
+      <cycle>4, 17, 10</cycle>
+      <cycle>5, 15, 11</cycle>
+      <cycle>6, 16, 9</cycle>
+      <cycle>18, 19, 20</cycle>
     </move>
   </moves>
 </puzzledefinition>
