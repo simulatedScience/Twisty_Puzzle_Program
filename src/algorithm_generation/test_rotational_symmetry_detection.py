@@ -43,7 +43,7 @@ def plot_penalty_function():
 
 def test_find_rotational_symmetries(
         X: np.ndarray,
-        num_candidate_rotations: int = 5000,
+        keep_n_best_planes: int = 500,
         plane_similarity_threshold: float = 0.1,
         min_angle: float = np.pi / 12.5,
         num_best_rotations: int = 100,
@@ -57,11 +57,10 @@ def test_find_rotational_symmetries(
     rotations = profile.runcall(
         find_rotational_symmetries,
             X=X,
-            num_candidate_rotations=num_candidate_rotations,
+            keep_n_best_planes=keep_n_best_planes,
             plane_similarity_threshold=plane_similarity_threshold,
             min_angle=min_angle,
             num_best_rotations=num_best_rotations,
-            alpha=alpha,
     )
     print(f"Found {len(rotations)} rotational symmetries.")
     ps = pstats.Stats(profile)
@@ -214,8 +213,8 @@ def main(X, edges=None):
     # plane_2 = (np.array([0, 1, 1], dtype=np.float32), np.array([-1, 2, 1], dtype=np.float32))
     # test_find_plane_intersection(plane_1, plane_2)
     # plot_penalty_function()
-    # test_find_rotational_symmetries(X, anim_time=.6, anim_steps=10, anim_pause=0.5, edges=edges)
-    test_find_rotational_symmetries(X, anim_time=0, anim_steps=6, anim_pause=0.001)
+    test_find_rotational_symmetries(X, anim_time=1, anim_steps=15, anim_pause=0.1, edges=edges)
+    # test_find_rotational_symmetries(X, anim_time=1, anim_steps=6, anim_pause=0.5)
 
 def axis_tetragedron_vertices():
     vertices = np.array([

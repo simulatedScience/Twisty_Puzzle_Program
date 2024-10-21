@@ -220,9 +220,9 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             max_move_sequence_order=200, # 200
             max_algorithm_moves=200, # 100
             max_algorithm_order=6, # 6
-            max_pieces_affected=8, # 4
+            max_pieces_affected=4, # 4
             max_number_of_algorithms=48, # 20
-            max_iterations_without_new_algorithm=1000,
+            max_iterations_without_new_algorithm=100,
             verbosity=2,
         )
         ps = pstats.Stats(profile)

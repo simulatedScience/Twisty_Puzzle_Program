@@ -344,7 +344,7 @@ def main():
     #     [-1,-1,-1],
     # ])
     # X, edges = dodecahedron_vertices()
-    # X, edges = cube_2x2_stickers()
+    X, edges = cube_2x2_stickers()
     # test_init_planes(X, num_planes=10, threshold=.01)
     
     import os, sys, inspect
@@ -353,7 +353,7 @@ def main():
     parent2dir = os.path.dirname(parentdir)
     sys.path.insert(0,parent2dir)
     from src.puzzles.dodecahedron_generator import generate_dodecahedron_points
-    X, colors = generate_dodecahedron_points(face_scale_factor=0.7)
+    # X, colors = generate_dodecahedron_points(face_scale_factor=0.7)
     
     # symmetry plane
     # support: np.ndarray = np.array([0, 0, 0])

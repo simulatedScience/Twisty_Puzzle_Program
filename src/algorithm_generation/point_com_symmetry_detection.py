@@ -28,7 +28,7 @@ from algorithm_analysis import get_inverse_moves_dict
 from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
 from symmetry_plane_detection import dist_similarity_function
 
-DEBUG: bool = True
+DEBUG: bool = False
 
 def find_rotational_symmetries(puzzle: "Twisty_Puzzle", min_sym_measure=0.7):
     """
@@ -79,11 +79,12 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle", min_sym_measure=0.7):
     symmetries: list[tuple[np.ndarray, float]] = [] # store rotation matrices and symmetry measures of good symmetries
     min_sym_measure: float = X.shape[0] * min_sym_measure
 
+    if np.isnan(p1).any() or np.isnan(p2).any():
+        print("Warning: NaN in p1 or p2.")
+
     for t1 in (move_coms[move_name] for move_name in smallest_com_set):
-        if np.all(t1 == p1):
-            continue
         for t2 in (move_coms[move_name] for move_name in smallest_com_set2):
-            if np.all(t2 == p2):
+            if np.all(t2 == p2) and np.all(t1 == p1):
                 continue
             # check if angle between p1 and p2 matches angle between t1 and t2
             if _angle_between(p1, p2) != _angle_between(t1, t2):
@@ -95,12 +96,12 @@ def find_rotational_symmetries(puzzle: "Twisty_Puzzle", min_sym_measure=0.7):
                 # if move_name in smallest_com_set or move_name in smallest_com_set2:
                 #     continue
                 rotated_points: np.ndarray = (R @ (X - p1).T).T + t1
+                print(f"p1 = {p1}")
+                print(f"p2 = {p2}")
+                print(f"t1 = {t1}")
+                print(f"t2 = {t2}")
+                print()
                 if DEBUG:
-                    print()
-                    print(f"p1 = {p1}")
-                    print(f"p2 = {p2}")
-                    print(f"t1 = {t1}")
-                    print(f"t2 = {t2}")
                     # plot p1, p2, t1, t2 as vectors with base at COM(X)
                     rot_artists = []
                     for v, label, color in zip(
