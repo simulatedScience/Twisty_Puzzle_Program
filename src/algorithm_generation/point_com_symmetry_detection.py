@@ -31,7 +31,7 @@ from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
 from symmetry_plane_detection import dist_similarity_function
 from test_symmetry_plane_detection import set_equal_aspect_3d
 
-DEBUG: bool = True
+DEBUG: bool = False
 TOL = 1e-1
 
 def find_rotational_symmetries(

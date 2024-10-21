@@ -1528,380 +1528,6 @@
       <cycle>229, 239</cycle>
     </move>
     <move name="rot_1">
-      <cycle>0, 2</cycle>
-      <cycle>1, 31</cycle>
-      <cycle>3, 32</cycle>
-      <cycle>4, 19</cycle>
-      <cycle>5, 17</cycle>
-      <cycle>6, 11</cycle>
-      <cycle>7, 27</cycle>
-      <cycle>8, 28</cycle>
-      <cycle>9, 14</cycle>
-      <cycle>10, 13</cycle>
-      <cycle>12, 29</cycle>
-      <cycle>15, 30</cycle>
-      <cycle>16, 26</cycle>
-      <cycle>18, 25</cycle>
-      <cycle>20, 24</cycle>
-      <cycle>21, 35</cycle>
-      <cycle>22, 34</cycle>
-      <cycle>23, 33</cycle>
-      <cycle>36, 47</cycle>
-      <cycle>37, 46</cycle>
-      <cycle>38, 45</cycle>
-      <cycle>39, 52</cycle>
-      <cycle>40, 53</cycle>
-      <cycle>41, 48</cycle>
-      <cycle>42, 50</cycle>
-      <cycle>43, 49</cycle>
-      <cycle>44, 51</cycle>
-      <cycle>54, 76</cycle>
-      <cycle>55, 73</cycle>
-      <cycle>56, 69</cycle>
-      <cycle>57, 72</cycle>
-      <cycle>58, 64</cycle>
-      <cycle>59, 141</cycle>
-      <cycle>60, 139</cycle>
-      <cycle>61, 135</cycle>
-      <cycle>62, 140</cycle>
-      <cycle>63, 136</cycle>
-      <cycle>65, 91</cycle>
-      <cycle>66, 92</cycle>
-      <cycle>67, 90</cycle>
-      <cycle>68, 93</cycle>
-      <cycle>70, 97</cycle>
-      <cycle>71, 99</cycle>
-      <cycle>74, 98</cycle>
-      <cycle>75, 94</cycle>
-      <cycle>77, 95</cycle>
-      <cycle>78, 96</cycle>
-      <cycle>79, 147</cycle>
-      <cycle>80, 145</cycle>
-      <cycle>81, 148</cycle>
-      <cycle>82, 142</cycle>
-      <cycle>83, 134</cycle>
-      <cycle>84, 137</cycle>
-      <cycle>85, 138</cycle>
-      <cycle>86, 144</cycle>
-      <cycle>87, 149</cycle>
-      <cycle>88, 146</cycle>
-      <cycle>89, 143</cycle>
-      <cycle>100, 101</cycle>
-      <cycle>102, 123</cycle>
-      <cycle>103, 122</cycle>
-      <cycle>104, 125</cycle>
-      <cycle>105, 124</cycle>
-      <cycle>106, 132</cycle>
-      <cycle>107, 131</cycle>
-      <cycle>108, 133</cycle>
-      <cycle>109, 130</cycle>
-      <cycle>110, 121</cycle>
-      <cycle>111, 120</cycle>
-      <cycle>112, 119</cycle>
-      <cycle>113, 126</cycle>
-      <cycle>114, 128</cycle>
-      <cycle>115, 129</cycle>
-      <cycle>116, 127</cycle>
-      <cycle>117, 118</cycle>
-      <cycle>150, 202</cycle>
-      <cycle>151, 205</cycle>
-      <cycle>152, 204</cycle>
-      <cycle>153, 201</cycle>
-      <cycle>154, 198</cycle>
-      <cycle>155, 200</cycle>
-      <cycle>156, 199</cycle>
-      <cycle>157, 212</cycle>
-      <cycle>158, 210</cycle>
-      <cycle>159, 211</cycle>
-      <cycle>160, 213</cycle>
-      <cycle>161, 208</cycle>
-      <cycle>162, 206</cycle>
-      <cycle>163, 203</cycle>
-      <cycle>164, 207</cycle>
-      <cycle>165, 209</cycle>
-      <cycle>166, 187</cycle>
-      <cycle>167, 186</cycle>
-      <cycle>168, 185</cycle>
-      <cycle>169, 188</cycle>
-      <cycle>170, 194</cycle>
-      <cycle>171, 195</cycle>
-      <cycle>172, 196</cycle>
-      <cycle>173, 197</cycle>
-      <cycle>174, 193</cycle>
-      <cycle>175, 190</cycle>
-      <cycle>176, 191</cycle>
-      <cycle>177, 192</cycle>
-      <cycle>178, 183</cycle>
-      <cycle>179, 189</cycle>
-      <cycle>180, 182</cycle>
-      <cycle>181, 184</cycle>
-      <cycle>214, 230</cycle>
-      <cycle>215, 231</cycle>
-      <cycle>216, 233</cycle>
-      <cycle>217, 232</cycle>
-      <cycle>218, 236</cycle>
-      <cycle>219, 235</cycle>
-      <cycle>220, 237</cycle>
-      <cycle>221, 234</cycle>
-      <cycle>222, 238</cycle>
-      <cycle>223, 239</cycle>
-      <cycle>224, 240</cycle>
-      <cycle>225, 241</cycle>
-      <cycle>226, 242</cycle>
-      <cycle>227, 243</cycle>
-      <cycle>228, 244</cycle>
-      <cycle>229, 245</cycle>
-    </move>
-    <move name="rot_2">
-      <cycle>0, 40</cycle>
-      <cycle>1, 31</cycle>
-      <cycle>3, 34</cycle>
-      <cycle>4, 42</cycle>
-      <cycle>5, 43</cycle>
-      <cycle>6, 41</cycle>
-      <cycle>7, 33</cycle>
-      <cycle>8, 32</cycle>
-      <cycle>9, 19</cycle>
-      <cycle>10, 20</cycle>
-      <cycle>11, 18</cycle>
-      <cycle>12, 27</cycle>
-      <cycle>13, 36</cycle>
-      <cycle>14, 37</cycle>
-      <cycle>15, 28</cycle>
-      <cycle>16, 17</cycle>
-      <cycle>21, 29</cycle>
-      <cycle>22, 30</cycle>
-      <cycle>23, 35</cycle>
-      <cycle>24, 44</cycle>
-      <cycle>25, 39</cycle>
-      <cycle>26, 38</cycle>
-      <cycle>45, 49</cycle>
-      <cycle>46, 50</cycle>
-      <cycle>47, 51</cycle>
-      <cycle>48, 52</cycle>
-      <cycle>54, 130</cycle>
-      <cycle>55, 127</cycle>
-      <cycle>56, 128</cycle>
-      <cycle>57, 129</cycle>
-      <cycle>58, 126</cycle>
-      <cycle>59, 136</cycle>
-      <cycle>60, 137</cycle>
-      <cycle>61, 138</cycle>
-      <cycle>62, 134</cycle>
-      <cycle>63, 142</cycle>
-      <cycle>64, 101</cycle>
-      <cycle>65, 75</cycle>
-      <cycle>66, 78</cycle>
-      <cycle>67, 77</cycle>
-      <cycle>68, 76</cycle>
-      <cycle>69, 70</cycle>
-      <cycle>71, 73</cycle>
-      <cycle>72, 74</cycle>
-      <cycle>79, 135</cycle>
-      <cycle>80, 139</cycle>
-      <cycle>81, 140</cycle>
-      <cycle>82, 146</cycle>
-      <cycle>83, 143</cycle>
-      <cycle>84, 144</cycle>
-      <cycle>85, 149</cycle>
-      <cycle>86, 145</cycle>
-      <cycle>87, 147</cycle>
-      <cycle>88, 141</cycle>
-      <cycle>89, 148</cycle>
-      <cycle>90, 118</cycle>
-      <cycle>91, 119</cycle>
-      <cycle>92, 120</cycle>
-      <cycle>93, 121</cycle>
-      <cycle>94, 131</cycle>
-      <cycle>95, 132</cycle>
-      <cycle>96, 133</cycle>
-      <cycle>97, 122</cycle>
-      <cycle>98, 123</cycle>
-      <cycle>99, 124</cycle>
-      <cycle>100, 125</cycle>
-      <cycle>102, 115</cycle>
-      <cycle>103, 114</cycle>
-      <cycle>104, 113</cycle>
-      <cycle>105, 116</cycle>
-      <cycle>106, 117</cycle>
-      <cycle>107, 112</cycle>
-      <cycle>108, 111</cycle>
-      <cycle>109, 110</cycle>
-      <cycle>150, 158</cycle>
-      <cycle>151, 159</cycle>
-      <cycle>152, 160</cycle>
-      <cycle>153, 161</cycle>
-      <cycle>154, 162</cycle>
-      <cycle>155, 165</cycle>
-      <cycle>156, 164</cycle>
-      <cycle>157, 163</cycle>
-      <cycle>166, 176</cycle>
-      <cycle>167, 177</cycle>
-      <cycle>168, 174</cycle>
-      <cycle>169, 175</cycle>
-      <cycle>170, 179</cycle>
-      <cycle>171, 178</cycle>
-      <cycle>172, 180</cycle>
-      <cycle>173, 181</cycle>
-      <cycle>182, 198</cycle>
-      <cycle>183, 200</cycle>
-      <cycle>184, 199</cycle>
-      <cycle>185, 212</cycle>
-      <cycle>186, 211</cycle>
-      <cycle>187, 210</cycle>
-      <cycle>188, 213</cycle>
-      <cycle>189, 201</cycle>
-      <cycle>190, 204</cycle>
-      <cycle>191, 202</cycle>
-      <cycle>192, 205</cycle>
-      <cycle>193, 203</cycle>
-      <cycle>194, 208</cycle>
-      <cycle>195, 209</cycle>
-      <cycle>196, 206</cycle>
-      <cycle>197, 207</cycle>
-      <cycle>214, 235</cycle>
-      <cycle>215, 237</cycle>
-      <cycle>216, 236</cycle>
-      <cycle>217, 234</cycle>
-      <cycle>218, 238</cycle>
-      <cycle>219, 240</cycle>
-      <cycle>220, 239</cycle>
-      <cycle>221, 241</cycle>
-      <cycle>222, 242</cycle>
-      <cycle>223, 245</cycle>
-      <cycle>224, 244</cycle>
-      <cycle>225, 243</cycle>
-      <cycle>226, 233</cycle>
-      <cycle>227, 232</cycle>
-      <cycle>228, 230</cycle>
-      <cycle>229, 231</cycle>
-    </move>
-    <move name="rot_3">
-      <cycle>0, 53</cycle>
-      <cycle>1, 31</cycle>
-      <cycle>2, 40</cycle>
-      <cycle>3, 30</cycle>
-      <cycle>4, 46</cycle>
-      <cycle>5, 45</cycle>
-      <cycle>6, 52</cycle>
-      <cycle>7, 35</cycle>
-      <cycle>8, 34</cycle>
-      <cycle>9, 42</cycle>
-      <cycle>10, 44</cycle>
-      <cycle>11, 39</cycle>
-      <cycle>12, 33</cycle>
-      <cycle>13, 51</cycle>
-      <cycle>14, 50</cycle>
-      <cycle>15, 32</cycle>
-      <cycle>16, 43</cycle>
-      <cycle>17, 38</cycle>
-      <cycle>18, 41</cycle>
-      <cycle>19, 37</cycle>
-      <cycle>20, 36</cycle>
-      <cycle>21, 27</cycle>
-      <cycle>22, 28</cycle>
-      <cycle>23, 29</cycle>
-      <cycle>24, 47</cycle>
-      <cycle>25, 48</cycle>
-      <cycle>26, 49</cycle>
-      <cycle>54, 110</cycle>
-      <cycle>55, 105</cycle>
-      <cycle>56, 103</cycle>
-      <cycle>57, 102</cycle>
-      <cycle>58, 104</cycle>
-      <cycle>59, 142</cycle>
-      <cycle>60, 144</cycle>
-      <cycle>61, 149</cycle>
-      <cycle>62, 143</cycle>
-      <cycle>63, 146</cycle>
-      <cycle>64, 125</cycle>
-      <cycle>65, 131</cycle>
-      <cycle>66, 133</cycle>
-      <cycle>67, 132</cycle>
-      <cycle>68, 130</cycle>
-      <cycle>69, 122</cycle>
-      <cycle>70, 128</cycle>
-      <cycle>71, 127</cycle>
-      <cycle>72, 123</cycle>
-      <cycle>73, 124</cycle>
-      <cycle>74, 129</cycle>
-      <cycle>75, 119</cycle>
-      <cycle>76, 121</cycle>
-      <cycle>77, 118</cycle>
-      <cycle>78, 120</cycle>
-      <cycle>79, 138</cycle>
-      <cycle>80, 137</cycle>
-      <cycle>81, 134</cycle>
-      <cycle>82, 141</cycle>
-      <cycle>83, 148</cycle>
-      <cycle>84, 145</cycle>
-      <cycle>85, 147</cycle>
-      <cycle>86, 139</cycle>
-      <cycle>87, 135</cycle>
-      <cycle>88, 136</cycle>
-      <cycle>89, 140</cycle>
-      <cycle>90, 106</cycle>
-      <cycle>91, 107</cycle>
-      <cycle>92, 108</cycle>
-      <cycle>93, 109</cycle>
-      <cycle>94, 112</cycle>
-      <cycle>95, 117</cycle>
-      <cycle>96, 111</cycle>
-      <cycle>97, 114</cycle>
-      <cycle>98, 115</cycle>
-      <cycle>99, 116</cycle>
-      <cycle>100, 113</cycle>
-      <cycle>101, 126</cycle>
-      <cycle>150, 187</cycle>
-      <cycle>151, 186</cycle>
-      <cycle>152, 188</cycle>
-      <cycle>153, 194</cycle>
-      <cycle>154, 196</cycle>
-      <cycle>155, 195</cycle>
-      <cycle>156, 197</cycle>
-      <cycle>157, 193</cycle>
-      <cycle>158, 191</cycle>
-      <cycle>159, 192</cycle>
-      <cycle>160, 190</cycle>
-      <cycle>161, 189</cycle>
-      <cycle>162, 182</cycle>
-      <cycle>163, 185</cycle>
-      <cycle>164, 184</cycle>
-      <cycle>165, 183</cycle>
-      <cycle>166, 202</cycle>
-      <cycle>167, 205</cycle>
-      <cycle>168, 203</cycle>
-      <cycle>169, 204</cycle>
-      <cycle>170, 201</cycle>
-      <cycle>171, 200</cycle>
-      <cycle>172, 198</cycle>
-      <cycle>173, 199</cycle>
-      <cycle>174, 212</cycle>
-      <cycle>175, 213</cycle>
-      <cycle>176, 210</cycle>
-      <cycle>177, 211</cycle>
-      <cycle>178, 209</cycle>
-      <cycle>179, 208</cycle>
-      <cycle>180, 206</cycle>
-      <cycle>181, 207</cycle>
-      <cycle>214, 240</cycle>
-      <cycle>215, 239</cycle>
-      <cycle>216, 238</cycle>
-      <cycle>217, 241</cycle>
-      <cycle>218, 242</cycle>
-      <cycle>219, 244</cycle>
-      <cycle>220, 245</cycle>
-      <cycle>221, 243</cycle>
-      <cycle>222, 233</cycle>
-      <cycle>223, 231</cycle>
-      <cycle>224, 230</cycle>
-      <cycle>225, 232</cycle>
-      <cycle>226, 236</cycle>
-      <cycle>227, 234</cycle>
-      <cycle>228, 235</cycle>
-      <cycle>229, 237</cycle>
-    </move>
-    <move name="rot_4">
       <cycle>1, 31</cycle>
       <cycle>2, 53</cycle>
       <cycle>3, 28</cycle>
@@ -2025,256 +1651,217 @@
       <cycle>228, 240</cycle>
       <cycle>229, 239</cycle>
     </move>
+    <move name="rot_2">
+      <cycle>1, 2, 31, 53</cycle>
+      <cycle>3, 11, 28, 48</cycle>
+      <cycle>4, 6, 14, 25</cycle>
+      <cycle>5, 13, 26, 24</cycle>
+      <cycle>7, 17, 29, 49</cycle>
+      <cycle>8, 19, 30, 50</cycle>
+      <cycle>9, 32, 46, 22</cycle>
+      <cycle>10, 27, 47, 23</cycle>
+      <cycle>12, 20, 35, 51</cycle>
+      <cycle>15, 18, 34, 52</cycle>
+      <cycle>16, 33, 45, 21</cycle>
+      <cycle>36, 43, 44, 38</cycle>
+      <cycle>37, 41, 42, 39</cycle>
+      <cycle>54, 58, 93, 100</cycle>
+      <cycle>55, 92, 99, 96</cycle>
+      <cycle>56, 91, 97, 94</cycle>
+      <cycle>57, 90, 98, 95</cycle>
+      <cycle>59, 76, 146, 109</cycle>
+      <cycle>60, 69, 145, 114</cycle>
+      <cycle>61, 73, 147, 116</cycle>
+      <cycle>62, 72, 148, 115</cycle>
+      <cycle>63, 64, 141, 113</cycle>
+      <cycle>65, 139, 112, 84</cycle>
+      <cycle>66, 135, 111, 85</cycle>
+      <cycle>67, 140, 117, 83</cycle>
+      <cycle>68, 136, 110, 82</cycle>
+      <cycle>70, 137, 103, 86</cycle>
+      <cycle>71, 138, 105, 87</cycle>
+      <cycle>74, 134, 102, 89</cycle>
+      <cycle>75, 144, 107, 80</cycle>
+      <cycle>77, 143, 106, 81</cycle>
+      <cycle>78, 149, 108, 79</cycle>
+      <cycle>88, 101, 142, 104</cycle>
+      <cycle>118, 129, 132, 123</cycle>
+      <cycle>119, 128, 131, 122</cycle>
+      <cycle>120, 127, 133, 124</cycle>
+      <cycle>121, 126, 130, 125</cycle>
+      <cycle>150, 237, 176, 223</cycle>
+      <cycle>151, 235, 177, 224</cycle>
+      <cycle>152, 236, 175, 222</cycle>
+      <cycle>153, 232, 179, 221</cycle>
+      <cycle>154, 231, 180, 220</cycle>
+      <cycle>155, 230, 178, 219</cycle>
+      <cycle>156, 233, 181, 218</cycle>
+      <cycle>157, 243, 168, 217</cycle>
+      <cycle>158, 245, 166, 215</cycle>
+      <cycle>159, 244, 167, 214</cycle>
+      <cycle>160, 242, 169, 216</cycle>
+      <cycle>161, 241, 170, 227</cycle>
+      <cycle>162, 239, 172, 229</cycle>
+      <cycle>163, 234, 174, 225</cycle>
+      <cycle>164, 238, 173, 226</cycle>
+      <cycle>165, 240, 171, 228</cycle>
+      <cycle>182, 187, 196, 191</cycle>
+      <cycle>183, 186, 195, 192</cycle>
+      <cycle>184, 188, 197, 190</cycle>
+      <cycle>185, 194, 193, 189</cycle>
+      <cycle>198, 202, 206, 210</cycle>
+      <cycle>199, 204, 207, 213</cycle>
+      <cycle>200, 205, 209, 211</cycle>
+      <cycle>201, 203, 208, 212</cycle>
+    </move>
+    <move name="rot_3">
+      <cycle>0, 53, 31</cycle>
+      <cycle>1, 40, 2</cycle>
+      <cycle>3, 39, 19</cycle>
+      <cycle>4, 52, 32</cycle>
+      <cycle>5, 51, 33</cycle>
+      <cycle>6, 50, 34</cycle>
+      <cycle>7, 38, 20</cycle>
+      <cycle>8, 37, 18</cycle>
+      <cycle>9, 15, 41</cycle>
+      <cycle>10, 21, 43</cycle>
+      <cycle>11, 22, 42</cycle>
+      <cycle>12, 36, 16</cycle>
+      <cycle>13, 49, 35</cycle>
+      <cycle>14, 48, 30</cycle>
+      <cycle>17, 23, 44</cycle>
+      <cycle>24, 45, 27</cycle>
+      <cycle>25, 46, 28</cycle>
+      <cycle>26, 47, 29</cycle>
+      <cycle>54, 104, 136</cycle>
+      <cycle>55, 108, 138</cycle>
+      <cycle>56, 107, 137</cycle>
+      <cycle>57, 106, 134</cycle>
+      <cycle>58, 109, 142</cycle>
+      <cycle>59, 121, 101</cycle>
+      <cycle>60, 122, 75</cycle>
+      <cycle>61, 124, 78</cycle>
+      <cycle>62, 123, 77</cycle>
+      <cycle>63, 125, 76</cycle>
+      <cycle>64, 82, 130</cycle>
+      <cycle>65, 86, 128</cycle>
+      <cycle>66, 87, 127</cycle>
+      <cycle>67, 89, 129</cycle>
+      <cycle>68, 88, 126</cycle>
+      <cycle>69, 84, 131</cycle>
+      <cycle>70, 80, 119</cycle>
+      <cycle>71, 79, 120</cycle>
+      <cycle>72, 83, 132</cycle>
+      <cycle>73, 85, 133</cycle>
+      <cycle>74, 81, 118</cycle>
+      <cycle>90, 115, 143</cycle>
+      <cycle>91, 114, 144</cycle>
+      <cycle>92, 116, 149</cycle>
+      <cycle>93, 113, 146</cycle>
+      <cycle>94, 103, 139</cycle>
+      <cycle>95, 102, 140</cycle>
+      <cycle>96, 105, 135</cycle>
+      <cycle>97, 112, 145</cycle>
+      <cycle>98, 117, 148</cycle>
+      <cycle>99, 111, 147</cycle>
+      <cycle>100, 110, 141</cycle>
+      <cycle>150, 229, 182</cycle>
+      <cycle>151, 228, 183</cycle>
+      <cycle>152, 226, 184</cycle>
+      <cycle>153, 225, 185</cycle>
+      <cycle>154, 223, 187</cycle>
+      <cycle>155, 224, 186</cycle>
+      <cycle>156, 222, 188</cycle>
+      <cycle>157, 221, 194</cycle>
+      <cycle>158, 220, 196</cycle>
+      <cycle>159, 219, 195</cycle>
+      <cycle>160, 218, 197</cycle>
+      <cycle>161, 217, 193</cycle>
+      <cycle>162, 215, 191</cycle>
+      <cycle>163, 227, 189</cycle>
+      <cycle>164, 216, 190</cycle>
+      <cycle>165, 214, 192</cycle>
+      <cycle>166, 239, 198</cycle>
+      <cycle>167, 240, 200</cycle>
+      <cycle>168, 241, 201</cycle>
+      <cycle>169, 238, 199</cycle>
+      <cycle>170, 234, 212</cycle>
+      <cycle>171, 235, 211</cycle>
+      <cycle>172, 237, 210</cycle>
+      <cycle>173, 236, 213</cycle>
+      <cycle>174, 232, 208</cycle>
+      <cycle>175, 233, 207</cycle>
+      <cycle>176, 231, 206</cycle>
+      <cycle>177, 230, 209</cycle>
+      <cycle>178, 244, 205</cycle>
+      <cycle>179, 243, 203</cycle>
+      <cycle>180, 245, 202</cycle>
+      <cycle>181, 242, 204</cycle>
+    </move>
+    <move name="rot_4">
+      <cycle>0, 2, 40, 53</cycle>
+      <cycle>3, 8, 15, 22</cycle>
+      <cycle>4, 9, 37, 50</cycle>
+      <cycle>5, 16, 38, 49</cycle>
+      <cycle>6, 18, 39, 48</cycle>
+      <cycle>7, 12, 21, 23</cycle>
+      <cycle>10, 36, 51, 24</cycle>
+      <cycle>11, 41, 52, 25</cycle>
+      <cycle>13, 20, 44, 47</cycle>
+      <cycle>14, 19, 42, 46</cycle>
+      <cycle>17, 43, 45, 26</cycle>
+      <cycle>27, 33, 35, 29</cycle>
+      <cycle>28, 32, 34, 30</cycle>
+      <cycle>54, 68, 121, 109</cycle>
+      <cycle>55, 71, 124, 116</cycle>
+      <cycle>56, 70, 122, 114</cycle>
+      <cycle>57, 74, 123, 115</cycle>
+      <cycle>58, 101, 125, 113</cycle>
+      <cycle>59, 88, 82, 63</cycle>
+      <cycle>60, 80, 86, 84</cycle>
+      <cycle>61, 79, 87, 85</cycle>
+      <cycle>62, 81, 89, 83</cycle>
+      <cycle>64, 126, 104, 100</cycle>
+      <cycle>65, 119, 107, 94</cycle>
+      <cycle>66, 120, 108, 96</cycle>
+      <cycle>67, 118, 106, 95</cycle>
+      <cycle>69, 128, 103, 97</cycle>
+      <cycle>72, 129, 102, 98</cycle>
+      <cycle>73, 127, 105, 99</cycle>
+      <cycle>75, 131, 112, 91</cycle>
+      <cycle>76, 130, 110, 93</cycle>
+      <cycle>77, 132, 117, 90</cycle>
+      <cycle>78, 133, 111, 92</cycle>
+      <cycle>134, 143, 148, 140</cycle>
+      <cycle>135, 138, 149, 147</cycle>
+      <cycle>136, 142, 146, 141</cycle>
+      <cycle>137, 144, 145, 139</cycle>
+      <cycle>150, 191, 166, 210</cycle>
+      <cycle>151, 192, 167, 211</cycle>
+      <cycle>152, 190, 169, 213</cycle>
+      <cycle>153, 189, 170, 208</cycle>
+      <cycle>154, 182, 172, 206</cycle>
+      <cycle>155, 183, 171, 209</cycle>
+      <cycle>156, 184, 173, 207</cycle>
+      <cycle>157, 185, 174, 203</cycle>
+      <cycle>158, 187, 176, 202</cycle>
+      <cycle>159, 186, 177, 205</cycle>
+      <cycle>160, 188, 175, 204</cycle>
+      <cycle>161, 194, 179, 201</cycle>
+      <cycle>162, 196, 180, 198</cycle>
+      <cycle>163, 193, 168, 212</cycle>
+      <cycle>164, 197, 181, 199</cycle>
+      <cycle>165, 195, 178, 200</cycle>
+      <cycle>214, 228, 224, 219</cycle>
+      <cycle>215, 229, 223, 220</cycle>
+      <cycle>216, 226, 222, 218</cycle>
+      <cycle>217, 227, 225, 221</cycle>
+      <cycle>230, 235, 240, 244</cycle>
+      <cycle>231, 237, 239, 245</cycle>
+      <cycle>232, 234, 241, 243</cycle>
+      <cycle>233, 236, 238, 242</cycle>
+    </move>
     <move name="rot_5">
-      <cycle>0, 40</cycle>
-      <cycle>1, 2</cycle>
-      <cycle>3, 18</cycle>
-      <cycle>4, 41</cycle>
-      <cycle>5, 36</cycle>
-      <cycle>6, 37</cycle>
-      <cycle>7, 16</cycle>
-      <cycle>8, 9</cycle>
-      <cycle>10, 12</cycle>
-      <cycle>11, 15</cycle>
-      <cycle>13, 38</cycle>
-      <cycle>14, 39</cycle>
-      <cycle>17, 21</cycle>
-      <cycle>19, 22</cycle>
-      <cycle>20, 23</cycle>
-      <cycle>24, 43</cycle>
-      <cycle>25, 42</cycle>
-      <cycle>26, 44</cycle>
-      <cycle>27, 51</cycle>
-      <cycle>28, 52</cycle>
-      <cycle>29, 45</cycle>
-      <cycle>30, 46</cycle>
-      <cycle>31, 53</cycle>
-      <cycle>32, 50</cycle>
-      <cycle>33, 49</cycle>
-      <cycle>34, 48</cycle>
-      <cycle>35, 47</cycle>
-      <cycle>54, 126</cycle>
-      <cycle>55, 120</cycle>
-      <cycle>56, 119</cycle>
-      <cycle>57, 118</cycle>
-      <cycle>58, 121</cycle>
-      <cycle>59, 68</cycle>
-      <cycle>60, 70</cycle>
-      <cycle>61, 71</cycle>
-      <cycle>62, 74</cycle>
-      <cycle>63, 101</cycle>
-      <cycle>64, 88</cycle>
-      <cycle>65, 80</cycle>
-      <cycle>66, 79</cycle>
-      <cycle>67, 81</cycle>
-      <cycle>69, 86</cycle>
-      <cycle>72, 89</cycle>
-      <cycle>73, 87</cycle>
-      <cycle>75, 84</cycle>
-      <cycle>76, 82</cycle>
-      <cycle>77, 83</cycle>
-      <cycle>78, 85</cycle>
-      <cycle>90, 123</cycle>
-      <cycle>91, 122</cycle>
-      <cycle>92, 124</cycle>
-      <cycle>93, 125</cycle>
-      <cycle>94, 128</cycle>
-      <cycle>95, 129</cycle>
-      <cycle>96, 127</cycle>
-      <cycle>97, 131</cycle>
-      <cycle>98, 132</cycle>
-      <cycle>99, 133</cycle>
-      <cycle>100, 130</cycle>
-      <cycle>102, 148</cycle>
-      <cycle>103, 145</cycle>
-      <cycle>104, 141</cycle>
-      <cycle>105, 147</cycle>
-      <cycle>106, 140</cycle>
-      <cycle>107, 139</cycle>
-      <cycle>108, 135</cycle>
-      <cycle>109, 136</cycle>
-      <cycle>110, 146</cycle>
-      <cycle>111, 149</cycle>
-      <cycle>112, 144</cycle>
-      <cycle>113, 142</cycle>
-      <cycle>114, 137</cycle>
-      <cycle>115, 134</cycle>
-      <cycle>116, 138</cycle>
-      <cycle>117, 143</cycle>
-      <cycle>150, 215</cycle>
-      <cycle>151, 214</cycle>
-      <cycle>152, 216</cycle>
-      <cycle>153, 227</cycle>
-      <cycle>154, 229</cycle>
-      <cycle>155, 228</cycle>
-      <cycle>156, 226</cycle>
-      <cycle>157, 225</cycle>
-      <cycle>158, 223</cycle>
-      <cycle>159, 224</cycle>
-      <cycle>160, 222</cycle>
-      <cycle>161, 221</cycle>
-      <cycle>162, 220</cycle>
-      <cycle>163, 217</cycle>
-      <cycle>164, 218</cycle>
-      <cycle>165, 219</cycle>
-      <cycle>166, 237</cycle>
-      <cycle>167, 235</cycle>
-      <cycle>168, 234</cycle>
-      <cycle>169, 236</cycle>
-      <cycle>170, 232</cycle>
-      <cycle>171, 230</cycle>
-      <cycle>172, 231</cycle>
-      <cycle>173, 233</cycle>
-      <cycle>174, 243</cycle>
-      <cycle>175, 242</cycle>
-      <cycle>176, 245</cycle>
-      <cycle>177, 244</cycle>
-      <cycle>178, 240</cycle>
-      <cycle>179, 241</cycle>
-      <cycle>180, 239</cycle>
-      <cycle>181, 238</cycle>
-      <cycle>182, 210</cycle>
-      <cycle>183, 211</cycle>
-      <cycle>184, 213</cycle>
-      <cycle>185, 208</cycle>
-      <cycle>186, 209</cycle>
-      <cycle>187, 206</cycle>
-      <cycle>188, 207</cycle>
-      <cycle>189, 212</cycle>
-      <cycle>190, 199</cycle>
-      <cycle>191, 198</cycle>
-      <cycle>192, 200</cycle>
-      <cycle>193, 201</cycle>
-      <cycle>194, 203</cycle>
-      <cycle>195, 205</cycle>
-      <cycle>196, 202</cycle>
-      <cycle>197, 204</cycle>
-    </move>
-    <move name="rot_6">
-      <cycle>0, 40</cycle>
-      <cycle>2, 53</cycle>
-      <cycle>3, 15</cycle>
-      <cycle>4, 37</cycle>
-      <cycle>5, 38</cycle>
-      <cycle>6, 39</cycle>
-      <cycle>7, 21</cycle>
-      <cycle>8, 22</cycle>
-      <cycle>9, 50</cycle>
-      <cycle>10, 51</cycle>
-      <cycle>11, 52</cycle>
-      <cycle>12, 23</cycle>
-      <cycle>13, 44</cycle>
-      <cycle>14, 42</cycle>
-      <cycle>16, 49</cycle>
-      <cycle>17, 45</cycle>
-      <cycle>18, 48</cycle>
-      <cycle>19, 46</cycle>
-      <cycle>20, 47</cycle>
-      <cycle>24, 36</cycle>
-      <cycle>25, 41</cycle>
-      <cycle>26, 43</cycle>
-      <cycle>27, 35</cycle>
-      <cycle>28, 34</cycle>
-      <cycle>29, 33</cycle>
-      <cycle>30, 32</cycle>
-      <cycle>54, 121</cycle>
-      <cycle>55, 124</cycle>
-      <cycle>56, 122</cycle>
-      <cycle>57, 123</cycle>
-      <cycle>58, 125</cycle>
-      <cycle>59, 82</cycle>
-      <cycle>60, 86</cycle>
-      <cycle>61, 87</cycle>
-      <cycle>62, 89</cycle>
-      <cycle>63, 88</cycle>
-      <cycle>64, 104</cycle>
-      <cycle>65, 107</cycle>
-      <cycle>66, 108</cycle>
-      <cycle>67, 106</cycle>
-      <cycle>68, 109</cycle>
-      <cycle>69, 103</cycle>
-      <cycle>70, 114</cycle>
-      <cycle>71, 116</cycle>
-      <cycle>72, 102</cycle>
-      <cycle>73, 105</cycle>
-      <cycle>74, 115</cycle>
-      <cycle>75, 112</cycle>
-      <cycle>76, 110</cycle>
-      <cycle>77, 117</cycle>
-      <cycle>78, 111</cycle>
-      <cycle>79, 85</cycle>
-      <cycle>80, 84</cycle>
-      <cycle>81, 83</cycle>
-      <cycle>90, 132</cycle>
-      <cycle>91, 131</cycle>
-      <cycle>92, 133</cycle>
-      <cycle>93, 130</cycle>
-      <cycle>94, 119</cycle>
-      <cycle>95, 118</cycle>
-      <cycle>96, 120</cycle>
-      <cycle>97, 128</cycle>
-      <cycle>98, 129</cycle>
-      <cycle>99, 127</cycle>
-      <cycle>100, 126</cycle>
-      <cycle>101, 113</cycle>
-      <cycle>134, 148</cycle>
-      <cycle>135, 149</cycle>
-      <cycle>136, 146</cycle>
-      <cycle>137, 145</cycle>
-      <cycle>138, 147</cycle>
-      <cycle>139, 144</cycle>
-      <cycle>140, 143</cycle>
-      <cycle>141, 142</cycle>
-      <cycle>150, 166</cycle>
-      <cycle>151, 167</cycle>
-      <cycle>152, 169</cycle>
-      <cycle>153, 170</cycle>
-      <cycle>154, 172</cycle>
-      <cycle>155, 171</cycle>
-      <cycle>156, 173</cycle>
-      <cycle>157, 174</cycle>
-      <cycle>158, 176</cycle>
-      <cycle>159, 177</cycle>
-      <cycle>160, 175</cycle>
-      <cycle>161, 179</cycle>
-      <cycle>162, 180</cycle>
-      <cycle>163, 168</cycle>
-      <cycle>164, 181</cycle>
-      <cycle>165, 178</cycle>
-      <cycle>182, 206</cycle>
-      <cycle>183, 209</cycle>
-      <cycle>184, 207</cycle>
-      <cycle>185, 203</cycle>
-      <cycle>186, 205</cycle>
-      <cycle>187, 202</cycle>
-      <cycle>188, 204</cycle>
-      <cycle>189, 208</cycle>
-      <cycle>190, 213</cycle>
-      <cycle>191, 210</cycle>
-      <cycle>192, 211</cycle>
-      <cycle>193, 212</cycle>
-      <cycle>194, 201</cycle>
-      <cycle>195, 200</cycle>
-      <cycle>196, 198</cycle>
-      <cycle>197, 199</cycle>
-      <cycle>214, 224</cycle>
-      <cycle>215, 223</cycle>
-      <cycle>216, 222</cycle>
-      <cycle>217, 225</cycle>
-      <cycle>218, 226</cycle>
-      <cycle>219, 228</cycle>
-      <cycle>220, 229</cycle>
-      <cycle>221, 227</cycle>
-      <cycle>230, 240</cycle>
-      <cycle>231, 239</cycle>
-      <cycle>232, 241</cycle>
-      <cycle>233, 238</cycle>
-      <cycle>234, 243</cycle>
-      <cycle>235, 244</cycle>
-      <cycle>236, 242</cycle>
-      <cycle>237, 245</cycle>
-    </move>
-    <move name="rot_7">
       <cycle>0, 40</cycle>
       <cycle>1, 53</cycle>
       <cycle>2, 31</cycle>
@@ -2399,132 +1986,738 @@
       <cycle>196, 210</cycle>
       <cycle>197, 213</cycle>
     </move>
+    <move name="rot_6">
+      <cycle>0, 1, 2</cycle>
+      <cycle>3, 9, 6</cycle>
+      <cycle>4, 8, 11</cycle>
+      <cycle>5, 7, 10</cycle>
+      <cycle>12, 17, 24</cycle>
+      <cycle>13, 23, 16</cycle>
+      <cycle>14, 22, 18</cycle>
+      <cycle>15, 19, 25</cycle>
+      <cycle>20, 26, 21</cycle>
+      <cycle>27, 49, 36</cycle>
+      <cycle>28, 50, 41</cycle>
+      <cycle>29, 51, 43</cycle>
+      <cycle>30, 52, 42</cycle>
+      <cycle>31, 53, 40</cycle>
+      <cycle>32, 48, 37</cycle>
+      <cycle>33, 47, 38</cycle>
+      <cycle>34, 46, 39</cycle>
+      <cycle>35, 45, 44</cycle>
+      <cycle>54, 59, 64</cycle>
+      <cycle>55, 61, 66</cycle>
+      <cycle>56, 60, 65</cycle>
+      <cycle>57, 62, 67</cycle>
+      <cycle>58, 63, 68</cycle>
+      <cycle>69, 94, 80</cycle>
+      <cycle>70, 91, 84</cycle>
+      <cycle>71, 92, 85</cycle>
+      <cycle>72, 95, 81</cycle>
+      <cycle>73, 96, 79</cycle>
+      <cycle>74, 90, 83</cycle>
+      <cycle>75, 97, 86</cycle>
+      <cycle>76, 100, 88</cycle>
+      <cycle>77, 98, 89</cycle>
+      <cycle>78, 99, 87</cycle>
+      <cycle>82, 101, 93</cycle>
+      <cycle>102, 132, 143</cycle>
+      <cycle>103, 131, 144</cycle>
+      <cycle>104, 130, 146</cycle>
+      <cycle>105, 133, 149</cycle>
+      <cycle>106, 129, 148</cycle>
+      <cycle>107, 128, 145</cycle>
+      <cycle>108, 127, 147</cycle>
+      <cycle>109, 126, 141</cycle>
+      <cycle>110, 125, 142</cycle>
+      <cycle>111, 124, 138</cycle>
+      <cycle>112, 122, 137</cycle>
+      <cycle>113, 121, 136</cycle>
+      <cycle>114, 119, 139</cycle>
+      <cycle>115, 118, 140</cycle>
+      <cycle>116, 120, 135</cycle>
+      <cycle>117, 123, 134</cycle>
+      <cycle>150, 198, 220</cycle>
+      <cycle>151, 200, 219</cycle>
+      <cycle>152, 199, 218</cycle>
+      <cycle>153, 212, 217</cycle>
+      <cycle>154, 210, 215</cycle>
+      <cycle>155, 211, 214</cycle>
+      <cycle>156, 213, 216</cycle>
+      <cycle>157, 208, 227</cycle>
+      <cycle>158, 206, 229</cycle>
+      <cycle>159, 209, 228</cycle>
+      <cycle>160, 207, 226</cycle>
+      <cycle>161, 203, 225</cycle>
+      <cycle>162, 202, 223</cycle>
+      <cycle>163, 201, 221</cycle>
+      <cycle>164, 204, 222</cycle>
+      <cycle>165, 205, 224</cycle>
+      <cycle>166, 182, 231</cycle>
+      <cycle>167, 183, 230</cycle>
+      <cycle>168, 189, 232</cycle>
+      <cycle>169, 184, 233</cycle>
+      <cycle>170, 185, 243</cycle>
+      <cycle>171, 186, 244</cycle>
+      <cycle>172, 187, 245</cycle>
+      <cycle>173, 188, 242</cycle>
+      <cycle>174, 194, 241</cycle>
+      <cycle>175, 197, 238</cycle>
+      <cycle>176, 196, 239</cycle>
+      <cycle>177, 195, 240</cycle>
+      <cycle>178, 192, 235</cycle>
+      <cycle>179, 193, 234</cycle>
+      <cycle>180, 191, 237</cycle>
+      <cycle>181, 190, 236</cycle>
+    </move>
+    <move name="rot_7">
+      <cycle>0, 53</cycle>
+      <cycle>1, 31</cycle>
+      <cycle>2, 40</cycle>
+      <cycle>3, 30</cycle>
+      <cycle>4, 46</cycle>
+      <cycle>5, 45</cycle>
+      <cycle>6, 52</cycle>
+      <cycle>7, 35</cycle>
+      <cycle>8, 34</cycle>
+      <cycle>9, 42</cycle>
+      <cycle>10, 44</cycle>
+      <cycle>11, 39</cycle>
+      <cycle>12, 33</cycle>
+      <cycle>13, 51</cycle>
+      <cycle>14, 50</cycle>
+      <cycle>15, 32</cycle>
+      <cycle>16, 43</cycle>
+      <cycle>17, 38</cycle>
+      <cycle>18, 41</cycle>
+      <cycle>19, 37</cycle>
+      <cycle>20, 36</cycle>
+      <cycle>21, 27</cycle>
+      <cycle>22, 28</cycle>
+      <cycle>23, 29</cycle>
+      <cycle>24, 47</cycle>
+      <cycle>25, 48</cycle>
+      <cycle>26, 49</cycle>
+      <cycle>54, 110</cycle>
+      <cycle>55, 105</cycle>
+      <cycle>56, 103</cycle>
+      <cycle>57, 102</cycle>
+      <cycle>58, 104</cycle>
+      <cycle>59, 142</cycle>
+      <cycle>60, 144</cycle>
+      <cycle>61, 149</cycle>
+      <cycle>62, 143</cycle>
+      <cycle>63, 146</cycle>
+      <cycle>64, 125</cycle>
+      <cycle>65, 131</cycle>
+      <cycle>66, 133</cycle>
+      <cycle>67, 132</cycle>
+      <cycle>68, 130</cycle>
+      <cycle>69, 122</cycle>
+      <cycle>70, 128</cycle>
+      <cycle>71, 127</cycle>
+      <cycle>72, 123</cycle>
+      <cycle>73, 124</cycle>
+      <cycle>74, 129</cycle>
+      <cycle>75, 119</cycle>
+      <cycle>76, 121</cycle>
+      <cycle>77, 118</cycle>
+      <cycle>78, 120</cycle>
+      <cycle>79, 138</cycle>
+      <cycle>80, 137</cycle>
+      <cycle>81, 134</cycle>
+      <cycle>82, 141</cycle>
+      <cycle>83, 148</cycle>
+      <cycle>84, 145</cycle>
+      <cycle>85, 147</cycle>
+      <cycle>86, 139</cycle>
+      <cycle>87, 135</cycle>
+      <cycle>88, 136</cycle>
+      <cycle>89, 140</cycle>
+      <cycle>90, 106</cycle>
+      <cycle>91, 107</cycle>
+      <cycle>92, 108</cycle>
+      <cycle>93, 109</cycle>
+      <cycle>94, 112</cycle>
+      <cycle>95, 117</cycle>
+      <cycle>96, 111</cycle>
+      <cycle>97, 114</cycle>
+      <cycle>98, 115</cycle>
+      <cycle>99, 116</cycle>
+      <cycle>100, 113</cycle>
+      <cycle>101, 126</cycle>
+      <cycle>150, 187</cycle>
+      <cycle>151, 186</cycle>
+      <cycle>152, 188</cycle>
+      <cycle>153, 194</cycle>
+      <cycle>154, 196</cycle>
+      <cycle>155, 195</cycle>
+      <cycle>156, 197</cycle>
+      <cycle>157, 193</cycle>
+      <cycle>158, 191</cycle>
+      <cycle>159, 192</cycle>
+      <cycle>160, 190</cycle>
+      <cycle>161, 189</cycle>
+      <cycle>162, 182</cycle>
+      <cycle>163, 185</cycle>
+      <cycle>164, 184</cycle>
+      <cycle>165, 183</cycle>
+      <cycle>166, 202</cycle>
+      <cycle>167, 205</cycle>
+      <cycle>168, 203</cycle>
+      <cycle>169, 204</cycle>
+      <cycle>170, 201</cycle>
+      <cycle>171, 200</cycle>
+      <cycle>172, 198</cycle>
+      <cycle>173, 199</cycle>
+      <cycle>174, 212</cycle>
+      <cycle>175, 213</cycle>
+      <cycle>176, 210</cycle>
+      <cycle>177, 211</cycle>
+      <cycle>178, 209</cycle>
+      <cycle>179, 208</cycle>
+      <cycle>180, 206</cycle>
+      <cycle>181, 207</cycle>
+      <cycle>214, 240</cycle>
+      <cycle>215, 239</cycle>
+      <cycle>216, 238</cycle>
+      <cycle>217, 241</cycle>
+      <cycle>218, 242</cycle>
+      <cycle>219, 244</cycle>
+      <cycle>220, 245</cycle>
+      <cycle>221, 243</cycle>
+      <cycle>222, 233</cycle>
+      <cycle>223, 231</cycle>
+      <cycle>224, 230</cycle>
+      <cycle>225, 232</cycle>
+      <cycle>226, 236</cycle>
+      <cycle>227, 234</cycle>
+      <cycle>228, 235</cycle>
+      <cycle>229, 237</cycle>
+    </move>
     <move name="rot_8">
-      <cycle>0, 31</cycle>
-      <cycle>1, 40</cycle>
-      <cycle>2, 53</cycle>
-      <cycle>3, 42</cycle>
-      <cycle>4, 34</cycle>
-      <cycle>5, 35</cycle>
-      <cycle>6, 30</cycle>
-      <cycle>7, 44</cycle>
-      <cycle>8, 39</cycle>
-      <cycle>9, 52</cycle>
-      <cycle>10, 45</cycle>
-      <cycle>11, 46</cycle>
-      <cycle>12, 38</cycle>
-      <cycle>13, 29</cycle>
-      <cycle>14, 28</cycle>
-      <cycle>15, 37</cycle>
-      <cycle>16, 51</cycle>
-      <cycle>17, 47</cycle>
-      <cycle>18, 50</cycle>
-      <cycle>19, 48</cycle>
-      <cycle>20, 49</cycle>
-      <cycle>21, 36</cycle>
-      <cycle>22, 41</cycle>
-      <cycle>23, 43</cycle>
-      <cycle>24, 33</cycle>
-      <cycle>25, 32</cycle>
-      <cycle>26, 27</cycle>
-      <cycle>54, 142</cycle>
-      <cycle>55, 149</cycle>
-      <cycle>56, 144</cycle>
-      <cycle>57, 143</cycle>
-      <cycle>58, 146</cycle>
-      <cycle>59, 125</cycle>
-      <cycle>60, 131</cycle>
-      <cycle>61, 133</cycle>
-      <cycle>62, 132</cycle>
-      <cycle>63, 130</cycle>
-      <cycle>64, 110</cycle>
-      <cycle>65, 103</cycle>
-      <cycle>66, 105</cycle>
-      <cycle>67, 102</cycle>
-      <cycle>68, 104</cycle>
-      <cycle>69, 112</cycle>
-      <cycle>70, 107</cycle>
-      <cycle>71, 108</cycle>
-      <cycle>72, 117</cycle>
-      <cycle>73, 111</cycle>
-      <cycle>74, 106</cycle>
-      <cycle>75, 114</cycle>
-      <cycle>76, 113</cycle>
-      <cycle>77, 115</cycle>
-      <cycle>78, 116</cycle>
-      <cycle>79, 124</cycle>
-      <cycle>80, 122</cycle>
-      <cycle>81, 123</cycle>
-      <cycle>82, 126</cycle>
-      <cycle>83, 129</cycle>
-      <cycle>84, 128</cycle>
-      <cycle>85, 127</cycle>
-      <cycle>86, 119</cycle>
-      <cycle>87, 120</cycle>
-      <cycle>88, 121</cycle>
-      <cycle>89, 118</cycle>
-      <cycle>90, 148</cycle>
-      <cycle>91, 145</cycle>
-      <cycle>92, 147</cycle>
-      <cycle>93, 141</cycle>
-      <cycle>94, 137</cycle>
-      <cycle>95, 134</cycle>
-      <cycle>96, 138</cycle>
-      <cycle>97, 139</cycle>
-      <cycle>98, 140</cycle>
-      <cycle>99, 135</cycle>
-      <cycle>100, 136</cycle>
-      <cycle>101, 109</cycle>
-      <cycle>150, 172</cycle>
-      <cycle>151, 171</cycle>
-      <cycle>152, 173</cycle>
-      <cycle>153, 174</cycle>
-      <cycle>154, 176</cycle>
-      <cycle>155, 177</cycle>
-      <cycle>156, 175</cycle>
-      <cycle>157, 179</cycle>
-      <cycle>158, 180</cycle>
-      <cycle>159, 178</cycle>
-      <cycle>160, 181</cycle>
-      <cycle>161, 168</cycle>
-      <cycle>162, 166</cycle>
-      <cycle>163, 170</cycle>
-      <cycle>164, 169</cycle>
-      <cycle>165, 167</cycle>
-      <cycle>182, 223</cycle>
-      <cycle>183, 224</cycle>
-      <cycle>184, 222</cycle>
-      <cycle>185, 221</cycle>
-      <cycle>186, 219</cycle>
-      <cycle>187, 220</cycle>
-      <cycle>188, 218</cycle>
-      <cycle>189, 225</cycle>
-      <cycle>190, 226</cycle>
-      <cycle>191, 229</cycle>
-      <cycle>192, 228</cycle>
-      <cycle>193, 227</cycle>
-      <cycle>194, 217</cycle>
-      <cycle>195, 214</cycle>
-      <cycle>196, 215</cycle>
-      <cycle>197, 216</cycle>
-      <cycle>198, 245</cycle>
-      <cycle>199, 242</cycle>
-      <cycle>200, 244</cycle>
-      <cycle>201, 243</cycle>
-      <cycle>202, 231</cycle>
-      <cycle>203, 232</cycle>
-      <cycle>204, 233</cycle>
-      <cycle>205, 230</cycle>
-      <cycle>206, 237</cycle>
-      <cycle>207, 236</cycle>
-      <cycle>208, 234</cycle>
-      <cycle>209, 235</cycle>
-      <cycle>210, 239</cycle>
-      <cycle>211, 240</cycle>
-      <cycle>212, 241</cycle>
-      <cycle>213, 238</cycle>
+      <cycle>1, 53, 31, 2</cycle>
+      <cycle>3, 48, 28, 11</cycle>
+      <cycle>4, 25, 14, 6</cycle>
+      <cycle>5, 24, 26, 13</cycle>
+      <cycle>7, 49, 29, 17</cycle>
+      <cycle>8, 50, 30, 19</cycle>
+      <cycle>9, 22, 46, 32</cycle>
+      <cycle>10, 23, 47, 27</cycle>
+      <cycle>12, 51, 35, 20</cycle>
+      <cycle>15, 52, 34, 18</cycle>
+      <cycle>16, 21, 45, 33</cycle>
+      <cycle>36, 38, 44, 43</cycle>
+      <cycle>37, 39, 42, 41</cycle>
+      <cycle>54, 100, 93, 58</cycle>
+      <cycle>55, 96, 99, 92</cycle>
+      <cycle>56, 94, 97, 91</cycle>
+      <cycle>57, 95, 98, 90</cycle>
+      <cycle>59, 109, 146, 76</cycle>
+      <cycle>60, 114, 145, 69</cycle>
+      <cycle>61, 116, 147, 73</cycle>
+      <cycle>62, 115, 148, 72</cycle>
+      <cycle>63, 113, 141, 64</cycle>
+      <cycle>65, 84, 112, 139</cycle>
+      <cycle>66, 85, 111, 135</cycle>
+      <cycle>67, 83, 117, 140</cycle>
+      <cycle>68, 82, 110, 136</cycle>
+      <cycle>70, 86, 103, 137</cycle>
+      <cycle>71, 87, 105, 138</cycle>
+      <cycle>74, 89, 102, 134</cycle>
+      <cycle>75, 80, 107, 144</cycle>
+      <cycle>77, 81, 106, 143</cycle>
+      <cycle>78, 79, 108, 149</cycle>
+      <cycle>88, 104, 142, 101</cycle>
+      <cycle>118, 123, 132, 129</cycle>
+      <cycle>119, 122, 131, 128</cycle>
+      <cycle>120, 124, 133, 127</cycle>
+      <cycle>121, 125, 130, 126</cycle>
+      <cycle>150, 223, 176, 237</cycle>
+      <cycle>151, 224, 177, 235</cycle>
+      <cycle>152, 222, 175, 236</cycle>
+      <cycle>153, 221, 179, 232</cycle>
+      <cycle>154, 220, 180, 231</cycle>
+      <cycle>155, 219, 178, 230</cycle>
+      <cycle>156, 218, 181, 233</cycle>
+      <cycle>157, 217, 168, 243</cycle>
+      <cycle>158, 215, 166, 245</cycle>
+      <cycle>159, 214, 167, 244</cycle>
+      <cycle>160, 216, 169, 242</cycle>
+      <cycle>161, 227, 170, 241</cycle>
+      <cycle>162, 229, 172, 239</cycle>
+      <cycle>163, 225, 174, 234</cycle>
+      <cycle>164, 226, 173, 238</cycle>
+      <cycle>165, 228, 171, 240</cycle>
+      <cycle>182, 191, 196, 187</cycle>
+      <cycle>183, 192, 195, 186</cycle>
+      <cycle>184, 190, 197, 188</cycle>
+      <cycle>185, 189, 193, 194</cycle>
+      <cycle>198, 210, 206, 202</cycle>
+      <cycle>199, 213, 207, 204</cycle>
+      <cycle>200, 211, 209, 205</cycle>
+      <cycle>201, 212, 208, 203</cycle>
     </move>
     <move name="rot_9">
+      <cycle>0, 40</cycle>
+      <cycle>1, 2</cycle>
+      <cycle>3, 18</cycle>
+      <cycle>4, 41</cycle>
+      <cycle>5, 36</cycle>
+      <cycle>6, 37</cycle>
+      <cycle>7, 16</cycle>
+      <cycle>8, 9</cycle>
+      <cycle>10, 12</cycle>
+      <cycle>11, 15</cycle>
+      <cycle>13, 38</cycle>
+      <cycle>14, 39</cycle>
+      <cycle>17, 21</cycle>
+      <cycle>19, 22</cycle>
+      <cycle>20, 23</cycle>
+      <cycle>24, 43</cycle>
+      <cycle>25, 42</cycle>
+      <cycle>26, 44</cycle>
+      <cycle>27, 51</cycle>
+      <cycle>28, 52</cycle>
+      <cycle>29, 45</cycle>
+      <cycle>30, 46</cycle>
+      <cycle>31, 53</cycle>
+      <cycle>32, 50</cycle>
+      <cycle>33, 49</cycle>
+      <cycle>34, 48</cycle>
+      <cycle>35, 47</cycle>
+      <cycle>54, 126</cycle>
+      <cycle>55, 120</cycle>
+      <cycle>56, 119</cycle>
+      <cycle>57, 118</cycle>
+      <cycle>58, 121</cycle>
+      <cycle>59, 68</cycle>
+      <cycle>60, 70</cycle>
+      <cycle>61, 71</cycle>
+      <cycle>62, 74</cycle>
+      <cycle>63, 101</cycle>
+      <cycle>64, 88</cycle>
+      <cycle>65, 80</cycle>
+      <cycle>66, 79</cycle>
+      <cycle>67, 81</cycle>
+      <cycle>69, 86</cycle>
+      <cycle>72, 89</cycle>
+      <cycle>73, 87</cycle>
+      <cycle>75, 84</cycle>
+      <cycle>76, 82</cycle>
+      <cycle>77, 83</cycle>
+      <cycle>78, 85</cycle>
+      <cycle>90, 123</cycle>
+      <cycle>91, 122</cycle>
+      <cycle>92, 124</cycle>
+      <cycle>93, 125</cycle>
+      <cycle>94, 128</cycle>
+      <cycle>95, 129</cycle>
+      <cycle>96, 127</cycle>
+      <cycle>97, 131</cycle>
+      <cycle>98, 132</cycle>
+      <cycle>99, 133</cycle>
+      <cycle>100, 130</cycle>
+      <cycle>102, 148</cycle>
+      <cycle>103, 145</cycle>
+      <cycle>104, 141</cycle>
+      <cycle>105, 147</cycle>
+      <cycle>106, 140</cycle>
+      <cycle>107, 139</cycle>
+      <cycle>108, 135</cycle>
+      <cycle>109, 136</cycle>
+      <cycle>110, 146</cycle>
+      <cycle>111, 149</cycle>
+      <cycle>112, 144</cycle>
+      <cycle>113, 142</cycle>
+      <cycle>114, 137</cycle>
+      <cycle>115, 134</cycle>
+      <cycle>116, 138</cycle>
+      <cycle>117, 143</cycle>
+      <cycle>150, 215</cycle>
+      <cycle>151, 214</cycle>
+      <cycle>152, 216</cycle>
+      <cycle>153, 227</cycle>
+      <cycle>154, 229</cycle>
+      <cycle>155, 228</cycle>
+      <cycle>156, 226</cycle>
+      <cycle>157, 225</cycle>
+      <cycle>158, 223</cycle>
+      <cycle>159, 224</cycle>
+      <cycle>160, 222</cycle>
+      <cycle>161, 221</cycle>
+      <cycle>162, 220</cycle>
+      <cycle>163, 217</cycle>
+      <cycle>164, 218</cycle>
+      <cycle>165, 219</cycle>
+      <cycle>166, 237</cycle>
+      <cycle>167, 235</cycle>
+      <cycle>168, 234</cycle>
+      <cycle>169, 236</cycle>
+      <cycle>170, 232</cycle>
+      <cycle>171, 230</cycle>
+      <cycle>172, 231</cycle>
+      <cycle>173, 233</cycle>
+      <cycle>174, 243</cycle>
+      <cycle>175, 242</cycle>
+      <cycle>176, 245</cycle>
+      <cycle>177, 244</cycle>
+      <cycle>178, 240</cycle>
+      <cycle>179, 241</cycle>
+      <cycle>180, 239</cycle>
+      <cycle>181, 238</cycle>
+      <cycle>182, 210</cycle>
+      <cycle>183, 211</cycle>
+      <cycle>184, 213</cycle>
+      <cycle>185, 208</cycle>
+      <cycle>186, 209</cycle>
+      <cycle>187, 206</cycle>
+      <cycle>188, 207</cycle>
+      <cycle>189, 212</cycle>
+      <cycle>190, 199</cycle>
+      <cycle>191, 198</cycle>
+      <cycle>192, 200</cycle>
+      <cycle>193, 201</cycle>
+      <cycle>194, 203</cycle>
+      <cycle>195, 205</cycle>
+      <cycle>196, 202</cycle>
+      <cycle>197, 204</cycle>
+    </move>
+    <move name="rot_10">
+      <cycle>0, 1, 40, 31</cycle>
+      <cycle>3, 37, 34, 14</cycle>
+      <cycle>4, 15, 42, 28</cycle>
+      <cycle>5, 12, 43, 27</cycle>
+      <cycle>6, 8, 41, 32</cycle>
+      <cycle>7, 36, 33, 13</cycle>
+      <cycle>9, 18, 19, 11</cycle>
+      <cycle>10, 16, 20, 17</cycle>
+      <cycle>21, 44, 29, 24</cycle>
+      <cycle>22, 39, 30, 25</cycle>
+      <cycle>23, 38, 35, 26</cycle>
+      <cycle>45, 47, 49, 51</cycle>
+      <cycle>46, 48, 50, 52</cycle>
+      <cycle>54, 88, 130, 141</cycle>
+      <cycle>55, 79, 127, 135</cycle>
+      <cycle>56, 80, 128, 139</cycle>
+      <cycle>57, 81, 129, 140</cycle>
+      <cycle>58, 59, 126, 136</cycle>
+      <cycle>60, 119, 137, 91</cycle>
+      <cycle>61, 120, 138, 92</cycle>
+      <cycle>62, 118, 134, 90</cycle>
+      <cycle>63, 121, 142, 93</cycle>
+      <cycle>64, 68, 101, 76</cycle>
+      <cycle>65, 70, 75, 69</cycle>
+      <cycle>66, 71, 78, 73</cycle>
+      <cycle>67, 74, 77, 72</cycle>
+      <cycle>82, 125, 146, 100</cycle>
+      <cycle>83, 123, 143, 98</cycle>
+      <cycle>84, 122, 144, 97</cycle>
+      <cycle>85, 124, 149, 99</cycle>
+      <cycle>86, 131, 145, 94</cycle>
+      <cycle>87, 133, 147, 96</cycle>
+      <cycle>89, 132, 148, 95</cycle>
+      <cycle>102, 117, 115, 106</cycle>
+      <cycle>103, 112, 114, 107</cycle>
+      <cycle>104, 110, 113, 109</cycle>
+      <cycle>105, 111, 116, 108</cycle>
+      <cycle>150, 162, 158, 154</cycle>
+      <cycle>151, 165, 159, 155</cycle>
+      <cycle>152, 164, 160, 156</cycle>
+      <cycle>153, 163, 161, 157</cycle>
+      <cycle>166, 172, 176, 180</cycle>
+      <cycle>167, 171, 177, 178</cycle>
+      <cycle>168, 170, 174, 179</cycle>
+      <cycle>169, 173, 175, 181</cycle>
+      <cycle>182, 237, 198, 215</cycle>
+      <cycle>183, 235, 200, 214</cycle>
+      <cycle>184, 236, 199, 216</cycle>
+      <cycle>185, 232, 212, 227</cycle>
+      <cycle>186, 230, 211, 228</cycle>
+      <cycle>187, 231, 210, 229</cycle>
+      <cycle>188, 233, 213, 226</cycle>
+      <cycle>189, 234, 201, 217</cycle>
+      <cycle>190, 238, 204, 218</cycle>
+      <cycle>191, 239, 202, 220</cycle>
+      <cycle>192, 240, 205, 219</cycle>
+      <cycle>193, 241, 203, 221</cycle>
+      <cycle>194, 243, 208, 225</cycle>
+      <cycle>195, 244, 209, 224</cycle>
+      <cycle>196, 245, 206, 223</cycle>
+      <cycle>197, 242, 207, 222</cycle>
+    </move>
+    <move name="rot_11">
+      <cycle>0, 40</cycle>
+      <cycle>2, 53</cycle>
+      <cycle>3, 15</cycle>
+      <cycle>4, 37</cycle>
+      <cycle>5, 38</cycle>
+      <cycle>6, 39</cycle>
+      <cycle>7, 21</cycle>
+      <cycle>8, 22</cycle>
+      <cycle>9, 50</cycle>
+      <cycle>10, 51</cycle>
+      <cycle>11, 52</cycle>
+      <cycle>12, 23</cycle>
+      <cycle>13, 44</cycle>
+      <cycle>14, 42</cycle>
+      <cycle>16, 49</cycle>
+      <cycle>17, 45</cycle>
+      <cycle>18, 48</cycle>
+      <cycle>19, 46</cycle>
+      <cycle>20, 47</cycle>
+      <cycle>24, 36</cycle>
+      <cycle>25, 41</cycle>
+      <cycle>26, 43</cycle>
+      <cycle>27, 35</cycle>
+      <cycle>28, 34</cycle>
+      <cycle>29, 33</cycle>
+      <cycle>30, 32</cycle>
+      <cycle>54, 121</cycle>
+      <cycle>55, 124</cycle>
+      <cycle>56, 122</cycle>
+      <cycle>57, 123</cycle>
+      <cycle>58, 125</cycle>
+      <cycle>59, 82</cycle>
+      <cycle>60, 86</cycle>
+      <cycle>61, 87</cycle>
+      <cycle>62, 89</cycle>
+      <cycle>63, 88</cycle>
+      <cycle>64, 104</cycle>
+      <cycle>65, 107</cycle>
+      <cycle>66, 108</cycle>
+      <cycle>67, 106</cycle>
+      <cycle>68, 109</cycle>
+      <cycle>69, 103</cycle>
+      <cycle>70, 114</cycle>
+      <cycle>71, 116</cycle>
+      <cycle>72, 102</cycle>
+      <cycle>73, 105</cycle>
+      <cycle>74, 115</cycle>
+      <cycle>75, 112</cycle>
+      <cycle>76, 110</cycle>
+      <cycle>77, 117</cycle>
+      <cycle>78, 111</cycle>
+      <cycle>79, 85</cycle>
+      <cycle>80, 84</cycle>
+      <cycle>81, 83</cycle>
+      <cycle>90, 132</cycle>
+      <cycle>91, 131</cycle>
+      <cycle>92, 133</cycle>
+      <cycle>93, 130</cycle>
+      <cycle>94, 119</cycle>
+      <cycle>95, 118</cycle>
+      <cycle>96, 120</cycle>
+      <cycle>97, 128</cycle>
+      <cycle>98, 129</cycle>
+      <cycle>99, 127</cycle>
+      <cycle>100, 126</cycle>
+      <cycle>101, 113</cycle>
+      <cycle>134, 148</cycle>
+      <cycle>135, 149</cycle>
+      <cycle>136, 146</cycle>
+      <cycle>137, 145</cycle>
+      <cycle>138, 147</cycle>
+      <cycle>139, 144</cycle>
+      <cycle>140, 143</cycle>
+      <cycle>141, 142</cycle>
+      <cycle>150, 166</cycle>
+      <cycle>151, 167</cycle>
+      <cycle>152, 169</cycle>
+      <cycle>153, 170</cycle>
+      <cycle>154, 172</cycle>
+      <cycle>155, 171</cycle>
+      <cycle>156, 173</cycle>
+      <cycle>157, 174</cycle>
+      <cycle>158, 176</cycle>
+      <cycle>159, 177</cycle>
+      <cycle>160, 175</cycle>
+      <cycle>161, 179</cycle>
+      <cycle>162, 180</cycle>
+      <cycle>163, 168</cycle>
+      <cycle>164, 181</cycle>
+      <cycle>165, 178</cycle>
+      <cycle>182, 206</cycle>
+      <cycle>183, 209</cycle>
+      <cycle>184, 207</cycle>
+      <cycle>185, 203</cycle>
+      <cycle>186, 205</cycle>
+      <cycle>187, 202</cycle>
+      <cycle>188, 204</cycle>
+      <cycle>189, 208</cycle>
+      <cycle>190, 213</cycle>
+      <cycle>191, 210</cycle>
+      <cycle>192, 211</cycle>
+      <cycle>193, 212</cycle>
+      <cycle>194, 201</cycle>
+      <cycle>195, 200</cycle>
+      <cycle>196, 198</cycle>
+      <cycle>197, 199</cycle>
+      <cycle>214, 224</cycle>
+      <cycle>215, 223</cycle>
+      <cycle>216, 222</cycle>
+      <cycle>217, 225</cycle>
+      <cycle>218, 226</cycle>
+      <cycle>219, 228</cycle>
+      <cycle>220, 229</cycle>
+      <cycle>221, 227</cycle>
+      <cycle>230, 240</cycle>
+      <cycle>231, 239</cycle>
+      <cycle>232, 241</cycle>
+      <cycle>233, 238</cycle>
+      <cycle>234, 243</cycle>
+      <cycle>235, 244</cycle>
+      <cycle>236, 242</cycle>
+      <cycle>237, 245</cycle>
+    </move>
+    <move name="rot_12">
+      <cycle>0, 1, 53</cycle>
+      <cycle>2, 40, 31</cycle>
+      <cycle>3, 50, 25</cycle>
+      <cycle>4, 22, 48</cycle>
+      <cycle>5, 21, 47</cycle>
+      <cycle>6, 15, 46</cycle>
+      <cycle>7, 51, 26</cycle>
+      <cycle>8, 52, 14</cycle>
+      <cycle>9, 39, 28</cycle>
+      <cycle>10, 38, 29</cycle>
+      <cycle>11, 37, 30</cycle>
+      <cycle>12, 45, 13</cycle>
+      <cycle>16, 44, 27</cycle>
+      <cycle>17, 36, 35</cycle>
+      <cycle>18, 42, 32</cycle>
+      <cycle>19, 41, 34</cycle>
+      <cycle>20, 43, 33</cycle>
+      <cycle>23, 49, 24</cycle>
+      <cycle>54, 82, 113</cycle>
+      <cycle>55, 87, 111</cycle>
+      <cycle>56, 86, 112</cycle>
+      <cycle>57, 89, 117</cycle>
+      <cycle>58, 88, 110</cycle>
+      <cycle>59, 104, 93</cycle>
+      <cycle>60, 107, 97</cycle>
+      <cycle>61, 108, 99</cycle>
+      <cycle>62, 106, 98</cycle>
+      <cycle>63, 109, 100</cycle>
+      <cycle>64, 121, 146</cycle>
+      <cycle>65, 122, 145</cycle>
+      <cycle>66, 124, 147</cycle>
+      <cycle>67, 123, 148</cycle>
+      <cycle>68, 125, 141</cycle>
+      <cycle>69, 119, 144</cycle>
+      <cycle>70, 131, 139</cycle>
+      <cycle>71, 133, 135</cycle>
+      <cycle>72, 118, 143</cycle>
+      <cycle>73, 120, 149</cycle>
+      <cycle>74, 132, 140</cycle>
+      <cycle>75, 128, 137</cycle>
+      <cycle>76, 126, 142</cycle>
+      <cycle>77, 129, 134</cycle>
+      <cycle>78, 127, 138</cycle>
+      <cycle>79, 105, 92</cycle>
+      <cycle>80, 103, 91</cycle>
+      <cycle>81, 102, 90</cycle>
+      <cycle>83, 115, 95</cycle>
+      <cycle>84, 114, 94</cycle>
+      <cycle>85, 116, 96</cycle>
+      <cycle>101, 130, 136</cycle>
+      <cycle>150, 196, 231</cycle>
+      <cycle>151, 195, 230</cycle>
+      <cycle>152, 197, 233</cycle>
+      <cycle>153, 193, 243</cycle>
+      <cycle>154, 191, 245</cycle>
+      <cycle>155, 192, 244</cycle>
+      <cycle>156, 190, 242</cycle>
+      <cycle>157, 189, 241</cycle>
+      <cycle>158, 182, 239</cycle>
+      <cycle>159, 183, 240</cycle>
+      <cycle>160, 184, 238</cycle>
+      <cycle>161, 185, 234</cycle>
+      <cycle>162, 187, 237</cycle>
+      <cycle>163, 194, 232</cycle>
+      <cycle>164, 188, 236</cycle>
+      <cycle>165, 186, 235</cycle>
+      <cycle>166, 206, 220</cycle>
+      <cycle>167, 209, 219</cycle>
+      <cycle>168, 208, 221</cycle>
+      <cycle>169, 207, 218</cycle>
+      <cycle>170, 203, 217</cycle>
+      <cycle>171, 205, 214</cycle>
+      <cycle>172, 202, 215</cycle>
+      <cycle>173, 204, 216</cycle>
+      <cycle>174, 201, 227</cycle>
+      <cycle>175, 199, 226</cycle>
+      <cycle>176, 198, 229</cycle>
+      <cycle>177, 200, 228</cycle>
+      <cycle>178, 211, 224</cycle>
+      <cycle>179, 212, 225</cycle>
+      <cycle>180, 210, 223</cycle>
+      <cycle>181, 213, 222</cycle>
+    </move>
+    <move name="rot_13">
+      <cycle>0, 31, 40, 1</cycle>
+      <cycle>3, 14, 34, 37</cycle>
+      <cycle>4, 28, 42, 15</cycle>
+      <cycle>5, 27, 43, 12</cycle>
+      <cycle>6, 32, 41, 8</cycle>
+      <cycle>7, 13, 33, 36</cycle>
+      <cycle>9, 11, 19, 18</cycle>
+      <cycle>10, 17, 20, 16</cycle>
+      <cycle>21, 24, 29, 44</cycle>
+      <cycle>22, 25, 30, 39</cycle>
+      <cycle>23, 26, 35, 38</cycle>
+      <cycle>45, 51, 49, 47</cycle>
+      <cycle>46, 52, 50, 48</cycle>
+      <cycle>54, 141, 130, 88</cycle>
+      <cycle>55, 135, 127, 79</cycle>
+      <cycle>56, 139, 128, 80</cycle>
+      <cycle>57, 140, 129, 81</cycle>
+      <cycle>58, 136, 126, 59</cycle>
+      <cycle>60, 91, 137, 119</cycle>
+      <cycle>61, 92, 138, 120</cycle>
+      <cycle>62, 90, 134, 118</cycle>
+      <cycle>63, 93, 142, 121</cycle>
+      <cycle>64, 76, 101, 68</cycle>
+      <cycle>65, 69, 75, 70</cycle>
+      <cycle>66, 73, 78, 71</cycle>
+      <cycle>67, 72, 77, 74</cycle>
+      <cycle>82, 100, 146, 125</cycle>
+      <cycle>83, 98, 143, 123</cycle>
+      <cycle>84, 97, 144, 122</cycle>
+      <cycle>85, 99, 149, 124</cycle>
+      <cycle>86, 94, 145, 131</cycle>
+      <cycle>87, 96, 147, 133</cycle>
+      <cycle>89, 95, 148, 132</cycle>
+      <cycle>102, 106, 115, 117</cycle>
+      <cycle>103, 107, 114, 112</cycle>
+      <cycle>104, 109, 113, 110</cycle>
+      <cycle>105, 108, 116, 111</cycle>
+      <cycle>150, 154, 158, 162</cycle>
+      <cycle>151, 155, 159, 165</cycle>
+      <cycle>152, 156, 160, 164</cycle>
+      <cycle>153, 157, 161, 163</cycle>
+      <cycle>166, 180, 176, 172</cycle>
+      <cycle>167, 178, 177, 171</cycle>
+      <cycle>168, 179, 174, 170</cycle>
+      <cycle>169, 181, 175, 173</cycle>
+      <cycle>182, 215, 198, 237</cycle>
+      <cycle>183, 214, 200, 235</cycle>
+      <cycle>184, 216, 199, 236</cycle>
+      <cycle>185, 227, 212, 232</cycle>
+      <cycle>186, 228, 211, 230</cycle>
+      <cycle>187, 229, 210, 231</cycle>
+      <cycle>188, 226, 213, 233</cycle>
+      <cycle>189, 217, 201, 234</cycle>
+      <cycle>190, 218, 204, 238</cycle>
+      <cycle>191, 220, 202, 239</cycle>
+      <cycle>192, 219, 205, 240</cycle>
+      <cycle>193, 221, 203, 241</cycle>
+      <cycle>194, 225, 208, 243</cycle>
+      <cycle>195, 224, 209, 244</cycle>
+      <cycle>196, 223, 206, 245</cycle>
+      <cycle>197, 222, 207, 242</cycle>
+    </move>
+    <move name="rot_14">
       <cycle>0, 1</cycle>
       <cycle>2, 53</cycle>
       <cycle>3, 4</cycle>
@@ -2649,175 +2842,257 @@
       <cycle>212, 221</cycle>
       <cycle>213, 218</cycle>
     </move>
-    <move name="rot_10">
-      <cycle>0, 2, 1</cycle>
-      <cycle>3, 6, 9</cycle>
-      <cycle>4, 11, 8</cycle>
-      <cycle>5, 10, 7</cycle>
-      <cycle>12, 24, 17</cycle>
-      <cycle>13, 16, 23</cycle>
-      <cycle>14, 18, 22</cycle>
-      <cycle>15, 25, 19</cycle>
-      <cycle>20, 21, 26</cycle>
-      <cycle>27, 36, 49</cycle>
-      <cycle>28, 41, 50</cycle>
-      <cycle>29, 43, 51</cycle>
-      <cycle>30, 42, 52</cycle>
-      <cycle>31, 40, 53</cycle>
-      <cycle>32, 37, 48</cycle>
-      <cycle>33, 38, 47</cycle>
-      <cycle>34, 39, 46</cycle>
-      <cycle>35, 44, 45</cycle>
-      <cycle>54, 64, 59</cycle>
-      <cycle>55, 66, 61</cycle>
-      <cycle>56, 65, 60</cycle>
-      <cycle>57, 67, 62</cycle>
-      <cycle>58, 68, 63</cycle>
-      <cycle>69, 80, 94</cycle>
-      <cycle>70, 84, 91</cycle>
-      <cycle>71, 85, 92</cycle>
-      <cycle>72, 81, 95</cycle>
-      <cycle>73, 79, 96</cycle>
-      <cycle>74, 83, 90</cycle>
-      <cycle>75, 86, 97</cycle>
-      <cycle>76, 88, 100</cycle>
-      <cycle>77, 89, 98</cycle>
-      <cycle>78, 87, 99</cycle>
-      <cycle>82, 93, 101</cycle>
-      <cycle>102, 143, 132</cycle>
-      <cycle>103, 144, 131</cycle>
-      <cycle>104, 146, 130</cycle>
-      <cycle>105, 149, 133</cycle>
-      <cycle>106, 148, 129</cycle>
-      <cycle>107, 145, 128</cycle>
-      <cycle>108, 147, 127</cycle>
-      <cycle>109, 141, 126</cycle>
-      <cycle>110, 142, 125</cycle>
-      <cycle>111, 138, 124</cycle>
-      <cycle>112, 137, 122</cycle>
-      <cycle>113, 136, 121</cycle>
-      <cycle>114, 139, 119</cycle>
-      <cycle>115, 140, 118</cycle>
-      <cycle>116, 135, 120</cycle>
-      <cycle>117, 134, 123</cycle>
-      <cycle>150, 220, 198</cycle>
-      <cycle>151, 219, 200</cycle>
-      <cycle>152, 218, 199</cycle>
-      <cycle>153, 217, 212</cycle>
-      <cycle>154, 215, 210</cycle>
-      <cycle>155, 214, 211</cycle>
-      <cycle>156, 216, 213</cycle>
-      <cycle>157, 227, 208</cycle>
-      <cycle>158, 229, 206</cycle>
-      <cycle>159, 228, 209</cycle>
-      <cycle>160, 226, 207</cycle>
-      <cycle>161, 225, 203</cycle>
-      <cycle>162, 223, 202</cycle>
-      <cycle>163, 221, 201</cycle>
-      <cycle>164, 222, 204</cycle>
-      <cycle>165, 224, 205</cycle>
-      <cycle>166, 231, 182</cycle>
-      <cycle>167, 230, 183</cycle>
-      <cycle>168, 232, 189</cycle>
-      <cycle>169, 233, 184</cycle>
-      <cycle>170, 243, 185</cycle>
-      <cycle>171, 244, 186</cycle>
-      <cycle>172, 245, 187</cycle>
-      <cycle>173, 242, 188</cycle>
-      <cycle>174, 241, 194</cycle>
-      <cycle>175, 238, 197</cycle>
-      <cycle>176, 239, 196</cycle>
-      <cycle>177, 240, 195</cycle>
-      <cycle>178, 235, 192</cycle>
-      <cycle>179, 234, 193</cycle>
-      <cycle>180, 237, 191</cycle>
-      <cycle>181, 236, 190</cycle>
+    <move name="rot_15">
+      <cycle>0, 2</cycle>
+      <cycle>1, 31</cycle>
+      <cycle>3, 32</cycle>
+      <cycle>4, 19</cycle>
+      <cycle>5, 17</cycle>
+      <cycle>6, 11</cycle>
+      <cycle>7, 27</cycle>
+      <cycle>8, 28</cycle>
+      <cycle>9, 14</cycle>
+      <cycle>10, 13</cycle>
+      <cycle>12, 29</cycle>
+      <cycle>15, 30</cycle>
+      <cycle>16, 26</cycle>
+      <cycle>18, 25</cycle>
+      <cycle>20, 24</cycle>
+      <cycle>21, 35</cycle>
+      <cycle>22, 34</cycle>
+      <cycle>23, 33</cycle>
+      <cycle>36, 47</cycle>
+      <cycle>37, 46</cycle>
+      <cycle>38, 45</cycle>
+      <cycle>39, 52</cycle>
+      <cycle>40, 53</cycle>
+      <cycle>41, 48</cycle>
+      <cycle>42, 50</cycle>
+      <cycle>43, 49</cycle>
+      <cycle>44, 51</cycle>
+      <cycle>54, 76</cycle>
+      <cycle>55, 73</cycle>
+      <cycle>56, 69</cycle>
+      <cycle>57, 72</cycle>
+      <cycle>58, 64</cycle>
+      <cycle>59, 141</cycle>
+      <cycle>60, 139</cycle>
+      <cycle>61, 135</cycle>
+      <cycle>62, 140</cycle>
+      <cycle>63, 136</cycle>
+      <cycle>65, 91</cycle>
+      <cycle>66, 92</cycle>
+      <cycle>67, 90</cycle>
+      <cycle>68, 93</cycle>
+      <cycle>70, 97</cycle>
+      <cycle>71, 99</cycle>
+      <cycle>74, 98</cycle>
+      <cycle>75, 94</cycle>
+      <cycle>77, 95</cycle>
+      <cycle>78, 96</cycle>
+      <cycle>79, 147</cycle>
+      <cycle>80, 145</cycle>
+      <cycle>81, 148</cycle>
+      <cycle>82, 142</cycle>
+      <cycle>83, 134</cycle>
+      <cycle>84, 137</cycle>
+      <cycle>85, 138</cycle>
+      <cycle>86, 144</cycle>
+      <cycle>87, 149</cycle>
+      <cycle>88, 146</cycle>
+      <cycle>89, 143</cycle>
+      <cycle>100, 101</cycle>
+      <cycle>102, 123</cycle>
+      <cycle>103, 122</cycle>
+      <cycle>104, 125</cycle>
+      <cycle>105, 124</cycle>
+      <cycle>106, 132</cycle>
+      <cycle>107, 131</cycle>
+      <cycle>108, 133</cycle>
+      <cycle>109, 130</cycle>
+      <cycle>110, 121</cycle>
+      <cycle>111, 120</cycle>
+      <cycle>112, 119</cycle>
+      <cycle>113, 126</cycle>
+      <cycle>114, 128</cycle>
+      <cycle>115, 129</cycle>
+      <cycle>116, 127</cycle>
+      <cycle>117, 118</cycle>
+      <cycle>150, 202</cycle>
+      <cycle>151, 205</cycle>
+      <cycle>152, 204</cycle>
+      <cycle>153, 201</cycle>
+      <cycle>154, 198</cycle>
+      <cycle>155, 200</cycle>
+      <cycle>156, 199</cycle>
+      <cycle>157, 212</cycle>
+      <cycle>158, 210</cycle>
+      <cycle>159, 211</cycle>
+      <cycle>160, 213</cycle>
+      <cycle>161, 208</cycle>
+      <cycle>162, 206</cycle>
+      <cycle>163, 203</cycle>
+      <cycle>164, 207</cycle>
+      <cycle>165, 209</cycle>
+      <cycle>166, 187</cycle>
+      <cycle>167, 186</cycle>
+      <cycle>168, 185</cycle>
+      <cycle>169, 188</cycle>
+      <cycle>170, 194</cycle>
+      <cycle>171, 195</cycle>
+      <cycle>172, 196</cycle>
+      <cycle>173, 197</cycle>
+      <cycle>174, 193</cycle>
+      <cycle>175, 190</cycle>
+      <cycle>176, 191</cycle>
+      <cycle>177, 192</cycle>
+      <cycle>178, 183</cycle>
+      <cycle>179, 189</cycle>
+      <cycle>180, 182</cycle>
+      <cycle>181, 184</cycle>
+      <cycle>214, 230</cycle>
+      <cycle>215, 231</cycle>
+      <cycle>216, 233</cycle>
+      <cycle>217, 232</cycle>
+      <cycle>218, 236</cycle>
+      <cycle>219, 235</cycle>
+      <cycle>220, 237</cycle>
+      <cycle>221, 234</cycle>
+      <cycle>222, 238</cycle>
+      <cycle>223, 239</cycle>
+      <cycle>224, 240</cycle>
+      <cycle>225, 241</cycle>
+      <cycle>226, 242</cycle>
+      <cycle>227, 243</cycle>
+      <cycle>228, 244</cycle>
+      <cycle>229, 245</cycle>
     </move>
-    <move name="rot_11">
-      <cycle>0, 53, 31</cycle>
-      <cycle>1, 40, 2</cycle>
-      <cycle>3, 39, 19</cycle>
-      <cycle>4, 52, 32</cycle>
-      <cycle>5, 51, 33</cycle>
-      <cycle>6, 50, 34</cycle>
-      <cycle>7, 38, 20</cycle>
-      <cycle>8, 37, 18</cycle>
-      <cycle>9, 15, 41</cycle>
-      <cycle>10, 21, 43</cycle>
-      <cycle>11, 22, 42</cycle>
-      <cycle>12, 36, 16</cycle>
-      <cycle>13, 49, 35</cycle>
-      <cycle>14, 48, 30</cycle>
-      <cycle>17, 23, 44</cycle>
-      <cycle>24, 45, 27</cycle>
-      <cycle>25, 46, 28</cycle>
-      <cycle>26, 47, 29</cycle>
-      <cycle>54, 104, 136</cycle>
-      <cycle>55, 108, 138</cycle>
-      <cycle>56, 107, 137</cycle>
-      <cycle>57, 106, 134</cycle>
-      <cycle>58, 109, 142</cycle>
-      <cycle>59, 121, 101</cycle>
-      <cycle>60, 122, 75</cycle>
-      <cycle>61, 124, 78</cycle>
-      <cycle>62, 123, 77</cycle>
-      <cycle>63, 125, 76</cycle>
-      <cycle>64, 82, 130</cycle>
-      <cycle>65, 86, 128</cycle>
-      <cycle>66, 87, 127</cycle>
-      <cycle>67, 89, 129</cycle>
-      <cycle>68, 88, 126</cycle>
-      <cycle>69, 84, 131</cycle>
-      <cycle>70, 80, 119</cycle>
-      <cycle>71, 79, 120</cycle>
-      <cycle>72, 83, 132</cycle>
-      <cycle>73, 85, 133</cycle>
-      <cycle>74, 81, 118</cycle>
-      <cycle>90, 115, 143</cycle>
-      <cycle>91, 114, 144</cycle>
-      <cycle>92, 116, 149</cycle>
-      <cycle>93, 113, 146</cycle>
-      <cycle>94, 103, 139</cycle>
-      <cycle>95, 102, 140</cycle>
-      <cycle>96, 105, 135</cycle>
-      <cycle>97, 112, 145</cycle>
-      <cycle>98, 117, 148</cycle>
-      <cycle>99, 111, 147</cycle>
-      <cycle>100, 110, 141</cycle>
-      <cycle>150, 229, 182</cycle>
-      <cycle>151, 228, 183</cycle>
-      <cycle>152, 226, 184</cycle>
-      <cycle>153, 225, 185</cycle>
-      <cycle>154, 223, 187</cycle>
-      <cycle>155, 224, 186</cycle>
-      <cycle>156, 222, 188</cycle>
-      <cycle>157, 221, 194</cycle>
-      <cycle>158, 220, 196</cycle>
-      <cycle>159, 219, 195</cycle>
-      <cycle>160, 218, 197</cycle>
-      <cycle>161, 217, 193</cycle>
-      <cycle>162, 215, 191</cycle>
-      <cycle>163, 227, 189</cycle>
-      <cycle>164, 216, 190</cycle>
-      <cycle>165, 214, 192</cycle>
-      <cycle>166, 239, 198</cycle>
-      <cycle>167, 240, 200</cycle>
-      <cycle>168, 241, 201</cycle>
-      <cycle>169, 238, 199</cycle>
-      <cycle>170, 234, 212</cycle>
-      <cycle>171, 235, 211</cycle>
-      <cycle>172, 237, 210</cycle>
-      <cycle>173, 236, 213</cycle>
-      <cycle>174, 232, 208</cycle>
-      <cycle>175, 233, 207</cycle>
-      <cycle>176, 231, 206</cycle>
-      <cycle>177, 230, 209</cycle>
-      <cycle>178, 244, 205</cycle>
-      <cycle>179, 243, 203</cycle>
-      <cycle>180, 245, 202</cycle>
-      <cycle>181, 242, 204</cycle>
+    <move name="rot_16">
+      <cycle>0, 31</cycle>
+      <cycle>1, 40</cycle>
+      <cycle>2, 53</cycle>
+      <cycle>3, 42</cycle>
+      <cycle>4, 34</cycle>
+      <cycle>5, 35</cycle>
+      <cycle>6, 30</cycle>
+      <cycle>7, 44</cycle>
+      <cycle>8, 39</cycle>
+      <cycle>9, 52</cycle>
+      <cycle>10, 45</cycle>
+      <cycle>11, 46</cycle>
+      <cycle>12, 38</cycle>
+      <cycle>13, 29</cycle>
+      <cycle>14, 28</cycle>
+      <cycle>15, 37</cycle>
+      <cycle>16, 51</cycle>
+      <cycle>17, 47</cycle>
+      <cycle>18, 50</cycle>
+      <cycle>19, 48</cycle>
+      <cycle>20, 49</cycle>
+      <cycle>21, 36</cycle>
+      <cycle>22, 41</cycle>
+      <cycle>23, 43</cycle>
+      <cycle>24, 33</cycle>
+      <cycle>25, 32</cycle>
+      <cycle>26, 27</cycle>
+      <cycle>54, 142</cycle>
+      <cycle>55, 149</cycle>
+      <cycle>56, 144</cycle>
+      <cycle>57, 143</cycle>
+      <cycle>58, 146</cycle>
+      <cycle>59, 125</cycle>
+      <cycle>60, 131</cycle>
+      <cycle>61, 133</cycle>
+      <cycle>62, 132</cycle>
+      <cycle>63, 130</cycle>
+      <cycle>64, 110</cycle>
+      <cycle>65, 103</cycle>
+      <cycle>66, 105</cycle>
+      <cycle>67, 102</cycle>
+      <cycle>68, 104</cycle>
+      <cycle>69, 112</cycle>
+      <cycle>70, 107</cycle>
+      <cycle>71, 108</cycle>
+      <cycle>72, 117</cycle>
+      <cycle>73, 111</cycle>
+      <cycle>74, 106</cycle>
+      <cycle>75, 114</cycle>
+      <cycle>76, 113</cycle>
+      <cycle>77, 115</cycle>
+      <cycle>78, 116</cycle>
+      <cycle>79, 124</cycle>
+      <cycle>80, 122</cycle>
+      <cycle>81, 123</cycle>
+      <cycle>82, 126</cycle>
+      <cycle>83, 129</cycle>
+      <cycle>84, 128</cycle>
+      <cycle>85, 127</cycle>
+      <cycle>86, 119</cycle>
+      <cycle>87, 120</cycle>
+      <cycle>88, 121</cycle>
+      <cycle>89, 118</cycle>
+      <cycle>90, 148</cycle>
+      <cycle>91, 145</cycle>
+      <cycle>92, 147</cycle>
+      <cycle>93, 141</cycle>
+      <cycle>94, 137</cycle>
+      <cycle>95, 134</cycle>
+      <cycle>96, 138</cycle>
+      <cycle>97, 139</cycle>
+      <cycle>98, 140</cycle>
+      <cycle>99, 135</cycle>
+      <cycle>100, 136</cycle>
+      <cycle>101, 109</cycle>
+      <cycle>150, 172</cycle>
+      <cycle>151, 171</cycle>
+      <cycle>152, 173</cycle>
+      <cycle>153, 174</cycle>
+      <cycle>154, 176</cycle>
+      <cycle>155, 177</cycle>
+      <cycle>156, 175</cycle>
+      <cycle>157, 179</cycle>
+      <cycle>158, 180</cycle>
+      <cycle>159, 178</cycle>
+      <cycle>160, 181</cycle>
+      <cycle>161, 168</cycle>
+      <cycle>162, 166</cycle>
+      <cycle>163, 170</cycle>
+      <cycle>164, 169</cycle>
+      <cycle>165, 167</cycle>
+      <cycle>182, 223</cycle>
+      <cycle>183, 224</cycle>
+      <cycle>184, 222</cycle>
+      <cycle>185, 221</cycle>
+      <cycle>186, 219</cycle>
+      <cycle>187, 220</cycle>
+      <cycle>188, 218</cycle>
+      <cycle>189, 225</cycle>
+      <cycle>190, 226</cycle>
+      <cycle>191, 229</cycle>
+      <cycle>192, 228</cycle>
+      <cycle>193, 227</cycle>
+      <cycle>194, 217</cycle>
+      <cycle>195, 214</cycle>
+      <cycle>196, 215</cycle>
+      <cycle>197, 216</cycle>
+      <cycle>198, 245</cycle>
+      <cycle>199, 242</cycle>
+      <cycle>200, 244</cycle>
+      <cycle>201, 243</cycle>
+      <cycle>202, 231</cycle>
+      <cycle>203, 232</cycle>
+      <cycle>204, 233</cycle>
+      <cycle>205, 230</cycle>
+      <cycle>206, 237</cycle>
+      <cycle>207, 236</cycle>
+      <cycle>208, 234</cycle>
+      <cycle>209, 235</cycle>
+      <cycle>210, 239</cycle>
+      <cycle>211, 240</cycle>
+      <cycle>212, 241</cycle>
+      <cycle>213, 238</cycle>
     </move>
-    <move name="rot_12">
+    <move name="rot_17">
       <cycle>0, 2, 31</cycle>
       <cycle>1, 40, 53</cycle>
       <cycle>3, 41, 46</cycle>
@@ -2901,175 +3176,7 @@
       <cycle>180, 215, 187</cycle>
       <cycle>181, 216, 188</cycle>
     </move>
-    <move name="rot_13">
-      <cycle>0, 31, 2</cycle>
-      <cycle>1, 53, 40</cycle>
-      <cycle>3, 46, 41</cycle>
-      <cycle>4, 30, 18</cycle>
-      <cycle>5, 29, 20</cycle>
-      <cycle>6, 28, 19</cycle>
-      <cycle>7, 47, 43</cycle>
-      <cycle>8, 48, 42</cycle>
-      <cycle>9, 25, 34</cycle>
-      <cycle>10, 26, 33</cycle>
-      <cycle>11, 14, 32</cycle>
-      <cycle>12, 49, 44</cycle>
-      <cycle>13, 27, 17</cycle>
-      <cycle>15, 50, 39</cycle>
-      <cycle>16, 24, 35</cycle>
-      <cycle>21, 51, 38</cycle>
-      <cycle>22, 52, 37</cycle>
-      <cycle>23, 45, 36</cycle>
-      <cycle>54, 146, 101</cycle>
-      <cycle>55, 147, 78</cycle>
-      <cycle>56, 145, 75</cycle>
-      <cycle>57, 148, 77</cycle>
-      <cycle>58, 141, 76</cycle>
-      <cycle>59, 113, 130</cycle>
-      <cycle>60, 112, 128</cycle>
-      <cycle>61, 111, 127</cycle>
-      <cycle>62, 117, 129</cycle>
-      <cycle>63, 110, 126</cycle>
-      <cycle>64, 93, 136</cycle>
-      <cycle>65, 97, 137</cycle>
-      <cycle>66, 99, 138</cycle>
-      <cycle>67, 98, 134</cycle>
-      <cycle>68, 100, 142</cycle>
-      <cycle>69, 91, 139</cycle>
-      <cycle>70, 94, 144</cycle>
-      <cycle>71, 96, 149</cycle>
-      <cycle>72, 90, 140</cycle>
-      <cycle>73, 92, 135</cycle>
-      <cycle>74, 95, 143</cycle>
-      <cycle>79, 116, 133</cycle>
-      <cycle>80, 114, 131</cycle>
-      <cycle>81, 115, 132</cycle>
-      <cycle>82, 104, 121</cycle>
-      <cycle>83, 102, 118</cycle>
-      <cycle>84, 103, 119</cycle>
-      <cycle>85, 105, 120</cycle>
-      <cycle>86, 107, 122</cycle>
-      <cycle>87, 108, 124</cycle>
-      <cycle>88, 109, 125</cycle>
-      <cycle>89, 106, 123</cycle>
-      <cycle>150, 206, 239</cycle>
-      <cycle>151, 209, 240</cycle>
-      <cycle>152, 207, 238</cycle>
-      <cycle>153, 203, 234</cycle>
-      <cycle>154, 202, 237</cycle>
-      <cycle>155, 205, 235</cycle>
-      <cycle>156, 204, 236</cycle>
-      <cycle>157, 201, 232</cycle>
-      <cycle>158, 198, 231</cycle>
-      <cycle>159, 200, 230</cycle>
-      <cycle>160, 199, 233</cycle>
-      <cycle>161, 212, 243</cycle>
-      <cycle>162, 210, 245</cycle>
-      <cycle>163, 208, 241</cycle>
-      <cycle>164, 213, 242</cycle>
-      <cycle>165, 211, 244</cycle>
-      <cycle>166, 196, 229</cycle>
-      <cycle>167, 195, 228</cycle>
-      <cycle>168, 194, 227</cycle>
-      <cycle>169, 197, 226</cycle>
-      <cycle>170, 193, 225</cycle>
-      <cycle>171, 192, 224</cycle>
-      <cycle>172, 191, 223</cycle>
-      <cycle>173, 190, 222</cycle>
-      <cycle>174, 189, 221</cycle>
-      <cycle>175, 184, 218</cycle>
-      <cycle>176, 182, 220</cycle>
-      <cycle>177, 183, 219</cycle>
-      <cycle>178, 186, 214</cycle>
-      <cycle>179, 185, 217</cycle>
-      <cycle>180, 187, 215</cycle>
-      <cycle>181, 188, 216</cycle>
-    </move>
-    <move name="rot_14">
-      <cycle>0, 1, 53</cycle>
-      <cycle>2, 40, 31</cycle>
-      <cycle>3, 50, 25</cycle>
-      <cycle>4, 22, 48</cycle>
-      <cycle>5, 21, 47</cycle>
-      <cycle>6, 15, 46</cycle>
-      <cycle>7, 51, 26</cycle>
-      <cycle>8, 52, 14</cycle>
-      <cycle>9, 39, 28</cycle>
-      <cycle>10, 38, 29</cycle>
-      <cycle>11, 37, 30</cycle>
-      <cycle>12, 45, 13</cycle>
-      <cycle>16, 44, 27</cycle>
-      <cycle>17, 36, 35</cycle>
-      <cycle>18, 42, 32</cycle>
-      <cycle>19, 41, 34</cycle>
-      <cycle>20, 43, 33</cycle>
-      <cycle>23, 49, 24</cycle>
-      <cycle>54, 82, 113</cycle>
-      <cycle>55, 87, 111</cycle>
-      <cycle>56, 86, 112</cycle>
-      <cycle>57, 89, 117</cycle>
-      <cycle>58, 88, 110</cycle>
-      <cycle>59, 104, 93</cycle>
-      <cycle>60, 107, 97</cycle>
-      <cycle>61, 108, 99</cycle>
-      <cycle>62, 106, 98</cycle>
-      <cycle>63, 109, 100</cycle>
-      <cycle>64, 121, 146</cycle>
-      <cycle>65, 122, 145</cycle>
-      <cycle>66, 124, 147</cycle>
-      <cycle>67, 123, 148</cycle>
-      <cycle>68, 125, 141</cycle>
-      <cycle>69, 119, 144</cycle>
-      <cycle>70, 131, 139</cycle>
-      <cycle>71, 133, 135</cycle>
-      <cycle>72, 118, 143</cycle>
-      <cycle>73, 120, 149</cycle>
-      <cycle>74, 132, 140</cycle>
-      <cycle>75, 128, 137</cycle>
-      <cycle>76, 126, 142</cycle>
-      <cycle>77, 129, 134</cycle>
-      <cycle>78, 127, 138</cycle>
-      <cycle>79, 105, 92</cycle>
-      <cycle>80, 103, 91</cycle>
-      <cycle>81, 102, 90</cycle>
-      <cycle>83, 115, 95</cycle>
-      <cycle>84, 114, 94</cycle>
-      <cycle>85, 116, 96</cycle>
-      <cycle>101, 130, 136</cycle>
-      <cycle>150, 196, 231</cycle>
-      <cycle>151, 195, 230</cycle>
-      <cycle>152, 197, 233</cycle>
-      <cycle>153, 193, 243</cycle>
-      <cycle>154, 191, 245</cycle>
-      <cycle>155, 192, 244</cycle>
-      <cycle>156, 190, 242</cycle>
-      <cycle>157, 189, 241</cycle>
-      <cycle>158, 182, 239</cycle>
-      <cycle>159, 183, 240</cycle>
-      <cycle>160, 184, 238</cycle>
-      <cycle>161, 185, 234</cycle>
-      <cycle>162, 187, 237</cycle>
-      <cycle>163, 194, 232</cycle>
-      <cycle>164, 188, 236</cycle>
-      <cycle>165, 186, 235</cycle>
-      <cycle>166, 206, 220</cycle>
-      <cycle>167, 209, 219</cycle>
-      <cycle>168, 208, 221</cycle>
-      <cycle>169, 207, 218</cycle>
-      <cycle>170, 203, 217</cycle>
-      <cycle>171, 205, 214</cycle>
-      <cycle>172, 202, 215</cycle>
-      <cycle>173, 204, 216</cycle>
-      <cycle>174, 201, 227</cycle>
-      <cycle>175, 199, 226</cycle>
-      <cycle>176, 198, 229</cycle>
-      <cycle>177, 200, 228</cycle>
-      <cycle>178, 211, 224</cycle>
-      <cycle>179, 212, 225</cycle>
-      <cycle>180, 210, 223</cycle>
-      <cycle>181, 213, 222</cycle>
-    </move>
-    <move name="rot_15">
+    <move name="rot_18">
       <cycle>0, 53, 1</cycle>
       <cycle>2, 31, 40</cycle>
       <cycle>3, 25, 50</cycle>
@@ -3153,7 +3260,175 @@
       <cycle>180, 223, 210</cycle>
       <cycle>181, 222, 213</cycle>
     </move>
-    <move name="rot_16">
+    <move name="rot_19">
+      <cycle>0, 31, 2</cycle>
+      <cycle>1, 53, 40</cycle>
+      <cycle>3, 46, 41</cycle>
+      <cycle>4, 30, 18</cycle>
+      <cycle>5, 29, 20</cycle>
+      <cycle>6, 28, 19</cycle>
+      <cycle>7, 47, 43</cycle>
+      <cycle>8, 48, 42</cycle>
+      <cycle>9, 25, 34</cycle>
+      <cycle>10, 26, 33</cycle>
+      <cycle>11, 14, 32</cycle>
+      <cycle>12, 49, 44</cycle>
+      <cycle>13, 27, 17</cycle>
+      <cycle>15, 50, 39</cycle>
+      <cycle>16, 24, 35</cycle>
+      <cycle>21, 51, 38</cycle>
+      <cycle>22, 52, 37</cycle>
+      <cycle>23, 45, 36</cycle>
+      <cycle>54, 146, 101</cycle>
+      <cycle>55, 147, 78</cycle>
+      <cycle>56, 145, 75</cycle>
+      <cycle>57, 148, 77</cycle>
+      <cycle>58, 141, 76</cycle>
+      <cycle>59, 113, 130</cycle>
+      <cycle>60, 112, 128</cycle>
+      <cycle>61, 111, 127</cycle>
+      <cycle>62, 117, 129</cycle>
+      <cycle>63, 110, 126</cycle>
+      <cycle>64, 93, 136</cycle>
+      <cycle>65, 97, 137</cycle>
+      <cycle>66, 99, 138</cycle>
+      <cycle>67, 98, 134</cycle>
+      <cycle>68, 100, 142</cycle>
+      <cycle>69, 91, 139</cycle>
+      <cycle>70, 94, 144</cycle>
+      <cycle>71, 96, 149</cycle>
+      <cycle>72, 90, 140</cycle>
+      <cycle>73, 92, 135</cycle>
+      <cycle>74, 95, 143</cycle>
+      <cycle>79, 116, 133</cycle>
+      <cycle>80, 114, 131</cycle>
+      <cycle>81, 115, 132</cycle>
+      <cycle>82, 104, 121</cycle>
+      <cycle>83, 102, 118</cycle>
+      <cycle>84, 103, 119</cycle>
+      <cycle>85, 105, 120</cycle>
+      <cycle>86, 107, 122</cycle>
+      <cycle>87, 108, 124</cycle>
+      <cycle>88, 109, 125</cycle>
+      <cycle>89, 106, 123</cycle>
+      <cycle>150, 206, 239</cycle>
+      <cycle>151, 209, 240</cycle>
+      <cycle>152, 207, 238</cycle>
+      <cycle>153, 203, 234</cycle>
+      <cycle>154, 202, 237</cycle>
+      <cycle>155, 205, 235</cycle>
+      <cycle>156, 204, 236</cycle>
+      <cycle>157, 201, 232</cycle>
+      <cycle>158, 198, 231</cycle>
+      <cycle>159, 200, 230</cycle>
+      <cycle>160, 199, 233</cycle>
+      <cycle>161, 212, 243</cycle>
+      <cycle>162, 210, 245</cycle>
+      <cycle>163, 208, 241</cycle>
+      <cycle>164, 213, 242</cycle>
+      <cycle>165, 211, 244</cycle>
+      <cycle>166, 196, 229</cycle>
+      <cycle>167, 195, 228</cycle>
+      <cycle>168, 194, 227</cycle>
+      <cycle>169, 197, 226</cycle>
+      <cycle>170, 193, 225</cycle>
+      <cycle>171, 192, 224</cycle>
+      <cycle>172, 191, 223</cycle>
+      <cycle>173, 190, 222</cycle>
+      <cycle>174, 189, 221</cycle>
+      <cycle>175, 184, 218</cycle>
+      <cycle>176, 182, 220</cycle>
+      <cycle>177, 183, 219</cycle>
+      <cycle>178, 186, 214</cycle>
+      <cycle>179, 185, 217</cycle>
+      <cycle>180, 187, 215</cycle>
+      <cycle>181, 188, 216</cycle>
+    </move>
+    <move name="rot_20">
+      <cycle>0, 2, 1</cycle>
+      <cycle>3, 6, 9</cycle>
+      <cycle>4, 11, 8</cycle>
+      <cycle>5, 10, 7</cycle>
+      <cycle>12, 24, 17</cycle>
+      <cycle>13, 16, 23</cycle>
+      <cycle>14, 18, 22</cycle>
+      <cycle>15, 25, 19</cycle>
+      <cycle>20, 21, 26</cycle>
+      <cycle>27, 36, 49</cycle>
+      <cycle>28, 41, 50</cycle>
+      <cycle>29, 43, 51</cycle>
+      <cycle>30, 42, 52</cycle>
+      <cycle>31, 40, 53</cycle>
+      <cycle>32, 37, 48</cycle>
+      <cycle>33, 38, 47</cycle>
+      <cycle>34, 39, 46</cycle>
+      <cycle>35, 44, 45</cycle>
+      <cycle>54, 64, 59</cycle>
+      <cycle>55, 66, 61</cycle>
+      <cycle>56, 65, 60</cycle>
+      <cycle>57, 67, 62</cycle>
+      <cycle>58, 68, 63</cycle>
+      <cycle>69, 80, 94</cycle>
+      <cycle>70, 84, 91</cycle>
+      <cycle>71, 85, 92</cycle>
+      <cycle>72, 81, 95</cycle>
+      <cycle>73, 79, 96</cycle>
+      <cycle>74, 83, 90</cycle>
+      <cycle>75, 86, 97</cycle>
+      <cycle>76, 88, 100</cycle>
+      <cycle>77, 89, 98</cycle>
+      <cycle>78, 87, 99</cycle>
+      <cycle>82, 93, 101</cycle>
+      <cycle>102, 143, 132</cycle>
+      <cycle>103, 144, 131</cycle>
+      <cycle>104, 146, 130</cycle>
+      <cycle>105, 149, 133</cycle>
+      <cycle>106, 148, 129</cycle>
+      <cycle>107, 145, 128</cycle>
+      <cycle>108, 147, 127</cycle>
+      <cycle>109, 141, 126</cycle>
+      <cycle>110, 142, 125</cycle>
+      <cycle>111, 138, 124</cycle>
+      <cycle>112, 137, 122</cycle>
+      <cycle>113, 136, 121</cycle>
+      <cycle>114, 139, 119</cycle>
+      <cycle>115, 140, 118</cycle>
+      <cycle>116, 135, 120</cycle>
+      <cycle>117, 134, 123</cycle>
+      <cycle>150, 220, 198</cycle>
+      <cycle>151, 219, 200</cycle>
+      <cycle>152, 218, 199</cycle>
+      <cycle>153, 217, 212</cycle>
+      <cycle>154, 215, 210</cycle>
+      <cycle>155, 214, 211</cycle>
+      <cycle>156, 216, 213</cycle>
+      <cycle>157, 227, 208</cycle>
+      <cycle>158, 229, 206</cycle>
+      <cycle>159, 228, 209</cycle>
+      <cycle>160, 226, 207</cycle>
+      <cycle>161, 225, 203</cycle>
+      <cycle>162, 223, 202</cycle>
+      <cycle>163, 221, 201</cycle>
+      <cycle>164, 222, 204</cycle>
+      <cycle>165, 224, 205</cycle>
+      <cycle>166, 231, 182</cycle>
+      <cycle>167, 230, 183</cycle>
+      <cycle>168, 232, 189</cycle>
+      <cycle>169, 233, 184</cycle>
+      <cycle>170, 243, 185</cycle>
+      <cycle>171, 244, 186</cycle>
+      <cycle>172, 245, 187</cycle>
+      <cycle>173, 242, 188</cycle>
+      <cycle>174, 241, 194</cycle>
+      <cycle>175, 238, 197</cycle>
+      <cycle>176, 239, 196</cycle>
+      <cycle>177, 240, 195</cycle>
+      <cycle>178, 235, 192</cycle>
+      <cycle>179, 234, 193</cycle>
+      <cycle>180, 237, 191</cycle>
+      <cycle>181, 236, 190</cycle>
+    </move>
+    <move name="rot_21">
       <cycle>0, 31, 53</cycle>
       <cycle>1, 2, 40</cycle>
       <cycle>3, 19, 39</cycle>
@@ -3237,404 +3512,129 @@
       <cycle>180, 202, 245</cycle>
       <cycle>181, 204, 242</cycle>
     </move>
-    <move name="rot_17">
-      <cycle>0, 1, 2</cycle>
-      <cycle>3, 9, 6</cycle>
-      <cycle>4, 8, 11</cycle>
-      <cycle>5, 7, 10</cycle>
-      <cycle>12, 17, 24</cycle>
-      <cycle>13, 23, 16</cycle>
-      <cycle>14, 22, 18</cycle>
-      <cycle>15, 19, 25</cycle>
-      <cycle>20, 26, 21</cycle>
-      <cycle>27, 49, 36</cycle>
-      <cycle>28, 50, 41</cycle>
-      <cycle>29, 51, 43</cycle>
-      <cycle>30, 52, 42</cycle>
-      <cycle>31, 53, 40</cycle>
-      <cycle>32, 48, 37</cycle>
-      <cycle>33, 47, 38</cycle>
-      <cycle>34, 46, 39</cycle>
-      <cycle>35, 45, 44</cycle>
-      <cycle>54, 59, 64</cycle>
-      <cycle>55, 61, 66</cycle>
-      <cycle>56, 60, 65</cycle>
-      <cycle>57, 62, 67</cycle>
-      <cycle>58, 63, 68</cycle>
-      <cycle>69, 94, 80</cycle>
-      <cycle>70, 91, 84</cycle>
-      <cycle>71, 92, 85</cycle>
-      <cycle>72, 95, 81</cycle>
-      <cycle>73, 96, 79</cycle>
-      <cycle>74, 90, 83</cycle>
-      <cycle>75, 97, 86</cycle>
-      <cycle>76, 100, 88</cycle>
-      <cycle>77, 98, 89</cycle>
-      <cycle>78, 99, 87</cycle>
-      <cycle>82, 101, 93</cycle>
-      <cycle>102, 132, 143</cycle>
-      <cycle>103, 131, 144</cycle>
-      <cycle>104, 130, 146</cycle>
-      <cycle>105, 133, 149</cycle>
-      <cycle>106, 129, 148</cycle>
-      <cycle>107, 128, 145</cycle>
-      <cycle>108, 127, 147</cycle>
-      <cycle>109, 126, 141</cycle>
-      <cycle>110, 125, 142</cycle>
-      <cycle>111, 124, 138</cycle>
-      <cycle>112, 122, 137</cycle>
-      <cycle>113, 121, 136</cycle>
-      <cycle>114, 119, 139</cycle>
-      <cycle>115, 118, 140</cycle>
-      <cycle>116, 120, 135</cycle>
-      <cycle>117, 123, 134</cycle>
-      <cycle>150, 198, 220</cycle>
-      <cycle>151, 200, 219</cycle>
-      <cycle>152, 199, 218</cycle>
-      <cycle>153, 212, 217</cycle>
-      <cycle>154, 210, 215</cycle>
-      <cycle>155, 211, 214</cycle>
-      <cycle>156, 213, 216</cycle>
-      <cycle>157, 208, 227</cycle>
-      <cycle>158, 206, 229</cycle>
-      <cycle>159, 209, 228</cycle>
-      <cycle>160, 207, 226</cycle>
-      <cycle>161, 203, 225</cycle>
-      <cycle>162, 202, 223</cycle>
-      <cycle>163, 201, 221</cycle>
-      <cycle>164, 204, 222</cycle>
-      <cycle>165, 205, 224</cycle>
-      <cycle>166, 182, 231</cycle>
-      <cycle>167, 183, 230</cycle>
-      <cycle>168, 189, 232</cycle>
-      <cycle>169, 184, 233</cycle>
-      <cycle>170, 185, 243</cycle>
-      <cycle>171, 186, 244</cycle>
-      <cycle>172, 187, 245</cycle>
-      <cycle>173, 188, 242</cycle>
-      <cycle>174, 194, 241</cycle>
-      <cycle>175, 197, 238</cycle>
-      <cycle>176, 196, 239</cycle>
-      <cycle>177, 195, 240</cycle>
-      <cycle>178, 192, 235</cycle>
-      <cycle>179, 193, 234</cycle>
-      <cycle>180, 191, 237</cycle>
-      <cycle>181, 190, 236</cycle>
-    </move>
-    <move name="rot_18">
-      <cycle>1, 53, 31, 2</cycle>
-      <cycle>3, 48, 28, 11</cycle>
-      <cycle>4, 25, 14, 6</cycle>
-      <cycle>5, 24, 26, 13</cycle>
-      <cycle>7, 49, 29, 17</cycle>
-      <cycle>8, 50, 30, 19</cycle>
-      <cycle>9, 22, 46, 32</cycle>
-      <cycle>10, 23, 47, 27</cycle>
-      <cycle>12, 51, 35, 20</cycle>
-      <cycle>15, 52, 34, 18</cycle>
-      <cycle>16, 21, 45, 33</cycle>
-      <cycle>36, 38, 44, 43</cycle>
-      <cycle>37, 39, 42, 41</cycle>
-      <cycle>54, 100, 93, 58</cycle>
-      <cycle>55, 96, 99, 92</cycle>
-      <cycle>56, 94, 97, 91</cycle>
-      <cycle>57, 95, 98, 90</cycle>
-      <cycle>59, 109, 146, 76</cycle>
-      <cycle>60, 114, 145, 69</cycle>
-      <cycle>61, 116, 147, 73</cycle>
-      <cycle>62, 115, 148, 72</cycle>
-      <cycle>63, 113, 141, 64</cycle>
-      <cycle>65, 84, 112, 139</cycle>
-      <cycle>66, 85, 111, 135</cycle>
-      <cycle>67, 83, 117, 140</cycle>
-      <cycle>68, 82, 110, 136</cycle>
-      <cycle>70, 86, 103, 137</cycle>
-      <cycle>71, 87, 105, 138</cycle>
-      <cycle>74, 89, 102, 134</cycle>
-      <cycle>75, 80, 107, 144</cycle>
-      <cycle>77, 81, 106, 143</cycle>
-      <cycle>78, 79, 108, 149</cycle>
-      <cycle>88, 104, 142, 101</cycle>
-      <cycle>118, 123, 132, 129</cycle>
-      <cycle>119, 122, 131, 128</cycle>
-      <cycle>120, 124, 133, 127</cycle>
-      <cycle>121, 125, 130, 126</cycle>
-      <cycle>150, 223, 176, 237</cycle>
-      <cycle>151, 224, 177, 235</cycle>
-      <cycle>152, 222, 175, 236</cycle>
-      <cycle>153, 221, 179, 232</cycle>
-      <cycle>154, 220, 180, 231</cycle>
-      <cycle>155, 219, 178, 230</cycle>
-      <cycle>156, 218, 181, 233</cycle>
-      <cycle>157, 217, 168, 243</cycle>
-      <cycle>158, 215, 166, 245</cycle>
-      <cycle>159, 214, 167, 244</cycle>
-      <cycle>160, 216, 169, 242</cycle>
-      <cycle>161, 227, 170, 241</cycle>
-      <cycle>162, 229, 172, 239</cycle>
-      <cycle>163, 225, 174, 234</cycle>
-      <cycle>164, 226, 173, 238</cycle>
-      <cycle>165, 228, 171, 240</cycle>
-      <cycle>182, 191, 196, 187</cycle>
-      <cycle>183, 192, 195, 186</cycle>
-      <cycle>184, 190, 197, 188</cycle>
-      <cycle>185, 189, 193, 194</cycle>
-      <cycle>198, 210, 206, 202</cycle>
-      <cycle>199, 213, 207, 204</cycle>
-      <cycle>200, 211, 209, 205</cycle>
-      <cycle>201, 212, 208, 203</cycle>
-    </move>
-    <move name="rot_19">
-      <cycle>0, 31, 40, 1</cycle>
-      <cycle>3, 14, 34, 37</cycle>
-      <cycle>4, 28, 42, 15</cycle>
-      <cycle>5, 27, 43, 12</cycle>
-      <cycle>6, 32, 41, 8</cycle>
-      <cycle>7, 13, 33, 36</cycle>
-      <cycle>9, 11, 19, 18</cycle>
-      <cycle>10, 17, 20, 16</cycle>
-      <cycle>21, 24, 29, 44</cycle>
-      <cycle>22, 25, 30, 39</cycle>
-      <cycle>23, 26, 35, 38</cycle>
-      <cycle>45, 51, 49, 47</cycle>
-      <cycle>46, 52, 50, 48</cycle>
-      <cycle>54, 141, 130, 88</cycle>
-      <cycle>55, 135, 127, 79</cycle>
-      <cycle>56, 139, 128, 80</cycle>
-      <cycle>57, 140, 129, 81</cycle>
-      <cycle>58, 136, 126, 59</cycle>
-      <cycle>60, 91, 137, 119</cycle>
-      <cycle>61, 92, 138, 120</cycle>
-      <cycle>62, 90, 134, 118</cycle>
-      <cycle>63, 93, 142, 121</cycle>
-      <cycle>64, 76, 101, 68</cycle>
-      <cycle>65, 69, 75, 70</cycle>
-      <cycle>66, 73, 78, 71</cycle>
-      <cycle>67, 72, 77, 74</cycle>
-      <cycle>82, 100, 146, 125</cycle>
-      <cycle>83, 98, 143, 123</cycle>
-      <cycle>84, 97, 144, 122</cycle>
-      <cycle>85, 99, 149, 124</cycle>
-      <cycle>86, 94, 145, 131</cycle>
-      <cycle>87, 96, 147, 133</cycle>
-      <cycle>89, 95, 148, 132</cycle>
-      <cycle>102, 106, 115, 117</cycle>
-      <cycle>103, 107, 114, 112</cycle>
-      <cycle>104, 109, 113, 110</cycle>
-      <cycle>105, 108, 116, 111</cycle>
-      <cycle>150, 154, 158, 162</cycle>
-      <cycle>151, 155, 159, 165</cycle>
-      <cycle>152, 156, 160, 164</cycle>
-      <cycle>153, 157, 161, 163</cycle>
-      <cycle>166, 180, 176, 172</cycle>
-      <cycle>167, 178, 177, 171</cycle>
-      <cycle>168, 179, 174, 170</cycle>
-      <cycle>169, 181, 175, 173</cycle>
-      <cycle>182, 215, 198, 237</cycle>
-      <cycle>183, 214, 200, 235</cycle>
-      <cycle>184, 216, 199, 236</cycle>
-      <cycle>185, 227, 212, 232</cycle>
-      <cycle>186, 228, 211, 230</cycle>
-      <cycle>187, 229, 210, 231</cycle>
-      <cycle>188, 226, 213, 233</cycle>
-      <cycle>189, 217, 201, 234</cycle>
-      <cycle>190, 218, 204, 238</cycle>
-      <cycle>191, 220, 202, 239</cycle>
-      <cycle>192, 219, 205, 240</cycle>
-      <cycle>193, 221, 203, 241</cycle>
-      <cycle>194, 225, 208, 243</cycle>
-      <cycle>195, 224, 209, 244</cycle>
-      <cycle>196, 223, 206, 245</cycle>
-      <cycle>197, 222, 207, 242</cycle>
-    </move>
-    <move name="rot_20">
-      <cycle>1, 2, 31, 53</cycle>
-      <cycle>3, 11, 28, 48</cycle>
-      <cycle>4, 6, 14, 25</cycle>
-      <cycle>5, 13, 26, 24</cycle>
-      <cycle>7, 17, 29, 49</cycle>
-      <cycle>8, 19, 30, 50</cycle>
-      <cycle>9, 32, 46, 22</cycle>
-      <cycle>10, 27, 47, 23</cycle>
-      <cycle>12, 20, 35, 51</cycle>
-      <cycle>15, 18, 34, 52</cycle>
-      <cycle>16, 33, 45, 21</cycle>
-      <cycle>36, 43, 44, 38</cycle>
-      <cycle>37, 41, 42, 39</cycle>
-      <cycle>54, 58, 93, 100</cycle>
-      <cycle>55, 92, 99, 96</cycle>
-      <cycle>56, 91, 97, 94</cycle>
-      <cycle>57, 90, 98, 95</cycle>
-      <cycle>59, 76, 146, 109</cycle>
-      <cycle>60, 69, 145, 114</cycle>
-      <cycle>61, 73, 147, 116</cycle>
-      <cycle>62, 72, 148, 115</cycle>
-      <cycle>63, 64, 141, 113</cycle>
-      <cycle>65, 139, 112, 84</cycle>
-      <cycle>66, 135, 111, 85</cycle>
-      <cycle>67, 140, 117, 83</cycle>
-      <cycle>68, 136, 110, 82</cycle>
-      <cycle>70, 137, 103, 86</cycle>
-      <cycle>71, 138, 105, 87</cycle>
-      <cycle>74, 134, 102, 89</cycle>
-      <cycle>75, 144, 107, 80</cycle>
-      <cycle>77, 143, 106, 81</cycle>
-      <cycle>78, 149, 108, 79</cycle>
-      <cycle>88, 101, 142, 104</cycle>
-      <cycle>118, 129, 132, 123</cycle>
-      <cycle>119, 128, 131, 122</cycle>
-      <cycle>120, 127, 133, 124</cycle>
-      <cycle>121, 126, 130, 125</cycle>
-      <cycle>150, 237, 176, 223</cycle>
-      <cycle>151, 235, 177, 224</cycle>
-      <cycle>152, 236, 175, 222</cycle>
-      <cycle>153, 232, 179, 221</cycle>
-      <cycle>154, 231, 180, 220</cycle>
-      <cycle>155, 230, 178, 219</cycle>
-      <cycle>156, 233, 181, 218</cycle>
-      <cycle>157, 243, 168, 217</cycle>
-      <cycle>158, 245, 166, 215</cycle>
-      <cycle>159, 244, 167, 214</cycle>
-      <cycle>160, 242, 169, 216</cycle>
-      <cycle>161, 241, 170, 227</cycle>
-      <cycle>162, 239, 172, 229</cycle>
-      <cycle>163, 234, 174, 225</cycle>
-      <cycle>164, 238, 173, 226</cycle>
-      <cycle>165, 240, 171, 228</cycle>
-      <cycle>182, 187, 196, 191</cycle>
-      <cycle>183, 186, 195, 192</cycle>
-      <cycle>184, 188, 197, 190</cycle>
-      <cycle>185, 194, 193, 189</cycle>
-      <cycle>198, 202, 206, 210</cycle>
-      <cycle>199, 204, 207, 213</cycle>
-      <cycle>200, 205, 209, 211</cycle>
-      <cycle>201, 203, 208, 212</cycle>
-    </move>
-    <move name="rot_21">
-      <cycle>0, 1, 40, 31</cycle>
-      <cycle>3, 37, 34, 14</cycle>
-      <cycle>4, 15, 42, 28</cycle>
-      <cycle>5, 12, 43, 27</cycle>
-      <cycle>6, 8, 41, 32</cycle>
-      <cycle>7, 36, 33, 13</cycle>
-      <cycle>9, 18, 19, 11</cycle>
-      <cycle>10, 16, 20, 17</cycle>
-      <cycle>21, 44, 29, 24</cycle>
-      <cycle>22, 39, 30, 25</cycle>
-      <cycle>23, 38, 35, 26</cycle>
-      <cycle>45, 47, 49, 51</cycle>
-      <cycle>46, 48, 50, 52</cycle>
-      <cycle>54, 88, 130, 141</cycle>
-      <cycle>55, 79, 127, 135</cycle>
-      <cycle>56, 80, 128, 139</cycle>
-      <cycle>57, 81, 129, 140</cycle>
-      <cycle>58, 59, 126, 136</cycle>
-      <cycle>60, 119, 137, 91</cycle>
-      <cycle>61, 120, 138, 92</cycle>
-      <cycle>62, 118, 134, 90</cycle>
-      <cycle>63, 121, 142, 93</cycle>
-      <cycle>64, 68, 101, 76</cycle>
-      <cycle>65, 70, 75, 69</cycle>
-      <cycle>66, 71, 78, 73</cycle>
-      <cycle>67, 74, 77, 72</cycle>
-      <cycle>82, 125, 146, 100</cycle>
-      <cycle>83, 123, 143, 98</cycle>
-      <cycle>84, 122, 144, 97</cycle>
-      <cycle>85, 124, 149, 99</cycle>
-      <cycle>86, 131, 145, 94</cycle>
-      <cycle>87, 133, 147, 96</cycle>
-      <cycle>89, 132, 148, 95</cycle>
-      <cycle>102, 117, 115, 106</cycle>
-      <cycle>103, 112, 114, 107</cycle>
-      <cycle>104, 110, 113, 109</cycle>
-      <cycle>105, 111, 116, 108</cycle>
-      <cycle>150, 162, 158, 154</cycle>
-      <cycle>151, 165, 159, 155</cycle>
-      <cycle>152, 164, 160, 156</cycle>
-      <cycle>153, 163, 161, 157</cycle>
-      <cycle>166, 172, 176, 180</cycle>
-      <cycle>167, 171, 177, 178</cycle>
-      <cycle>168, 170, 174, 179</cycle>
-      <cycle>169, 173, 175, 181</cycle>
-      <cycle>182, 237, 198, 215</cycle>
-      <cycle>183, 235, 200, 214</cycle>
-      <cycle>184, 236, 199, 216</cycle>
-      <cycle>185, 232, 212, 227</cycle>
-      <cycle>186, 230, 211, 228</cycle>
-      <cycle>187, 231, 210, 229</cycle>
-      <cycle>188, 233, 213, 226</cycle>
-      <cycle>189, 234, 201, 217</cycle>
-      <cycle>190, 238, 204, 218</cycle>
-      <cycle>191, 239, 202, 220</cycle>
-      <cycle>192, 240, 205, 219</cycle>
-      <cycle>193, 241, 203, 221</cycle>
-      <cycle>194, 243, 208, 225</cycle>
-      <cycle>195, 244, 209, 224</cycle>
-      <cycle>196, 245, 206, 223</cycle>
-      <cycle>197, 242, 207, 222</cycle>
-    </move>
     <move name="rot_22">
-      <cycle>0, 2, 40, 53</cycle>
-      <cycle>3, 8, 15, 22</cycle>
-      <cycle>4, 9, 37, 50</cycle>
-      <cycle>5, 16, 38, 49</cycle>
-      <cycle>6, 18, 39, 48</cycle>
-      <cycle>7, 12, 21, 23</cycle>
-      <cycle>10, 36, 51, 24</cycle>
-      <cycle>11, 41, 52, 25</cycle>
-      <cycle>13, 20, 44, 47</cycle>
-      <cycle>14, 19, 42, 46</cycle>
-      <cycle>17, 43, 45, 26</cycle>
-      <cycle>27, 33, 35, 29</cycle>
-      <cycle>28, 32, 34, 30</cycle>
-      <cycle>54, 68, 121, 109</cycle>
-      <cycle>55, 71, 124, 116</cycle>
-      <cycle>56, 70, 122, 114</cycle>
-      <cycle>57, 74, 123, 115</cycle>
-      <cycle>58, 101, 125, 113</cycle>
-      <cycle>59, 88, 82, 63</cycle>
-      <cycle>60, 80, 86, 84</cycle>
-      <cycle>61, 79, 87, 85</cycle>
-      <cycle>62, 81, 89, 83</cycle>
-      <cycle>64, 126, 104, 100</cycle>
-      <cycle>65, 119, 107, 94</cycle>
-      <cycle>66, 120, 108, 96</cycle>
-      <cycle>67, 118, 106, 95</cycle>
-      <cycle>69, 128, 103, 97</cycle>
-      <cycle>72, 129, 102, 98</cycle>
-      <cycle>73, 127, 105, 99</cycle>
-      <cycle>75, 131, 112, 91</cycle>
-      <cycle>76, 130, 110, 93</cycle>
-      <cycle>77, 132, 117, 90</cycle>
-      <cycle>78, 133, 111, 92</cycle>
-      <cycle>134, 143, 148, 140</cycle>
-      <cycle>135, 138, 149, 147</cycle>
-      <cycle>136, 142, 146, 141</cycle>
-      <cycle>137, 144, 145, 139</cycle>
-      <cycle>150, 191, 166, 210</cycle>
-      <cycle>151, 192, 167, 211</cycle>
-      <cycle>152, 190, 169, 213</cycle>
-      <cycle>153, 189, 170, 208</cycle>
-      <cycle>154, 182, 172, 206</cycle>
-      <cycle>155, 183, 171, 209</cycle>
-      <cycle>156, 184, 173, 207</cycle>
-      <cycle>157, 185, 174, 203</cycle>
-      <cycle>158, 187, 176, 202</cycle>
-      <cycle>159, 186, 177, 205</cycle>
-      <cycle>160, 188, 175, 204</cycle>
-      <cycle>161, 194, 179, 201</cycle>
-      <cycle>162, 196, 180, 198</cycle>
-      <cycle>163, 193, 168, 212</cycle>
-      <cycle>164, 197, 181, 199</cycle>
-      <cycle>165, 195, 178, 200</cycle>
-      <cycle>214, 228, 224, 219</cycle>
-      <cycle>215, 229, 223, 220</cycle>
-      <cycle>216, 226, 222, 218</cycle>
-      <cycle>217, 227, 225, 221</cycle>
-      <cycle>230, 235, 240, 244</cycle>
-      <cycle>231, 237, 239, 245</cycle>
-      <cycle>232, 234, 241, 243</cycle>
-      <cycle>233, 236, 238, 242</cycle>
+      <cycle>0, 40</cycle>
+      <cycle>1, 31</cycle>
+      <cycle>3, 34</cycle>
+      <cycle>4, 42</cycle>
+      <cycle>5, 43</cycle>
+      <cycle>6, 41</cycle>
+      <cycle>7, 33</cycle>
+      <cycle>8, 32</cycle>
+      <cycle>9, 19</cycle>
+      <cycle>10, 20</cycle>
+      <cycle>11, 18</cycle>
+      <cycle>12, 27</cycle>
+      <cycle>13, 36</cycle>
+      <cycle>14, 37</cycle>
+      <cycle>15, 28</cycle>
+      <cycle>16, 17</cycle>
+      <cycle>21, 29</cycle>
+      <cycle>22, 30</cycle>
+      <cycle>23, 35</cycle>
+      <cycle>24, 44</cycle>
+      <cycle>25, 39</cycle>
+      <cycle>26, 38</cycle>
+      <cycle>45, 49</cycle>
+      <cycle>46, 50</cycle>
+      <cycle>47, 51</cycle>
+      <cycle>48, 52</cycle>
+      <cycle>54, 130</cycle>
+      <cycle>55, 127</cycle>
+      <cycle>56, 128</cycle>
+      <cycle>57, 129</cycle>
+      <cycle>58, 126</cycle>
+      <cycle>59, 136</cycle>
+      <cycle>60, 137</cycle>
+      <cycle>61, 138</cycle>
+      <cycle>62, 134</cycle>
+      <cycle>63, 142</cycle>
+      <cycle>64, 101</cycle>
+      <cycle>65, 75</cycle>
+      <cycle>66, 78</cycle>
+      <cycle>67, 77</cycle>
+      <cycle>68, 76</cycle>
+      <cycle>69, 70</cycle>
+      <cycle>71, 73</cycle>
+      <cycle>72, 74</cycle>
+      <cycle>79, 135</cycle>
+      <cycle>80, 139</cycle>
+      <cycle>81, 140</cycle>
+      <cycle>82, 146</cycle>
+      <cycle>83, 143</cycle>
+      <cycle>84, 144</cycle>
+      <cycle>85, 149</cycle>
+      <cycle>86, 145</cycle>
+      <cycle>87, 147</cycle>
+      <cycle>88, 141</cycle>
+      <cycle>89, 148</cycle>
+      <cycle>90, 118</cycle>
+      <cycle>91, 119</cycle>
+      <cycle>92, 120</cycle>
+      <cycle>93, 121</cycle>
+      <cycle>94, 131</cycle>
+      <cycle>95, 132</cycle>
+      <cycle>96, 133</cycle>
+      <cycle>97, 122</cycle>
+      <cycle>98, 123</cycle>
+      <cycle>99, 124</cycle>
+      <cycle>100, 125</cycle>
+      <cycle>102, 115</cycle>
+      <cycle>103, 114</cycle>
+      <cycle>104, 113</cycle>
+      <cycle>105, 116</cycle>
+      <cycle>106, 117</cycle>
+      <cycle>107, 112</cycle>
+      <cycle>108, 111</cycle>
+      <cycle>109, 110</cycle>
+      <cycle>150, 158</cycle>
+      <cycle>151, 159</cycle>
+      <cycle>152, 160</cycle>
+      <cycle>153, 161</cycle>
+      <cycle>154, 162</cycle>
+      <cycle>155, 165</cycle>
+      <cycle>156, 164</cycle>
+      <cycle>157, 163</cycle>
+      <cycle>166, 176</cycle>
+      <cycle>167, 177</cycle>
+      <cycle>168, 174</cycle>
+      <cycle>169, 175</cycle>
+      <cycle>170, 179</cycle>
+      <cycle>171, 178</cycle>
+      <cycle>172, 180</cycle>
+      <cycle>173, 181</cycle>
+      <cycle>182, 198</cycle>
+      <cycle>183, 200</cycle>
+      <cycle>184, 199</cycle>
+      <cycle>185, 212</cycle>
+      <cycle>186, 211</cycle>
+      <cycle>187, 210</cycle>
+      <cycle>188, 213</cycle>
+      <cycle>189, 201</cycle>
+      <cycle>190, 204</cycle>
+      <cycle>191, 202</cycle>
+      <cycle>192, 205</cycle>
+      <cycle>193, 203</cycle>
+      <cycle>194, 208</cycle>
+      <cycle>195, 209</cycle>
+      <cycle>196, 206</cycle>
+      <cycle>197, 207</cycle>
+      <cycle>214, 235</cycle>
+      <cycle>215, 237</cycle>
+      <cycle>216, 236</cycle>
+      <cycle>217, 234</cycle>
+      <cycle>218, 238</cycle>
+      <cycle>219, 240</cycle>
+      <cycle>220, 239</cycle>
+      <cycle>221, 241</cycle>
+      <cycle>222, 242</cycle>
+      <cycle>223, 245</cycle>
+      <cycle>224, 244</cycle>
+      <cycle>225, 243</cycle>
+      <cycle>226, 233</cycle>
+      <cycle>227, 232</cycle>
+      <cycle>228, 230</cycle>
+      <cycle>229, 231</cycle>
     </move>
     <move name="rot_23">
       <cycle>0, 53, 40, 2</cycle>
