@@ -146,6 +146,7 @@ def generate_algorithms(
                         rotations=sympy_rotations,
                         max_pieces_affected=max_pieces_affected,
                         iteration=iteration,
+                        ignore_match_with=algorithm.name,
                     )
                     if added_algorithms_step_inv:
                         if recursive:
@@ -268,6 +269,7 @@ def filter_and_add_algorithm(
         rotations: list[Permutation],
         max_pieces_affected: int = float("inf"),
         iteration: int = -1,
+        ignore_match_with: str = "",
         ) -> bool:
     """
     Add a newly found algorithm to the list of found algorithms if it is sufficiently different from existing ones or if it achieves the same permutation in fewer moves.
@@ -307,6 +309,9 @@ def filter_and_add_algorithm(
     for rotation_name, rotation_perm in rotations.items():
         rotated_alg_perm: Permutation = rotation_perm * new_algorithm.sympy_permutation * rotation_perm**-1
         for alg in potential_matches:
+            # ignore match with a given algorithm to avoid not adding inverses for algs that are self-inverse under rotation.
+            if alg.name == ignore_match_with:
+                continue
             # if rotated_alg_perm.cyclic_form == alg.sympy_permutation.cyclic_form:
             if rotated_alg_perm.cyclic_form == alg.sympy_permutation.cyclic_form:# \
                 # or new_algorithm.is_similar(alg):
