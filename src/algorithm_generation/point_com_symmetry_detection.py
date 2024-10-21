@@ -18,6 +18,7 @@ This module implements an alternative method for rotational symmetry detection t
 8. choose all rotations with close to maximum symmetry measure.
 """
 from collections import Counter
+import os
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,11 +26,13 @@ from scipy.spatial.transform import Rotation
 from sympy.combinatorics import Permutation
 
 from algorithm_analysis import get_inverse_moves_dict
+from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
 from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
 from symmetry_plane_detection import dist_similarity_function
 from test_symmetry_plane_detection import set_equal_aspect_3d
 
 DEBUG: bool = True
+TOL = 1e-1
 
 def find_rotational_symmetries(
         puzzle: "Twisty_Puzzle",
@@ -77,7 +80,7 @@ def find_rotational_symmetries(
         p2_options = [move_coms[move_name] for move_name in smallest_com_set[1:]]
         # choose p2 in com_sets such that it is not parallel to p1
         for p2 in p2_options:
-            if _angle_between(p1, p2) < 1e-4 or _angle_between(p1, p2) > np.pi - 1e-4:
+            if check_linear_independence(p1, p2):
                 continue
             break
         smallest_com_set2: list[np.ndarray] = smallest_com_set
@@ -88,7 +91,7 @@ def find_rotational_symmetries(
         p2_options = [move_names for move_names in signatures_to_names.values() if not move_names == smallest_com_set2]
         # choose p2 in com_sets such that it is not parallel to p1
         for p2 in p2_options:
-            if _angle_between(p1, p2) < 1e-4 or _angle_between(p1, p2) > np.pi - 1e-4:
+            if _angle_between(p1, p2) < TOL or _angle_between(p1, p2) > np.pi - TOL:
                 continue
             break
 
@@ -99,12 +102,18 @@ def find_rotational_symmetries(
     for t1 in (move_coms[move_name] for move_name in smallest_com_set):
         for t2 in (move_coms[move_name] for move_name in smallest_com_set2):
             if np.all(t2 == p2) and np.all(t1 == p1):
+                print(f"Skipping because t1 == p1 and t2 == p2 (=> no rotation).")
+                continue
+            # check if t1 and t2 are linearly independent
+            if check_linear_independence(t1, t2):
                 continue
             # check if angle between p1 and p2 matches angle between t1 and t2
-            if np.abs(_angle_between(p1, p2) - _angle_between(t1, t2)) > 1e-4:
+            if np.abs(_angle_between(p1, p2) - _angle_between(t1, t2)) > TOL:
+                print(f"Angle between p1, p2: {_angle_between(p1, p2)}")
+                print(f"Angle between t1, t2: {_angle_between(t1, t2)}")
                 continue
             # calculate rotation matrix R
-            R: Rotation = _calculate_rotation_matrix(
+            R: np.ndarray = _calculate_rotation_matrix(
                     p1.copy(),
                     p2.copy(),
                     t1.copy(),
@@ -161,15 +170,18 @@ def find_rotational_symmetries(
             continue
         unique_move_perms.add(tuple_perm)
     
-    unique_rotation_moves: dict[str, list[int]] = {f"rot_{i}": move_perm for i, move_perm in enumerate(unique_move_perms)}
+    unique_rotation_moves: dict[str, list[int]] = {f"rot_{i+1}": move_perm for i, move_perm in enumerate(unique_move_perms)}
 
     print(f"Found {len(unique_rotation_moves)} rotational symmetries:")
-    for (angle, axis, support) in symmetries:
-        print(f"Rotation with angle {np.rad2deg(angle):.0f}° around axis {axis} with support {support}.")
+    # for (angle, axis, support) in symmetries:
+    #     print(f"Rotation with angle {np.rad2deg(angle):.0f}° around axis {axis} with support {support}.")
     for move_name, move_perm in unique_rotation_moves.items():
         print(f"{move_name}: {move_perm}")
         # print(f"{move_name}: {Permutation(move_perm).cyclic_form}")
     return unique_rotation_moves
+
+def check_linear_independence(t1, t2):
+    return np.allclose(np.cross(t1, t2), np.zeros(3))
 
 def reduce_to_coms(X: np.ndarray, moves: dict[str, list[list[int]]], com_tol: float = 1e-10) -> dict[str, np.ndarray]:
     """
@@ -252,17 +264,34 @@ def _angle_between(p1: np.ndarray, p2: np.ndarray) -> float:
     """
     Calculate the angle between two points.
     """
-    return np.abs(np.arccos(np.dot(p1, p2) / (np.linalg.norm(p1) * np.linalg.norm(p2))))
+    return np.arccos(
+            np.clip(
+                    np.dot(p1, p2)
+                    / (np.linalg.norm(p1) * np.linalg.norm(p2)),
+                    -1.0,
+                    1.0,
+            )
+        )
 
-def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t2: np.ndarray) -> Rotation:
+def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t2: np.ndarray) -> np.ndarray:
     """
     Calculate the rotation matrix that rotates p1 to t1 and p2 to t2.
+    - p1 and p2 must be linearly independent.
+    - t1 and t2 must be linearly independent.
+    
+    1. normalize input vectors
+    2. add p3, t3 as cross product of p1, p2 and t1, t2 respectively
+    3. Find matrix R such that R @ p1 = t1, R @ p2 = t2, R @ p3 = t3 using np.linalg.solve
+    
+    R exists because p1, p2 and therefore also p3 are linearly independent.
+    (same for t1, t2, t3)
+    R is a rotation matrix because all vectors are normalized.
     
     Args:
         p1 (np.ndarray): point 1
-        p2 (np.ndarray): point 2
+        p2 (np.ndarray): point 2. Must be linearly independent from p1
         t1 (np.ndarray): target point 1
-        t2 (np.ndarray): target point 2
+        t2 (np.ndarray): target point 2. Must be linearly independent from t1
     
     Returns:
         Rotation: rotation object for the final rotation. Use e.g. `R.apply(X)` or `R.as_matrix() @ X` to apply the rotation.
@@ -271,31 +300,16 @@ def _calculate_rotation_matrix(p1: np.ndarray, p2: np.ndarray, t1: np.ndarray, t
     p1 /= np.linalg.norm(p1)
     p2 /= np.linalg.norm(p2)
     t1 /= np.linalg.norm(t1)
-    # calculate rotation axis
-    rotation_axis: np.ndarray = np.cross(p1, t1)
-    # calculate rotation angle
-    rotation_angle1: float = _angle_between(p1, t1)
-    # rotation of p1 onto t1
-    if np.linalg.norm(rotation_axis) < 1e-4:
-        rot_p1: Rotation = Rotation.from_matrix(np.eye(3))
-    else:
-        rot_p1: Rotation = Rotation.from_rotvec(rotation_angle1 * rotation_axis/np.linalg.norm(rotation_axis))
-    # rotate around t1 such that p2 moves to t2
-    t1_rot_p2: np.ndarray = rot_p1.apply(p2)
-    # project onto plane with normal a
-    t1_rot_p2 -= np.dot(t1_rot_p2, t1) * t1
-    t2 -= np.dot(t2, t1) * t1
-    # normalize
-    t1_rot_p2 /= np.linalg.norm(t1_rot_p2)
     t2 /= np.linalg.norm(t2)
-    # get rotation angle
-    rotation_angle2 = _angle_between(t1_rot_p2, t2)
-    rot_p2: Rotation = Rotation.from_rotvec(rotation_angle2 * t1)
-    # combine rotations into one matrix such that R(x) = rot2(rot1(x))
-    R1 = rot_p1.as_matrix()
-    R2 = rot_p2.as_matrix()
-    R = R1 @ R2
-    # R = Rotation.from_matrix(R)
+
+    p3 = np.cross(p1, p2)
+    t3 = np.cross(t1, t2)
+    # Define the two sets of vectors (each column is a vector)
+    X = np.column_stack((p1, p2, p3))  # matrix formed by vectors x1, x2, x3
+    Y = np.column_stack((t1, t2, t3))  # matrix formed by vectors y1, y2, y3
+
+    # Solve for the matrix R
+    R = np.linalg.solve(X.T, Y.T).T
     return R
 
 def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
@@ -310,10 +324,29 @@ def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
     """
     return np.concatenate(move_cycles)
 
-if __name__ == "__main__":
-    from algorithm_generation_CLI import load_twisty_puzzle
+def main(
+    puzzle_name_suffix: str = "_sym",
+    
+):
     puzzle, puzzle_name = load_twisty_puzzle()
-    move_coms = find_rotational_symmetries(puzzle)
+    named_rotations = find_rotational_symmetries(puzzle)
+    # convert to cycle notation
+    named_rotations = {name: Permutation(perm).cyclic_form for name, perm in named_rotations.items()}
+    # add moves to puzzle and save
+    print(f"Adding {len(named_rotations)} rotational symmetries to the puzzle.")
+    new_puzzle_name = puzzle_name + puzzle_name_suffix
+    add_moves_to_puzzle(
+        puzzle=puzzle,
+        algorithms={},
+        new_moves=named_rotations,
+        new_puzzle_name=new_puzzle_name,
+        suffix=puzzle_name_suffix,
+    )
+    os._exit(0)
+if __name__ == "__main__":
+    main()
+    
+
     # plot move COMs
     # import matplotlib.pyplot as plt
     # # create 3D axes
