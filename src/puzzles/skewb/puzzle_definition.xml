@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="Skewb" state_space_size="3149280">
+<puzzledefinition name="skewb" state_space_size="3149280">
   <points>
     <point size="4.0">
       <coords x="0.3464466094067262" y="0.3464466094067262" z="0.7"/>
