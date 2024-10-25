@@ -73,3 +73,17 @@ F R U R' U' F' rot_wr R U R' U R U U R' U U R U' L' U R' U' L rot_wo U R U' L' U
 
 **DeepCubeA solve:**
 U' L U' L F' R' L' L' B L F B U' L' D' F F D L B' L' F L B R' D F' D R D R' D' F D' D' R
+
+## Scramble 5
+**Scramble:**
+R D' R' L' U D' F R U' L L F R L F R' U R' D U' B F R' D R U' U' D' L' B
+
+**Human solve 1 (layer-wise):**
+<!-- layer 1 -->
+
+<!-- layer 2 -->
+
+<!-- layer 3 -->
+
+**DeepCubeA solve:**
+

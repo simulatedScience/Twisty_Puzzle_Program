@@ -62,10 +62,11 @@ def convert_move(move: str) -> tuple[str, str]:
     return move, modifier
 
 def main():
-    # move_sequence: str = "B D U F F L' F' D R D' L B' D B' D R' D' L R' L' L' D U R' D F' U' R L F'" # 1
-    # move_sequence: str = "D F L' R F' F' L D' D' L' L' B D U' R' B D' D' B' B' R R D U' F U' B U' F D" # 2
+    move_sequence: str = "B D U F F L' F' D R D' L B' D B' D R' D' L R' L' L' D U R' D F' U' R L F'" # 1
+    move_sequence: str = "D F L' R F' F' L D' D' L' L' B D U' R' B D' D' B' B' R R D U' F U' B U' F D" # 2
     move_sequence: str = "F' U' U' B' R' F D L R' D F B U' R' F' U D U D B' L U' B' U L B U B U D'" # 3
     move_sequence: str = "F F B' L R F' B L F L' L' F' U B' L U D B' B' F' R F B' U D' U' U' D L U'" # 4
+    move_sequence: str = "R D' R' L' U D' F R U' L L F R L F R' U R' D U' B F R' D R U' U' D' L' B" # 5
     # move_sequence = "F F' U U' R R' D D' L L' B B'"
     
     enter_move_sequence(
