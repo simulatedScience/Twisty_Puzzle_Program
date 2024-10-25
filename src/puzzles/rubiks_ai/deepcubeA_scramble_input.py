@@ -56,10 +56,6 @@ def convert_move(move: str) -> tuple[str, str]:
     if "'" in move:
         return move[:-1], True
     return move.lower(), False
-    modifier = "shift" if "'" in move else None
-    move = move.replace("'", "")
-    move = move.lower()
-    return move, modifier
 
 def main():
     move_sequence: str = "B D U F F L' F' D R D' L B' D B' D R' D' L R' L' L' D U R' D F' U' R L F'" # 1

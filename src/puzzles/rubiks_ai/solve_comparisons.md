@@ -80,10 +80,11 @@ R D' R' L' U D' F R U' L L F R L F R' U R' D U' B F R' D R U' U' D' L' B
 
 **Human solve 1 (layer-wise):**
 <!-- layer 1 -->
-
+R B U L U' B' U' F U D L' D L R' D' R D R' D' R L D' L' D' R D' D' R' rot_yg
 <!-- layer 2 -->
-
+R U R' rot_wr U' L' U' L rot_wr U R U R' rot_wr U' L' U' L U U R U R' rot_wr U' L' U' L rot_wb U U L' U' L rot_wo U R U R' U U L' U' L rot_wo U R U R'
 <!-- layer 3 -->
+F R U R' U' F' U R U R' U R U U R' U rot_wb U' L' U R U' L U R' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U'
 
 **DeepCubeA solve:**
-
+U U R D' F' U' F B' L' B' D R L' F' L' F D F' F' L F R F' L' D U' R B
