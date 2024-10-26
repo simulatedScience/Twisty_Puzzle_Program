@@ -4,29 +4,53 @@ methods to perform and animate rotations on a list of points
 import vpython as vpy
 import time
 
-def animate_move(points, cycles, POINT_POS, PUZZLE_COM, animation_time=0.25, target_fps=60):
+def animate_move(
+        points: list[vpy.baseObj],
+        cycles: list[list[int]],
+        POINT_POS: list[vpy.vector],
+        PUZZLE_COM: vpy.vector = vpy.vec(0, 0, 0),
+        animation_time: float = 0.25,
+        target_fps: float = 60,
+    ) -> None:
     """
     applies a move given as several cycles to the given points
 
-    inputs:
-    -------
-        points - (list) - list of points as vpython objects with .pos attribute
-        cycle - (list) - list of indeces for the list of points in cycle notation
+    Args:
+        points (list[vpy.baseOby]): list of points as vpython objects with .pos attribute
+        cycles (list[list[int]]): a move's permutation in cyclic form
             e.g. (0,1,2) means the permutation 0->1->2->0
+        POINT_POS (list[vpy.vector]): correct positions of the points for snapping. Order must match `points`.
 
-    outputs:
-    --------
+    Returns:
         the cycles are applied to points, permuting the objects in there.
     """
     move_points = []
     rot_info_list = []
+    affeced_points: set[int] = set()
+    max_cycle_order = max([len(cycle) for cycle in cycles])
     avg_rotation_axis = vpy.vec(0, 0, 0)
     for cycle in cycles:
-        cycle_points, rot_info = calc_rotate_cycle(points, cycle, POINT_POS, PUZZLE_COM=PUZZLE_COM)
+        cycle_points, rot_info = calc_rotate_cycle(
+                points,
+                cycle,
+                # POINT_POS,
+                PUZZLE_COM=PUZZLE_COM)
+        affeced_points.update(set(cycle))
         move_points += cycle_points
         rot_info_list += rot_info
         if len(cycle) > 2:
             avg_rotation_axis += rot_info[0][1]
+    if max_cycle_order == 2:
+        axis = get_order_2_axis(points, cycles)
+        for i, rot_info in enumerate(rot_info_list):
+            rot_info_list[i] = (rot_info[0], axis, rot_info[2])
+    # # handle whole-puzzle rotations
+    # if len(affeced_points) == len(points): # all points are affected by the move
+    #     # use the same axis for all rotations
+    #     if max_cycle_order != 2:
+    #         # if order 2, axis is already corrected
+        
+        
     # flip rotation axis of 2-cycles if necessary
     rot_info_index = 0
     for cycle in cycles:
@@ -41,28 +65,56 @@ def animate_move(points, cycles, POINT_POS, PUZZLE_COM, animation_time=0.25, tar
                 )
             rot_info_index += 1
     # apply rotations to points displayed in 3D
-    apply_rotation(move_points, rot_info_list, animation_time=animation_time, target_fps=target_fps)
+    apply_rotation(
+        move_points,
+        rot_info_list,
+        animation_time=animation_time,
+        target_fps=target_fps)
     # apply permutations to internal list of points
     for cycle in cycles:
         apply_cycle(points, cycle)
+        # snap affected points to correct positions
         correct_positions(points, POINT_POS, cycle)
+    
+def get_order_2_axis(
+        points: list[vpy.baseObj],
+        cycles: list[list[int]],
+    ) -> vpy.vector:
+    """
+    Get a suitable rotation axis if the move contains only 2-cycles by finding a rotation axis using multiple 2-cycles.
+    """
+    if len(cycles) == 1:
+        # this method does not work if only one 2-cycle exists
+        return vpy.vec(0, 0, 0)
+    average_axis: vpy.vector = vpy.vec(0, 0, 0)
+    for idx_1, cycle_1 in enumerate(cycles):
+        vec_1 = points[cycle_1[1]].pos - points[cycle_1[0]].pos
+        for cycle_2 in cycles[idx_1+1:]:
+            vec_2 = points[cycle_2[1]].pos - points[cycle_2[0]].pos
+            if vpy.dot(vec_1, vec_2) < 0:
+                vec_2 *= -1
+            average_axis += vpy.cross(vec_1, vec_2)
+    # normalize the average axis
+    return average_axis.norm()
 
-
-def calc_rotate_cycle(points, cycle, POINT_POS, PUZZLE_COM=vpy.vec(0, 0, 0)):
+def calc_rotate_cycle(
+        points: list[vpy.baseObj],
+        cycle: list[int],
+        # POINT_POS: list[vpy.vector],
+        PUZZLE_COM: vpy.vector = vpy.vec(0, 0, 0),
+    ) -> tuple[list[vpy.baseObj], list[tuple[float, vpy.vector, vpy.vector]]]:
     """
     determines the CoM of all points in the cycle and rotates
         them accordingly.
 
-    inputs:
-    -------
-        points - (list) - list of points as vpython objects with .pos attribute
-        cycle - (list) - list of indeces for the list of points in cycle notation
+    Args:
+        points (list[vpy.baseObj]) - list of points as vpython objects with .pos attribute
+        cycles - (list) - list of indeces for the list of points in cycle notation
             e.g. (0,1,2) means the permutation 0->1->2->0
 
-    returns:
-    --------
-        (list) - list of points moved in this cycle
-        (list) - list of rotation instructions as triples
+    Returns:
+        list[vpy.baseObj]: list of points moved in this cycle
+        list[tuple[float, vpy.vector, vpy.vector]]: list of rotation instructions as triples
             ('angle', 'axis', 'origin') for each moved point
     """
     COM = get_com([points[i] for i in cycle])
@@ -118,27 +170,27 @@ def calc_rotate_pair(point_A, point_B, com, PUZZLE_COM=vpy.vec(0, 0, 0)):
     return angle, axis, com
 
 
-def apply_rotation(cycle_points, rot_info_list, animation_time=0.25, target_fps=60):
+def apply_rotation(
+        cycle_points: list[vpy.baseObj],
+        rot_info_list: list[tuple[float, vpy.vector, vpy.vector]],
+        animation_time: float = 0.25,
+        target_fps: float = 60):
     """
     animate the rotation of all points in 'cycle_points' as specified in 'rot_info_list'.
         the animation contains 'anim_steps' frames
 
-    inputs:
-    -------
-        cycle_points - (list) - list of vpython objects that shall be rotated
-        rot_info_list - (list) - list with rotation information triples:
+    Args:
+        cycle_points (list[vpy.baseObj]): list of vpython objects that will be rotated
+        rot_info_list (list[tuple[float, vpy.vector, vpy.vector]]): list with rotation information triples:
             ('angle', 'axis', 'origin') of rotation for each object
-        animation_time - (float) - time in seconds for the animation
-        target_fps - (int) - target frames per second for the animation
+        animation_time (float): time in seconds for the animation
+        target_fps (int): target frames per second for the animation
 
-    returns:
-    --------
+    Returns:
         None
 
-    outputs:
-    --------
-        changes the position of every object in cycle_points by rotation
-            as specified in 'rot_info_list'
+    Side effects:
+        changes the position atttribute of every object in cycle_points according to the rotation described in `rot_info_list`
     """
     # calculate steps for 60 fps given animation time
     anim_steps: int = int(target_fps*animation_time)
