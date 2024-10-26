@@ -22,6 +22,9 @@ def animate_move(
         POINT_POS (list[vpy.vector]): correct positions of the points for snapping. Order must match `points`.
 
     Returns:
+        None
+
+    Side Effects:
         the cycles are applied to points, permuting the objects in there.
     """
     move_points = []
@@ -42,13 +45,10 @@ def animate_move(
             avg_rotation_axis += rot_info[0][1]
     if max_cycle_order == 2:
         axis = get_order_2_axis(points, cycles)
+        move_com = get_com(move_points)
         for i, rot_info in enumerate(rot_info_list):
             rot_info_list[i] = (rot_info[0], axis, rot_info[2])
-    # # handle whole-puzzle rotations
-    # if len(affeced_points) == len(points): # all points are affected by the move
-    #     # use the same axis for all rotations
-    #     if max_cycle_order != 2:
-    #         # if order 2, axis is already corrected
+    
         
         
     # flip rotation axis of 2-cycles if necessary
@@ -82,6 +82,15 @@ def get_order_2_axis(
     ) -> vpy.vector:
     """
     Get a suitable rotation axis if the move contains only 2-cycles by finding a rotation axis using multiple 2-cycles.
+    The rotation axis will be chosen such that the rotation direction is no more than 90° from (1,1,1).
+
+    Args:
+        points (list[vpy.baseObj]): list of points as vpython objects with .pos attribute
+        cycles (list[list[int]]): a move's permutation in cyclic form
+            e.g. (0,1,2) means the permutation 0->1->2->0
+    
+    Returns:
+        vpy.vector: a suitable rotation axis for the move
     """
     if len(cycles) == 1:
         # this method does not work if only one 2-cycle exists
@@ -91,16 +100,20 @@ def get_order_2_axis(
         vec_1 = points[cycle_1[1]].pos - points[cycle_1[0]].pos
         for cycle_2 in cycles[idx_1+1:]:
             vec_2 = points[cycle_2[1]].pos - points[cycle_2[0]].pos
-            if vpy.dot(vec_1, vec_2) < 0:
-                vec_2 *= -1
-            average_axis += vpy.cross(vec_1, vec_2)
-    # normalize the average axis
+            vec_3 = vpy.cross(vec_1, vec_2)
+            if vpy.dot(average_axis, vec_3) < 0:
+                vec_3 *= -1
+            average_axis += vec_3
+    # bias the average axis towards positive values to make rotation direction independent of cycle ordering
+    bias_direction: vpy.vector = vpy.vec(1, 1, 1)
+    if vpy.dot(average_axis, bias_direction) < 0:
+        average_axis *= -1
+    # return normalized average axis
     return average_axis.norm()
 
 def calc_rotate_cycle(
         points: list[vpy.baseObj],
         cycle: list[int],
-        # POINT_POS: list[vpy.vector],
         PUZZLE_COM: vpy.vector = vpy.vec(0, 0, 0),
     ) -> tuple[list[vpy.baseObj], list[tuple[float, vpy.vector, vpy.vector]]]:
     """
@@ -108,14 +121,14 @@ def calc_rotate_cycle(
         them accordingly.
 
     Args:
-        points (list[vpy.baseObj]) - list of points as vpython objects with .pos attribute
-        cycles - (list) - list of indeces for the list of points in cycle notation
+        points (list[vpy.baseObj]): list of points as vpython objects with .pos attribute
+        cycles (list[int]): a single cycle of a move's permutation in cyclic form
             e.g. (0,1,2) means the permutation 0->1->2->0
 
     Returns:
         list[vpy.baseObj]: list of points moved in this cycle
         list[tuple[float, vpy.vector, vpy.vector]]: list of rotation instructions as triples
-            ('angle', 'axis', 'origin') for each moved point
+            (`angle`, `axis`, `origin`) for each moved point
     """
     COM = get_com([points[i] for i in cycle])
 
@@ -142,19 +155,17 @@ def calc_rotate_pair(point_A, point_B, com, PUZZLE_COM=vpy.vec(0, 0, 0)):
     calculate everything necessary to rotate 'point_A' to 'point_B' around
         the point 'com'
 
-    inputs:
-    -------
-        point_A - (vpython 3d object) - a vpython object with .pos attribute
+    Args:
+        point_A (vpython 3d object): a vpython object with .pos attribute
             this object will be moved
-        point_B - (vpython 3d object) - a vpython object with .pos attribute
+        point_B (vpython 3d object): a vpython object with .pos attribute
             this is the position of 'point_A' after the rotation
-        com - (vpy.vector) - the point around which 'point_A' will be rotated
+        com (vpy.vector): the point around which 'point_A' will be rotated
 
-    returns:
-    --------
-        (float) - angle of rotation in radians
-        (vpy.vector) - axis of rotation
-        (vpy.vector) - origin for the rotation
+    Returns:
+        float: angle of rotation in radians
+        vpy.vector: axis of rotation
+        vpy.vector: origin for the rotation
     """
     v_A = point_A.pos - com
     v_B = point_B.pos - com
@@ -182,7 +193,7 @@ def apply_rotation(
     Args:
         cycle_points (list[vpy.baseObj]): list of vpython objects that will be rotated
         rot_info_list (list[tuple[float, vpy.vector, vpy.vector]]): list with rotation information triples:
-            ('angle', 'axis', 'origin') of rotation for each object
+            (`angle`, `axis`, `origin`) of rotation for each object
         animation_time (float): time in seconds for the animation
         target_fps (int): target frames per second for the animation
 
@@ -206,23 +217,22 @@ def apply_rotation(
         time.sleep(max(0, sleep_until - time.time()))
 
 
-def apply_cycle(points, cycle):
+def apply_cycle(
+        points: list[any],
+        cycle: list[int],
+    ) -> None:
     """
-    apply the permutation given in 'cycle' to the list 'points' in-place
+    apply the permutation given in 'cycle' to the list `points` in-place
 
-    inputs:
-    -------
-        points - (list) - any list
-        cycle - (tuple) of ints - a permutation given in cyclic notation
-            as a tuple of list indeces (ints)
+    Args:
+        points (list[any]): List of objects that will be permuted
+        cycle (list[int]): A single cycle of a permutation in cyclic form
 
-    returns:
-    --------
+    Returns:
         None
 
-    outputs:
-    --------
-        changes the list 'points' in-place by applying the permutation
+    Side Effects:
+        changes the list `points` in-place by applying the permutation
     """
     j = cycle[0]
     # for i in cycle:
@@ -230,26 +240,26 @@ def apply_cycle(points, cycle):
         points[i], points[j] = points[j], points[i] # swap points i and j
 
 
-def correct_positions(points, positions, cycle=None):
+def correct_positions(
+        points: list[vpy.baseObj],
+        positions: list[vpy.vector],
+        cycle: list[int] = None) -> None:
     """
-    snaps all objects in 'points' to the position specified in 'positions'
+    Snap all objects in `points` to the position specified in `positions`
     if cycle is specified, only the points in the cycle are updated
 
-    inputs:
-    -------
-        points - (list) - list of vpython objects
-        positions - (list) - list of correct positions as vpython vectors
-        cycle - (list) - optional ; indeces of points to be updated
+    Args:
+        points (list): list of vpython objects
+        positions (list): list of correct positions as vpython vectors
+        cycle (list): optional ; indeces of points to be updated
 
-    returns:
-    --------
+    Returns:
         None
 
-    outputs:
-    --------
-        changes the position of the objects in 'points' according to 'positions'
+    Side Effects:
+        changes the position of the objects in `points` according to `positions`
     """
-    if cycle == None:
+    if not cycle:
         for point, pos in zip(points, positions):
             point.pos = pos
     else:
@@ -257,17 +267,15 @@ def correct_positions(points, positions, cycle=None):
             points[i].pos = positions[i]
 
 
-def get_com(points):
+def get_com(points: list[vpy.baseObj]) -> vpy.vector:
     """
-    determines the center of mass of all given points.
+    determines the center of mass of the given points. (sum of points / number of points)
 
-    inputs:
-    -------
-        points - (list) - list of points as vpython objects with .pos attribute
+    Args:
+        points (list[vpy.baseObj]): list of points as vpython objects with .pos attribute
 
-    returns:
-    --------
-        (vpy.vector) - the center of mass of the given objects
+    Returns:
+        vpy.vector: the center of mass of the given objects
     """
     com = vpy.vec(0, 0, 0)
     for obj in points:
