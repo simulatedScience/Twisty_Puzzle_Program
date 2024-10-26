@@ -120,7 +120,7 @@ def plot_action_histogram(
     # Adding legend
     plt.legend([bars[0], bars[len(sorted_alg)], bars[len(sorted_alg) + len(sorted_rot)]], 
                ['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves'], loc='upper right')
-    
+
     plt.tight_layout()
     # save_path: str = get_policy_savepath()
     plt.show()

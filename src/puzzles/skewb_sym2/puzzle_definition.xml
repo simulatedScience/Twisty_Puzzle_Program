@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="skewb_sym2" state_space_size="3149280">
+<puzzledefinition name="skewb_sym2" state_space_size="37791360">
   <points>
     <point size="4.0">
       <coords x="0.3464466094067262" y="0.3464466094067262" z="0.7"/>
@@ -179,7 +179,7 @@
       <cycle>17, 23, 5</cycle>
       <cycle>16, 22, 4</cycle>
     </move>
-    <move name="rot_1">
+    <move name="rot_rw">
       <cycle>0, 13, 2</cycle>
       <cycle>1, 7, 14</cycle>
       <cycle>3, 8, 12</cycle>
@@ -191,7 +191,7 @@
       <cycle>24, 26, 27</cycle>
       <cycle>25, 29, 28</cycle>
     </move>
-    <move name="rot_2">
+    <move name="rot_yg">
       <cycle>0, 18</cycle>
       <cycle>1, 12</cycle>
       <cycle>2, 14</cycle>
@@ -207,7 +207,7 @@
       <cycle>24, 29</cycle>
       <cycle>26, 28</cycle>
     </move>
-    <move name="rot_3">
+    <move name="rot_br">
       <cycle>0, 19, 3</cycle>
       <cycle>1, 8, 20</cycle>
       <cycle>2, 7, 18</cycle>
@@ -219,7 +219,7 @@
       <cycle>24, 25, 28</cycle>
       <cycle>26, 29, 27</cycle>
     </move>
-    <move name="rot_4">
+    <move name="rot_gr">
       <cycle>0, 2, 13</cycle>
       <cycle>1, 14, 7</cycle>
       <cycle>3, 12, 8</cycle>
@@ -231,7 +231,7 @@
       <cycle>24, 27, 26</cycle>
       <cycle>25, 28, 29</cycle>
     </move>
-    <move name="rot_5">
+    <move name="rot_ow">
       <cycle>0, 20, 14</cycle>
       <cycle>1, 3, 2</cycle>
       <cycle>4, 21, 11</cycle>
@@ -243,7 +243,7 @@
       <cycle>24, 28, 27</cycle>
       <cycle>25, 29, 26</cycle>
     </move>
-    <move name="rot_6">
+    <move name="rot_go">
       <cycle>0, 14, 20</cycle>
       <cycle>1, 2, 3</cycle>
       <cycle>4, 11, 21</cycle>
@@ -255,7 +255,7 @@
       <cycle>24, 27, 28</cycle>
       <cycle>25, 26, 29</cycle>
     </move>
-    <move name="rot_7">
+    <move name="rot_ry">
       <cycle>0, 7, 8</cycle>
       <cycle>1, 13, 19</cycle>
       <cycle>2, 12, 20</cycle>
@@ -267,7 +267,7 @@
       <cycle>24, 26, 25</cycle>
       <cycle>27, 29, 28</cycle>
     </move>
-    <move name="rot_8">
+    <move name="rot_wb">
       <cycle>0, 1</cycle>
       <cycle>2, 8</cycle>
       <cycle>3, 7</cycle>
@@ -283,7 +283,7 @@
       <cycle>25, 27</cycle>
       <cycle>26, 28</cycle>
     </move>
-    <move name="rot_9">
+    <move name="rot_oy">
       <cycle>0, 3, 19</cycle>
       <cycle>1, 20, 8</cycle>
       <cycle>2, 18, 7</cycle>
@@ -295,7 +295,7 @@
       <cycle>24, 28, 25</cycle>
       <cycle>26, 27, 29</cycle>
     </move>
-    <move name="rot_10">
+    <move name="rot_yb">
       <cycle>0, 12</cycle>
       <cycle>1, 18</cycle>
       <cycle>2, 19</cycle>
@@ -311,7 +311,7 @@
       <cycle>24, 29</cycle>
       <cycle>25, 27</cycle>
     </move>
-    <move name="rot_11">
+    <move name="rot_bo">
       <cycle>0, 8, 7</cycle>
       <cycle>1, 19, 13</cycle>
       <cycle>2, 20, 12</cycle>
