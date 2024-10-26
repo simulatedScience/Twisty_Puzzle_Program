@@ -71,7 +71,7 @@ def plot_action_histogram(
     """
     def extract_number(action):
         """Extract the numeric part from an action name."""
-        return int(action.split('_')[-1].strip("'"))
+        return str(action.split('_')[-1].strip("'"))
     # Sort the keys by the numeric part within each group
     sorted_alg = sorted(alg_counter.keys(), key=extract_number)
     sorted_rot = sorted(rot_counter.keys(), key=extract_number)

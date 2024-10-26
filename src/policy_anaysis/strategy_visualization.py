@@ -60,7 +60,7 @@ def analyze_strategy(
         current_solved_state: list[int] = solved_state[:]
         
         # Track correctness of each point over time
-        correctness_history: list[list[int]] = [[1] for _ in range(n_points)]  # Keep average correctness scores for each point
+        # correctness_history: list[list[int]] = [[1] for _ in range(n_points)]  # Keep average correctness scores for each point
         correctness_history2: list[float] = [1.] * n_points  # Keep average correctness scores for each point
         deviation_move_counts = [-1] * n_points  # Initialize the first deviation count
 
@@ -74,7 +74,7 @@ def analyze_strategy(
             
             # Track correctness
             for i, (current_val, solved_val) in enumerate(zip(current_state, current_solved_state)):
-                correctness_history[i].append(current_val == solved_val)
+                # correctness_history[i].append(current_val == solved_val)
                 correctness_history2[i] = (correctness_history2[i]*(move_num+1) + (current_val == solved_val)) / (move_num+2)
                 
                 # Check if the running average falls below the threshold
@@ -88,12 +88,10 @@ def analyze_strategy(
             if deviation_move_counts[i] == -1:
                 deviation_move_counts[i] = len(reverse_moves)
             deviations_per_point[i].append(deviation_move_counts[i])
-        print(f"{deviation_move_counts = }")
-            
-    
+        print(f"run {run_num} deviation counts: {deviation_move_counts}")
+
     # Calculate averages for each point
     avg_deviations = [sum(deviation_list) / len(deviation_list) if deviation_list else None for deviation_list in deviations_per_point]
-    
     return avg_deviations
 
 def show_avg_deviations(
@@ -143,7 +141,8 @@ def main(
     puzzle = Twisty_Puzzle()
     puzzle.load_puzzle(puzzle_definition_path)
 
-    correctness_threshold = 0.7  # Example threshold for deviation
+    # correctness_threshold = 0.7  # Example threshold for deviation
+    correctness_threshold = 0.5  # Example threshold for deviation
 
     avg_deviations = analyze_strategy(
         test_data,
