@@ -189,11 +189,11 @@ def generate_algorithms(
             print(f"Full group was reached.")
         print(f"Algorithm generation took {time.time()-end_time+max_time:.2f}/{max_time} s.")
         
-        print(f"while_checks:",
-                len(found_algorithms) < max_number_of_algorithms,
-                time.time() < end_time,
-                iterations_since_new_algorithm < max_iterations_without_new_algorithm,
-                sep="\n  ")
+        # print(f"while_checks:",
+        #         len(found_algorithms) < max_number_of_algorithms,
+        #         time.time() < end_time,
+        #         iterations_since_new_algorithm < max_iterations_without_new_algorithm,
+        #         sep="\n  ")
     # if verbosity:
     #     print()
     #     if len(found_algorithms) >= max_number_of_algorithms:
