@@ -68,6 +68,7 @@ def find_closest_color(
 
 def rename_rotations(
         puzzle: Twisty_Puzzle,
+        confirm_rename: bool = False,
     ) -> dict[str, str]:
     """
     Find all rotation moves in the puzzle (starting with "rot_") and rename them to a more human-readable format: Name rotations as `rot_[c1][c2]` where `c1` and `c2` are first letter the color names that are moved to where the white and green (lime if there is no green) faces are in the solved state.
@@ -116,9 +117,9 @@ def rename_rotations(
         # rename the move
         new_move_name = f"rot_{white_location_colors[0][0]}{green_location_colors[0][0]}"
         renamed_rotations[move_name] = new_move_name
-        # if input(f"Rename {move_name} to {new_move_name}? (y/N): ").lower() == "y":
-        puzzle.rename_move(move_name, new_move_name)
-        puzzle.reset_to_solved()
+        if (not confirm_rename) or input(f"Rename {move_name} to {new_move_name}? (y/N): ").lower() == "y":
+            puzzle.rename_move(move_name, new_move_name)
+            puzzle.reset_to_solved()
 
     # request user permission to save the renaming changes
     if not renamed_rotations:
@@ -128,10 +129,13 @@ def rename_rotations(
         print("Renaming:")
         for old_name, new_name in renamed_rotations.items():
             print(f"{old_name} -> {new_name}")
-    if input(f"Save {len(renamed_rotations)} renaming changes? (y/N): ").lower() == "y":
-        new_puzzle_name = input(f"Enter new puzzle name (leave empty or type {puzzle.PUZZLE_NAME} to overwrite current puzzle or type 'cancel' to cancel): ")
-        if new_puzzle_name.lower() == "cancel":
-            return renamed_rotations
+    if (not confirm_rename) or input(f"Save {len(renamed_rotations)} renaming changes? (y/N): ").lower() == "y":
+        if confirm_rename:
+            new_puzzle_name = input(f"Enter new puzzle name (leave empty or type {puzzle.PUZZLE_NAME} to overwrite current puzzle or type 'cancel' to cancel): ")
+            if new_puzzle_name.lower() == "cancel":
+                return renamed_rotations
+        else:
+            new_puzzle_name = ""
         if new_puzzle_name:
             puzzle.PUZZLE_NAME = new_puzzle_name
         puzzle.save_puzzle(puzzle.PUZZLE_NAME)
@@ -325,5 +329,5 @@ if __name__ == "__main__":
     puzzle.load_puzzle("skewb_sym2")
     import time
     time.sleep(3)
-    renamed_rotations = rename_rotations(puzzle)
+    renamed_rotations = rename_rotations(puzzle, confirm_rename=True)
     os._exit(0)
