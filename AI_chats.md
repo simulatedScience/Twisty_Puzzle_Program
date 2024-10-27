@@ -24,4 +24,7 @@
   _Very simple modification to existing code. The output was partially used in `src/ai_modules/nn_rl_reward_factories.py` (added `[:, None]` to `state` for vectorization)._
 
 - GPT-4o 18.10.2024 [Implement agent strategy visualization](https://chatgpt.com/share/67137121-e160-8007-882a-f3d933753d44)  
-  _Helped to implement a visualization I came up with. Output code was not working. I went through it, changing anything I wouldn't have done the same way and fixed the core logic of the implementation. The method used to store intermediate values was changed by me since the AI generated solution deviated from my original intent, eventhough both were correct approaches._s
+  _Helped to implement a visualization I came up with. Output code was not working. I went through it, changing anything I wouldn't have done the same way and fixed the core logic of the implementation. The method used to store intermediate values was changed by me since the AI generated solution deviated from my original intent, eventhough both were correct approaches._
+
+- GPT-4o 26.10.2024 [Simple GUI vor visualizing color mappings for rotation naming](https://chatgpt.com/share/671e2120-3dd0-8007-87a8-9fd209d7e94f)  
+  _To verify that the implemented function to map colors (rgb tuples) to color names (strings) works, I wanted a GUI where I could visualize colors and where they are mapped. Once again, this was a simple code snippet that I have coded in a similar way many times before and it was faster to let an AI do it. I modified the output code to better reflect my vision. For example I removed borders, changed the background color, added logic to automatically split the output into multiple columns etc.._
