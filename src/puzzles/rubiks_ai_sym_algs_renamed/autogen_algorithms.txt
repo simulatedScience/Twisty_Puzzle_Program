@@ -1,0 +1,17 @@
+alg_1 = 7*(B D' R' B' F' R')         = alg_flip_2_edges
+alg_2 = 8*(F L' B F L' R)            = alg_rot_2_corners
+alg_2' = 8*(R' L F' B' L F')         = alg_rot_2_corners'
+alg_3 = 8*(U' R' F B U')             = alg_cycle_3_edges
+alg_3' = 8*(U B' F' R U)             = alg_cycle_3_edges'
+alg_4 = 15*(B' D F D)                = alg_rot_3_corners
+alg_4' = 15*(D' F' D' B)             = alg_rot_3_corners'
+alg_5 = 8*(D U' B' U' D' U R B' U)   = alg_cycle_3_corners
+alg_5' = 8*(U' B R' U' D U B U D')   = alg_cycle_3_corners'
+alg_6 = 3*(F D F' D')                = alg_swap_4_corners
+alg_7 = 3*(U U R' R')                = alg_swap_4_edges
+alg_8 = 5*(B D' D' B' L')            = alg_swap_2_edges_corners
+alg_9 = 12*(D' R' F' U)              = alg_flip_4_edges
+alg_10 = 8*(B D' R B L B F L)        = alg_rot_4_corners
+alg_10' = 8*(L' F' B' L' B' R' D B') = alg_rot_4_corners'
+alg_11 = 6*(D' R' F' U)              = alg_cycle_2_2_edges
+alg_11' = 6*(U' F R D)               = alg_cycle_2_2_edges'
