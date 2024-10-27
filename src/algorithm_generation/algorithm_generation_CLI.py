@@ -219,14 +219,14 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
             # max_time=3, # 3 seconds
-            max_time=300, # 2 minutes
+            max_time=600, # 2 minutes
             max_base_sequence_length=20, # 20
-            max_move_sequence_order=200, # 200
-            max_algorithm_moves=100, # 100
+            max_move_sequence_order=300, # 200
+            max_algorithm_moves=150, # 100
             max_algorithm_order=6, # 6
             max_pieces_affected=4, # 4
-            max_number_of_algorithms=48, # 20
-            max_iterations_without_new_algorithm=100,
+            max_number_of_algorithms=100, # 20
+            max_iterations_without_new_algorithm=5000, # 200
             verbosity=2,
         )
         ps = pstats.Stats(profile)
@@ -251,6 +251,7 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             new_moves=algorithm_moves,
             suffix="_algs",
         )
+        # save algorithm generation parameters.
 
     os._exit(0)
 
