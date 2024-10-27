@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="megaminx_sym" state_space_size="100669616553523347122516032313645505168688116411019768627200000000000">
+<puzzledefinition name="megaminx_sym">
   <points>
     <point size="10.0">
       <coords x="0.0" y="0.7838699100999075" z="1.3497058314499202"/>
@@ -699,7 +699,7 @@
       <cycle>121, 125, 124, 123, 122</cycle>
       <cycle>126, 130, 129, 128, 127</cycle>
     </move>
-    <move name="rot_1">
+    <move name="rot_ro">
       <cycle>0, 47</cycle>
       <cycle>1, 48</cycle>
       <cycle>2, 44</cycle>
@@ -767,7 +767,7 @@
       <cycle>108, 117</cycle>
       <cycle>109, 120</cycle>
     </move>
-    <move name="rot_2">
+    <move name="rot_og">
       <cycle>0, 24</cycle>
       <cycle>1, 25</cycle>
       <cycle>2, 26</cycle>
@@ -835,7 +835,7 @@
       <cycle>108, 116</cycle>
       <cycle>109, 120</cycle>
     </move>
-    <move name="rot_3">
+    <move name="rot_by">
       <cycle>0, 99, 81</cycle>
       <cycle>1, 100, 77</cycle>
       <cycle>2, 101, 78</cycle>
@@ -881,7 +881,7 @@
       <cycle>42, 119, 53</cycle>
       <cycle>43, 120, 54</cycle>
     </move>
-    <move name="rot_4">
+    <move name="rot_pc">
       <cycle>0, 69, 121</cycle>
       <cycle>1, 70, 122</cycle>
       <cycle>2, 66, 123</cycle>
@@ -927,7 +927,7 @@
       <cycle>42, 63, 94</cycle>
       <cycle>43, 65, 98</cycle>
     </move>
-    <move name="rot_5">
+    <move name="rot_ft">
       <cycle>0, 58, 23, 102, 88</cycle>
       <cycle>1, 59, 24, 103, 89</cycle>
       <cycle>2, 55, 25, 99, 90</cycle>
@@ -955,7 +955,7 @@
       <cycle>77, 81, 80, 79, 78</cycle>
       <cycle>82, 86, 85, 84, 83</cycle>
     </move>
-    <move name="rot_6">
+    <move name="rot_ac">
       <cycle>0, 122, 103</cycle>
       <cycle>1, 123, 99</cycle>
       <cycle>2, 124, 100</cycle>
@@ -1001,7 +1001,7 @@
       <cycle>42, 93, 115</cycle>
       <cycle>43, 98, 120</cycle>
     </move>
-    <move name="rot_7">
+    <move name="rot_bp">
       <cycle>0, 103, 122</cycle>
       <cycle>1, 99, 123</cycle>
       <cycle>2, 100, 124</cycle>
@@ -1047,7 +1047,7 @@
       <cycle>42, 115, 93</cycle>
       <cycle>43, 120, 98</cycle>
     </move>
-    <move name="rot_8">
+    <move name="rot_lt">
       <cycle>0, 15, 114</cycle>
       <cycle>1, 11, 110</cycle>
       <cycle>2, 12, 111</cycle>
@@ -1093,7 +1093,7 @@
       <cycle>64, 96, 86</cycle>
       <cycle>65, 98, 87</cycle>
     </move>
-    <move name="rot_9">
+    <move name="rot_gp">
       <cycle>0, 33</cycle>
       <cycle>1, 34</cycle>
       <cycle>2, 35</cycle>
@@ -1161,7 +1161,7 @@
       <cycle>108, 115</cycle>
       <cycle>109, 120</cycle>
     </move>
-    <move name="rot_10">
+    <move name="rot_go">
       <cycle>0, 35</cycle>
       <cycle>1, 36</cycle>
       <cycle>2, 37</cycle>
@@ -1229,7 +1229,7 @@
       <cycle>119, 128</cycle>
       <cycle>120, 131</cycle>
     </move>
-    <move name="rot_11">
+    <move name="rot_tf">
       <cycle>0, 113</cycle>
       <cycle>1, 114</cycle>
       <cycle>2, 110</cycle>
@@ -1297,7 +1297,7 @@
       <cycle>97, 128</cycle>
       <cycle>98, 131</cycle>
     </move>
-    <move name="rot_12">
+    <move name="rot_fa">
       <cycle>0, 59, 48</cycle>
       <cycle>1, 55, 44</cycle>
       <cycle>2, 56, 45</cycle>
@@ -1343,7 +1343,7 @@
       <cycle>42, 73, 86</cycle>
       <cycle>43, 76, 87</cycle>
     </move>
-    <move name="rot_13">
+    <move name="rot_ao">
       <cycle>0, 124</cycle>
       <cycle>1, 125</cycle>
       <cycle>2, 121</cycle>
@@ -1411,7 +1411,7 @@
       <cycle>75, 106</cycle>
       <cycle>76, 109</cycle>
     </move>
-    <move name="rot_14">
+    <move name="rot_wt">
       <cycle>0, 1, 2, 3, 4</cycle>
       <cycle>5, 6, 7, 8, 9</cycle>
       <cycle>11, 114, 57, 45, 90</cycle>
@@ -1439,7 +1439,7 @@
       <cycle>33, 37, 36, 35, 34</cycle>
       <cycle>38, 42, 41, 40, 39</cycle>
     </move>
-    <move name="rot_15">
+    <move name="rot_ry">
       <cycle>0, 44, 25, 123, 111</cycle>
       <cycle>1, 45, 26, 124, 112</cycle>
       <cycle>2, 46, 22, 125, 113</cycle>
@@ -1467,7 +1467,7 @@
       <cycle>66, 67, 68, 69, 70</cycle>
       <cycle>71, 72, 73, 74, 75</cycle>
     </move>
-    <move name="rot_16">
+    <move name="rot_ca">
       <cycle>0, 78, 57, 14, 125</cycle>
       <cycle>1, 79, 58, 15, 121</cycle>
       <cycle>2, 80, 59, 11, 122</cycle>
@@ -1495,7 +1495,7 @@
       <cycle>110, 112, 114, 111, 113</cycle>
       <cycle>115, 117, 119, 116, 118</cycle>
     </move>
-    <move name="rot_17">
+    <move name="rot_lc">
       <cycle>0, 14, 78, 125, 57</cycle>
       <cycle>1, 15, 79, 121, 58</cycle>
       <cycle>2, 11, 80, 122, 59</cycle>
@@ -1523,7 +1523,7 @@
       <cycle>110, 111, 112, 113, 114</cycle>
       <cycle>115, 116, 117, 118, 119</cycle>
     </move>
-    <move name="rot_18">
+    <move name="rot_bo">
       <cycle>0, 101</cycle>
       <cycle>1, 102</cycle>
       <cycle>2, 103</cycle>
@@ -1591,7 +1591,7 @@
       <cycle>86, 130</cycle>
       <cycle>87, 131</cycle>
     </move>
-    <move name="rot_19">
+    <move name="rot_ct">
       <cycle>0, 79</cycle>
       <cycle>1, 80</cycle>
       <cycle>2, 81</cycle>
@@ -1659,7 +1659,7 @@
       <cycle>97, 129</cycle>
       <cycle>98, 131</cycle>
     </move>
-    <move name="rot_20">
+    <move name="rot_wr">
       <cycle>0, 3, 1, 4, 2</cycle>
       <cycle>5, 8, 6, 9, 7</cycle>
       <cycle>11, 45, 114, 90, 57</cycle>
@@ -1687,7 +1687,7 @@
       <cycle>33, 35, 37, 34, 36</cycle>
       <cycle>38, 40, 42, 39, 41</cycle>
     </move>
-    <move name="rot_21">
+    <move name="rot_af">
       <cycle>0, 125, 14, 57, 78</cycle>
       <cycle>1, 121, 15, 58, 79</cycle>
       <cycle>2, 122, 11, 59, 80</cycle>
@@ -1715,7 +1715,7 @@
       <cycle>110, 113, 111, 114, 112</cycle>
       <cycle>115, 118, 116, 119, 117</cycle>
     </move>
-    <move name="rot_22">
+    <move name="rot_yw">
       <cycle>0, 90, 12</cycle>
       <cycle>1, 91, 13</cycle>
       <cycle>2, 92, 14</cycle>
@@ -1761,7 +1761,7 @@
       <cycle>64, 106, 82</cycle>
       <cycle>65, 109, 87</cycle>
     </move>
-    <move name="rot_23">
+    <move name="rot_ta">
       <cycle>0, 112, 56</cycle>
       <cycle>1, 113, 57</cycle>
       <cycle>2, 114, 58</cycle>
@@ -1807,7 +1807,7 @@
       <cycle>42, 106, 71</cycle>
       <cycle>43, 109, 76</cycle>
     </move>
-    <move name="rot_24">
+    <move name="rot_rb">
       <cycle>0, 48, 59</cycle>
       <cycle>1, 44, 55</cycle>
       <cycle>2, 45, 56</cycle>
@@ -1853,7 +1853,7 @@
       <cycle>42, 86, 73</cycle>
       <cycle>43, 87, 76</cycle>
     </move>
-    <move name="rot_25">
+    <move name="rot_yr">
       <cycle>0, 91</cycle>
       <cycle>1, 92</cycle>
       <cycle>2, 88</cycle>
@@ -1921,7 +1921,7 @@
       <cycle>108, 118</cycle>
       <cycle>109, 120</cycle>
     </move>
-    <move name="rot_26">
+    <move name="rot_ob">
       <cycle>0, 25, 111, 44, 123</cycle>
       <cycle>1, 26, 112, 45, 124</cycle>
       <cycle>2, 22, 113, 46, 125</cycle>
@@ -1949,7 +1949,7 @@
       <cycle>66, 68, 70, 67, 69</cycle>
       <cycle>71, 73, 75, 72, 74</cycle>
     </move>
-    <move name="rot_27">
+    <move name="rot_or">
       <cycle>0, 26, 77</cycle>
       <cycle>1, 22, 78</cycle>
       <cycle>2, 23, 79</cycle>
@@ -1995,7 +1995,7 @@
       <cycle>75, 96, 107</cycle>
       <cycle>76, 98, 109</cycle>
     </move>
-    <move name="rot_28">
+    <move name="rot_fr">
       <cycle>0, 56, 112</cycle>
       <cycle>1, 57, 113</cycle>
       <cycle>2, 58, 114</cycle>
@@ -2041,7 +2041,7 @@
       <cycle>42, 71, 106</cycle>
       <cycle>43, 76, 109</cycle>
     </move>
-    <move name="rot_29">
+    <move name="rot_rf">
       <cycle>0, 46, 92</cycle>
       <cycle>1, 47, 88</cycle>
       <cycle>2, 48, 89</cycle>
@@ -2087,7 +2087,7 @@
       <cycle>42, 83, 128</cycle>
       <cycle>43, 87, 131</cycle>
     </move>
-    <move name="rot_30">
+    <move name="rot_ly">
       <cycle>0, 12, 90</cycle>
       <cycle>1, 13, 91</cycle>
       <cycle>2, 14, 92</cycle>
@@ -2133,7 +2133,7 @@
       <cycle>64, 82, 106</cycle>
       <cycle>65, 87, 109</cycle>
     </move>
-    <move name="rot_31">
+    <move name="rot_pb">
       <cycle>0, 67, 45, 13, 100</cycle>
       <cycle>1, 68, 46, 14, 101</cycle>
       <cycle>2, 69, 47, 15, 102</cycle>
@@ -2161,7 +2161,7 @@
       <cycle>121, 123, 125, 122, 124</cycle>
       <cycle>126, 128, 130, 127, 129</cycle>
     </move>
-    <move name="rot_32">
+    <move name="rot_py">
       <cycle>0, 66</cycle>
       <cycle>1, 67</cycle>
       <cycle>2, 68</cycle>
@@ -2229,7 +2229,7 @@
       <cycle>108, 119</cycle>
       <cycle>109, 120</cycle>
     </move>
-    <move name="rot_33">
+    <move name="rot_cl">
       <cycle>0, 80, 89, 110, 70</cycle>
       <cycle>1, 81, 90, 111, 66</cycle>
       <cycle>2, 77, 91, 112, 67</cycle>
@@ -2257,7 +2257,7 @@
       <cycle>42, 49, 126, 108, 62</cycle>
       <cycle>43, 54, 131, 109, 65</cycle>
     </move>
-    <move name="rot_34">
+    <move name="rot_pl">
       <cycle>0, 70, 110, 89, 80</cycle>
       <cycle>1, 66, 111, 90, 81</cycle>
       <cycle>2, 67, 112, 91, 77</cycle>
@@ -2285,7 +2285,7 @@
       <cycle>42, 62, 108, 126, 49</cycle>
       <cycle>43, 65, 109, 131, 54</cycle>
     </move>
-    <move name="rot_35">
+    <move name="rot_of">
       <cycle>0, 22, 68</cycle>
       <cycle>1, 23, 69</cycle>
       <cycle>2, 24, 70</cycle>
@@ -2331,7 +2331,7 @@
       <cycle>86, 119, 129</cycle>
       <cycle>87, 120, 131</cycle>
     </move>
-    <move name="rot_36">
+    <move name="rot_rw">
       <cycle>0, 45, 100, 67, 13</cycle>
       <cycle>1, 46, 101, 68, 14</cycle>
       <cycle>2, 47, 102, 69, 15</cycle>
@@ -2359,7 +2359,7 @@
       <cycle>121, 125, 124, 123, 122</cycle>
       <cycle>126, 130, 129, 128, 127</cycle>
     </move>
-    <move name="rot_37">
+    <move name="rot_cp">
       <cycle>0, 81, 99</cycle>
       <cycle>1, 77, 100</cycle>
       <cycle>2, 78, 101</cycle>
@@ -2405,7 +2405,7 @@
       <cycle>42, 53, 119</cycle>
       <cycle>43, 54, 120</cycle>
     </move>
-    <move name="rot_38">
+    <move name="rot_yp">
       <cycle>0, 88, 102, 23, 58</cycle>
       <cycle>1, 89, 103, 24, 59</cycle>
       <cycle>2, 90, 99, 25, 55</cycle>
@@ -2433,7 +2433,7 @@
       <cycle>77, 78, 79, 80, 81</cycle>
       <cycle>82, 83, 84, 85, 86</cycle>
     </move>
-    <move name="rot_39">
+    <move name="rot_yb">
       <cycle>0, 92, 46</cycle>
       <cycle>1, 88, 47</cycle>
       <cycle>2, 89, 48</cycle>
@@ -2479,7 +2479,7 @@
       <cycle>42, 128, 83</cycle>
       <cycle>43, 131, 87</cycle>
     </move>
-    <move name="rot_40">
+    <move name="rot_ag">
       <cycle>0, 123, 44, 111, 25</cycle>
       <cycle>1, 124, 45, 112, 26</cycle>
       <cycle>2, 125, 46, 113, 22</cycle>
@@ -2507,7 +2507,7 @@
       <cycle>66, 69, 67, 70, 68</cycle>
       <cycle>71, 74, 72, 75, 73</cycle>
     </move>
-    <move name="rot_41">
+    <move name="rot_lp">
       <cycle>0, 13, 67, 100, 45</cycle>
       <cycle>1, 14, 68, 101, 46</cycle>
       <cycle>2, 15, 69, 102, 47</cycle>
@@ -2535,7 +2535,7 @@
       <cycle>121, 122, 123, 124, 125</cycle>
       <cycle>126, 127, 128, 129, 130</cycle>
     </move>
-    <move name="rot_42">
+    <move name="rot_tw">
       <cycle>0, 114, 15</cycle>
       <cycle>1, 110, 11</cycle>
       <cycle>2, 111, 12</cycle>
@@ -2581,7 +2581,7 @@
       <cycle>64, 86, 96</cycle>
       <cycle>65, 87, 98</cycle>
     </move>
-    <move name="rot_43">
+    <move name="rot_gc">
       <cycle>0, 37</cycle>
       <cycle>1, 33</cycle>
       <cycle>2, 34</cycle>
@@ -2649,7 +2649,7 @@
       <cycle>97, 130</cycle>
       <cycle>98, 131</cycle>
     </move>
-    <move name="rot_44">
+    <move name="rot_yl">
       <cycle>0, 89, 70, 80, 110</cycle>
       <cycle>1, 90, 66, 81, 111</cycle>
       <cycle>2, 91, 67, 77, 112</cycle>
@@ -2677,7 +2677,7 @@
       <cycle>42, 126, 62, 49, 108</cycle>
       <cycle>43, 131, 65, 54, 109</cycle>
     </move>
-    <move name="rot_45">
+    <move name="rot_gb">
       <cycle>0, 34</cycle>
       <cycle>1, 35</cycle>
       <cycle>2, 36</cycle>
@@ -2745,7 +2745,7 @@
       <cycle>75, 97</cycle>
       <cycle>76, 98</cycle>
     </move>
-    <move name="rot_46">
+    <move name="rot_ga">
       <cycle>0, 36</cycle>
       <cycle>1, 37</cycle>
       <cycle>2, 33</cycle>
@@ -2813,7 +2813,7 @@
       <cycle>86, 118</cycle>
       <cycle>87, 120</cycle>
     </move>
-    <move name="rot_47">
+    <move name="rot_tc">
       <cycle>0, 111, 123, 25, 44</cycle>
       <cycle>1, 112, 124, 26, 45</cycle>
       <cycle>2, 113, 125, 22, 46</cycle>
@@ -2841,7 +2841,7 @@
       <cycle>66, 70, 69, 68, 67</cycle>
       <cycle>71, 75, 74, 73, 72</cycle>
     </move>
-    <move name="rot_48">
+    <move name="rot_wy">
       <cycle>0, 4, 3, 2, 1</cycle>
       <cycle>5, 9, 8, 7, 6</cycle>
       <cycle>11, 90, 45, 57, 114</cycle>
@@ -2869,7 +2869,7 @@
       <cycle>33, 34, 35, 36, 37</cycle>
       <cycle>38, 39, 40, 41, 42</cycle>
     </move>
-    <move name="rot_49">
+    <move name="rot_at">
       <cycle>0, 121, 69</cycle>
       <cycle>1, 122, 70</cycle>
       <cycle>2, 123, 66</cycle>
@@ -2915,7 +2915,7 @@
       <cycle>42, 94, 63</cycle>
       <cycle>43, 98, 65</cycle>
     </move>
-    <move name="rot_50">
+    <move name="rot_cg">
       <cycle>0, 77, 26</cycle>
       <cycle>1, 78, 22</cycle>
       <cycle>2, 79, 23</cycle>
@@ -2961,7 +2961,7 @@
       <cycle>75, 107, 96</cycle>
       <cycle>76, 109, 98</cycle>
     </move>
-    <move name="rot_51">
+    <move name="rot_lw">
       <cycle>0, 11</cycle>
       <cycle>1, 12</cycle>
       <cycle>2, 13</cycle>
@@ -3029,7 +3029,7 @@
       <cycle>108, 130</cycle>
       <cycle>109, 131</cycle>
     </move>
-    <move name="rot_52">
+    <move name="rot_oa">
       <cycle>0, 23, 88, 58, 102</cycle>
       <cycle>1, 24, 89, 59, 103</cycle>
       <cycle>2, 25, 90, 55, 99</cycle>
@@ -3057,7 +3057,7 @@
       <cycle>77, 80, 78, 81, 79</cycle>
       <cycle>82, 85, 83, 86, 84</cycle>
     </move>
-    <move name="rot_53">
+    <move name="rot_pg">
       <cycle>0, 68, 22</cycle>
       <cycle>1, 69, 23</cycle>
       <cycle>2, 70, 24</cycle>
@@ -3103,7 +3103,7 @@
       <cycle>86, 129, 119</cycle>
       <cycle>87, 131, 120</cycle>
     </move>
-    <move name="rot_54">
+    <move name="rot_fo">
       <cycle>0, 55</cycle>
       <cycle>1, 56</cycle>
       <cycle>2, 57</cycle>
@@ -3171,7 +3171,7 @@
       <cycle>97, 127</cycle>
       <cycle>98, 131</cycle>
     </move>
-    <move name="rot_55">
+    <move name="rot_bg">
       <cycle>0, 102, 58, 88, 23</cycle>
       <cycle>1, 103, 59, 89, 24</cycle>
       <cycle>2, 99, 55, 90, 25</cycle>
@@ -3199,7 +3199,7 @@
       <cycle>77, 79, 81, 78, 80</cycle>
       <cycle>82, 84, 86, 83, 85</cycle>
     </move>
-    <move name="rot_56">
+    <move name="rot_tl">
       <cycle>0, 110, 80, 70, 89</cycle>
       <cycle>1, 111, 81, 66, 90</cycle>
       <cycle>2, 112, 77, 67, 91</cycle>
@@ -3227,7 +3227,7 @@
       <cycle>42, 108, 49, 62, 126</cycle>
       <cycle>43, 109, 54, 65, 131</cycle>
     </move>
-    <move name="rot_57">
+    <move name="rot_br">
       <cycle>0, 100, 13, 45, 67</cycle>
       <cycle>1, 101, 14, 46, 68</cycle>
       <cycle>2, 102, 15, 47, 69</cycle>
@@ -3255,7 +3255,7 @@
       <cycle>121, 124, 122, 125, 123</cycle>
       <cycle>126, 129, 127, 130, 128</cycle>
     </move>
-    <move name="rot_58">
+    <move name="rot_fw">
       <cycle>0, 57, 125, 78, 14</cycle>
       <cycle>1, 58, 121, 79, 15</cycle>
       <cycle>2, 59, 122, 80, 11</cycle>
@@ -3283,7 +3283,7 @@
       <cycle>110, 114, 113, 112, 111</cycle>
       <cycle>115, 119, 118, 117, 116</cycle>
     </move>
-    <move name="rot_59">
+    <move name="rot_wf">
       <cycle>0, 2, 4, 1, 3</cycle>
       <cycle>5, 7, 9, 6, 8</cycle>
       <cycle>11, 57, 90, 114, 45</cycle>
