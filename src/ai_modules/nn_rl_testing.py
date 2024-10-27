@@ -415,52 +415,53 @@ if __name__ == "__main__":
     # )
 
 ##############################################################################################
-    # train_and_test_agent(
-    #     # puzzle configuration
-    #     # puzzle_name="dino_cube_sym_algs",
-    #     # base_actions=["wrg", "wrg'", "wgo", "wgo'", "yog", "yog'", "ygr", "ygr'", "wbr", "wbr'", "wob", "wob'", "yrb", "yrb'", "ybo", "ybo'"],
-    #     # puzzle_name="skewb_sym_algs",
-    #     # puzzle_name="skewb",
-    #     # base_actions=["wbr", "wbr'", "wgo", "wgo'", "oyb", "oyb'", "ryg", "ryg'"],
-    #     puzzle_name="rubiks_ai_sym_algs",
-    #     base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-    #     # environment configuration
-    #     load_model=None,
-    #     max_moves=200,
-    #     start_scramble_depth=16,
-    #     # start_scramble_depth=2,
-    #     success_threshold=0.25,
-    #     last_n_episodes=1000,
-    #     reward="most_correct_points",
-    #     # reward="binary",
-    #     # rl training parameters
-    #     n_steps=300_000_000,
-    #     learning_rate=0.001,
-    #     batch_size=25000,
-    #     # parallelization settings
-    #     n_envs=1000,
-    #     device="cuda",
-    #     verbosity=1,
-    #     # test configuration
-    #     num_tests=1000,
-    #     test_scramble_length=100,
-    # )
+    train_and_test_agent(
+        # puzzle configuration
+        # puzzle_name="dino_cube_sym_algs",
+        # base_actions=["wrg", "wrg'", "wgo", "wgo'", "yog", "yog'", "ygr", "ygr'", "wbr", "wbr'", "wob", "wob'", "yrb", "yrb'", "ybo", "ybo'"],
+        # puzzle_name="skewb_sym_algs",
+        # puzzle_name="skewb",
+        # base_actions=["wbr", "wbr'", "wgo", "wgo'", "oyb", "oyb'", "ryg", "ryg'"],
+        # puzzle_name="rubiks_ai_sym_algs",
+        puzzle_name="geared_mixup_sym_algs",
+        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+        # environment configuration
+        load_model=None,
+        max_moves=200,
+        start_scramble_depth=16,
+        # start_scramble_depth=2,
+        success_threshold=0.25,
+        last_n_episodes=1000,
+        reward="most_correct_points",
+        # reward="binary",
+        # rl training parameters
+        n_steps=300_000_000,
+        learning_rate=0.001,
+        batch_size=25000,
+        # parallelization settings
+        n_envs=1000,
+        device="cuda",
+        verbosity=1,
+        # test configuration
+        num_tests=1000,
+        test_scramble_length=100,
+    )
     # tensorboard --logdir src/ai_files/dino_cube_sym_algs
     # tensorboard --logdir src/ai_files/
 
-    test_from_file(
-        # "src/ai_files/dino_cube_sym_algs/2024-10-21_19-56-31",
-        # "src/ai_files/skewb_sym_algs/2024-10-21_22-23-45",
-        # "src/ai_files/skewb/2024-10-21_22-23-39",
-        "src/ai_files/rubiks_ai_sym_algs/2024-10-27_10-25-45",
-        model_snapshot_steps=-1,
-        # "src/ai_files/skewb_sym_algs/2024-10-21_21-35-49",
-        # model_snapshot_steps=10_000_000,
-        test_scramble_length=200,
-        test_max_moves=200,
-        num_tests=1000,
-        deterministic=False,
-    )
+    # test_from_file(
+    #     # "src/ai_files/dino_cube_sym_algs/2024-10-21_19-56-31",
+    #     # "src/ai_files/skewb_sym_algs/2024-10-21_22-23-45",
+    #     # "src/ai_files/skewb/2024-10-21_22-23-39",
+    #     "src/ai_files/rubiks_ai_sym_algs/2024-10-27_10-25-45",
+    #     model_snapshot_steps=-1,
+    #     # "src/ai_files/skewb_sym_algs/2024-10-21_21-35-49",
+    #     # model_snapshot_steps=10_000_000,
+    #     test_scramble_length=200,
+    #     test_max_moves=200,
+    #     num_tests=1000,
+    #     deterministic=False,
+    # )
     
     # # binary reward training
     # train_and_test_agent(
