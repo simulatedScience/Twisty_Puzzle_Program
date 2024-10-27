@@ -1,4 +1,6 @@
 # Twisty Puzzle Simulator User Guide
+The main program can be started by running `run_program.py`. This will open a command line interface (CLI). Type `help` to see a list of commands or `help [commandname]` to see info about a specific command. The most important ones are explained below. Loading puzzles will open a browser window with a 3D viewport showing the puzzle.
+To see which puzzles are available, type `listpuzzles`
 
 ## Setup of puzzles
 ### Option 1:
