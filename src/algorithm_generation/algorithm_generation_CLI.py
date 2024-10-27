@@ -149,7 +149,7 @@ def add_moves_to_puzzle(
         new_moves: dict[str, list[int]],
         new_puzzle_name: str = "",
         suffix: str = "_algs"
-        ) -> None:
+        ) -> str:
     """
     Add moves to a puzzle and save it under a new name. If name already exists, a console interaction will ask if the existing puzzle should be overwritten and offer to enter a new name.
 
@@ -158,7 +158,10 @@ def add_moves_to_puzzle(
         algorithms (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of current algorithms.
         new_moves (dict[str, Twisty_Puzzle_Algorithm]): Dictionary of moves to add to the puzzle.
         new_puzzle_name (str, optional): Name of the new puzzle. Defaults to "".
-        suffix (str, optional): Suffix to add to the puzzle name if no name is given. Ignored if `new_puzzle_name` is given. Defaults to "_algs
+        suffix (str, optional): Suffix to add to the puzzle name if no name is given. Ignored if `new_puzzle_name` is given. Defaults to "_algs"
+
+    Returns:
+        str: Name of the new puzzle (may be different from the given name if the name already exists and the user chose a different name).
     """
     if not new_puzzle_name:
         new_puzzle_name: str = puzzle.PUZZLE_NAME + suffix
@@ -177,7 +180,7 @@ def add_moves_to_puzzle(
                     new_puzzle_name = new_name_answer
                     break
                 else:
-                    return
+                    return ""
         else:
             break
     # create new puzzle with 
@@ -193,6 +196,7 @@ def add_moves_to_puzzle(
             for alg_name, alg in algorithms.items():
                 file.write(str(alg) + "\n")
         print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
+    return new_puzzle_name
 
 
 def main(move_text_color="#5588ff", rotations_prefix="rot_"):

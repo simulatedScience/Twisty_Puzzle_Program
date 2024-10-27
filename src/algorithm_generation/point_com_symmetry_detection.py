@@ -30,6 +30,7 @@ from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
 from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
 from symmetry_plane_detection import dist_similarity_function
 from test_symmetry_plane_detection import set_equal_aspect_3d
+from rotation_auto_naming import rename_rotations
 
 DEBUG: bool = False
 TOL = 1e-1
@@ -335,14 +336,17 @@ def main(
     # add moves to puzzle and save
     print(f"Adding {len(named_rotations)} rotational symmetries to the puzzle.")
     new_puzzle_name = puzzle_name + puzzle_name_suffix
-    add_moves_to_puzzle(
+    new_puzzle_name = add_moves_to_puzzle(
         puzzle=puzzle,
         algorithms={},
         new_moves=named_rotations,
         new_puzzle_name=new_puzzle_name,
         suffix=puzzle_name_suffix,
     )
+    if new_puzzle_name:
+        rename_rotations(puzzle)
     os._exit(0)
+
 if __name__ == "__main__":
     main()
     

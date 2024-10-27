@@ -116,16 +116,20 @@ def rename_rotations(
         # rename the move
         new_move_name = f"rot_{white_location_colors[0][0]}{green_location_colors[0][0]}"
         renamed_rotations[move_name] = new_move_name
-        if input(f"Rename {move_name} to {new_move_name}? (y/N): ").lower() == "y":
-            puzzle.rename_move(move_name, new_move_name)
+        # if input(f"Rename {move_name} to {new_move_name}? (y/N): ").lower() == "y":
+        puzzle.rename_move(move_name, new_move_name)
         puzzle.reset_to_solved()
 
     # request user permission to save the renaming changes
     if not renamed_rotations:
         print("No rotations were renamed.")
         return renamed_rotations
-    if input("Save renaming changes? (y/N): ").lower() == "y":
-        new_puzzle_name = input("Enter new puzzle name (leave empty to overwrite current puzzle or type 'cancel' to cancel): ")
+    else:
+        print("Renaming:")
+        for old_name, new_name in renamed_rotations.items():
+            print(f"{old_name} -> {new_name}")
+    if input(f"Save {len(renamed_rotations)} renaming changes? (y/N): ").lower() == "y":
+        new_puzzle_name = input(f"Enter new puzzle name (leave empty or type {puzzle.PUZZLE_NAME} to overwrite current puzzle or type 'cancel' to cancel): ")
         if new_puzzle_name.lower() == "cancel":
             return renamed_rotations
         if new_puzzle_name:
@@ -317,7 +321,8 @@ def test_color_map(
 if __name__ == "__main__":
     # load puzzle
     puzzle = Twisty_Puzzle()
-    puzzle.load_puzzle("skewb_sym")
+    # puzzle.load_puzzle("megaminx_sym")
+    puzzle.load_puzzle("skewb_sym2")
     import time
     time.sleep(3)
     renamed_rotations = rename_rotations(puzzle)
