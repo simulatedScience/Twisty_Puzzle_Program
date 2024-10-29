@@ -55,6 +55,25 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
 ---
 
 ### RL based solvers
+
+- **DeepCube** - Solving the Rubik's Cube Without Human Knowledge/  
+  Solving the Rubik's Cube with Approximate Policy Iteration
+  - [paper](https://openreview.net/pdf?id=Hyfn2jCcKm) ([preprint](https://arxiv.org/pdf/1805.07470.pdf))
+  - Learn to solve the Rubik's cube using Approximate Policy Iteration (API) with a deep neural network as a function approximator.
+  - claimed first ever RL solution to the Rubik's Cube
+```BibTex
+@article{
+EfficientCube,
+title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
+author={Kyo Takano},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2023},
+url={https://openreview.net/forum?id=bnBeNFB27b},
+note={}
+}
+```
+
 - **DeepCubeA** - Solving the Rubik's Cube with Deep Reinforcement Learning and Search
   - [code (latest)](https://github.com/forestagostinelli/DeepCubeA)
   - [code (original)](https://codeocean.com/capsule/5723040/tree)
@@ -74,23 +93,14 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
 }
 ```
 
-- **DeepCube** - Solving the Rubik's Cube Without Human Knowledge/  
-  Solving the Rubik's Cube with Approximate Policy Iteration
-  - [paper](https://openreview.net/pdf?id=Hyfn2jCcKm) ([preprint](https://arxiv.org/pdf/1805.07470.pdf))
-  - Learn to solve the Rubik's cube using Approximate Policy Iteration (API) with a deep neural network as a function approximator.
-```BibTex
-@article{
-EfficientCube,
-title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
-author={Kyo Takano},
-journal={Transactions on Machine Learning Research},
-issn={2835-8856},
-year={2023},
-url={https://openreview.net/forum?id=bnBeNFB27b},
-note={}
-}
-```
-
+- **QUBE** - Solving Rubik’s Cube via Quantum Mechanics and Deep Reinforcement Learning
+  - Trained successful RL solver in about 10^5 episodes, but used 4 human-designed stages of training:
+    1. orient edges
+    2. orient corners
+    3. position corners
+    4. position edges
+  - Each phase trains a separate NN, with different available moves (see table 1)
+  - uses DDQN agents with experience replay (memory size $10^4$). Episodes end after #scramble steps + 5 moves
 
 - **Efficientcube** - Self-Supervision is All You Need for Solving Rubik's Cube
   - [code](https://github.com/kyo-takano/efficientcube)
@@ -113,6 +123,8 @@ note={}
 - **MultiH layer-wise solver** - Solving the Rubik's Cube with Deep Reinforcement Learning and Using Multi-Headed Models
   - [paper](https://cs229.stanford.edu/proj2021spr/report2/81889605.pdf)
   - Solve a Rubik's cube layer-wise using a multi-head DNN. Use dynamic scramble length to train the network (increases when 25% of recent episodes were successful).
+  - Tried adding options (different sets of 10+ algorithms) to action set in A* search, but found no improvements.
+  - Similar motivation to our work: solve in a more intuitive way than DeepCubeA, more restricted directly to lawer-wise solving, which is not practical for all puzzles.
   ```BibTex
   @article{
 

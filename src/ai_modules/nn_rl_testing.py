@@ -426,16 +426,17 @@ if __name__ == "__main__":
         puzzle_name="geared_mixup_sym_algs",
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # environment configuration
-        load_model=None,
-        max_moves=200,
-        start_scramble_depth=16,
+        # load_model=None,
+        load_model="2024-10-28_05-40-25",
+        max_moves=300,
+        start_scramble_depth=32,
         # start_scramble_depth=2,
         success_threshold=0.25,
         last_n_episodes=1000,
         reward="most_correct_points",
         # reward="binary",
         # rl training parameters
-        n_steps=300_000_000,
+        n_steps=700_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings

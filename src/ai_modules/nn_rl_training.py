@@ -124,6 +124,8 @@ def train_agent(
             if filename_stepcounts:
                 model_path = max(filename_stepcounts, key=filename_stepcounts.get)
                 break
+        model_path.strip(".zip")
+        model_path = os.path.join(load_models_folder, model_path)
         print(f"Loading model from {model_path}...")
         model = PPO.load(
             model_path,
@@ -183,7 +185,7 @@ def train_agent(
             # log_interval=5000,
         )
         if load_model:
-            n_prev_episodes = int(load_model.split("_")[-1].split(".")[0])
+            n_prev_episodes = int(model_path.split("_")[-2])
             n_steps += n_prev_episodes
         save_path: str = os.path.join(model_snapshots_folder, f"rl_model_{n_steps}_steps.zip")
         model.save(save_path)

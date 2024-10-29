@@ -53,6 +53,8 @@ To train an AI using the RL solver, we strongly recommend adding symmetry and al
    This script generates algorithms for a given puzzle. It is highly recommended to use this on puzzles with symmetry moves already defined. (move names starting with `rot_`, turning the whole puzzle in space). This prevents finding many algorithms that are just rotations of each other.
 3. Train the AI using `src/ai_modules/nn_rl_testing.py` or `src/ai_modules/nn_rl_training.py`
 
+When training a model, you can continue from an existing model by providing the experiment folder name (found at `src/ai_files/[puzzlename]/[exp_folder]`) to the `load_model` parameter of `train_and_test_agent()` or `train_agent()`. This will load the latest model trained in that experiment. The `training_info.json` file detailing the training process will then include a reference to the model that was used as a starting point. The other training parameters can be different on the continued training.
+
 ## Evaluating an AI
 There are three main ways of evaluating the learned policy of an AI:
 1. Use `move_v [n_moves]` and `move_nn [n_moves]` to let the AI make a given number of moves.  
