@@ -3,7 +3,12 @@ a module providing methods for visually defining cycles and moves
 """
 import vpython as vpy
 
-def on_click(canvas, selected_objects, cycle_list, object_list, arrow_list):
+def on_click(
+        canvas: vpy.canvas,
+        selected_objects: list["vpy.baseObj?"],
+        cycle_list: list[list[int]],
+        object_list,
+        arrow_list):
     """
     add arrow between last two clicked objects
     append clicked object to given list 'selectedObjects'
@@ -105,7 +110,7 @@ def make_cycle(selected_objects, object_list):
         (list) of ints - permutation on object_list in cycle notation
     """
     cycle = []
-    for obj in selected_objects[:-1]:
+    for obj in selected_objects[-1:0:-1]:
         cycle.append(object_to_index(obj, object_list))
     return cycle
 
