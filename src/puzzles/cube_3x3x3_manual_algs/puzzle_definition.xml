@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="cube_3x3x3_sym" state_space_size="1038048078587756544000">
+<puzzledefinition name="cube_3x3x3_manual_algs" state_space_size="1038048078587756544000">
   <points>
     <point size="10.0">
       <coords x="-1.0" y="-1.5" z="-1.0"/>
@@ -852,6 +852,32 @@
       <cycle>24, 51</cycle>
       <cycle>25, 52</cycle>
       <cycle>26, 53</cycle>
+    </move>
+    <move name="alg_cycle_3_edges'">
+      <cycle>7, 16, 25</cycle>
+      <cycle>37, 41, 43</cycle>
+    </move>
+    <move name="alg_cycle_3_edges">
+      <cycle>7, 25, 16</cycle>
+      <cycle>37, 43, 41</cycle>
+    </move>
+    <move name="alg_flip_2_edges">
+      <cycle>7, 37</cycle>
+      <cycle>25, 43</cycle>
+    </move>
+    <move name="alg_swap_2_corners">
+      <cycle>6, 15</cycle>
+      <cycle>7, 34, 19, 16</cycle>
+      <cycle>8, 35</cycle>
+      <cycle>36, 38</cycle>
+      <cycle>37, 39, 46, 41</cycle>
+    </move>
+    <move name="alg_swap_2_corners'">
+      <cycle>6, 15</cycle>
+      <cycle>7, 16, 19, 34</cycle>
+      <cycle>8, 35</cycle>
+      <cycle>36, 38</cycle>
+      <cycle>37, 41, 46, 39</cycle>
     </move>
   </moves>
 </puzzledefinition>

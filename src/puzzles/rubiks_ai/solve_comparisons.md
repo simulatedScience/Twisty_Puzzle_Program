@@ -39,6 +39,25 @@ U L' U L rot_wo U R U' R' rot_wb R U' R' U' rot_wr L' U L R U R' rot_wr U' L' U'
 <!-- layer 3 -->
 F R U R' U' F' U rot_wo R U R' U R U U R' U rot_wr U' L' U R U' L U R' rot_wo R' D' R D R' D' R D R' D' R D R' D' R D U U R' D' R D R' D' R D U U
 
+**Human solve 2 (corners first):**
+<!-- corners -->
+U' F F R D' R' D R D' R' D rot_yg R' D' R D R' D' R D U R' D' R D R' D' R D U R' D' R D R' D' R D U
+<!-- yellow layer -->
+E' E' R E' R' U' D' M D M' U M' D D M U' D' S D D S' D D rot_rg
+<!-- layer 2 -->
+R R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' R R R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_yb R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' E' L' rot_wr R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' B E F rot_gy
+<!-- layer 3 -->
+R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_wo R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_gr
+<!-- orient edges -->
+M' U M' U M' U M' U M U' M U' M U' M U' rot_yb M' U M' U M' U M' U M U' M U' M U' M U' rot_rg R B M' U M' U M' U M' U M U' M U' M U' M U' B' R'
+
+**full solve:**
+U' F F R D' R' D R D' R' D rot_yg R' D' R D R' D' R D U R' D' R D R' D' R D U R' D' R D R' D' R D U E' E' R E' R' U' D' M D M' U M' D D M U' D' S D D S' D D rot_rg R R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' R R R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_yb R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' E' L' rot_wr R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' B E F rot_gy R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_wo R R U R' R' U R R U U R' R' U' U' R R U R' R' U R R U U R' R' U' U' rot_gr M' U M' U M' U M' U M U' M U' M U' M U' rot_yb M' U M' U M' U M' U M U' M U' M U' M U' rot_rg R B M' U M' U M' U M' U M U' M U' M U' M U' B' R'
+
+**full solve algs:**
+U' F F R D' R' D R D' R' D rot_yg R' D' R D R' D' R D U R' D' R D R' D' R D U R' D' R D R' D' R D U E' E' R E' R' U' D' M D M' U M' D D M U' D' S D D S' D D rot_rg R alg_cycle_3_edges R R alg_cycle_3_edges rot_yb alg_cycle_3_edges E' L' rot_wr alg_cycle_3_edges B E F rot_gy alg_cycle_3_edges rot_wo alg_cycle_3_edges rot_gr alg_flip_2_edges rot_yb alg_flip_2_edges rot_rg R B alg_flip_2_edges B' R'
+
+
 **DeepCubeA solve:**
 D R' U L D F' L F' R' F' U F D B D' B' R' F' U L D' F D L' U' F L' R'
 
