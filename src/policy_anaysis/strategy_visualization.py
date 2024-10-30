@@ -6,7 +6,7 @@ Combined with the analysis in `algorithm_utilization`, this can be used by human
 `get_inverse_moves_dict` may not always provide the inverse of an algorithm.
 During algorithm generation, we don't add an inverse if the algorithm is self-inverse under rotation. So if a rotation r exists such that a^-1 = r a r^-1, then a' is self-inverse under rotation and we don't add a' to the inverse moves dict. In that case inversion requires multiple moves, which is currently not supported by `get_inverse_moves_dict` or this code.
 """
-
+import time
 import os, sys, inspect
 if __name__ == "__main__":
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -14,6 +14,8 @@ if __name__ == "__main__":
     parent2dir = os.path.dirname(parentdir)
     sys.path.insert(0,parent2dir)
 
+import numpy as np
+import matplotlib.pyplot as plt
 import vpython as vpy
 
 from src.ai_modules.twisty_puzzle_model import perform_action
@@ -49,9 +51,10 @@ def analyze_strategy(
     deviations_per_point = [[] for _ in range(n_points)]  # List to track deviations for each point
 
     for run_num, run in enumerate(test_data["run_info"]):
-        if run["success"] == False:
+        if run["success"] == False: # ignore failed runs
             continue
         agent_moves: list[str] = run["agent_moves:"].split()
+        solution_length: int = len(agent_moves)
         # Reverse the solve sequence
         reverse_moves: list[str] = [inverse_dict[move] for move in reversed(agent_moves)]
         
@@ -60,9 +63,8 @@ def analyze_strategy(
         current_solved_state: list[int] = solved_state[:]
         
         # Track correctness of each point over time
-        # correctness_history: list[list[int]] = [[1] for _ in range(n_points)]  # Keep average correctness scores for each point
-        correctness_history2: list[float] = [1.] * n_points  # Keep average correctness scores for each point
-        deviation_move_counts = [-1] * n_points  # Initialize the first deviation count
+        correctness_history: np.ndarray = np.ones((solution_length, n_points), dtype=bool) # Keep track when during the solve each move was correct
+        run_avg_point_correctness = [-1] * n_points  # Initialize the first deviation count
 
         # Apply moves in reverse
         for move_num, move in enumerate(reverse_moves):
@@ -74,25 +76,27 @@ def analyze_strategy(
             
             # Track correctness
             for i, (current_val, solved_val) in enumerate(zip(current_state, current_solved_state)):
-                # correctness_history[i].append(current_val == solved_val)
-                correctness_history2[i] = (correctness_history2[i]*(move_num+1) + (current_val == solved_val)) / (move_num+2)
-                
-                # Check if the running average falls below the threshold
-                if deviation_move_counts[i] == -1 and \
-                        correctness_history2[i] <= correctness_threshold:
-                    deviation_move_counts[i] = len(reverse_moves) - move_num
-                    # print(f"[run {run_num}] point {i} was first solved after {len(reverse_moves) - move_num} moves")
-        
+                correctness_history[move_num][i] = current_val == solved_val
+        # calculate when each point stayed in its correct position
+        # for point_idx in range(n_points):
+        #     for move_num in range(solution_length):
+        #         if np.average(correctness_history[move_num:][point_idx]) > correctness_threshold:
+        #             deviation_move_counts[point_idx] = move_num
+        #         break
+        # average the correctness of each point over the whole solve
+        for point_idx in range(n_points):
+            run_avg_point_correctness[point_idx] = np.average(correctness_history[:,point_idx])
         # Add to overall deviations list
         for i in range(n_points):
-            if deviation_move_counts[i] == -1:
-                deviation_move_counts[i] = len(reverse_moves)
-            deviations_per_point[i].append(deviation_move_counts[i])
-        print(f"run {run_num} deviation counts: {deviation_move_counts}")
+            if run_avg_point_correctness[i] == -1:
+                run_avg_point_correctness[i] = len(reverse_moves)
+            deviations_per_point[i].append(run_avg_point_correctness[i])
+        # print(f"run {run_num} deviation counts: {deviation_move_counts}")
 
     # Calculate averages for each point
-    avg_deviations = [sum(deviation_list) / len(deviation_list) if deviation_list else None for deviation_list in deviations_per_point]
-    return avg_deviations
+    avg_solved_time_per_point = [sum(deviation_list) / len(deviation_list) for deviation_list in deviations_per_point]
+    avg_solved_std_per_point = [np.std(deviation_list) for deviation_list in deviations_per_point]
+    return avg_solved_time_per_point, avg_solved_std_per_point
 
 def show_avg_deviations(
         avg_deviations: list[float],
@@ -142,19 +146,32 @@ def main(
     puzzle.load_puzzle(puzzle_definition_path)
 
     # correctness_threshold = 0.7  # Example threshold for deviation
-    correctness_threshold = 0.5  # Example threshold for deviation
+    correctness_threshold = 0.8  # Example threshold for deviation
 
-    avg_deviations = analyze_strategy(
+    avg_solved_time_per_point, avg_solved_std_per_point = analyze_strategy(
         test_data,
         correctness_threshold,
         puzzle)
-    print([round(dev, 2) for dev in avg_deviations])
+    plt.errorbar(
+        range(len(avg_solved_time_per_point)),
+        avg_solved_time_per_point,
+        yerr=avg_solved_std_per_point,
+        fmt='o',
+        ecolor='#000', # black error bars
+        capsize=3,
+    )
+    plt.title(f"Avg. time each point was solved during {len(test_data['run_info'])} solves")
+    plt.xlabel("Point index")
+    plt.ylabel("average correct time")
+    plt.ylim(0, 1)
+    plt.show()
+    print([round(dev, 2) for dev in avg_solved_time_per_point])
     if show_on_puzzle:
-        show_avg_deviations(avg_deviations, puzzle, color=color)
+        show_avg_deviations(avg_solved_time_per_point, puzzle, color=color)
         # puzzle.set_clip_poly("cube", 0.7)
         # puzzle.draw_3d_pieces()
 
-    return avg_deviations
+    return avg_solved_time_per_point
 
 if __name__ == "__main__":
     main()
