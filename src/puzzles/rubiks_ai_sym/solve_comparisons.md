@@ -107,3 +107,16 @@ F R U R' U' F' U R U R' U R U U R' U rot_wb U' L' U R U' L U R' R' D' R D R' D' 
 
 **DeepCubeA solve:**
 U U R D' F' U' F B' L' B' D R L' F' L' F D F' F' L F R F' L' D U' R B
+
+## Scramble 6
+**Scramble:**
+D L' F' L D R' F' D L' F' R' D' D' B U D' B D U' F' U' B' F' L' L' D' F R D' L'
+
+**Human solve 1 (layer-wise):**
+<!-- layer 1 -->
+F' L' D R R L' F L L B' L' D L' D L D D F D' F' D R D' R' D D L D' L' D F' D F rot_yg
+<!-- layer 2 -->
+L' U L U F U' F' L U' L' U' B' U B 
+U R' U R U B U' B' R U' R' U' F' U F
+<!-- layer 3 -->
+U U F R U R' U' R U R' U' F' U' R U R' U R U U R' U U' L' U R U' L U R' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U'
