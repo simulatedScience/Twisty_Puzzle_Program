@@ -74,6 +74,10 @@ def train_agent(
     tb_log_folder: str = os.path.join(exp_folder_path, "tb_logs")
     os.makedirs(exp_folder_path, exist_ok=True)
 
+    if not base_actions:
+        solved_state, actions_dict = load_puzzle(puzzle_name)
+        base_actions = list(actions_dict.keys())
+
     solved_state, actions_dict, reward_func = setup_training(
         puzzle_name=puzzle_name,
         base_actions=base_actions,
@@ -175,6 +179,8 @@ def train_agent(
             mode="w",
             **training_info,
         )
+        # print model summary
+        print(model.policy)
         # train model
         model.learn(
             total_timesteps=n_steps,
