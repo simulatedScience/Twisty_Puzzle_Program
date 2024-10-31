@@ -61,18 +61,23 @@ Mostly for 3x3 rubiks cube, often without GUI, usually aim to solve the puzzle o
   - [paper](https://openreview.net/pdf?id=Hyfn2jCcKm) ([preprint](https://arxiv.org/pdf/1805.07470.pdf))
   - Learn to solve the Rubik's cube using Approximate Policy Iteration (API) with a deep neural network as a function approximator.
   - claimed first ever RL solution to the Rubik's Cube
-```BibTex
-@article{
-EfficientCube,
-title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
-author={Kyo Takano},
-journal={Transactions on Machine Learning Research},
-issn={2835-8856},
-year={2023},
-url={https://openreview.net/forum?id=bnBeNFB27b},
-note={}
-}
-```
+  ```BibTex
+  @inproceedings{DeepCube,
+    author       = {Stephen McAleer and
+                    Forest Agostinelli and
+                    Alexander Shmakov and
+                    Pierre Baldi},
+    title        = {Solving the Rubik's Cube with Approximate Policy Iteration},
+    booktitle    = {7th International Conference on Learning Representations, {ICLR} 2019,
+                    New Orleans, LA, USA, May 6-9, 2019},
+    publisher    = {OpenReview.net},
+    year         = {2019},
+    url          = {https://openreview.net/forum?id=Hyfn2jCcKm},
+    timestamp    = {Sun, 06 Oct 2024 21:05:49 +0200},
+    biburl       = {https://dblp.org/rec/conf/iclr/McAleerASB19.bib},
+    bibsource    = {dblp computer science bibliography, https://dblp.org}
+  }
+  ```
 
 - **DeepCubeA** - Solving the Rubik's Cube with Deep Reinforcement Learning and Search
   - [code (latest)](https://github.com/forestagostinelli/DeepCubeA)
@@ -101,6 +106,16 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
     4. position edges
   - Each phase trains a separate NN, with different available moves (see table 1)
   - uses DDQN agents with experience replay (memory size $10^4$). Episodes end after #scramble steps + 5 moves
+  ```Bibtex
+  @article{Corli2021SolvingRC,
+    title={Solving Rubik’s cube via quantum mechanics and deep reinforcement learning},
+    author={Sebastiano Corli and Lorenzo Moro and Davide Emilio Galli and Enrico Prati},
+    journal={Journal of Physics A: Mathematical and Theoretical},
+    year={2021},
+    volume={54},
+    url={https://api.semanticscholar.org/CorpusID:237513509}
+  }
+  ```
 
 - **Efficientcube** - Self-Supervision is All You Need for Solving Rubik's Cube
   - [code](https://github.com/kyo-takano/efficientcube)
@@ -109,14 +124,14 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
   - This includes scaling laws for compute as well as a clear figure of the compute budget for training the model: $5.14 \times 10^19$ FLOPs with a $1.19 \times 10^8$ parameter model (119 Million).
   ```BibTex
   @article{
-  takano2023selfsupervision,
-  title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
-  author={Kyo Takano},
-  journal={Transactions on Machine Learning Research},
-  issn={2835-8856},
-  year={2023},
-  url={https://openreview.net/forum?id=bnBeNFB27b},
-  note={}
+    takano2023selfsupervision,
+    title={Self-Supervision is All You Need for Solving Rubik{\textquoteright}s Cube},
+    author={Kyo Takano},
+    journal={Transactions on Machine Learning Research},
+    issn={2835-8856},
+    year={2023},
+    url={https://openreview.net/forum?id=bnBeNFB27b},
+    note={}
   }
   ```
 
@@ -126,15 +141,13 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
   - Tried adding options (different sets of 10+ algorithms) to action set in A* search, but found no improvements.
   - Similar motivation to our work: solve in a more intuitive way than DeepCubeA, more restricted directly to lawer-wise solving, which is not practical for all puzzles.
   ```BibTex
-  @article{
-
-  title={Solving the Rubik's Cube with Deep Reinforcement Learning and Using Multi-Headed Models},
-  author={WenXin Dong, Hanson Hao, George Nakayama},
-  journal={
-  issn={
-  year={2021}
-  url={https://cs229.stanford.edu/proj2021spr/report2/81889605.pdf},
-  note={
+  @misc{MultiH,
+    author    = {WenXin Dong and Hanson Hao and George Nakayama},
+    title     = {Solving the Rubik's Cube with Deep Reinforcement Learning and Using Multi-Headed Models},
+    year      = {2021},
+    note      = {Course project report, Stanford University, Machine Learning (CS229), Spring 2021},
+    howpublished = {\url{https://cs229.stanford.edu/proj2021spr/report2/81889605.pdf}},
+    institution = {Stanford University}
   }
   ```
 
