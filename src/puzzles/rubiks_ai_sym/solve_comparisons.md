@@ -116,7 +116,11 @@ D L' F' L D R' F' D L' F' R' D' D' B U D' B D U' F' U' B' F' L' L' D' F R D' L'
 <!-- layer 1 -->
 F' L' D R R L' F L L B' L' D L' D L D D F D' F' D R D' R' D D L D' L' D F' D F rot_yg
 <!-- layer 2 -->
-L' U L U F U' F' L U' L' U' B' U B 
-U R' U R U B U' B' R U' R' U' F' U F
+L' U L U F U' F' L U' L' U' B' U B U R' U R U B U' B' R U' R' U' F' U F
 <!-- layer 3 -->
 U U F R U R' U' R U R' U' F' U' R U R' U R U U R' U U' L' U R U' L U R' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U' R' D' R D R' D' R D U' R' D' R D R' D' R D R' D' R D R' D' R D U'
+
+**DeepCubeA solve:**
+F U B R' U B' D L B' U' L U B B D' U R' B U' B' R D
+
+
