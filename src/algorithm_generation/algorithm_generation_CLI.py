@@ -2,6 +2,7 @@
 
 # add src to path
 import cProfile
+import json
 import pstats
 import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -191,10 +192,10 @@ def add_moves_to_puzzle(
     
     # save algorithms' compact form to basic text file insie src/puzzles/new_puzzle_name/autogen_algorithms.txt
     if algorithms:
-        filepath = os.path.join("src", "puzzles", new_puzzle_name, "autogen_algorithms.txt")
+        filepath = os.path.join("src", "puzzles", new_puzzle_name, "algorithm_moves.json")
+        algorithms_for_json: dict[str, str] = {name: alg.compact_moves() for name, alg in algorithms.items()}
         with open(filepath, "w") as file:
-            for alg_name, alg in algorithms.items():
-                file.write(str(alg) + "\n")
+            json.dump(algorithms_for_json, file, indent=4)
         print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
     return new_puzzle_name
 
@@ -219,13 +220,13 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
             # max_time=3, # 3 seconds
-            max_time=600, # 2 minutes
+            max_time=60, # 2 minutes
             max_base_sequence_length=20, # 20
             max_move_sequence_order=300, # 200
             max_algorithm_moves=150, # 100
-            max_algorithm_order=6, # 6
-            max_pieces_affected=4, # 4
-            max_number_of_algorithms=100, # 20
+            max_algorithm_order=4, # 6
+            max_pieces_affected=4, # 5
+            max_number_of_algorithms=32, # 20
             max_iterations_without_new_algorithm=5000, # 200
             verbosity=2,
         )

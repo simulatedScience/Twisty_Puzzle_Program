@@ -274,6 +274,8 @@ but was of type '{type(shape_str)}'")
             moves (str): a single move or several seperated by spaces
                 Algorithms (starting with 'alg_') may be replaced with their base move sequence if `self.alg_anim_style` is set to "moves".
                 May also include parentheses to repeat a sequence of moves, e.g. "3*(U R F)".
+            start_time (float, optional): time at which the animation started. If current time exceeds `start_time + self.max_animation_time`, animations will be disabled. Defaults to None (get current time as start_time).
+            anim_time_override (float, optional): override the animation time for each move. Defaults to None (use `self.animation_time`).
         """
         if start_time is None:
             start_time: float = time.time()
@@ -658,11 +660,6 @@ but was of type '{type(shape_str)}'")
             num_moves (int, optional): number of moves to make. Defaults to 1.
             arg_color (str, optional): color for printing the moves. Defaults to "#0066ff".
         """
-        # disable animations that take more than `self.max_animation_time` seconds
-        old_anim_time: float = self.animation_time
-        if num_moves * self.animation_time > self.max_animation_time:
-            print(f"Not showing animation for {num_moves} moves.")
-            self.animation_time = 0
         # execute `num_moves` moves using the V-table
         max_move_name_len = max([len(move) for move in self.moves.keys()])
         # init greedy solver
@@ -672,12 +669,13 @@ but was of type '{type(shape_str)}'")
             ai_solved_state,
             puzzle_name=self.PUZZLE_NAME,
         )
+        start_time: float = time.time()
         for i in range(num_moves):
             # get move from the greedy solver
             ai_state = self._get_ai_state()
             value = greedy_solver.get_state_value(ai_state)
             ai_move = greedy_solver.choose_action(ai_state)
-            self.perform_move(ai_move)
+            self.perform_move(ai_move, start_time=start_time)
             # print move info
             ai_move_str = f"{ai_move:{max_move_name_len}}"
             print(f"made move: {colored(ai_move_str, arg_color)}. Previous state had value: {value}.")
@@ -685,9 +683,6 @@ but was of type '{type(shape_str)}'")
             if self._get_ai_state() == ai_solved_state:
                 print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
                 break
-        # reset animation time
-        if self.animation_time != old_anim_time:
-            self.animation_time = old_anim_time
 
 
     def solve_greedy(self, max_time: float = 60, WEIGHT: float = 0.1, arg_color="#0066ff"):
@@ -869,18 +864,14 @@ but was of type '{type(shape_str)}'")
         """
         make one move based on the current V-table of the AI
         """
-        # disable animations that take more than `self.max_animation_time` seconds
-        old_anim_time = self.animation_time
-        if num_moves * self.animation_time > self.max_animation_time:
-            print(f"Not showing animation for {num_moves} moves.")
-            self.animation_time = 0
         ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
         # execute `num_moves` moves using the V-table
         max_move_name_len = max([len(move) for move in self.moves.keys()])
+        start_time: float = time.time()
         for _ in range(num_moves):
             ai_state = self._get_ai_state()
             ai_move = self.ai_v_class.choose_v_action(ai_state)
-            self.perform_move(ai_move)
+            self.perform_move(ai_move, start_time=start_time)
             try:
                 value = self.ai_v_class.v_table[tuple(ai_state)]
             except KeyError:
@@ -891,9 +882,6 @@ but was of type '{type(shape_str)}'")
             if self._get_ai_state() == ai_solved_state:
                 print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
                 break
-        # reset animation time
-        if self.animation_time != old_anim_time:
-            self.animation_time = old_anim_time
 
     def solve_v(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
         """
@@ -967,18 +955,16 @@ but was of type '{type(shape_str)}'")
         Raises:
             AttributeError: 
         """
-        # disable animations that take more than `self.max_animation_time` seconds
-        old_anim_time: float = self.animation_time
-        if num_moves * self.animation_time > self.max_animation_time:
-            print(f"Not showing animation for {num_moves} moves.")
-            self.animation_time = 0
+        if not hasattr(self, "nn_solver"):
+            raise AttributeError(f"Load a NN-based solver before trying to use it. Use {colored('load_nn', arg_color)}.")
         # execute `num_moves` moves using the V-table
         max_move_name_len = max([len(move) for move in self.moves.keys()])
+        start_time: float = time.time()
         for i in range(num_moves):
             # get move from the greedy solver
             ai_state: list[int] = self._get_ai_nn_state()
             ai_move = self.nn_solver.choose_action(ai_state)
-            self.perform_move(ai_move)
+            self.perform_move(ai_move, start_time=start_time)
             reward, done = self.nn_solver.reward_func(np.array(self._get_ai_nn_state()), truncated=False)
             # print move info
             ai_move_str = f"{ai_move:{max_move_name_len}}"
@@ -987,11 +973,6 @@ but was of type '{type(shape_str)}'")
             if done or self._get_ai_nn_state() == self.nn_solver.solved_state:
                 print(f"Puzzle was solved after {colored(str(i+1), arg_color)} moves.")
                 break
-        # reset animation time
-        if self.animation_time != old_anim_time:
-            self.animation_time = old_anim_time
-        if not hasattr(self, "nn_solver"):
-            raise AttributeError(f"Load a NN-based solver before trying to use it. Use {colored('load_nn', arg_color)}.")
 
 
     def solve_nn(self, max_time=60, WEIGHT=0.1, arg_color="#0066ff"):
