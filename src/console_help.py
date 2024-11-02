@@ -82,10 +82,9 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "move_v": (["num_moves"], f"Make `{colored('num_moves', arg_color)}` moves using the V-table"), 
         "solve_v": (["max_time", "weight"], "Solve the puzzle based on the current V-table using weighted A* search. " +
                     f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s, weight=0.1)"),
-        "train_nn": (["num_episodes", "max_moves", "learning_rate", "discount_factor", "exploration_rate", "k_for_HER", "keep_nn"],
-                     "Train a neural network to solve the puzzle. Use HER to enhance training  " +
-                     "(Hindsight Experience Replay) and use the given parameters."),
-        "move_nn": ([], "Make a single move based on the current neural network of the AI"),
+        "load_nn": ([],
+                     "Open a file dialog to load a neural network as a solver."),
+        "move_nn": (["n_moves"], "Make a single move based on the current neural network of the AI"),
         "solve_nn": (["max_time"], "Solve the puzzle based on the current neural network and an A* algorithm. " +
                     f"If no solution is found within `{colored('max_time', arg_color)}`sec, stop searching. (default: 60s)"),
         "clipshape": (["shape", "size", "show_edges"], "define a shape for the puzzle. Currently availiable shapes: \n" +

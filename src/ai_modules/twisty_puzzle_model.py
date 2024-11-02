@@ -6,18 +6,15 @@ def scramble(
         max_moves: int = 30) -> list[str]:
     """
     scramble the puzzle starting at the given state by randomly applying [max_moves] actions
-
     `state` will be changed in-place!
 
-    inputs:
-    -------
-        state - (list) of ints - list representing the initial state of the puzzle
-        actions - (dict[str, list[list[int]]]) - a dictionary of all possible actions with unique names as keys
+    Argss:
+        state (list[int]): list representing the initial state of the puzzle
+        actions (dict[str, list[list[int]]]): a dictionary of all possible actions with unique names as keys
             - the values must be actions represented as lists of cycles
             - cycles are lists of state indices for permutations
 
-    returns:
-    --------
+    Returns:
         (list[str]) - scramble described as a list of actions
     """
     scramble = []
@@ -35,18 +32,16 @@ def perform_action(
     perform the given action on the given state in-place
     for twisty puzzles this means applying the permutations of a move
 
-    inputs:
-    -------
-        state - (list) of (int) - list representing the state
-        action - (list) of (list) of (int) - list representing an action, here as a list of cycles
+    Args:
+        state (list[int]): list representing the state
+        action (list[list[int]]): list representing an action, here as a list of cycles
             cycles are lists of list indices of the state list.
             
-    returns:
-    --------
-        (list[int]) - the new state
+    Returns:
+        (list[int]) - the new state (changed in-place and returned)
     """
     for cycle in action: # loop over all cycles in the move
         j = cycle[0]
-        for i in cycle:  # apply cycle
+        for i in cycle[-1:0:-1]:  # apply cycle
             state[i], state[j] = state[j], state[i]
     return state
