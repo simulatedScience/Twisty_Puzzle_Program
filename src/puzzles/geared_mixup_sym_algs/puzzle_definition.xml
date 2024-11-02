@@ -1459,13 +1459,13 @@
       <cycle>18, 19, 20</cycle>
       <cycle>21, 22, 23</cycle>
     </move>
-    <move name="alg_flip_2_2pcs">
+    <move name="alg_flip_2_4pcs">
       <cycle>44, 45</cycle>
       <cycle>46, 47</cycle>
       <cycle>54, 85</cycle>
       <cycle>55, 84</cycle>
     </move>
-    <move name="alg_flip_3_3pcs">
+    <move name="alg_flip_3_4pcs">
       <cycle>40, 41</cycle>
       <cycle>42, 43</cycle>
       <cycle>64, 87</cycle>
