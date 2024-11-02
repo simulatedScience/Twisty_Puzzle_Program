@@ -41,6 +41,11 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
                  f"    or `{colored('sphere', arg_color)}`=`{colored('s', arg_color)}`\n" +
                  f"    `{colored('reset', arg_color)}`=`{colored('r', arg_color)}` -> resets points to inital positions\n" +
                  f"    run {colored('snap', command_color)} again to hide the snap shape"),
+        "animtime": (["time"], "Change the length of an individual's move animation. (Default: 0.25 s)"),
+        "maxanimtime": (["time"], "Set the maximum animation time per command. (Default: 120 s)"),
+        "alganimstyle": (["style"], f"Set the animation style for algorithm animations. {colored('style', arg_color)} can be:\n" +
+                 f"    `{colored('move', arg_color)}`=`{colored('m', arg_color)}` to show the base moves the algorithm is made up from or\n" +
+                 f"    `{colored('shortened', arg_color)}`=`{colored('s', arg_color)}` toshow the algorithm only as its final permutation."),
         "newmove": (["movename"], "Start the move editor mode to create a new move with the given name. " +
                     "If move editor is already open, save the current move and start creating a new one. " +
                     "If name already exists, the old move gets overwritten without warning."), # TODO: add warning when overwriting a move
@@ -58,7 +63,6 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
         "rename": (["oldname", "newname"], "Rename an existing move"),
         "delmove": (["movename"], "Delete an existing move"),
         "closepuzzle": ([], "Close the currently loaded puzzle. Unsaved changes can get lost."),
-        "animtime": (["time"], "Change the length each move animation takes. (default: 0.25s)"),
         "scramble": (["num_moves"], "Scramble the puzzle by the given number of semi-random moves. " +
                      "The scrambling algorithm tries to prevent redundant moves."),
         "reset": ([], "Reset the puzzle to a solved state. Only works properly in the point-view."), # TODO: fix resetting for 3D pieces mode

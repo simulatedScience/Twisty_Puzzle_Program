@@ -28,3 +28,6 @@
 
 - GPT-4o 26.10.2024 [Simple GUI vor visualizing color mappings for rotation naming](https://chatgpt.com/share/671e2120-3dd0-8007-87a8-9fd209d7e94f)  
   _To verify that the implemented function to map colors (rgb tuples) to color names (strings) works, I wanted a GUI where I could visualize colors and where they are mapped. Once again, this was a simple code snippet that I have coded in a similar way many times before and it was faster to let an AI do it. I modified the output code to better reflect my vision. For example I removed borders, changed the background color, added logic to automatically split the output into multiple columns etc.._
+
+- GPT-4o 02.11.2024 [advanced move sequence parsing (unused)](https://chatgpt.com/share/67263802-9aec-8007-8387-232d99342ba4)  
+  _Completely unused chat. After briefly looking at the response, I decided to implement the feature myself. I never looked at the exact outputs._

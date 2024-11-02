@@ -1,11 +1,15 @@
 """
 a class for storing information about twisty puzzles and performing various tasks with them
 """
+# import standard library modules
 import cProfile
-import pstats
 from copy import deepcopy
-import random
+import json
+import os
+import pstats
+import time
 
+# import third party modules
 import numpy as np
 import matplotlib.pyplot as plt
 # from sympy.combinatorics.perm_groups import PermutationGroup
@@ -13,6 +17,7 @@ import vpython as vpy
 from sympy import factorint
 from sympy.combinatorics import Permutation
 
+# import custom modules
 from .smart_scramble import smart_scramble
 
 from .ggb_import.ggb_to_vpy import draw_points, get_point_dicts
@@ -55,7 +60,9 @@ class Twisty_Puzzle():
         self.POINT_INFO_DICTS = []
         self.COM = None # vpython vector - center of mass of 3d points
         self.vpy_objects = [] # list of vpython objects - current state of the puzzle in animation
-        self.animation_time = 0.25
+        self.animation_time: float = 0.25 # animation time per move
+        self.max_animation_time: float = 120 # maximum time for a sequence of moves (move_v, move_nn etc.)
+        self.alg_anim_style: str = "moves" # animation style for algorithm moves. will be either "moves" or "shortened"
         self.canvas = None
         self.moves = dict() # dcitionary containing all moves for the puzzle
         self.movecreator_mode = False
@@ -257,37 +264,112 @@ but was of type '{type(shape_str)}'")
             obj.color = color
 
 
-    def perform_move(self, moves, max_anim_time: float = 25.):
+    def perform_move(self, moves: str, start_time: float = None, anim_time_override: float = None) -> None:
         """
         perform the given move on the puzzle self
-        if multiple moves are given (seperated by spaces), they are all executed
+        if multiple moves are given (seperated by spaces), they are all executed.
+        
 
-        inputs:
-        -------
-            moves - (str) - a single move or several seperated by spaces
-            max_anim_time - (float) - maximum time in seconds for all animations
-                If this time is exceeded, the animations are disabled
+        Args:
+            moves (str): a single move or several seperated by spaces
+                Algorithms (starting with 'alg_') may be replaced with their base move sequence if `self.alg_anim_style` is set to "moves".
+                May also include parentheses to repeat a sequence of moves, e.g. "3*(U R F)".
         """
-        if ' ' in moves:
-            moves_list: list[str] = moves.split(' ')
-            num_moves: int = len(moves_list)
-            # disable animations that take more than `max_anim_time` seconds
-            old_anim_time: float = self.animation_time
-            if num_moves*old_anim_time > max_anim_time:
-                print(f"Not showing animation for {num_moves} moves.")
-                self.animation_time = 0
-            for move in moves_list:
-                self.perform_move(move)
-            # reset animation time
-            self.animation_time = old_anim_time
-        else:
+        if start_time is None:
+            start_time: float = time.time()
+        def perform_single_move(move: str) -> None:
+            """
+            Perform a single move. If it is an algorithm, possibly replace it with the corresponding move sequence, calling self.perform_move() recursively.
+            """
+            if self.alg_anim_style == "moves" and move.startswith("alg_"):
+                new_moves = self.alg_to_moves.get(move, moves)
+                if new_moves != move:
+                    print(f"Showing Alg. {move} as move sequence: {new_moves}")
+                    self.perform_move(
+                        new_moves,
+                        start_time=start_time,
+                        anim_time_override=self.animation_time/2)
+                    return
+                else:
+                    print(f"Algorithm {move} not found. Showing as direct permutation.")
+            if time.time() - start_time > self.max_animation_time:
+                move_anim_time: float = 0.
+            else:
+                move_anim_time: float = self.animation_time if not anim_time_override else anim_time_override
             # make_move also permutes the vpy_objects
             animate_move(self.vpy_objects,
-                      self.moves[moves],
+                      self.moves[move],
                       self.POINT_POSITIONS,
                       self.COM,
-                      animation_time=self.animation_time,
+                      animation_time=move_anim_time,
                       target_fps=60) # TODO: get monitor refresh rate
+        
+        current_move: str = ""
+        wait_for_parentheses: int = 0
+        for char in moves:
+            if char == "(":
+                wait_for_parentheses += 1
+                current_move += char
+                continue
+            if not wait_for_parentheses:
+                if char == " ":
+                    perform_single_move(current_move)
+                    current_move = ""
+                else:
+                    current_move += char
+            else: # wait for closing parentheses
+                if char != ")":
+                    current_move += char
+                else:
+                    wait_for_parentheses -= 1
+                if wait_for_parentheses == 0:
+                    num_repetitions, base_sequence = current_move.split("(")
+                    try:
+                        num_repetitions = int(num_repetitions.strip("*"))
+                    except ValueError:
+                        raise ValueError(f"Invalid number of repetitions: {num_repetitions}")
+                    for _ in range(num_repetitions):
+                        self.perform_move(
+                            base_sequence,
+                            start_time=start_time,
+                            anim_time_override=self.animation_time/2)
+                    current_move = ""
+        if current_move:
+            perform_single_move(current_move)
+        # if "*" in moves:
+        #     moves_list: list[str] = moves.split("*")
+            
+            
+        # if "(" in moves:
+        #         num, base_sequence = moves.split("(").strip(")")
+        #         for _ in range(int(num)):
+        #             self.perform_move(base_sequence)
+        # elif ' ' in moves:
+        #     moves_list: list[str] = moves.split(' ')
+        #     num_moves: int = len(moves_list)
+        #     # disable animations that take more than `self.max_animation_time` seconds
+        #     old_anim_time: float = self.animation_time
+        #     if num_moves*old_anim_time > self.max_animation_time:
+        #         print(f"Not showing animation for {num_moves} moves.")
+        #         self.animation_time = 0
+        #     for move in moves_list:
+        #         self.perform_move(move)
+        #     # reset animation time
+        #     self.animation_time = old_anim_time
+        # else:
+        #     if self.alg_anim_style == "moves" and moves.startswith("alg_"):
+        #         new_moves = self.alg_to_moves.get(moves, default=moves)
+        #         print(f"Showing {moves} as {new_moves}")
+        #         self.perform_move(new_moves)
+        #         return
+            
+        #     # make_move also permutes the vpy_objects
+        #     animate_move(self.vpy_objects,
+        #               self.moves[moves],
+        #               self.POINT_POSITIONS,
+        #               self.COM,
+        #               animation_time=self.animation_time,
+        #               target_fps=60) # TODO: get monitor refresh rate
 
 
     def newmove(self, movename, arg_color="#0066ff"):
@@ -353,7 +435,11 @@ but was of type '{type(shape_str)}'")
             del(self.active_move_cycles)
             del(self.active_move_name)
 
-    def _add_move_direct(self, move_name: str, move_cycles: list[tuple[int]], verbose: int = 1, arg_color="#0066ff"):
+    def _add_move_direct(self,
+            move_name: str,
+            move_cycles: list[tuple[int]],
+            verbose: int = 1,
+            arg_color="#0066ff") -> None:
         """
         add a move directly to the puzzle without using the movecreator mode
         """
@@ -477,6 +563,26 @@ but was of type '{type(shape_str)}'")
                     self.moves.values(), len(self.SOLVED_STATE))
         else:
             self.state_space_size = state_space_size
+
+        # try to load algorithm moves if applicable
+        for move in self.moves:
+            if move.startswith("alg_"):
+                # load algorithm moves from `algorithm_moves.json`
+                try:
+                    alg_moves_filepath = os.path.join("src", "puzzles", self.PUZZLE_NAME, "algorithm_moves.json")
+                    with open(alg_moves_filepath, "r") as file:
+                        self.alg_to_moves: dict[str, str] = json.load(file)
+                    print(f"Loaded algorithm moves from {alg_moves_filepath}")
+                    break
+                except FileNotFoundError as exception:
+                    print(exception)
+                    print("No algorithm moves file found.")
+                    self.alg_to_moves: dict[str, str] = dict()
+                    self.alg_anim_style: str = "shortened"
+        else:
+            self.alg_to_moves: dict[str, str] = dict()
+            self.alg_anim_style: str = "shortened"
+
         print(f"The loaded puzzle has {approx_int(self.state_space_size)} possible states and {len(self.moves)} availiable moves.")
         print(f"Exact number of states: {self.state_space_size}")
         print(f"prime factors: {factorint(self.state_space_size)}")
@@ -544,19 +650,17 @@ but was of type '{type(shape_str)}'")
         print(f"{colored(move_name, arg_color)} =", move_str)
 
 
-    def move_greedy(self, num_moves: int = 1, max_anim_time: float = 25., arg_color: str = "#0066ff"):
+    def move_greedy(self, num_moves: int = 1, arg_color: str = "#0066ff"):
         """
         Make `num_moves` moves using a greedy policy with rewards counting the number of solved points
 
         Args:
             num_moves (int, optional): number of moves to make. Defaults to 1.
-            max_anim_time (float, optional): maximum time in seconds for all animations. Defaults to 25..
-                If this time is expected to be exceeded, disable animations temporarily.
             arg_color (str, optional): color for printing the moves. Defaults to "#0066ff".
         """
-        # disable animations that take more than `max_anim_time` seconds
+        # disable animations that take more than `self.max_animation_time` seconds
         old_anim_time: float = self.animation_time
-        if num_moves * self.animation_time > max_anim_time:
+        if num_moves * self.animation_time > self.max_animation_time:
             print(f"Not showing animation for {num_moves} moves.")
             self.animation_time = 0
         # execute `num_moves` moves using the V-table
@@ -761,13 +865,13 @@ but was of type '{type(shape_str)}'")
         #             keep_v_table=keep_v_table)
 
 
-    def move_v(self, num_moves: int = 1, max_anim_time: float = 25., arg_color: str = "#0066ff"):
+    def move_v(self, num_moves: int = 1, arg_color: str = "#0066ff"):
         """
         make one move based on the current V-table of the AI
         """
-        # disable animations that take more than `max_anim_time` seconds
+        # disable animations that take more than `self.max_animation_time` seconds
         old_anim_time = self.animation_time
-        if num_moves * self.animation_time > max_anim_time:
+        if num_moves * self.animation_time > self.max_animation_time:
             print(f"Not showing animation for {num_moves} moves.")
             self.animation_time = 0
         ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
@@ -852,33 +956,24 @@ but was of type '{type(shape_str)}'")
         print(f"Loaded RL agent from {colored(model_path, arg_color)}.")
 
 
-    def move_nn(self, num_moves, max_anim_time: float = 25., arg_color="#0066ff"):
+    def move_nn(self, num_moves, arg_color="#0066ff"):
         """
         make one move based on the current Q-table of the AI
         
         Args:
             num_moves (int): (maximum) number of moves to make. May take fewer moves if the puzzle is solved.
-            max_anim_time (float): maximum time in seconds for all animations. Defaults to 25..
             arg_color (str): color for printing the moves
         
         Raises:
             AttributeError: 
         """
-        # DEBUG:
-        
-        
-        
-        
-        # disable animations that take more than `max_anim_time` seconds
+        # disable animations that take more than `self.max_animation_time` seconds
         old_anim_time: float = self.animation_time
-        if num_moves * self.animation_time > max_anim_time:
+        if num_moves * self.animation_time > self.max_animation_time:
             print(f"Not showing animation for {num_moves} moves.")
             self.animation_time = 0
         # execute `num_moves` moves using the V-table
         max_move_name_len = max([len(move) for move in self.moves.keys()])
-        
-        # ai_solved_state, self.color_list = state_for_ai(self.SOLVED_STATE)
-        # TODO remove this comment
         for i in range(num_moves):
             # get move from the greedy solver
             ai_state: list[int] = self._get_ai_nn_state()
