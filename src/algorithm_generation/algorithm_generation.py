@@ -208,14 +208,14 @@ def generate_algorithms(
     if verbosity >= 2:
         print(f"Searched {num_base_sequences} base sequences to find {len(found_algorithms)} algorithms in {time.time()-end_time+max_time:.2f} s.")
         print()
-    
-    # trim algorithms to minimal full set
-    found_algorithms = trim_algorithms_to_current_group(
-        puzzle=puzzle,
-        target_group_order=current_group_order,
-        found_algorithms=found_algorithms,
-        sympy_rotations=sympy_rotations,
-    )
+    if found_algorithms:
+        # trim algorithms to minimal full set
+        found_algorithms = trim_algorithms_to_current_group(
+            puzzle=puzzle,
+            target_group_order=current_group_order,
+            found_algorithms=found_algorithms,
+            sympy_rotations=sympy_rotations,
+        )
     return found_algorithms
 
 def get_repetition_candidates(
