@@ -1,16 +1,19 @@
-vpython # 3d-visualisation
-autobahn==22.3.2 # 3d-visualisation for vpython
-txaio==22.2.1 # 3d-visualisation for vpython
-colored==1.4.4 # colored terminal outputs
-lxml # read/write xml files
-sympy # to calculate number of states of a puzzle
-scipy # combinatorics
-# keras # neural networks
-numpy
-tqdm # progress bar
-matplotlib # plotting of training progress
-stable_baselines3==2.3.2 # reinforcement learning
-gymnasium==0.29.1
-tensorboard
-sortedcontainers # for search-assisted puzzle solver
-pynput==1.7.7 # for keyboard input to control deepcubeA website
+vpython==7.6.3              # 3d-visualisation
+autobahn==22.3.2            # 3d-visualisation for vpython
+txaio==22.2.1               # 3d-visualisation for vpython
+colored==1.4.4              # colored terminal outputs
+lxml==5.2.2                 # read/write xml files
+sympy==1.12.1               # to calculate number of states of a puzzle
+scipy                       # combinatorics
+# keras                     # old neural networks
+numpy==1.26.4               # numerical operations
+tqdm==4.66.4                # progress bar
+matplotlib==3.9.0           # plotting of training progress
+stable_baselines3==2.3.2    # reinforcement learning
+gymnasium==0.29.1           # custom environment for rl training
+tensorboard==2.16.2         # rl training logs
+sortedcontainers==2.4.0     # for search-assisted puzzle solver
+pynput==1.7.7               # for keyboard input to control deepcubeA website
+torch==2.3.1                # neural networks
+torchvision==0.18.1         # neural networks
+
