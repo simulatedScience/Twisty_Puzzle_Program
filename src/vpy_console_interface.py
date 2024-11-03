@@ -16,10 +16,13 @@ from .console_help import interface_help
 from .puzzle_class import Twisty_Puzzle
 
 
-def main_interaction():
+def main_interaction(load_puzzle: str = None):
     """
     user interaction via the terminal
     allowing different commands and executing them accordingly
+
+    Args:
+        load_puzzle (str): name of the puzzle to load at the start
 
     inputs: (via terminal)
     -------
@@ -59,6 +62,9 @@ def main_interaction():
     user_input = ""
 
     puzzle = Twisty_Puzzle()
+    if load_puzzle:
+        interface_loadpuzzle(load_puzzle, puzzle)
+        load_puzzle = None
     n = 0
 
     while user_input.lower() != "exit":
@@ -202,20 +208,20 @@ def interface_loadpuzzle(puzzlename, puzzle: Twisty_Puzzle, command_color="#ff88
     """
     if hasattr(puzzle, "PUZZLE_NAME") and puzzle.PUZZLE_NAME is not None:
         # close current puzzle before loading a new one
-        interface_closepuzzle(puzzle)
+        interface_closepuzzle(puzzle, load_puzzle=puzzlename)
     try:
         puzzle.load_puzzle(puzzlename)
     except FileNotFoundError:
         print(f"{colored('Errod:', error_color)} Puzzle file does not exist yet. Create necessary files with {colored('savepuzzle', command_color)}.")
 
 
-def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000", load_puzzle: str = None):
     """
     close the current puzzle and reset history_dict
     """
     save_answer = ""
     while not save_answer in ["y", "n"]:
-        save_answer = input("save current puzzle before closing? (y/n) ")
+        save_answer = input("save current puzzle before closing? (y/N) ")
         if save_answer.lower() == "y":
             if puzzle.PUZZLE_NAME == None:
                 puzzlename = ' '
@@ -229,7 +235,7 @@ def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", 
             puzzle.canvas.delete()
         except:
             pass
-        main_interaction()
+        main_interaction(load_puzzle=load_puzzle)
 
 if __name__ == "__main__":
     main_interaction()

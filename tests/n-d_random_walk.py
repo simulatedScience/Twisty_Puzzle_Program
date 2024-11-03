@@ -64,7 +64,8 @@ def plot_nd_walk_distance(dims=8, n_steps=5000, restricted=False):
     plt.plot(list(range(len(dist_list))), dist_list, label=f"restricted={restricted}")
 
 
-def plot_2d_walk(n_steps=50)
+# def plot_2d_walk(n_steps=50):
+#     pass
 
 if __name__ == "__main__":
     dims = 8
