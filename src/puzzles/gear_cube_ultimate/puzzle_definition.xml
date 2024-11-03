@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="gear_cube_ultimate">
+<puzzledefinition name="gear_cube_ultimate" state_space_size="65533338294681600">
   <points>
     <point size="5.0">
       <coords x="0.0" y="0.0" z="1.0"/>
@@ -411,7 +411,7 @@
     </point>
   </points>
   <moves>
-    <move name="U">
+    <move name="U'">
       <cycle>43, 17, 31, 22</cycle>
       <cycle>63, 65, 62, 64</cycle>
       <cycle>30, 21, 42, 16</cycle>
@@ -424,7 +424,7 @@
       <cycle>47, 15, 35, 20</cycle>
       <cycle>54, 76, 70, 58</cycle>
     </move>
-    <move name="U'">
+    <move name="U">
       <cycle>22, 31, 17, 43</cycle>
       <cycle>64, 62, 65, 63</cycle>
       <cycle>16, 42, 21, 30</cycle>
@@ -437,7 +437,7 @@
       <cycle>20, 35, 15, 47</cycle>
       <cycle>54, 58, 70, 76</cycle>
     </move>
-    <move name="F">
+    <move name="F'">
       <cycle>0, 2, 5, 4</cycle>
       <cycle>12, 27</cycle>
       <cycle>13, 24</cycle>
@@ -460,7 +460,7 @@
       <cycle>97, 101</cycle>
       <cycle>98, 99</cycle>
     </move>
-    <move name="F'">
+    <move name="F">
       <cycle>4, 5, 2, 0</cycle>
       <cycle>27, 12</cycle>
       <cycle>24, 13</cycle>
@@ -483,7 +483,7 @@
       <cycle>101, 97</cycle>
       <cycle>99, 98</cycle>
     </move>
-    <move name="R">
+    <move name="R'">
       <cycle>0, 3, 5, 1</cycle>
       <cycle>6, 29, 12, 18, 8, 27, 14, 21, 10, 25, 16, 23</cycle>
       <cycle>7, 28, 13, 20, 9, 24, 15, 22, 11, 26, 17, 19</cycle>
@@ -506,7 +506,7 @@
       <cycle>91, 93</cycle>
       <cycle>92, 94</cycle>
     </move>
-    <move name="R'">
+    <move name="R">
       <cycle>1, 5, 3, 0</cycle>
       <cycle>23, 16, 25, 10, 21, 14, 27, 8, 18, 12, 29, 6</cycle>
       <cycle>19, 17, 26, 11, 22, 15, 24, 9, 20, 13, 28, 7</cycle>
@@ -529,7 +529,7 @@
       <cycle>93, 91</cycle>
       <cycle>94, 92</cycle>
     </move>
-    <move name="D">
+    <move name="D'">
       <cycle>6, 36, 25, 48</cycle>
       <cycle>7, 40, 26, 51</cycle>
       <cycle>8, 41, 29, 52</cycle>
@@ -542,7 +542,7 @@
       <cycle>85, 101, 92, 89</cycle>
       <cycle>86, 99, 90, 87</cycle>
     </move>
-    <move name="D'">
+    <move name="D">
       <cycle>48, 25, 36, 6</cycle>
       <cycle>51, 26, 40, 7</cycle>
       <cycle>52, 29, 41, 8</cycle>
@@ -555,7 +555,7 @@
       <cycle>89, 92, 101, 85</cycle>
       <cycle>87, 90, 99, 86</cycle>
     </move>
-    <move name="L">
+    <move name="L'">
       <cycle>0, 1, 5, 3</cycle>
       <cycle>6, 21, 12, 25, 8, 23, 14, 29, 10, 18, 16, 27</cycle>
       <cycle>7, 22, 13, 26, 9, 19, 15, 28, 11, 20, 17, 24</cycle>
@@ -578,7 +578,7 @@
       <cycle>82, 86</cycle>
       <cycle>83, 101</cycle>
     </move>
-    <move name="L'">
+    <move name="L">
       <cycle>0, 3, 5, 1</cycle>
       <cycle>6, 27, 16, 18, 10, 29, 14, 23, 8, 25, 12, 21</cycle>
       <cycle>7, 24, 17, 20, 11, 28, 15, 19, 9, 26, 13, 22</cycle>
@@ -601,7 +601,7 @@
       <cycle>82, 86</cycle>
       <cycle>83, 101</cycle>
     </move>
-    <move name="B">
+    <move name="B'">
       <cycle>0, 4, 5, 2</cycle>
       <cycle>6, 18</cycle>
       <cycle>7, 20</cycle>
@@ -624,7 +624,7 @@
       <cycle>85, 94</cycle>
       <cycle>86, 95</cycle>
     </move>
-    <move name="B'">
+    <move name="B">
       <cycle>0, 2, 5, 4</cycle>
       <cycle>6, 18</cycle>
       <cycle>7, 20</cycle>
