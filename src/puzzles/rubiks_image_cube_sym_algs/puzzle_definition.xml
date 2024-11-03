@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<puzzledefinition name="rubiks_image_cube_sym_algs" state_space_size="2125922464947725402112000">
+<puzzledefinition name="rubiks_image_cube_sym_algs">
   <points>
     <point size="7.0">
       <coords x="1.0" y="1.0" z="1.5"/>
@@ -1057,95 +1057,87 @@
       <cycle>58, 60</cycle>
       <cycle>59, 62</cycle>
     </move>
-    <move name="alg_1">
+    <move name="alg_flip_1_center">
+      <cycle>36, 37</cycle>
+      <cycle>38, 39</cycle>
+    </move>
+    <move name="alg_flip_2_centers">
+      <cycle>28, 31</cycle>
+      <cycle>29, 30</cycle>
       <cycle>40, 41</cycle>
       <cycle>44, 45</cycle>
     </move>
-    <move name="alg_2">
+    <move name="alg_rot_2_centers">
+      <cycle>36, 39, 37, 38</cycle>
+      <cycle>40, 44, 41, 45</cycle>
+    </move>
+    <move name="alg_rot_2_centers'">
+      <cycle>36, 38, 37, 39</cycle>
+      <cycle>40, 45, 41, 44</cycle>
+    </move>
+    <move name="alg_flip_3_centers">
+      <cycle>24, 25</cycle>
+      <cycle>26, 27</cycle>
       <cycle>28, 31</cycle>
       <cycle>29, 30</cycle>
+      <cycle>36, 37</cycle>
+      <cycle>38, 39</cycle>
+    </move>
+    <move name="alg_3cycle_3_edges">
+      <cycle>50, 58, 52</cycle>
+      <cycle>60, 68, 62</cycle>
+    </move>
+    <move name="alg_3cycle_3_edges'">
+      <cycle>50, 52, 58</cycle>
+      <cycle>60, 62, 68</cycle>
+    </move>
+    <move name="alg_3cycle_3_corners">
+      <cycle>1, 6, 11</cycle>
+      <cycle>9, 19, 15</cycle>
+      <cycle>16, 21, 20</cycle>
+    </move>
+    <move name="alg_3cycle_3_corners'">
+      <cycle>1, 21, 19</cycle>
+      <cycle>6, 20, 15</cycle>
+      <cycle>9, 11, 16</cycle>
+    </move>
+    <move name="alg_rot_3_corners">
+      <cycle>2, 13, 4</cycle>
+      <cycle>3, 14, 23</cycle>
+      <cycle>12, 17, 22</cycle>
+    </move>
+    <move name="alg_rot_3_corners'">
+      <cycle>0, 18, 10</cycle>
+      <cycle>2, 4, 13</cycle>
+      <cycle>3, 23, 14</cycle>
+    </move>
+    <move name="alg_rot_3_centers'">
+      <cycle>28, 31</cycle>
+      <cycle>29, 30</cycle>
+      <cycle>36, 39, 37, 38</cycle>
+      <cycle>40, 45, 41, 44</cycle>
+    </move>
+    <move name="alg_rot_4_corners'">
+      <cycle>0, 18, 10</cycle>
+      <cycle>1, 16, 15</cycle>
+      <cycle>3, 14, 23</cycle>
+      <cycle>11, 19, 20</cycle>
+    </move>
+    <move name="alg_rot_4_centers'">
+      <cycle>24, 25</cycle>
+      <cycle>26, 27</cycle>
       <cycle>32, 34</cycle>
       <cycle>33, 35</cycle>
-    </move>
-    <move name="alg_3">
-      <cycle>1, 15, 16</cycle>
-      <cycle>5, 8, 7</cycle>
-    </move>
-    <move name="alg_3'">
-      <cycle>1, 16, 15</cycle>
-      <cycle>5, 7, 8</cycle>
-    </move>
-    <move name="alg_4">
-      <cycle>28, 30, 31, 29</cycle>
+      <cycle>40, 44, 41, 45</cycle>
       <cycle>42, 46, 43, 47</cycle>
     </move>
-    <move name="alg_4'">
-      <cycle>28, 29, 31, 30</cycle>
-      <cycle>42, 47, 43, 46</cycle>
-    </move>
-    <move name="alg_5">
-      <cycle>24, 25</cycle>
-      <cycle>26, 27</cycle>
-      <cycle>36, 37</cycle>
-      <cycle>38, 39</cycle>
-      <cycle>42, 43</cycle>
-      <cycle>46, 47</cycle>
-    </move>
-    <move name="alg_6">
-      <cycle>24, 25</cycle>
-      <cycle>26, 27</cycle>
-      <cycle>49, 55</cycle>
-      <cycle>54, 65</cycle>
-    </move>
-    <move name="alg_7">
-      <cycle>0, 18, 10</cycle>
-      <cycle>2, 4, 13</cycle>
-      <cycle>5, 7, 8</cycle>
-    </move>
-    <move name="alg_7'">
-      <cycle>0, 10, 18</cycle>
-      <cycle>2, 13, 4</cycle>
-      <cycle>5, 8, 7</cycle>
-    </move>
-    <move name="alg_8">
-      <cycle>1, 5, 4</cycle>
-      <cycle>2, 16, 8</cycle>
-      <cycle>7, 13, 15</cycle>
-    </move>
-    <move name="alg_8'">
-      <cycle>1, 4, 5</cycle>
-      <cycle>2, 8, 16</cycle>
-      <cycle>7, 15, 13</cycle>
-    </move>
-    <move name="alg_9">
-      <cycle>49, 65, 66</cycle>
-      <cycle>54, 61, 55</cycle>
-    </move>
-    <move name="alg_9'">
-      <cycle>49, 66, 65</cycle>
-      <cycle>54, 55, 61</cycle>
-    </move>
-    <move name="alg_10">
-      <cycle>28, 30, 31, 29</cycle>
-      <cycle>36, 39, 37, 38</cycle>
-      <cycle>40, 41</cycle>
-      <cycle>44, 45</cycle>
-    </move>
-    <move name="alg_10'">
-      <cycle>28, 29, 31, 30</cycle>
+    <move name="alg_rot_3_centers">
+      <cycle>28, 31</cycle>
+      <cycle>29, 30</cycle>
       <cycle>36, 38, 37, 39</cycle>
-      <cycle>40, 41</cycle>
-      <cycle>44, 45</cycle>
+      <cycle>40, 44, 41, 45</cycle>
     </move>
-    <move name="alg_11">
-      <cycle>1, 7</cycle>
-      <cycle>2, 23</cycle>
-      <cycle>3, 13</cycle>
-      <cycle>4, 14</cycle>
-      <cycle>5, 16</cycle>
-      <cycle>8, 15</cycle>
-    </move>
-    <move name="alg_12">
+    <move name="alg_flip_4_centers">
       <cycle>24, 25</cycle>
       <cycle>26, 27</cycle>
       <cycle>28, 31</cycle>
@@ -1155,67 +1147,39 @@
       <cycle>44, 45</cycle>
       <cycle>46, 47</cycle>
     </move>
-    <move name="alg_13">
+    <move name="alg_swap_4_corners">
+      <cycle>1, 20</cycle>
+      <cycle>3, 5</cycle>
+      <cycle>7, 23</cycle>
+      <cycle>8, 14</cycle>
+      <cycle>11, 15</cycle>
+      <cycle>16, 19</cycle>
+    </move>
+    <move name="alg_swap_4_edges">
+      <cycle>50, 64</cycle>
+      <cycle>58, 67</cycle>
+      <cycle>59, 62</cycle>
+      <cycle>60, 69</cycle>
+    </move>
+    <move name="alg_flip_4_edges">
       <cycle>49, 55</cycle>
-      <cycle>51, 71</cycle>
-      <cycle>53, 57</cycle>
+      <cycle>52, 68</cycle>
       <cycle>54, 65</cycle>
+      <cycle>67, 69</cycle>
     </move>
-    <move name="alg_14">
-      <cycle>28, 31</cycle>
-      <cycle>29, 30</cycle>
-      <cycle>40, 41</cycle>
-      <cycle>44, 45</cycle>
-      <cycle>51, 71</cycle>
-      <cycle>63, 70</cycle>
-    </move>
-    <move name="alg_15">
-      <cycle>0, 18, 10</cycle>
-      <cycle>1, 16, 15</cycle>
-      <cycle>2, 4, 13</cycle>
-      <cycle>6, 21, 9</cycle>
-    </move>
-    <move name="alg_15'">
+    <move name="alg_rot_4_corners">
       <cycle>0, 10, 18</cycle>
       <cycle>1, 15, 16</cycle>
-      <cycle>2, 13, 4</cycle>
-      <cycle>6, 9, 21</cycle>
+      <cycle>3, 23, 14</cycle>
+      <cycle>11, 20, 19</cycle>
     </move>
-    <move name="alg_16">
-      <cycle>49, 57, 55, 53</cycle>
-      <cycle>52, 69, 68, 67</cycle>
-    </move>
-    <move name="alg_16'">
-      <cycle>49, 53, 55, 57</cycle>
-      <cycle>52, 67, 68, 69</cycle>
-    </move>
-    <move name="alg_17">
-      <cycle>28, 31</cycle>
-      <cycle>29, 30</cycle>
-      <cycle>36, 37</cycle>
-      <cycle>38, 39</cycle>
-      <cycle>40, 44, 41, 45</cycle>
-      <cycle>42, 46, 43, 47</cycle>
-    </move>
-    <move name="alg_17'">
-      <cycle>28, 31</cycle>
-      <cycle>29, 30</cycle>
-      <cycle>36, 37</cycle>
-      <cycle>38, 39</cycle>
+    <move name="alg_rot_4_centers">
+      <cycle>24, 25</cycle>
+      <cycle>26, 27</cycle>
+      <cycle>32, 34</cycle>
+      <cycle>33, 35</cycle>
       <cycle>40, 45, 41, 44</cycle>
       <cycle>42, 47, 43, 46</cycle>
-    </move>
-    <move name="alg_18">
-      <cycle>28, 29, 31, 30</cycle>
-      <cycle>32, 33, 34, 35</cycle>
-      <cycle>40, 45, 41, 44</cycle>
-      <cycle>42, 47, 43, 46</cycle>
-    </move>
-    <move name="alg_18'">
-      <cycle>28, 30, 31, 29</cycle>
-      <cycle>32, 35, 34, 33</cycle>
-      <cycle>40, 44, 41, 45</cycle>
-      <cycle>42, 46, 43, 47</cycle>
     </move>
   </moves>
 </puzzledefinition>
