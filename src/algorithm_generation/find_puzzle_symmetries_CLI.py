@@ -1,9 +1,10 @@
 """
 This module uses `rotational_symmetry_detection.py` to add symmetry moves to a given puzzle.
 """
-import vpython as vpy
-import numpy as np
 import os
+
+import numpy as np
+import vpython as vpy
 from sympy.combinatorics import Permutation
 from scipy.spatial.transform import Rotation
 

@@ -5,17 +5,18 @@ import cProfile
 import json
 import pstats
 import os, sys, inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-parent2dir = os.path.dirname(parentdir)
-sys.path.insert(0,parent2dir)
+if __name__ == "__main__":
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
 
 from sympy.combinatorics import Permutation
 
 from src.puzzle_class import Twisty_Puzzle
 from src.interaction_modules.colored_text import colored_text
-from algorithm_analysis import Twisty_Puzzle_Algorithm, get_sympy_moves
-from algorithm_generation import generate_algorithms
+from src.algorithm_generation.algorithm_analysis import Twisty_Puzzle_Algorithm, get_sympy_moves
+from src.algorithm_generation.algorithm_generation import generate_algorithms
 
 COMMAND_COLORS = {
     "command": "#ff8800",  # orange
@@ -256,14 +257,13 @@ def main(move_text_color="#5588ff", rotations_prefix="rot_"):
 
     os._exit(0)
 
-def load_twisty_puzzle():
+def load_twisty_puzzle(puzzle_name: str = None):
     print(f"Available puzzles: {colored_text(', '.join(ALL_PUZZLES), COMMAND_COLORS['arguments'])}")
     print(f"Enter {colored_text('exit', COMMAND_COLORS['command'])} to exit the program.")
 
     puzzle = Twisty_Puzzle()
-    puzzle_name = input("Enter a puzzle name: ")
-    # puzzle_name = "geared_mixup"
-    # puzzle_name = "rubiks_3x3"
+    if not puzzle_name:
+        puzzle_name = input("Enter a puzzle name: ").strip()
     try:
         puzzle.load_puzzle(puzzle_name)
     except FileNotFoundError:

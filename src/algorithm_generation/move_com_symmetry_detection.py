@@ -25,14 +25,23 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 from sympy.combinatorics import Permutation
 
-from algorithm_analysis import get_inverse_moves_dict
-from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
-from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
-from symmetry_plane_detection import dist_similarity_function
-from test_symmetry_plane_detection import set_equal_aspect_3d
-from rotation_auto_naming import rename_rotations
 
-DEBUG: bool = False
+if __name__ == "__main__":
+    from algorithm_analysis import get_inverse_moves_dict
+    from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
+    from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
+    from symmetry_plane_detection import dist_similarity_function
+    from test_symmetry_plane_detection import set_equal_aspect_3d
+    from rotation_auto_naming import rename_rotations
+else:
+    from .algorithm_analysis import get_inverse_moves_dict
+    from .algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
+    from .find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
+    from .symmetry_plane_detection import dist_similarity_function
+    from .test_symmetry_plane_detection import set_equal_aspect_3d
+    from .rotation_auto_naming import rename_rotations
+
+DEBUG: bool = True
 TOL = 1e-1
 
 def find_rotational_symmetries(
@@ -40,7 +49,14 @@ def find_rotational_symmetries(
         min_sym_measure: float = 0.7,
         min_angle_rad: float = 0.1):
     """
-    remove inverse moves
+    Find rotational symmetries for a given puzzle based on the defined moves and the puzzle's geometry.
+    Conceptually, this method maps moves to similar moves to find rigid rotations of the puzzle that map the puzzle's geometry onto itself.
+    For this, it uses the center of mass of the points affected by each move.
+    
+    Args:
+        puzzle (Twisty_Puzzle): puzzle to find symmetries for
+        min_sym_measure (float): minimum symmetry measure to consider a symmetry
+        min_angle_rad (float): minimum angle in radians to consider a symmetry
     """
     inverse_dict: dict[str, str] = get_inverse_moves_dict(puzzle.moves)
     reduced_moves: dict[str, list[list[int]]] = {}
@@ -50,7 +66,7 @@ def find_rotational_symmetries(
         reduced_moves[move_name] = move_cycles
     X: np.ndarray = get_puzzle_points(puzzle)
     com_x = np.mean(X, axis=0)
-    move_coms = reduce_to_coms(X, reduced_moves)
+    move_coms: dict[str, np.ndarray] = reduce_to_coms(X, reduced_moves)
     
     # calculate alpha = 20/average distance between points
     d_avg: float = np.mean(np.linalg.norm(X[:, np.newaxis] - X, axis=2))
@@ -63,6 +79,7 @@ def find_rotational_symmetries(
         ax.scatter(X[:, 0], X[:, 1], X[:, 2], c="#000", label="puzzle points", s=200, alpha=0.3)
         Y = np.array(list(move_coms.values()))
         ax.scatter(Y[:, 0], Y[:, 1], Y[:, 2], c="#f00", label="move COMs")
+        plt.pause(30)
     
     move_signatures: dict[str, tuple[tuple[int, int], ...]] = get_move_signatures(reduced_moves)
     # remove signatures for discarded moves
@@ -77,6 +94,7 @@ def find_rotational_symmetries(
     smallest_com_set: list[np.ndarray] = min(signatures_to_names.values(), key=lambda move_names: len(move_names))
     # select two points from the smallest set
     p1: np.ndarray = move_coms[smallest_com_set[0]].copy()
+    use_second_com_set: bool = False
     if len(smallest_com_set) > 1:
         p2_options: list[np.ndarray] = [move_coms[move_name] for move_name in smallest_com_set[1:]]
         # choose p2 in com_sets such that it is not parallel to p1
@@ -84,8 +102,10 @@ def find_rotational_symmetries(
             if check_linear_independence(p1, p2):
                 continue
             break
+        else:
+            use_second_com_set: bool = True
         smallest_com_set2: list[np.ndarray] = smallest_com_set
-    else: # TODO: untested code block
+    if len(smallest_com_set) <= 1 or use_second_com_set: # TODO: untested code block
         # get second smallest set of COMs
         smallest_com_set2 = min([move_names for move_names in signatures_to_names.values() if not move_names == smallest_com_set], key=lambda move_names: len(move_names))
         p2: np.ndarray = move_coms[smallest_com_set2[0]].copy()
@@ -137,11 +157,11 @@ def find_rotational_symmetries(
                 for v, label, color in zip(
                         (p1, p2, t1*.6, t2*.6),
                         ("p1", "p2", "t1", "t2"),
-                        ("#58f", "#0f0", "#259", "#090")):
+                        ("#58f", "#2d2", "#259", "#090")):
                     rot_artists.append(ax.quiver(com_x[0], com_x[1], com_x[2], v[0], v[1], v[2], color=color, label=label))
                 # plot rotated points
                 scaled_points = rotated_points
-                rot_artists.append(ax.scatter(scaled_points[:, 0], scaled_points[:, 1], scaled_points[:, 2], c="#2f2", label="rotated points*1.05", s=30, alpha=1))
+                # rot_artists.append(ax.scatter(scaled_points[:, 0], scaled_points[:, 1], scaled_points[:, 2], c="#2ee", label="rotated points*1.05", s=30, alpha=1))
                 # plt.legend()
                 plt.pause(1/2)
             
