@@ -185,21 +185,30 @@ def run_command(command_dict, user_input, puzzle, command_color="#ff8800", arg_c
                           "clipshape",
                           "drawpieces"]
     if command in commands_with_args:
-        user_arguments = user_input[len(command)+1:]
+        user_arguments = user_input[len(command)+1:].strip()
         print(
             f"executing {colored(command, command_color)} {colored(user_arguments, arg_color)} ...")
-        command_dict[command](user_arguments,
-                            puzzle,
-                            command_color=command_color,
-                            arg_color=arg_color,
-                            error_color=error_color)
-    else:
+        try:
+            command_dict[command](
+                user_arguments,
+                puzzle,
+                command_color=command_color,
+                arg_color=arg_color,
+                error_color=error_color)
+        except Exception as exception:
+            print(exception.with_traceback())
+            print(colored(f"Error: {exception}", error_color))
+            print(colored("please try again", error_color))
+    elif command in command_dict:
         print(f"executing {colored(command, command_color)} ...")
         command_dict[command](puzzle,
                               command_color=command_color,
                               arg_color=arg_color,
                               error_color=error_color)
-
+    else:
+        print(colored("Error: Unknown command:", error_color) +
+              colored(f" {command}", command_color) +
+              f"\nType {colored('help', command_color)} for a list of valid commands.")
 
 def interface_loadpuzzle(puzzlename, puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
     """
