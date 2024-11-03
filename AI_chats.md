@@ -31,3 +31,6 @@
 
 - GPT-4o 02.11.2024 [advanced move sequence parsing (unused)](https://chatgpt.com/share/67263802-9aec-8007-8387-232d99342ba4)  
   _Completely unused chat. After briefly looking at the response, I decided to implement the feature myself. I never looked at the exact outputs._
+
+- GPT-4o 03.11.2024 [Covnerting two old files to new JSON format](https://chatgpt.com/share/67280a0d-7704-8007-8e27-0ea91a278d66)
+  _I converted my code to output and expect algorithm moves files in json instead of txt format. To translate old files quickly, I used ChatGPT. The outputs were directly copied since they worked immediately. This saved a few minutes of tedious work._
