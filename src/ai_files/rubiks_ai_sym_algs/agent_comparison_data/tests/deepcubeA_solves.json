@@ -1,0 +1,45 @@
+{
+    "summary": "Success rate: 5/5 = 100.0%",
+    "num_tests": 5,
+    "test_max_moves": 1000,
+    "deterministic": true,
+    "test_time": 0,
+    "run_info": [
+        {
+            "scramble": "B D U F F L' F' D R D' L B' D B' D R' D' L R' L' L' D U R' D F' U' R L F'",
+            "agent_moves:": "U F' U F' B' U' L F' R L' F' U L U R L F' F' L' F' L D' F' L' U L' L' U' L' U L' L' D' L U' L' D L'",
+            "success": true,
+            "n_moves": 38
+        },
+        {
+            "scramble": "D F L' R F' F' L D' D' L' L' B D U' R' B D' D' B' B' R R D U' F U' B U' F D",
+            "agent_moves:": "D R' U L D F' L F' R' F' U F D B D' B' R' F' U L D' F D L' U' F L' R'",
+            "success": true,
+            "n_moves": 28
+        },
+        {
+            "scramble": "F' U' U' B' R' F D L R' D F B U' R' F' U D U D B' L U' B' U L B U B U D'",
+            "agent_moves:": "F' L B' D F D' B' R U' R' L' D' U L F U L' F' U' F R U R' L D F' U' F D' F' U L' F' L'",
+            "success": true,
+            "n_moves": 32
+        },
+        {
+            "scramble": "F F B' L R F' B L F L' L' F' U B' L U D B' B' F' R F B' U D' U' U' D L U'",
+            "agent_moves:": "U' L U' L F' R' L' L' B L F B U' L' D' F F D L B' L' F L B R' D F' D R D R' D' F D' D' R",
+            "success": true,
+            "n_moves": 36
+        },
+        {
+            "scramble": "R D' R' L' U D' F R U' L L F R L F R' U R' D U' B F R' D R U' U' D' L' B",
+            "agent_moves:": "U U R D' F' U' F B' L' B' D R L' F' L' F D F' F' L F R F' L' D U' R B",
+            "success": true,
+            "n_moves": 28
+        },
+        {
+            "scramble": "D L' F' L D R' F' D L' F' R' D' D' B U D' B D U' F' U' B' F' L' L' D' F R D' L'",
+            "agent_moves:": "F U B R' U B' D L B' U' L U B B D' U R' B U' B' R D",
+            "success": true,
+            "n_moves": 22
+        }
+    ]
+}
