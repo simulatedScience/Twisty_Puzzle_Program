@@ -329,7 +329,7 @@ def moves_list_to_sympy_permutation(move_sequence: list[str], sympy_moves: dict[
     """
     # generate self.sympy_permutation from action_sequence and puzzle moves
     sympy_permutation = sympy_moves[move_sequence[-1]]
-    for move in move_sequence[-1:0:-1]:
+    for move in reversed(move_sequence[:-1]):
         sympy_permutation *= sympy_moves[move]
     return sympy_permutation
 
@@ -417,7 +417,7 @@ def main(puzzle_name="rubiks_3x3"):
     puzzle.listmoves(print_perms=False)
 
     # # print inverse moves dict
-    # inverse_moves_dict = get_inverse_moves_dict(puzzle.moves)
+    inverse_moves_dict = get_inverse_moves_dict(puzzle.moves)
     # print("Inverse moves:")
     # for move, inverse in inverse_moves_dict.items():
     #     print(f"{move} -> {inverse}")
@@ -426,6 +426,8 @@ def main(puzzle_name="rubiks_3x3"):
     while user_input.lower() != "exit":
         print()
         user_input = input("Enter a move sequence for analysis:\n ")
+        if user_input.lower() == "exit":
+            break
         move_sequence = user_input.split(' ')
         # validate input
         for move in move_sequence:
@@ -443,9 +445,15 @@ def main(puzzle_name="rubiks_3x3"):
                 base_action_sequence=move_sequence,
                 n_repetitions=n_repetitions,
                 puzzle=puzzle,
-                alg_name="user_input",
+                alg_name=f"{n_repetitions}*({' '.join(move_sequence)})",
             )
             algorithm.print_signature()
+            inv_algorithm: Twisty_Puzzle_Algorithm = algorithm.get_inverse(inverse_moves_dict)
+            print(f"Move sequence:         {algorithm.compact_moves()}")
+            print(f"Inverse move sequence: {inv_algorithm.compact_moves()}")
+            print(f"Permutation:           {algorithm.sympy_permutation.cyclic_form}")
+            print(f"Inv Permutation:       {inv_algorithm.sympy_permutation.cyclic_form}")
+    os._exit(0)
 
 if __name__ == "__main__":
-    main(puzzle_name="rubiks_3x3")
+    main(puzzle_name="rubiks_image_cube_sym")

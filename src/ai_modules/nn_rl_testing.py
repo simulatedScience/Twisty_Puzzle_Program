@@ -264,6 +264,7 @@ def train_and_test_agent(
         num_tests=num_tests,
         scramble_length=test_scramble_length,
         exp_folder_path=exp_folder_path,
+        deterministic=False,
         verbosity=1,
     )
     return exp_folder_path
@@ -460,7 +461,8 @@ if __name__ == "__main__":
     #     # "src/ai_files/dino_cube_sym_algs/2024-10-21_19-56-31",
     #     # "src/ai_files/skewb_sym_algs/2024-10-21_22-23-45",
     #     # "src/ai_files/skewb/2024-10-21_22-23-39",
-    #     "src/ai_files/rubiks_ai_sym_algs/2024-10-27_10-25-45",
+    #     # "src/ai_files/rubiks_ai_sym_algs/2024-10-27_10-25-45",
+    #     "src/ai_files/rubiks_image_cube_sym_algs/2024-11-04_00-30-42",
     #     model_snapshot_steps=-1,
     #     # "src/ai_files/skewb_sym_algs/2024-10-21_21-35-49",
     #     # model_snapshot_steps=10_000_000,

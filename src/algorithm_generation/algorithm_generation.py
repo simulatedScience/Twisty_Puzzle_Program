@@ -148,6 +148,7 @@ def generate_algorithms(
                         iteration=iteration,
                         ignore_match_with=algorithm.name,
                     )
+                    
                     if added_algorithms_step_inv:
                         if recursive:
                             current_moves[inverse_algorithm.name] = inverse_algorithm.sympy_permutation.cyclic_form
@@ -553,7 +554,7 @@ def main(puzzle_name: str = "rubiks_3x3", rotations_prefix: str = "rot_") -> lis
 
 if __name__ == "__main__":
     main(
-        puzzle_name="rubiks_3x3",
+        puzzle_name="rubiks_ai_sym",
         rotations_prefix="rot_",
     )
 
