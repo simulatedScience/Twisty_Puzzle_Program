@@ -423,8 +423,9 @@ if __name__ == "__main__":
         # puzzle_name="skewb",
         # base_actions=["wbr", "wbr'", "wgo", "wgo'", "oyb", "oyb'", "ryg", "ryg'"],
         # puzzle_name="rubiks_ai_sym_algs",
-        puzzle_name="rubiks_image_cube_sym_algs",
+        # puzzle_name="rubiks_image_cube_sym_algs",
         # puzzle_name="geared_mixup_sym_algs",
+        puzzle_name="gear_cube_ultimate_sym_algs",
         # base_actions=None,
         base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'",
@@ -441,7 +442,7 @@ if __name__ == "__main__":
         reward="most_correct_points",
         # reward="binary",
         # rl training parameters
-        n_steps=500_000_000,
+        n_steps=200_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings
