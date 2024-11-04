@@ -122,5 +122,3 @@ U U F R U R' U' R U R' U' F' U' R U R' U R U U R' U U' L' U R U' L U R' R' D' R 
 
 **DeepCubeA solve:**
 F U B R' U B' D L B' U' L U B B D' U R' B U' B' R D
-
-

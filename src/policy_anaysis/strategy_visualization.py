@@ -16,6 +16,7 @@ if __name__ == "__main__":
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import vpython as vpy
 
 from src.ai_modules.twisty_puzzle_model import perform_action
@@ -111,9 +112,9 @@ def show_avg_deviations(
         color (tuple[float]): base color for the gradient
     """
     base_color = vpy.vector(*color)
-    max_num_moves = max(avg_deviations)
+    max_deviation = max(avg_deviations)
     for i, avg_dev in enumerate(avg_deviations):
-        point_color = base_color * (1 - avg_dev / max_num_moves)**.5
+        point_color = base_color * (avg_dev / max_deviation)**(1.5)
         puzzle.vpy_objects[i].color = point_color
     print("Brighter points are solved first.")
     print(f"Solving the first point took on average {min(avg_deviations):.1f} moves.")
@@ -152,26 +153,80 @@ def main(
         test_data,
         correctness_threshold,
         puzzle)
-    plt.errorbar(
-        range(len(avg_solved_time_per_point)),
-        avg_solved_time_per_point,
-        yerr=avg_solved_std_per_point,
-        fmt='o',
-        ecolor='#000', # black error bars
-        capsize=3,
-    )
-    plt.title(f"Avg. time each point was solved during {len(test_data['run_info'])} solves")
-    plt.xlabel("Point index")
-    plt.ylabel("average correct time")
-    plt.ylim(0, 1)
-    plt.show()
+    n_solves = len([1 for run in test_data['run_info'] if run['success']])
     print([round(dev, 2) for dev in avg_solved_time_per_point])
     if show_on_puzzle:
         show_avg_deviations(avg_solved_time_per_point, puzzle, color=color)
         # puzzle.set_clip_poly("cube", 0.7)
         # puzzle.draw_3d_pieces()
+    plot_error_bar_data(n_solves, avg_solved_time_per_point, avg_solved_std_per_point)
+    plot_3d_index_data(puzzle, avg_solved_time_per_point, color=color)
 
     return avg_solved_time_per_point
+
+def plot_error_bar_data(
+        n_solves: int,
+        avg_solved_time_per_point: list[float],
+        avg_solved_std_per_point: list[float],
+        show_plot: bool = True
+    ) -> None:
+    """
+    Plot the average time each point remained in the correct position.
+    
+    Args:
+        n_solves (int): number of solves (used for plot title)
+        avg_solved_time_per_point (list[float]): average time each point was solved
+        avg_solved_std_per_point (list[float]): standard deviation of the time each point was solved
+    """
+    plt.errorbar(
+        range(len(avg_solved_time_per_point)),
+        np.array(avg_solved_time_per_point)**(1.5),
+        yerr=avg_solved_std_per_point,
+        fmt='o',
+        ecolor='#000', # black error bars
+        capsize=3,
+    )
+    plt.grid()
+    plt.title(f"Avg. time each point was solved during {n_solves} solves")
+    plt.xlabel("Point index")
+    plt.ylabel("average correct time")
+    plt.ylim(0, 1.05)
+    if show_plot:
+        plt.show()
+
+def plot_3d_index_data(
+        puzzle: Twisty_Puzzle,
+        avg_solved_time_per_point: list[float],
+        color: tuple[float] = (0,1,0),
+        show_plot: bool = True
+    ) -> None:
+    """
+    Plot the average time each point remained in the correct position in 3D using colored 3D points.
+    At each point, add the point's index as a text label.
+    
+    Args:
+        puzzle (Twisty_Puzzle): puzzle to plot
+        avg_solved_time_per_point (list[float]): average time each point was solved
+        color (tuple[float]): base color for the gradient
+    """
+    fig: plt.Figure = plt.figure()
+    ax: Axes3D = fig.add_subplot(111, projection='3d')
+    
+    color: np.ndarray = np.array(color)
+    for i, (point_obj, solved_time) in enumerate(zip(puzzle.vpy_objects, avg_solved_time_per_point)):
+        point_pos = np.array([point_obj.pos.x, point_obj.pos.y, point_obj.pos.z])
+        ax.scatter(
+            *point_pos,
+            c=color * (solved_time)**(1.5),
+            s=150,
+            alpha=0.5,
+        )
+        text_pos: np.ndarray = point_pos+np.array([.05,.05,.05])
+        ax.text(*text_pos, f"{i}", color='#f0f')
+    
+    ax.set_title("Average time each point was solved")
+    if show_plot:
+        plt.show()
 
 if __name__ == "__main__":
     main()
