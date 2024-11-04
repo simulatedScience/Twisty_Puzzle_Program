@@ -85,6 +85,7 @@ def generate_algorithms(
     inverse_moves_dict: dict[str, str] = get_inverse_moves_dict(puzzle.moves)
     algs_generate_full_group: bool = False
     num_unique_algorithms: int = 1
+    trimmed: bool = False
     while len(found_algorithms) < max_number_of_algorithms \
             and time.time() < end_time \
             and iterations_since_new_algorithm < max_iterations_without_new_algorithm:
@@ -128,6 +129,7 @@ def generate_algorithms(
                 rotations=sympy_rotations,
                 max_pieces_affected=max_pieces_affected,
                 iteration=iteration,
+                add_similar_signatures=not trimmed,
                 )
             if reason == "similar_signature" and algs_generate_full_group:
                 added_algorithms_step = False # once full group is reached, only add algorithms with new signatures
@@ -178,6 +180,7 @@ def generate_algorithms(
                         found_algorithms=found_algorithms,
                         sympy_rotations=sympy_rotations,
                     )
+                    trimmed: bool = True
         else:
             iterations_since_new_algorithm += 1
             continue
@@ -271,6 +274,7 @@ def filter_and_add_algorithm(
         max_pieces_affected: int = float("inf"),
         iteration: int = -1,
         ignore_match_with: str = "",
+        add_similar_signatures: bool = True,
         ) -> bool:
     """
     Add a newly found algorithm to the list of found algorithms if it is sufficiently different from existing ones or if it achieves the same permutation in fewer moves.
@@ -318,7 +322,10 @@ def filter_and_add_algorithm(
                 # or new_algorithm.is_similar(alg):
                 # check if new algorithm is shorter
                 if len(new_algorithm.full_action_sequence) < len(alg.full_action_sequence):
-                    print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
+                    if iteration >= 0:
+                        print(f"iter {iteration}: Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
+                    else:
+                        print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
                     # rename new algorithm to old name
                     new_algorithm.name = alg.name
                     # replace old algorithm with new one in-place
@@ -334,17 +341,20 @@ def filter_and_add_algorithm(
     if not potential_matches:
         # add new algorithm if no potential matches were found
         if iteration >= 0:
-            print(f"Adding new algorithm after {iteration} iterations:\n  {new_algorithm}")
+            print(f"iter {iteration}: Adding new algorithm:\n  {new_algorithm}")
         else:
             print(f"Adding new algorithm:\n  {new_algorithm}")
         found_algorithms.append(new_algorithm)
         accepted_new_algorithm = True
         reason: str = "new algorithm"
-    else: # similar algorithms exist, but no exact match
+    elif add_similar_signatures: # similar algorithms exist, but no exact match
     #     print("="*75) if DEBUG else None
         suffix = " = " + colored_text(str(new_algorithm.sympy_permutation.cyclic_form), color="#5588ff") if DEBUG else ""
-        print(f"Adding new algorithm with similar signature to existing ones:\n  {new_algorithm}"
+        if iteration >= 0:
+            print(f"iter {iteration}: Adding new algorithm with similar signature to existing ones:\n  {new_algorithm}"
               + suffix)
+        else:
+            print(f"Adding new algorithm with similar signature to existing ones:\n  {new_algorithm}" + suffix)
     #     if DEBUG:
     #         # print cyclic forms and index in found_algorithms for all potential matches
     #         print(f"Potential matches:")
@@ -361,6 +371,9 @@ def filter_and_add_algorithm(
         found_algorithms.append(new_algorithm)
         accepted_new_algorithm = True
         reason: str = "similar signature"
+    else:
+        accepted_new_algorithm = False
+        reason: str = "not adding similar signatures after trimming"
     return accepted_new_algorithm, reason
 
 def trim_algorithms_to_current_group(
