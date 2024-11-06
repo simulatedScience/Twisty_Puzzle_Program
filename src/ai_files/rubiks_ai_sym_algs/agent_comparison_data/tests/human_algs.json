@@ -1,0 +1,7 @@
+{
+    "alg_place_middle_edge": "U R U' R' U' rot_wr L' U L",
+    "alg_cycle_3_edges": "R U R' U R U U R' U",
+    "alg_rot_1_top_corner": "R U R' U' R U R' U'",
+    "alg_rot_1_bottom_corner": "R' D' R D R' D' R D",
+    "alg_cycle_3_corners": "F R U R' U' F"
+}

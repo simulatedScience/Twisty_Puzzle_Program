@@ -387,17 +387,7 @@
     </point>
   </points>
   <moves>
-    <move name="t'">
-      <cycle>81, 87, 83, 84</cycle>
-      <cycle>80, 86, 82, 85</cycle>
-      <cycle>54, 63, 65, 75</cycle>
-      <cycle>55, 62, 64, 74</cycle>
-      <cycle>0, 4, 20, 17</cycle>
-      <cycle>26, 25, 27, 24</cycle>
-      <cycle>5, 3, 19, 16</cycle>
-      <cycle>1, 2, 18, 15</cycle>
-    </move>
-    <move name="t">
+    <move name="U'">
       <cycle>84, 83, 87, 81</cycle>
       <cycle>85, 82, 86, 80</cycle>
       <cycle>75, 65, 63, 54</cycle>
@@ -407,47 +397,17 @@
       <cycle>16, 19, 3, 5</cycle>
       <cycle>15, 18, 2, 1</cycle>
     </move>
-    <move name="d">
-      <cycle>44, 46, 45, 47</cycle>
-      <cycle>90, 95, 89, 92</cycle>
-      <cycle>22, 13, 10, 6</cycle>
-      <cycle>23, 14, 11, 7</cycle>
-      <cycle>21, 12, 9, 8</cycle>
-      <cycle>91, 94, 88, 93</cycle>
-      <cycle>57, 67, 73, 49</cycle>
-      <cycle>56, 66, 72, 48</cycle>
+    <move name="U">
+      <cycle>81, 87, 83, 84</cycle>
+      <cycle>80, 86, 82, 85</cycle>
+      <cycle>54, 63, 65, 75</cycle>
+      <cycle>55, 62, 64, 74</cycle>
+      <cycle>0, 4, 20, 17</cycle>
+      <cycle>26, 25, 27, 24</cycle>
+      <cycle>5, 3, 19, 16</cycle>
+      <cycle>1, 2, 18, 15</cycle>
     </move>
-    <move name="d'">
-      <cycle>47, 45, 46, 44</cycle>
-      <cycle>92, 89, 95, 90</cycle>
-      <cycle>6, 10, 13, 22</cycle>
-      <cycle>7, 11, 14, 23</cycle>
-      <cycle>8, 9, 12, 21</cycle>
-      <cycle>93, 88, 94, 91</cycle>
-      <cycle>49, 73, 67, 57</cycle>
-      <cycle>48, 72, 66, 56</cycle>
-    </move>
-    <move name="r">
-      <cycle>39, 36, 38, 37</cycle>
-      <cycle>65, 68, 67, 70</cycle>
-      <cycle>64, 69, 66, 71</cycle>
-      <cycle>87, 79, 94, 61</cycle>
-      <cycle>86, 78, 95, 60</cycle>
-      <cycle>20, 16, 9, 14</cycle>
-      <cycle>18, 17, 10, 12</cycle>
-      <cycle>19, 15, 11, 13</cycle>
-    </move>
-    <move name="r'">
-      <cycle>37, 38, 36, 39</cycle>
-      <cycle>70, 67, 68, 65</cycle>
-      <cycle>71, 66, 69, 64</cycle>
-      <cycle>61, 94, 79, 87</cycle>
-      <cycle>60, 95, 78, 86</cycle>
-      <cycle>14, 9, 16, 20</cycle>
-      <cycle>12, 10, 17, 18</cycle>
-      <cycle>13, 11, 15, 19</cycle>
-    </move>
-    <move name="l">
+    <move name="L'">
       <cycle>4, 22, 8, 1</cycle>
       <cycle>3, 21, 7, 0</cycle>
       <cycle>2, 23, 6, 5</cycle>
@@ -457,7 +417,7 @@
       <cycle>55, 52, 48, 51</cycle>
       <cycle>41, 42, 40, 43</cycle>
     </move>
-    <move name="l'">
+    <move name="L">
       <cycle>1, 8, 22, 4</cycle>
       <cycle>0, 7, 21, 3</cycle>
       <cycle>5, 6, 23, 2</cycle>
@@ -467,17 +427,27 @@
       <cycle>51, 48, 52, 55</cycle>
       <cycle>43, 40, 42, 41</cycle>
     </move>
-    <move name="f">
-      <cycle>80, 70, 90, 53</cycle>
-      <cycle>81, 71, 91, 52</cycle>
-      <cycle>20, 13, 21, 2</cycle>
-      <cycle>4, 19, 12, 23</cycle>
-      <cycle>3, 18, 14, 22</cycle>
-      <cycle>58, 63, 60, 57</cycle>
-      <cycle>59, 62, 61, 56</cycle>
-      <cycle>30, 28, 31, 29</cycle>
+    <move name="R'">
+      <cycle>39, 36, 38, 37</cycle>
+      <cycle>65, 68, 67, 70</cycle>
+      <cycle>64, 69, 66, 71</cycle>
+      <cycle>87, 79, 94, 61</cycle>
+      <cycle>86, 78, 95, 60</cycle>
+      <cycle>20, 16, 9, 14</cycle>
+      <cycle>18, 17, 10, 12</cycle>
+      <cycle>19, 15, 11, 13</cycle>
     </move>
-    <move name="f'">
+    <move name="R">
+      <cycle>37, 38, 36, 39</cycle>
+      <cycle>70, 67, 68, 65</cycle>
+      <cycle>71, 66, 69, 64</cycle>
+      <cycle>61, 94, 79, 87</cycle>
+      <cycle>60, 95, 78, 86</cycle>
+      <cycle>14, 9, 16, 20</cycle>
+      <cycle>12, 10, 17, 18</cycle>
+      <cycle>13, 11, 15, 19</cycle>
+    </move>
+    <move name="F">
       <cycle>53, 90, 70, 80</cycle>
       <cycle>52, 91, 71, 81</cycle>
       <cycle>2, 21, 13, 20</cycle>
@@ -487,7 +457,37 @@
       <cycle>56, 61, 62, 59</cycle>
       <cycle>29, 31, 28, 30</cycle>
     </move>
-    <move name="b">
+    <move name="F'">
+      <cycle>80, 70, 90, 53</cycle>
+      <cycle>81, 71, 91, 52</cycle>
+      <cycle>20, 13, 21, 2</cycle>
+      <cycle>4, 19, 12, 23</cycle>
+      <cycle>3, 18, 14, 22</cycle>
+      <cycle>58, 63, 60, 57</cycle>
+      <cycle>59, 62, 61, 56</cycle>
+      <cycle>30, 28, 31, 29</cycle>
+    </move>
+    <move name="D'">
+      <cycle>44, 46, 45, 47</cycle>
+      <cycle>90, 95, 89, 92</cycle>
+      <cycle>22, 13, 10, 6</cycle>
+      <cycle>23, 14, 11, 7</cycle>
+      <cycle>21, 12, 9, 8</cycle>
+      <cycle>91, 94, 88, 93</cycle>
+      <cycle>57, 67, 73, 49</cycle>
+      <cycle>56, 66, 72, 48</cycle>
+    </move>
+    <move name="D">
+      <cycle>47, 45, 46, 44</cycle>
+      <cycle>92, 89, 95, 90</cycle>
+      <cycle>6, 10, 13, 22</cycle>
+      <cycle>7, 11, 14, 23</cycle>
+      <cycle>8, 9, 12, 21</cycle>
+      <cycle>93, 88, 94, 91</cycle>
+      <cycle>49, 73, 67, 57</cycle>
+      <cycle>48, 72, 66, 56</cycle>
+    </move>
+    <move name="B'">
       <cycle>82, 50, 89, 68</cycle>
       <cycle>83, 51, 88, 69</cycle>
       <cycle>0, 6, 9, 15</cycle>
@@ -497,7 +497,7 @@
       <cycle>74, 76, 72, 79</cycle>
       <cycle>35, 33, 34, 32</cycle>
     </move>
-    <move name="b'">
+    <move name="B">
       <cycle>68, 89, 50, 82</cycle>
       <cycle>69, 88, 51, 83</cycle>
       <cycle>15, 9, 6, 0</cycle>
@@ -507,37 +507,37 @@
       <cycle>79, 72, 76, 74</cycle>
       <cycle>32, 34, 33, 35</cycle>
     </move>
-    <move name="slice_x">
+    <move name="S'">
       <cycle>27, 64, 37, 94, 44, 48, 42, 84</cycle>
       <cycle>25, 86, 39, 67, 46, 92, 40, 54</cycle>
       <cycle>26, 87, 36, 66, 45, 93, 43, 55</cycle>
       <cycle>85, 24, 65, 38, 95, 47, 49, 41</cycle>
     </move>
-    <move name="slice_x'">
+    <move name="S">
       <cycle>84, 42, 48, 44, 94, 37, 64, 27</cycle>
       <cycle>54, 40, 92, 46, 67, 39, 86, 25</cycle>
       <cycle>55, 43, 93, 45, 66, 36, 87, 26</cycle>
       <cycle>41, 49, 47, 95, 38, 65, 24, 85</cycle>
     </move>
-    <move name="slice_z">
+    <move name="E">
       <cycle>28, 58, 42, 50, 33, 78, 36, 70</cycle>
       <cycle>30, 52, 41, 76, 35, 69, 39, 61</cycle>
       <cycle>31, 59, 40, 51, 34, 79, 38, 71</cycle>
       <cycle>60, 29, 53, 43, 77, 32, 68, 37</cycle>
     </move>
-    <move name="slice_z'">
+    <move name="E'">
       <cycle>70, 36, 78, 33, 50, 42, 58, 28</cycle>
       <cycle>61, 39, 69, 35, 76, 41, 52, 30</cycle>
       <cycle>71, 38, 79, 34, 51, 40, 59, 31</cycle>
       <cycle>37, 68, 32, 77, 43, 53, 29, 60</cycle>
     </move>
-    <move name="slice_y">
+    <move name="M">
       <cycle>24, 74, 32, 88, 46, 56, 28, 81</cycle>
       <cycle>27, 82, 35, 73, 45, 90, 31, 63</cycle>
       <cycle>25, 83, 33, 72, 47, 91, 29, 62</cycle>
       <cycle>26, 75, 34, 89, 44, 57, 30, 80</cycle>
     </move>
-    <move name="slice_y'">
+    <move name="M'">
       <cycle>81, 28, 56, 46, 88, 32, 74, 24</cycle>
       <cycle>63, 31, 90, 45, 73, 35, 82, 27</cycle>
       <cycle>62, 29, 91, 47, 72, 33, 83, 25</cycle>
