@@ -49,7 +49,8 @@ def analyze_strategy(
     inverse_dict: dict[str, str] = get_inverse_moves_dict(puzzle.moves)
     n_points: int = len(solved_state)
     
-    deviations_per_point = [[] for _ in range(n_points)]  # List to track deviations for each point
+    correctness_per_point = [[] for _ in range(n_points)]  # List to track deviations for each point
+    deviantions_per_point = np.zeros((n_points, len(test_data["run_info"])))  # List to track deviations for each point
 
     for run_num, run in enumerate(test_data["run_info"]):
         if run["success"] == False: # ignore failed runs
@@ -68,7 +69,7 @@ def analyze_strategy(
         run_avg_point_correctness = [-1] * n_points  # Initialize the first deviation count
 
         # Apply moves in reverse
-        for move_num, move in enumerate(reverse_moves):
+        for move_idx, move in enumerate(reverse_moves):
             # Apply the move
             perform_action(current_state, moves_dict[move])
             # apply rotations to solved state as well
@@ -77,13 +78,15 @@ def analyze_strategy(
             
             # Track correctness
             for i, (current_val, solved_val) in enumerate(zip(current_state, current_solved_state)):
-                correctness_history[move_num][i] = current_val == solved_val
-        # calculate when each point stayed in its correct position
-        # for point_idx in range(n_points):
-        #     for move_num in range(solution_length):
-        #         if np.average(correctness_history[move_num:][point_idx]) > correctness_threshold:
-        #             deviation_move_counts[point_idx] = move_num
-        #         break
+                correctness_history[move_idx][i] = current_val == solved_val
+
+        deviantions_per_point[:, run_num] = get_deviation_move_counts(
+            correctness_history,
+            n_points,
+            solution_length,
+            correctness_threshold,
+        )
+
         # average the correctness of each point over the whole solve
         for point_idx in range(n_points):
             run_avg_point_correctness[point_idx] = np.average(correctness_history[:,point_idx])
@@ -91,13 +94,39 @@ def analyze_strategy(
         for i in range(n_points):
             if run_avg_point_correctness[i] == -1:
                 run_avg_point_correctness[i] = len(reverse_moves)
-            deviations_per_point[i].append(run_avg_point_correctness[i])
+            correctness_per_point[i].append(run_avg_point_correctness[i])
         # print(f"run {run_num} deviation counts: {deviation_move_counts}")
 
     # Calculate averages for each point
-    avg_solved_time_per_point = [sum(deviation_list) / len(deviation_list) for deviation_list in deviations_per_point]
-    avg_solved_std_per_point = [np.std(deviation_list) for deviation_list in deviations_per_point]
-    return avg_solved_time_per_point, avg_solved_std_per_point
+    avg_solved_time_per_point = [sum(deviation_list) / len(deviation_list) for deviation_list in correctness_per_point]
+    avg_solved_std_per_point = [np.std(deviation_list) for deviation_list in correctness_per_point]
+    deviation_move_counts = [np.average(deviation_list) for deviation_list in deviantions_per_point]
+    return avg_solved_time_per_point, avg_solved_std_per_point, deviation_move_counts
+
+def get_deviation_move_counts(
+                correctness_history: np.ndarray,
+                n_points: int,
+                solution_length: int,
+                correctness_threshold: int,
+                ) -> np.ndarray:
+            """
+            
+            """
+            # calculate when each point first stayed in its correct position for `correctness_threshold` moves
+            deviation_move_counts = np.ones(n_points, dtype=int) * solution_length
+            for point_idx in range(n_points):
+                correct_since_n_moves: int = 0
+                for move_idx in range(solution_length):
+                    if correctness_history[move_idx][point_idx]:
+                        correct_since_n_moves += 1
+                        if correct_since_n_moves >= correctness_threshold:
+                            deviation_move_counts[point_idx] = move_idx + 1 - correct_since_n_moves
+                            break
+                    else:
+                        correct_since_n_moves = 0
+                else:
+                    deviation_move_counts[point_idx] = move_idx + 1- correct_since_n_moves
+            return deviation_move_counts
 
 def show_avg_deviations(
         avg_deviations: list[float],
@@ -114,7 +143,7 @@ def show_avg_deviations(
     base_color = vpy.vector(*color)
     max_deviation = max(avg_deviations)
     for i, avg_dev in enumerate(avg_deviations):
-        point_color = base_color * (avg_dev / max_deviation)**(1.5)
+        point_color = base_color * (avg_dev / max_deviation)#**(1.5)
         puzzle.vpy_objects[i].color = point_color
     print("Brighter points are solved first.")
     print(f"Solving the first point took on average {min(avg_deviations):.1f} moves.")
@@ -123,6 +152,7 @@ def show_avg_deviations(
 def main(
         test_file_path: str | None = None,
         show_on_puzzle: bool = True,
+        correctness_threshold: int = 5,
         color: tuple[float] = (0,1,0),
         ) -> list[float]:
     """
@@ -147,20 +177,21 @@ def main(
     puzzle.load_puzzle(puzzle_definition_path)
 
     # correctness_threshold = 0.7  # Example threshold for deviation
-    correctness_threshold = 0.8  # Example threshold for deviation
+    # correctness_threshold = 5  # Example threshold for deviation
 
-    avg_solved_time_per_point, avg_solved_std_per_point = analyze_strategy(
+    avg_solved_time_per_point, avg_solved_std_per_point, deviation_move_counts = analyze_strategy(
         test_data,
         correctness_threshold,
         puzzle)
     n_solves = len([1 for run in test_data['run_info'] if run['success']])
     print([round(dev, 2) for dev in avg_solved_time_per_point])
     if show_on_puzzle:
-        show_avg_deviations(avg_solved_time_per_point, puzzle, color=color)
+        show_avg_deviations(deviation_move_counts, puzzle, color=color)
         # puzzle.set_clip_poly("cube", 0.7)
         # puzzle.draw_3d_pieces()
     plot_error_bar_data(n_solves, avg_solved_time_per_point, avg_solved_std_per_point)
-    plot_3d_index_data(puzzle, avg_solved_time_per_point, color=color)
+    plot_error_bar_data(n_solves, deviation_move_counts, np.zeros_like(deviation_move_counts))
+    # plot_3d_index_data(puzzle, deviation_move_counts, color=color)
 
     return avg_solved_time_per_point
 
@@ -180,7 +211,7 @@ def plot_error_bar_data(
     """
     plt.errorbar(
         range(len(avg_solved_time_per_point)),
-        np.array(avg_solved_time_per_point)**(1.5),
+        np.array(avg_solved_time_per_point),#**(1.5),
         yerr=avg_solved_std_per_point,
         fmt='o',
         ecolor='#000', # black error bars
@@ -190,7 +221,7 @@ def plot_error_bar_data(
     plt.title(f"Avg. time each point was solved during {n_solves} solves")
     plt.xlabel("Point index")
     plt.ylabel("average correct time")
-    plt.ylim(0, 1.05)
+    # plt.ylim(0, 1.05)
     if show_plot:
         plt.show()
 
@@ -217,7 +248,7 @@ def plot_3d_index_data(
         point_pos = np.array([point_obj.pos.x, point_obj.pos.y, point_obj.pos.z])
         ax.scatter(
             *point_pos,
-            c=color * (solved_time)**(1.5),
+            c=color * (solved_time),#**(1.5),
             s=150,
             alpha=0.5,
         )
@@ -229,4 +260,7 @@ def plot_3d_index_data(
         plt.show()
 
 if __name__ == "__main__":
-    main()
+    main(
+        test_file_path=r"C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/rubiks_ai_sym_algs/agent_comparison_data/tests/human_layer_solves.json",
+        correctness_threshold=20,
+    )
