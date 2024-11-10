@@ -1,0 +1,19 @@
+{
+    "alg_flip_center": "5*(B' U' B U')",
+    "alg_flip_center_edge": "6*(S S R R S)",
+    "alg_rot_2_centers": "7*(U R' B R)",
+    "alg_rot_2_centers'": "7*(R' B' R U')",
+    "alg_cycle_3_4pcs": "8*(B' M U D' B D')",
+    "alg_cycle_3_4pcs'": "8*(D B' D U' M' B)",
+    "alg_rot_3_corners": "12*(U' L' D B F)",
+    "alg_rot_3_corners'": "12*(F' B' D' L U)",
+    "alg_cycle_3_corners": "8*(M' R' L' M F R' U F' L)",
+    "alg_cycle_3_corners'": "8*(L' F U' R F' M' L R M)",
+    "alg_swap_4_corners": "3*(R' F' R F)",
+    "alg_flip_4_centers": "8*(L' E' E')",
+    "alg_swap_4_edges": "10*(S' M' M')",
+    "alg_rot_4_corners": "10*(M' D' F' D F)",
+    "alg_rot_4_corners'": "10*(F' D' F D M)",
+    "alg_rot_4_4pcs": "4*(E' D U' R E R' D F B' L' F' R)",
+    "alg_rot_4_4pcs'": "4*(R' F L B F' D' R E' R' U D' E)"
+}

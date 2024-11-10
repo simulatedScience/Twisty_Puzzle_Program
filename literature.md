@@ -178,6 +178,20 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
   }
   ```
 
+- **CubeTR:** - 
+  - [link](https://openreview.net/forum?id=wGLGG4918oc) - withdrawn
+  - Proposed 2D representation, but did not show any results of their method.
+  ```Bibtex
+  @misc{
+    chasmai2022cubetr,
+    title={Cube{TR}: Learning to Solve the Rubik's Cube using Transformers},
+    author={Mustafa Ebrahim Chasmai},
+    year={2022},
+    url={https://openreview.net/forum?id=wGLGG4918oc}
+  }
+  ```
+
+
 - **Minkwitz Algorithm** - Solving Twisty Puzzles as a Factorization problem
   - [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
 

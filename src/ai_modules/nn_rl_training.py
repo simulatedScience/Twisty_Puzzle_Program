@@ -17,7 +17,7 @@ from stable_baselines3.common.vec_env import VecEnv
 
 try:
     from nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
-    from nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
+    from nn_rl_reward_factories import binary_reward_factory, multi_binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
 except ModuleNotFoundError:
     from .nn_rl_environment import Twisty_Puzzle_Env, Update_Scramble_Length_Callback, EarlyStopCallback, permutation_cycles_to_tensor, STICKER_DTYPE
     from .nn_rl_reward_factories import binary_reward_factory, correct_points_reward_factory, most_correct_points_reward_factory, sparse_most_correct_points_reward_factory
@@ -331,6 +331,8 @@ def setup_training(
     """
     if not solved_state or not actions_dict:
         solved_state, actions_dict = load_puzzle(puzzle_name)
+    if not base_actions:
+        base_actions: list[str] = list(actions_dict.keys())
     # check for whole puzzle rotation moves
     _, rotations, algorithms = filter_actions(
         actions_dict=actions_dict,
@@ -341,6 +343,8 @@ def setup_training(
     # define reward function
     if reward == "binary":
         reward_func = binary_reward_factory(solved_state)
+    elif reward == "multi_binary":
+        reward_func = multi_binary_reward_factory(solved_states)
     elif reward == "correct_points":
         reward_func = correct_points_reward_factory(solved_state)
     elif reward == "most_correct_points":

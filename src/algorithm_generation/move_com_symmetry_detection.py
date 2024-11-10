@@ -27,21 +27,27 @@ from sympy.combinatorics import Permutation
 
 
 if __name__ == "__main__":
-    from algorithm_analysis import get_inverse_moves_dict
-    from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
-    from find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
-    from symmetry_plane_detection import dist_similarity_function
-    from test_symmetry_plane_detection import set_equal_aspect_3d
-    from rotation_auto_naming import rename_rotations
-else:
-    from .algorithm_analysis import get_inverse_moves_dict
-    from .algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
-    from .find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
-    from .symmetry_plane_detection import dist_similarity_function
-    from .test_symmetry_plane_detection import set_equal_aspect_3d
-    from .rotation_auto_naming import rename_rotations
+    import sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
 
-DEBUG: bool = True
+from src.algorithm_generation.algorithm_analysis import get_inverse_moves_dict
+from src.algorithm_generation.algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
+from src.algorithm_generation.find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
+from src.algorithm_generation.symmetry_plane_detection import dist_similarity_function
+from src.algorithm_generation.test_symmetry_plane_detection import set_equal_aspect_3d
+from src.algorithm_generation.rotation_auto_naming import rename_rotations
+# else:
+#     from .algorithm_analysis import get_inverse_moves_dict
+#     from .algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
+#     from .find_puzzle_symmetries_CLI import get_puzzle_points, rotations_to_moves
+#     from .symmetry_plane_detection import dist_similarity_function
+#     from .test_symmetry_plane_detection import set_equal_aspect_3d
+#     from .rotation_auto_naming import rename_rotations
+
+DEBUG: bool = False
 TOL = 1e-1
 
 def find_rotational_symmetries(

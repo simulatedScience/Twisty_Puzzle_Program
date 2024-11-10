@@ -1,14 +1,14 @@
 {
-    "alg_1": "3*(F' R' L' B' D)",
-    "alg_2": "4*(D' F B' R' U' F)",
-    "alg_2'": "4*(F' U R B F' D)",
-    "alg_3": "3*(R D L F)",
-    "alg_3'": "3*(F' L' D' R')",
-    "alg_4": "4*(D' D' L' L' F')",
-    "alg_4'": "4*(F L L D D)",
-    "alg_5": "2*(F B B)",
-    "alg_6": "4*(L R' R' L L D' U' R U' F)",
-    "alg_6'": "4*(F' U R' U D L' L' R R L')",
-    "alg_7": "9*(D F' U')",
-    "alg_7'": "9*(U F D')"
+    "alg_swap_2": "5*(F' U' R')",
+    "alg_rot_2": "4*(U L' D' U L' R')",
+    "alg_rot_2'": "4*(R L U' D L U')",
+    "alg_rot_3": "4*(B R U)",
+    "alg_rot_3'": "4*(U' R' B')",
+    "alg_cycle_3": "4*(F R' B' R D')",
+    "alg_cycle_3'": "4*(D R' B R F')",
+    "alg_swap_4": "2*(R' L D' B' L' B D' R)",
+    "alg_rot_4": "2*(D' U R D' D' L F)",
+    "alg_rot_4'": "2*(F' L' D D R' U' D)",
+    "alg_cycle_4": "3*(R' R' B B F D F')",
+    "alg_cycle_4'": "3*(F D' F' B' B' R R)"
 }

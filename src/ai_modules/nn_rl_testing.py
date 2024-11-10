@@ -61,7 +61,7 @@ def test_agent(
     test_run_info: list[tuple[str, str, bool, int]] = []
     # with open(log_file_path, "w") as file:
     for i in range(num_tests):
-        obs, _ = env.reset()
+        obs, _ = env.reset(min_scramble_length=scramble_length)
         done = False
         action_sequence = []
         while not done:
@@ -242,8 +242,7 @@ def train_and_test_agent(
         base_actions=base_actions,
         reward=reward)
     action_index_to_name: dict[int, str] = get_action_index_to_name(actions_dict)
-    
-    
+
     if not test_max_moves:
         test_max_moves: int = max_moves
         print(f"Using test_max_moves={test_max_moves} from training configuration.")
@@ -427,24 +426,29 @@ if __name__ == "__main__":
         # puzzle_name="rubiks_image_cube_sym_algs",
         # puzzle_name="geared_mixup_sym_algs",
         # puzzle_name="gear_cube_ultimate_sym_algs",
-        puzzle_name="gear_cube_ultimate",
+        # puzzle_name="gear_cube_ultimate",
+        # puzzle_name="cube_2x2x2_sym_algs",
+        puzzle_name="cube_2x2x2",
         # base_actions=None,
-        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
-        # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'",
-        #               "alg_flip_right_center", "alg_cycle_3_4pcs'", "alg_cycle_3_4pcs", "alg_rot_3_corners", "alg_rot_3_corners'", "alg_flip_2_2pcs", "alg_flip_3_3pcs", "alg_swap_4_edges", "alg_flip_4_edges", "alg_rot_4_corners", "alg_rot_4_corners'", "alg_rot_4_4pcs", "alg_rot_4_4pcs'"],
+        # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+        # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "S", "S'", "E", "E'"],
         # environment configuration
         load_model=None,
         # load_model="2024-10-28_05-40-25",
         # load_model="2024-10-28_14-39-30",
-        max_moves=100,
+        max_moves=50,
         # start_scramble_depth=16,
         start_scramble_depth=2,
-        success_threshold=0.25,
+        success_threshold=0.5,
+        # success_threshold=0.25,
+        # success_threshold=0.1,
         last_n_episodes=1000,
         # reward="most_correct_points",
+        # reward="correct_points",
+        # reward="multi_binary",
         reward="binary",
         # rl training parameters
-        n_steps=400_000_000,
+        n_steps=20_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings

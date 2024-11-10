@@ -87,7 +87,7 @@ class Twisty_Puzzle_Env(gym.Env):
         """
         return self.scramble_length
 
-    def reset(self, seed = None, options=None) -> tuple[np.ndarray, dict]:
+    def reset(self, seed = None, options = None, min_scramble_length: int = 1) -> tuple[np.ndarray, dict]:
         """
         Reset the environment to a random scrambled state. First, reset to solved, then apply `self.scramble_length` random base moves.
 
@@ -115,7 +115,10 @@ class Twisty_Puzzle_Env(gym.Env):
         #         #     print(f"[{self.exp_identifier}] Increased scramble length to {self.scramble_length} after {self.episode_counter} episodes.")
         #         #     print(f"[{self.exp_identifier}] Mean reward over last {self.last_n_episodes} episodes: {mean_reward:.2f}")
         #         #     print(f"[{self.exp_identifier}] Current success rate: {self.mean_success_rate:.2%}")
-        self.state = self.scramble_puzzle(self.scramble_length)
+        self.state = self.scramble_puzzle(
+            max_scramble_length = self.scramble_length,
+            min_scramble_length = min_scramble_length,
+        )
         return self.state, {}
 
     def step(self, action_index):
@@ -135,7 +138,7 @@ class Twisty_Puzzle_Env(gym.Env):
         
         return self.state, reward, self.terminated, truncated, {'terminated': self.terminated}
 
-    def scramble_puzzle(self, scramble_length: int) -> np.ndarray:
+    def scramble_puzzle(self, max_scramble_length: int, min_scramble_length: int = -1) -> np.ndarray:
         """
         Scrample the puzzle by applying `scrable_length` random moves.
 
@@ -145,6 +148,11 @@ class Twisty_Puzzle_Env(gym.Env):
         Returns:
             np.ndarray: the scrambled state
         """
+        # scramble_length: int = max_scramble_length
+        if min_scramble_length <= 0:
+            scramble_length = max_scramble_length
+        else:
+            scramble_length: int = np.random.randint(min_scramble_length, max_scramble_length+1)
         self.scramble_action_indices = np.random.random_integers(0, self.num_base_actions-1, (scramble_length,))
         for action in self.base_actions[self.scramble_action_indices]:
             self.state = self.state[action]
