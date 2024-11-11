@@ -471,6 +471,8 @@ def main(shape: tuple[int, int, int]):
 if __name__ == "__main__":
     # generate 2x3x4 cuboid
     # shape = (6, 3, 5)
+    # shape = (3, 4, 5)
+    shape = (3, 3, 2)
     # shape = (9, 9, 9)
     # shape = (6, 5, 6)
     # shape = (3, 3, 2)
@@ -478,5 +480,5 @@ if __name__ == "__main__":
     # shape = (2, 2, 2)
     # shape = (3, 3, 3)
     # shape = (4, 4, 4)
-    shape = (5, 5, 5)
+    # shape = (5, 5, 5)
     main(shape)

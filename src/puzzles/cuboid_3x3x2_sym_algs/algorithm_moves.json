@@ -1,0 +1,18 @@
+{
+    "alg_swap_centers": "5*(L S U B U')",
+    "alg_swap_2_edges": "3*(U F U)",
+    "alg_swap_2_corners": "5*(L U R L B U F U' U' D)",
+    "alg_swap_2_edges_centers": "3*(U' U' B M)",
+    "alg_swap_2_corners_centers": "5*(U L F L U' M F D' R B D' U' R)",
+    "alg_cycle_3_corners": "2*(F U' B U)",
+    "alg_cycle_3_corners'": "2*(U' B U F)",
+    "alg_cycle_3_edges": "2*(U F U' S)",
+    "alg_cycle_3_edges'": "2*(S U F U')",
+    "alg_swap_4_edges": "3*(B R)",
+    "alg_swap_4_corners": "2*(M D' D' M U')",
+    "alg_swap_2_corners_2_edges": "5*(R M U' S D R L R M S U')",
+    "alg_cycle_4_edges": "3*(R S M D' D')",
+    "alg_cycle_4_edges'": "3*(D D M S R)",
+    "alg_cycle_4_corners": "3*(D' U' S R M F U' L)",
+    "alg_cycle_4_corners'": "3*(L U F M R S U D)"
+}

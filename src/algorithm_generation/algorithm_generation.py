@@ -301,7 +301,10 @@ def filter_and_add_algorithm(
     for alg in potential_matches:
         if new_algorithm.sympy_permutation.cyclic_form == alg.sympy_permutation.cyclic_form:
             if len(new_algorithm.full_action_sequence) < len(alg.full_action_sequence):
-                print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
+                if iteration >= 0:
+                    print(f"iter {iteration}: Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
+                else:
+                    print(f"Replacing old algorithm with new one:\n  old: {alg}\n  new: {new_algorithm}")
                 # rename new algorithm to old name
                 new_algorithm.name = alg.name
                 # replace old algorithm with new one in-place

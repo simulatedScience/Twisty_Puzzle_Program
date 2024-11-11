@@ -226,14 +226,6 @@
       <cycle>14, 15</cycle>
     </move>
     <move name="D">
-      <cycle>0, 6, 12, 18</cycle>
-      <cycle>1, 7, 13, 19</cycle>
-      <cycle>2, 8, 14, 20</cycle>
-      <cycle>33, 39, 41, 35</cycle>
-      <cycle>34, 36, 40, 38</cycle>
-      <cycle>37</cycle>
-    </move>
-    <move name="D'">
       <cycle>0, 18, 12, 6</cycle>
       <cycle>1, 19, 13, 7</cycle>
       <cycle>2, 20, 14, 8</cycle>
@@ -241,15 +233,15 @@
       <cycle>34, 38, 40, 36</cycle>
       <cycle>37</cycle>
     </move>
-    <move name="U">
-      <cycle>3, 21, 15, 9</cycle>
-      <cycle>4, 22, 16, 10</cycle>
-      <cycle>5, 23, 17, 11</cycle>
-      <cycle>24, 30, 32, 26</cycle>
-      <cycle>25, 27, 31, 29</cycle>
-      <cycle>28</cycle>
+    <move name="D'">
+      <cycle>0, 6, 12, 18</cycle>
+      <cycle>1, 7, 13, 19</cycle>
+      <cycle>2, 8, 14, 20</cycle>
+      <cycle>33, 39, 41, 35</cycle>
+      <cycle>34, 36, 40, 38</cycle>
+      <cycle>37</cycle>
     </move>
-    <move name="U'">
+    <move name="U">
       <cycle>3, 9, 15, 21</cycle>
       <cycle>4, 10, 16, 22</cycle>
       <cycle>5, 11, 17, 23</cycle>
@@ -257,87 +249,37 @@
       <cycle>25, 29, 31, 27</cycle>
       <cycle>28</cycle>
     </move>
-    <move name="swap_2_edge_pairs">
-      <cycle>7, 10</cycle>
-      <cycle>13, 16</cycle>
-      <cycle>29, 38</cycle>
-      <cycle>31, 34</cycle>
+    <move name="U'">
+      <cycle>3, 21, 15, 9</cycle>
+      <cycle>4, 22, 16, 10</cycle>
+      <cycle>5, 23, 17, 11</cycle>
+      <cycle>24, 30, 32, 26</cycle>
+      <cycle>25, 27, 31, 29</cycle>
+      <cycle>28</cycle>
     </move>
-    <move name="swap_face_opposite_edges">
+    <move name="rot_wb">
+      <cycle>0, 12</cycle>
       <cycle>1, 13</cycle>
-      <cycle>34, 40</cycle>
-    </move>
-    <move name="swap_2_corner_pairs">
-      <cycle>0, 23</cycle>
-      <cycle>3, 20</cycle>
+      <cycle>2, 14</cycle>
+      <cycle>3, 15</cycle>
+      <cycle>4, 16</cycle>
       <cycle>5, 17</cycle>
+      <cycle>6, 18</cycle>
+      <cycle>7, 19</cycle>
+      <cycle>8, 20</cycle>
       <cycle>9, 21</cycle>
-      <cycle>24, 39</cycle>
+      <cycle>10, 22</cycle>
+      <cycle>11, 23</cycle>
+      <cycle>24, 32</cycle>
+      <cycle>25, 31</cycle>
       <cycle>26, 30</cycle>
+      <cycle>27, 29</cycle>
+      <cycle>33, 41</cycle>
+      <cycle>34, 40</cycle>
+      <cycle>35, 39</cycle>
+      <cycle>36, 38</cycle>
     </move>
-    <move name="swap_opposite_corner_pairs">
-      <cycle>0, 23</cycle>
-      <cycle>3, 20</cycle>
-      <cycle>8, 15</cycle>
-      <cycle>11, 12</cycle>
-      <cycle>24, 39</cycle>
-      <cycle>32, 35</cycle>
-    </move>
-    <move name="cycle_3_edges">
-      <cycle>4, 13, 19</cycle>
-      <cycle>25, 34, 36</cycle>
-    </move>
-    <move name="cycle_3_corners">
-      <cycle>2, 8, 9</cycle>
-      <cycle>5, 6, 12</cycle>
-      <cycle>26, 41, 35</cycle>
-    </move>
-    <move name="cycle_3_face_corners">
-      <cycle>0, 18, 6</cycle>
-      <cycle>2, 20, 14</cycle>
-      <cycle>33, 41, 39</cycle>
-    </move>
-    <move name="swap_adjacent_corner_pairs">
-      <cycle>2, 9</cycle>
-      <cycle>5, 6</cycle>
-      <cycle>8, 15</cycle>
-      <cycle>11, 12</cycle>
-      <cycle>26, 41</cycle>
-      <cycle>32, 35</cycle>
-    </move>
-    <move name="cycle_5_edges">
-      <cycle>4, 10, 13, 16, 22</cycle>
-      <cycle>25, 29, 34, 31, 27</cycle>
-    </move>
-    <move name="cycle_5_corners">
-      <cycle>0, 5, 23, 17, 6</cycle>
-      <cycle>2, 20, 9, 3, 21</cycle>
-      <cycle>24, 30, 41, 39, 26</cycle>
-    </move>
-    <move name="rot_1">
-      <cycle>0, 23</cycle>
-      <cycle>1, 22</cycle>
-      <cycle>2, 21</cycle>
-      <cycle>3, 20</cycle>
-      <cycle>4, 19</cycle>
-      <cycle>5, 18</cycle>
-      <cycle>6, 17</cycle>
-      <cycle>7, 16</cycle>
-      <cycle>8, 15</cycle>
-      <cycle>9, 14</cycle>
-      <cycle>10, 13</cycle>
-      <cycle>11, 12</cycle>
-      <cycle>24, 39</cycle>
-      <cycle>25, 36</cycle>
-      <cycle>26, 33</cycle>
-      <cycle>27, 40</cycle>
-      <cycle>28, 37</cycle>
-      <cycle>29, 34</cycle>
-      <cycle>30, 41</cycle>
-      <cycle>31, 38</cycle>
-      <cycle>32, 35</cycle>
-    </move>
-    <move name="rot_2">
+    <move name="rot_yg">
       <cycle>0, 5</cycle>
       <cycle>1, 4</cycle>
       <cycle>2, 3</cycle>
@@ -360,7 +302,7 @@
       <cycle>31, 34</cycle>
       <cycle>32, 33</cycle>
     </move>
-    <move name="rot_3">
+    <move name="rot_yb">
       <cycle>0, 17</cycle>
       <cycle>1, 16</cycle>
       <cycle>2, 15</cycle>
@@ -383,7 +325,54 @@
       <cycle>31, 40</cycle>
       <cycle>32, 41</cycle>
     </move>
-    <move name="rot_4">
+    <move name="rot_yo">
+      <cycle>0, 23</cycle>
+      <cycle>1, 22</cycle>
+      <cycle>2, 21</cycle>
+      <cycle>3, 20</cycle>
+      <cycle>4, 19</cycle>
+      <cycle>5, 18</cycle>
+      <cycle>6, 17</cycle>
+      <cycle>7, 16</cycle>
+      <cycle>8, 15</cycle>
+      <cycle>9, 14</cycle>
+      <cycle>10, 13</cycle>
+      <cycle>11, 12</cycle>
+      <cycle>24, 39</cycle>
+      <cycle>25, 36</cycle>
+      <cycle>26, 33</cycle>
+      <cycle>27, 40</cycle>
+      <cycle>28, 37</cycle>
+      <cycle>29, 34</cycle>
+      <cycle>30, 41</cycle>
+      <cycle>31, 38</cycle>
+      <cycle>32, 35</cycle>
+    </move>
+    <move name="rot_wr">
+      <cycle>0, 6, 12, 18</cycle>
+      <cycle>1, 7, 13, 19</cycle>
+      <cycle>2, 8, 14, 20</cycle>
+      <cycle>3, 9, 15, 21</cycle>
+      <cycle>4, 10, 16, 22</cycle>
+      <cycle>5, 11, 17, 23</cycle>
+      <cycle>24, 26, 32, 30</cycle>
+      <cycle>25, 29, 31, 27</cycle>
+      <cycle>33, 39, 41, 35</cycle>
+      <cycle>34, 36, 40, 38</cycle>
+    </move>
+    <move name="rot_wo">
+      <cycle>0, 18, 12, 6</cycle>
+      <cycle>1, 19, 13, 7</cycle>
+      <cycle>2, 20, 14, 8</cycle>
+      <cycle>3, 21, 15, 9</cycle>
+      <cycle>4, 22, 16, 10</cycle>
+      <cycle>5, 23, 17, 11</cycle>
+      <cycle>24, 30, 32, 26</cycle>
+      <cycle>25, 27, 31, 29</cycle>
+      <cycle>33, 35, 41, 39</cycle>
+      <cycle>34, 38, 40, 36</cycle>
+    </move>
+    <move name="rot_yr">
       <cycle>0, 11</cycle>
       <cycle>1, 10</cycle>
       <cycle>2, 9</cycle>
@@ -406,51 +395,85 @@
       <cycle>31, 36</cycle>
       <cycle>32, 39</cycle>
     </move>
-    <move name="rot_5">
-      <cycle>0, 6, 12, 18</cycle>
-      <cycle>1, 7, 13, 19</cycle>
-      <cycle>2, 8, 14, 20</cycle>
-      <cycle>3, 9, 15, 21</cycle>
-      <cycle>4, 10, 16, 22</cycle>
-      <cycle>5, 11, 17, 23</cycle>
-      <cycle>24, 26, 32, 30</cycle>
-      <cycle>25, 29, 31, 27</cycle>
-      <cycle>33, 39, 41, 35</cycle>
-      <cycle>34, 36, 40, 38</cycle>
+    <move name="alg_swap_centers">
+      <cycle>28, 37</cycle>
     </move>
-    <move name="rot_6">
-      <cycle>0, 18, 12, 6</cycle>
-      <cycle>1, 19, 13, 7</cycle>
-      <cycle>2, 20, 14, 8</cycle>
-      <cycle>3, 21, 15, 9</cycle>
-      <cycle>4, 22, 16, 10</cycle>
-      <cycle>5, 23, 17, 11</cycle>
-      <cycle>24, 30, 32, 26</cycle>
-      <cycle>25, 27, 31, 29</cycle>
-      <cycle>33, 35, 41, 39</cycle>
-      <cycle>34, 38, 40, 36</cycle>
-    </move>
-    <move name="rot_7">
-      <cycle>0, 12</cycle>
-      <cycle>1, 13</cycle>
-      <cycle>2, 14</cycle>
-      <cycle>3, 15</cycle>
+    <move name="alg_swap_2_edges">
       <cycle>4, 16</cycle>
-      <cycle>5, 17</cycle>
-      <cycle>6, 18</cycle>
-      <cycle>7, 19</cycle>
-      <cycle>8, 20</cycle>
-      <cycle>9, 21</cycle>
+      <cycle>25, 31</cycle>
+    </move>
+    <move name="alg_swap_2_corners">
+      <cycle>14, 21</cycle>
+      <cycle>17, 18</cycle>
+      <cycle>30, 33</cycle>
+    </move>
+    <move name="alg_swap_2_edges_centers">
       <cycle>10, 22</cycle>
+      <cycle>27, 29</cycle>
+      <cycle>28, 37</cycle>
+    </move>
+    <move name="alg_swap_2_corners_centers">
+      <cycle>0, 23</cycle>
+      <cycle>3, 20</cycle>
+      <cycle>24, 39</cycle>
+      <cycle>28, 37</cycle>
+    </move>
+    <move name="alg_cycle_3_corners">
+      <cycle>0, 18, 5</cycle>
+      <cycle>9, 20, 14</cycle>
+      <cycle>26, 39, 33</cycle>
+    </move>
+    <move name="alg_cycle_3_corners'">
+      <cycle>0, 5, 18</cycle>
+      <cycle>9, 14, 20</cycle>
+      <cycle>26, 33, 39</cycle>
+    </move>
+    <move name="alg_cycle_3_edges">
+      <cycle>1, 19, 10</cycle>
+      <cycle>29, 40, 36</cycle>
+    </move>
+    <move name="alg_cycle_3_edges'">
+      <cycle>1, 10, 19</cycle>
+      <cycle>29, 36, 40</cycle>
+    </move>
+    <move name="alg_swap_4_edges">
+      <cycle>7, 10</cycle>
+      <cycle>13, 16</cycle>
+      <cycle>29, 38</cycle>
+      <cycle>31, 34</cycle>
+    </move>
+    <move name="alg_swap_4_corners">
+      <cycle>3, 15</cycle>
+      <cycle>5, 17</cycle>
+      <cycle>9, 21</cycle>
       <cycle>11, 23</cycle>
       <cycle>24, 32</cycle>
-      <cycle>25, 31</cycle>
       <cycle>26, 30</cycle>
-      <cycle>27, 29</cycle>
-      <cycle>33, 41</cycle>
-      <cycle>34, 40</cycle>
-      <cycle>35, 39</cycle>
-      <cycle>36, 38</cycle>
+    </move>
+    <move name="alg_swap_2_corners_2_edges">
+      <cycle>0, 6</cycle>
+      <cycle>2, 20</cycle>
+      <cycle>13, 22</cycle>
+      <cycle>27, 34</cycle>
+      <cycle>39, 41</cycle>
+    </move>
+    <move name="alg_cycle_4_edges">
+      <cycle>1, 16, 13, 4</cycle>
+      <cycle>25, 40, 31, 34</cycle>
+    </move>
+    <move name="alg_cycle_4_edges'">
+      <cycle>1, 4, 13, 16</cycle>
+      <cycle>25, 34, 31, 40</cycle>
+    </move>
+    <move name="alg_cycle_4_corners">
+      <cycle>2, 15, 14, 21</cycle>
+      <cycle>6, 11, 18, 17</cycle>
+      <cycle>30, 41, 32, 33</cycle>
+    </move>
+    <move name="alg_cycle_4_corners'">
+      <cycle>2, 21, 14, 15</cycle>
+      <cycle>6, 17, 18, 11</cycle>
+      <cycle>30, 33, 32, 41</cycle>
     </move>
   </moves>
 </puzzledefinition>
