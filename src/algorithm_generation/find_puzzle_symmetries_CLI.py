@@ -8,9 +8,15 @@ import vpython as vpy
 from sympy.combinatorics import Permutation
 from scipy.spatial.transform import Rotation
 
-from rotational_symmetry_detection import find_rotational_symmetries
-from algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
-from algorithm_analysis import get_sympy_moves
+if __name__ == "__main__":
+    import sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
+from src.algorithm_generation.rotational_symmetry_detection import find_rotational_symmetries
+from src.algorithm_generation.algorithm_generation_CLI import add_moves_to_puzzle, load_twisty_puzzle
+from src.algorithm_generation.algorithm_analysis import get_sympy_moves
 
 def rotations_to_moves(X: np.ndarray, rotations: list[tuple[float, np.ndarray, np.ndarray]]) -> dict[str, list[int]]:
     """

@@ -1,0 +1,14 @@
+{
+    "alg_1": "2*(oyb' ryg wbr' oyb ryg' wgo)",
+    "alg_1'": "2*(wgo' ryg oyb' wbr ryg' oyb)",
+    "alg_2": "3*(oyb' wgo' ryg)",
+    "alg_2'": "3*(ryg' wgo oyb)",
+    "alg_3": "2*(oyb wgo wbr' oyb wgo' ryg wgo' oyb ryg' wbr wgo)",
+    "alg_3'": "2*(wgo' wbr' ryg oyb' wgo ryg' wgo oyb' wbr wgo' oyb')",
+    "alg_4": "3*(wbr' oyb ryg oyb')",
+    "alg_5": "3*(wgo oyb' wbr oyb')",
+    "alg_6": "2*(wbr' oyb ryg oyb')",
+    "alg_6'": "2*(oyb ryg' oyb' wbr)",
+    "alg_7": "2*(wbr' ryg wbr oyb' ryg' oyb')",
+    "alg_7'": "2*(oyb ryg oyb wbr' ryg' wbr)"
+}

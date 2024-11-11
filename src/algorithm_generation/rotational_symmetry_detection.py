@@ -8,7 +8,7 @@ from scipy.optimize import minimize
 from scipy.spatial.transform import Rotation as R
 from scipy.spatial.transform import Slerp
 
-from symmetry_plane_detection import find_symmetry_planes, dist_similarity_function, centroid
+from src.algorithm_generation.symmetry_plane_detection import find_symmetry_planes, dist_similarity_function, centroid
 
 def find_plane_intersection(
         plane_1: np.ndarray,

@@ -8,7 +8,13 @@ import pstats
 import numpy as np
 import matplotlib.pyplot as plt
 
-from symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes, plane_point_normal2standard_form
+if __name__ == "__main__":
+    import sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
+from src.algorithm_generation.symmetry_plane_detection import init_planes, reflect_symmetry_measure, reflect_points_across_plane, find_symmetry_planes, plane_point_normal2standard_form
 
 def test_init_planes(X: np.ndarray, num_planes: int = 5, threshold: float = 0.1) -> list[tuple[np.ndarray, np.ndarray]]:
     """

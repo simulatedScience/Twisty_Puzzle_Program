@@ -624,7 +624,7 @@ but was of type '{type(shape_str)}'")
         self.moves_changed = False
 
 
-    def listmoves(self, arg_color="#0066ff", print_perms=True):
+    def listmoves(self, arg_color="#0066ff", print_perms=False):
         """
         print all availiable moves for this puzzle
         if every move has an inverse: don't print the inverse moves
@@ -636,10 +636,25 @@ but was of type '{type(shape_str)}'")
                     movename,
                     arg_color=arg_color)
         if len(self.moves) > 0:
-            print("\nThe following moves are availiable: ")
-            for movename in list(self.moves.keys())[:-1]:
-                print(colored(movename, arg_color), end=", ")
-            print(colored(list(self.moves.keys())[-1], arg_color))
+            print(f"\nThe following {len(self.moves)} moves are availiable: ")
+            base_move_names = [
+                colored(name, arg_color)
+                for name in self.moves.keys() if not (name.startswith("alg_") or name.startswith("rot_"))]
+            rot_move_names = [
+                colored(name, arg_color)
+                for name in self.moves.keys() if name.startswith("rot_")]
+            alg_move_names = [
+                colored(name, arg_color)
+                for name in self.moves.keys() if name.startswith("alg_")]
+            if base_move_names:
+                print(f"Base moves: {len(base_move_names)}")
+                print(", ".join(base_move_names))
+            if rot_move_names:
+                print(f"Rotation moves: {len(rot_move_names)}")
+                print(", ".join(rot_move_names))
+            if alg_move_names:
+                print(f"Algorithm moves: {len(alg_move_names)}")
+                print(", ".join(alg_move_names))
         else:
             print("No moves are defined yet.")
 

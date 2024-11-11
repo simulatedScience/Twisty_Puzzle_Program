@@ -352,11 +352,13 @@ def _flatten_cycles(move_cycles: list[list[int]]) -> np.ndarray:
     """
     return np.concatenate(move_cycles)
 
-def main(
-    puzzle_name_suffix: str = "_sym",
-    
-):
-    puzzle, puzzle_name = load_twisty_puzzle()
+def find_save_symmetries(
+        puzzle: "Twisty_Puzzle",
+        puzzle_name: str = None,
+        puzzle_name_suffix: str = "_sym",
+    ):
+    if not puzzle_name:
+        puzzle_name: str = puzzle.PUZZLE_NAME
     named_rotations = find_rotational_symmetries(puzzle)
     # convert to cycle notation
     named_rotations = {name: Permutation(perm).cyclic_form for name, perm in named_rotations.items()}
@@ -372,6 +374,16 @@ def main(
     )
     if new_puzzle_name:
         rename_rotations(puzzle, confirm_rename=False)
+    return new_puzzle_name
+
+def main(
+    puzzle_name_suffix: str = "_sym",
+):
+    puzzle, puzzle_name = load_twisty_puzzle()
+    find_save_symmetries(
+        puzzle,
+        puzzle_name,
+        puzzle_name_suffix)
     os._exit(0)
 
 if __name__ == "__main__":

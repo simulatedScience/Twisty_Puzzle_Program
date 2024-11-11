@@ -73,6 +73,7 @@ def print_command_help():
     # print(f"  {colored_text('save <number>', COMMAND_COLORS['command'])}: save algorithm with given number.")
     print(f"  {colored_text('reset', COMMAND_COLORS['command'])}: reset puzzle to solved state.")
     print(f"  {colored_text('exit', COMMAND_COLORS['command'])}: exit the program and save new puzzle version with the given algorithms.")
+    print(f"  {colored_text('save', COMMAND_COLORS['command'])}: same as {colored_text('exit', COMMAND_COLORS['command'])}.")
     print("=" * 75)
 
 def user_test_algorithms(
@@ -87,7 +88,9 @@ def user_test_algorithms(
     names_to_algorithms: dict[str, Twisty_Puzzle_Algorithm] = {alg.name: alg for alg in algorithms}
     print_command_help()
     while True:
-        command = input(f"{colored_text('Enter a command:', COMMAND_COLORS['headline'])} ").strip().lower()
+        command = input(
+            f"{colored_text('Enter a command:', COMMAND_COLORS['headline'])} "
+        ).strip().lower()
 
         if command == "help":
             print_command_help()
@@ -97,7 +100,7 @@ def user_test_algorithms(
             list_algorithms(algorithms)
             continue
 
-        if command == "exit":
+        if command == "exit" or command == "save":
             return "exit", saved_algs
 
         if command == "reset":
@@ -116,21 +119,7 @@ def user_test_algorithms(
             except (IndexError, ValueError):
                 print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
             continue
-        # # show algorithm with given number
-        # try:
-        #     alg_number = int(command)
-        #     if alg_number < 1 or alg_number > len(algorithms):
-        #         raise IndexError("Invalid algorithm number.")
-        #     alg = algorithms[alg_number-1]
-        #     print_algorithm(alg, alg_number)
-        #     show_algorithm_on_puzzle(puzzle, alg)
-        #     continue
-        # except IndexError:
-        #     print(f"{colored_text('Invalid algorithm number.', COMMAND_COLORS['headline'])}")
-        #     pass
-        # except ValueError:
-        #     pass
-        # show algorithm by name
+        # show algorithm by name or number
         try:
             alg_name = "alg_" + command
             # find algorithm by name
@@ -143,7 +132,6 @@ def user_test_algorithms(
             continue
         except KeyError:
             print(f"{colored_text('Algorithm not found.', COMMAND_COLORS['headline'])}")
-
 
 def add_moves_to_puzzle(
         puzzle: Twisty_Puzzle,
@@ -200,61 +188,105 @@ def add_moves_to_puzzle(
         print(f"Algorithms saved to {colored_text(filepath, COMMAND_COLORS['arguments'])}")
     return new_puzzle_name
 
-
-def main(move_text_color="#5588ff", rotations_prefix="rot_"):
-    puzzle, puzzle_name = load_twisty_puzzle()
+def generate_save_algorithms(
+        puzzle: Twisty_Puzzle,
+        anim_time: float = 0.1,
+        rotations_prefix: str = "rot_",
+        max_time: int = 300,
+        max_base_sequence_length: int = 16,
+        max_move_sequence_order: int = 200,
+        max_algorithm_moves: int = 100,
+        max_algorithm_order: int = 4,
+        max_pieces_affected: int = 4,
+        max_number_of_algorithms: int = 48,
+        max_iterations_without_new_algorithm: int = 5000,
+        verbosity: int = 2
+    ):
+    """
+    Automatically find algorithms (move sequences with low order, affecting few pieces) for the given puzzle and save them to the puzzle.
     
+    Args:
+        puzzle (Twisty_Puzzle): Puzzle to find algorithms for.
+        anim_time (float, optional): Animation time for the puzzle. Defaults to 0.1.
+        rotations_prefix (str, optional): Prefix for rotation moves. Defaults to "rot_".
+    """
+    alg_generation_params: dict[str, int] = {
+        "max_time": max_time,
+        "max_base_sequence_length": max_base_sequence_length,
+        "max_move_sequence_order": max_move_sequence_order,
+        "max_algorithm_moves": max_algorithm_moves,
+        "max_algorithm_order": max_algorithm_order,
+        "max_pieces_affected": max_pieces_affected,
+        "max_number_of_algorithms": max_number_of_algorithms,
+        "max_iterations_without_new_algorithm": max_iterations_without_new_algorithm,
+        # "verbosity": verbosity,
+    }
+    if verbosity > 1:
+        print(f"Algorithm generation parameters:")
+        for key, value in alg_generation_params.items():
+            print(f"  {colored_text(key, COMMAND_COLORS['command'])}: {colored_text(value, COMMAND_COLORS['arguments'])}")
+
     sympy_moves: dict[str, Permutation] = get_sympy_moves(puzzle)
     sympy_rotations: dict[str, Permutation] = {name: perm for name, perm in sympy_moves.items() if name.startswith(rotations_prefix)}
     # remove permutations that are rotations
     sympy_base_moves = {name: perm for name, perm in sympy_moves.items() if not name in sympy_rotations}
 
     current_algorithms: dict[str, Twisty_Puzzle_Algorithm] = {}
-    puzzle.animation_time = 0.1
+    old_anim_time = puzzle.animation_time
+    puzzle.animation_time = anim_time
 
     while True:
-        
         profile = cProfile.Profile()
         new_algorithms = profile.runcall(
             generate_algorithms,
             puzzle=puzzle,
             sympy_base_moves=sympy_base_moves,
             sympy_rotations=sympy_rotations,
-            # max_time=3, # 3 seconds
-            max_time=300, # 2 minutes
-            max_base_sequence_length=16, # 20
-            max_move_sequence_order=200, # 200
-            max_algorithm_moves=100, # 100
-            max_algorithm_order=4, # 6
-            max_pieces_affected=4, # 5
-            max_number_of_algorithms=48, # 20
-            max_iterations_without_new_algorithm=5000, # 5000
-            verbosity=2,
+            max_time=max_time,
+            max_base_sequence_length=max_base_sequence_length,
+            max_move_sequence_order=max_move_sequence_order,
+            max_algorithm_moves=max_algorithm_moves,
+            max_algorithm_order=max_algorithm_order,
+            max_pieces_affected=max_pieces_affected,
+            max_number_of_algorithms=max_number_of_algorithms,
+            max_iterations_without_new_algorithm=max_iterations_without_new_algorithm,
+            verbosity=verbosity,
         )
-        ps = pstats.Stats(profile)
-        ps.sort_stats(("tottime"))
-        ps.print_stats(20)
+        if verbosity > 2:
+            ps = pstats.Stats(profile)
+            ps.sort_stats(("tottime"))
+            ps.print_stats(20)
 
         state, saved_algs = user_test_algorithms(puzzle, new_algorithms, current_algorithms)
         current_algorithms = {alg.name: alg for alg in new_algorithms}
         if state == "exit":
             break
 
-    # print("=" * 75 + "\nCurrent algorithms:")
-    # for alg_name, alg in current_algorithms.items():
-    #     print_algorithm(alg, alg_name)
-
     # save puzzle with new algorithms
+    new_puzzle_name = puzzle.PUZZLE_NAME
     if input("Do you want to save the puzzle with the new algorithms? (y/N): ").strip().lower() == "y":
+        # TODO: save algorithm generation parameters.
         algorithm_moves: dict[str, list[int]] = {name: alg.sympy_permutation.cyclic_form for name, alg in current_algorithms.items()}
-        add_moves_to_puzzle(
+        new_puzzle_name = add_moves_to_puzzle(
             puzzle=puzzle,
             algorithms=current_algorithms,
             new_moves=algorithm_moves,
             suffix="_algs",
         )
-        # save algorithm generation parameters.
+        alg_generation_params_file: str = os.path.join("src", "puzzles", new_puzzle_name, "algorithm_generation_parameters.json")
+        with open(alg_generation_params_file, "w") as file:
+            json.dump(alg_generation_params, file, indent=4)
+        print(f"Saved algorithm generation parameters to {colored_text(alg_generation_params_file, COMMAND_COLORS['arguments'])}")
+    # reset animation time
+    puzzle.animation_time = old_anim_time
+    return new_puzzle_name
 
+def main(move_text_color="#5588ff", rotations_prefix="rot_"):
+    puzzle, puzzle_name = load_twisty_puzzle()
+    new_puzzle_name = generate_save_algorithms(
+        puzzle,
+        verbosity=3,
+    )
     os._exit(0)
 
 def load_twisty_puzzle(puzzle_name: str = None):

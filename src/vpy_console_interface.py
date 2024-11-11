@@ -14,6 +14,8 @@ from .interaction_modules.colored_text import colored_text as colored
 from .interface_functions import *
 from .console_help import interface_help
 from .puzzle_class import Twisty_Puzzle
+from .algorithm_generation.move_com_symmetry_detection import find_save_symmetries
+from .algorithm_generation.algorithm_generation_CLI import generate_save_algorithms
 
 
 def main_interaction(load_puzzle: str = None):
@@ -87,6 +89,8 @@ def main_interaction(load_puzzle: str = None):
                         "listmoves": interface_listmoves,
                         "savepuzzle": interface_savepuzzle,
                         "loadpuzzle": interface_loadpuzzle,
+                        "findsymmetries": interface_find_symmetries,
+                        "findalgs": interface_find_algorithms,
                         "listpuzzles": interface_listpuzzles,
                         "rename": interface_rename,
                         "delmove": interface_delmove,
@@ -224,8 +228,7 @@ def interface_loadpuzzle(puzzlename, puzzle: Twisty_Puzzle, command_color="#ff88
     except FileNotFoundError:
         print(f"{colored('Errod:', error_color)} Puzzle file does not exist yet. Create necessary files with {colored('savepuzzle', command_color)}.")
 
-
-def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000", load_puzzle: str = None):
+def interface_closepuzzle(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000", load_puzzle: str = None):
     """
     close the current puzzle and reset history_dict
     """
@@ -246,6 +249,46 @@ def interface_closepuzzle(puzzle, command_color="#ff8800", arg_color="#5588ff", 
         except:
             pass
         main_interaction(load_puzzle=load_puzzle)
+
+def interface_find_symmetries(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    find all symmetries of the current puzzle
+    """
+    if not puzzle.PUZZLE_NAME:
+        print(f"{colored('Error:', error_color)} No puzzle loaded yet. Load a puzzle with {colored('loadpuzzle', command_color)}.")
+        return
+    print(f"Searching for rotational symmetries of {colored(puzzle.PUZZLE_NAME, arg_color)}. This may take a few seconds.")
+    old_puzzle_name = puzzle.PUZZLE_NAME
+    new_puzzle_name = find_save_symmetries(
+        puzzle,
+        puzzle_name=puzzle.PUZZLE_NAME,
+        puzzle_name_suffix="_sym",
+    )
+    if new_puzzle_name != old_puzzle_name:
+        print(f"Loading new puzzle {colored(new_puzzle_name, arg_color)} with symmetries as added moves...")
+        interface_loadpuzzle(new_puzzle_name, puzzle)
+    else:
+        puzzle.PUZZLE_NAME = old_puzzle_name
+
+def interface_find_algorithms(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color="#5588ff", error_color="#ff0000"):
+    """
+    Generate algorithms for the current puzzle.
+    """
+    if not puzzle.PUZZLE_NAME:
+        print(f"{colored('Error:', error_color)} No puzzle loaded yet. Load a puzzle with {colored('loadpuzzle', command_color)}.")
+        return
+    print(f"Searching for algorithms for {colored(puzzle.PUZZLE_NAME, arg_color)}. This may take up to 10 minutes.")
+    old_puzzle_name = puzzle.PUZZLE_NAME
+    new_puzzle_name = generate_save_algorithms(
+        puzzle,
+        anim_time=puzzle.animation_time,
+    )
+    if new_puzzle_name != old_puzzle_name:
+        print(f"Loading new puzzle {colored(new_puzzle_name, arg_color)} with symmetries as added moves...")
+        interface_loadpuzzle(new_puzzle_name, puzzle)
+    else:
+        puzzle.PUZZLE_NAME = old_puzzle_name
+
 
 if __name__ == "__main__":
     main_interaction()

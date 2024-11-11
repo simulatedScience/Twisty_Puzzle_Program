@@ -59,6 +59,10 @@ def get_help_dict(command_color="#ff8800", arg_color="#0055cc", error_color="#ff
                        # TODO: automatically detect and convert spaces in name, print warning or error if saving fails
                        # NEVER CAUSE A CRASH HERE !
         "loadpuzzle": (["puzzlename"], "Load a saved puzzle with the given name."),
+        "findsymmetries": ([], "Find rotational symmetries of the current puzzle and " +
+                           "add them as new moves."),
+        "findalgs": ([], "Find algorithms for the current puzzle and add them as new moves." +
+                     "Algorithms are move sequences with low order, affecting only a few pieces."),
         "listpuzzles": ([], "List all puzzles, that can be loaded."),
         "rename": (["oldname", "newname"], "Rename an existing move"),
         "delmove": (["movename"], "Delete an existing move"),
