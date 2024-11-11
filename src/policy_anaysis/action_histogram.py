@@ -4,7 +4,10 @@ Let the user choose a test file, then analyse all successful episodes in it to c
 
 from collections import Counter
 
+import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Wedge, Circle
+from matplotlib.transforms import IdentityTransform
 
 # from src.interaction_modules.ai_file_management import get_policy_savepath
 
@@ -59,6 +62,75 @@ def action_histogram(runs):
     
     return alg_counter, rot_counter, base_counter, total_actions
 
+def draw_pie_chart(
+        ax: plt.Axes,
+        data: list[float],
+        colors: list[str],
+        labels: list[str],
+        position: tuple[float, float],
+        size: float = 1.0,
+    ) -> list[plt.Artist]:
+    """
+    Draw a pie chart on the given axis with the given data, colors, and labels.
+    Uses Wedge to draw the pie slices onto any axis.
+    """
+    # precalculate the seams of the wedges
+    wedge_angles: np.ndarray = np.array(data) / sum(data) * 360
+    last_angle: float = 90.
+    artists: list[plt.Artist] = []
+    # compute transform to stretch pie chart into proper circle based on aspect ratio of the axis
+    ax.set_aspect('equal')
+    # equal_aspect_transform = ax.transAxes#ax.transData # = default
+    equal_aspect_transform = ax.transData#ax.transData # = default
+    # add circle as background
+    circle_bg: Circle = Circle(
+        position,
+        size/2*1.05,
+        color='#000',
+        transform=equal_aspect_transform,
+        zorder=5,
+    )
+    ax.add_patch(circle_bg)
+    artists.append(circle_bg)
+    radius = size/2
+    # start initial wedge at 0°
+    for wedge_angle1, elem_color, elem_label in zip(wedge_angles, colors, labels):
+        wedge_angle2 = last_angle + wedge_angle1
+        wedge = Wedge(
+            center=position,
+            r=radius,
+            theta1=last_angle,
+            theta2=wedge_angle2,
+            color=elem_color,
+            label=elem_label,
+            transform=equal_aspect_transform,
+            zorder=6,
+        )
+        ax.add_patch(wedge)
+        artists.append(wedge)
+        last_angle: float = wedge_angle2
+    circle_bg: Circle = Circle(
+        position,
+        size/10,
+        color='#fff',
+        transform=equal_aspect_transform,
+        zorder=7,
+    )
+    ax.add_patch(circle_bg)
+    artists.append(circle_bg)
+    # add text above pie chart
+    ax.text(
+        position[0],
+        position[1] - radius * 1.1,
+        "Action Types\nDistribution",
+        ha='center',
+        va='top',
+        fontsize=10,
+        color='#000',
+    )
+
+    return artists
+
 def plot_action_histogram(
         alg_counter,
         rot_counter,
@@ -89,9 +161,7 @@ def plot_action_histogram(
     base_total = sum(base_counter.values()) / total_actions
     print(f"Total alg: {alg_total:.1%}, rot: {rot_total:.1%}, base: {base_total:.1%}")
     pie_data: list[float] = [alg_total, rot_total, base_total]
-    # add_pie_chart(
-    #     data=pie_data, colors)
-    
+
     # Calculate relative frequencies (as percentages)
     counts_percentage = [(count / total_actions) * 100 for count in counts]
     
@@ -99,29 +169,61 @@ def plot_action_histogram(
     colors = [color_list[0]] * len(sorted_alg) + [color_list[1]] * len(sorted_rot) + [color_list[2]] * len(sorted_base)
     
     # Create the bar plot
-    plt.figure(figsize=(12, 6))
+    fig: plt.Figure = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111)
     label_actions = [f"{action}" for action in actions]
-    bars = plt.bar(label_actions, counts_percentage, color=colors)
+    bars = ax.bar(label_actions, counts_percentage, color=colors)
     # Add text labels on top of each bar
     for bar in bars:
         yval = bar.get_height()  # Get the height of the bar (which is the value)
-        plt.text(bar.get_x() + bar.get_width()/2, yval, f'{yval:.1f}%', 
+        ax.text(bar.get_x() + bar.get_width()/2, yval, f'{yval:.1f}%', 
                 ha='center', va='bottom', fontsize=10, color='black')
-
-    # Adding gridlines with color #ddd
-    plt.grid(True, axis='y', color='#ddd')
     
-    # Labeling and title
-    plt.xlabel("Actions")
-    plt.ylabel("Relative Frequency (%)")
-    plt.title("Histogram of Actions by Category (Relative Frequency)")
-    plt.xticks(rotation=90)  # Rotate action labels for better visibility
     
     # Adding legend
-    plt.legend([bars[0], bars[len(sorted_alg)], bars[len(sorted_alg) + len(sorted_rot)]], 
-               ['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves'], loc='upper right')
+    legend = ax.legend(
+        handles=[bars[0], bars[len(sorted_alg)], bars[len(sorted_alg) + len(sorted_rot)]], 
+        labels=['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves'],
+        loc='upper center',
+    )
+    fig.canvas.draw()
+    # get legend width in data coordinates
+    legend_window_extent = ax.transData.inverted().transform(legend.get_window_extent())
+    legend_width_data_coords: float = legend_window_extent[1][0] - legend_window_extent[0][0]
+    
+    # Draw the pie chart
+    y_lim: float = max(counts_percentage)
+    pie_radius: float = y_lim * 0.09
+    legend_pie_gap: float = pie_radius / 2
+    pie_x_coord: float = (len(actions) - legend_width_data_coords - legend_pie_gap) / 2
+    pie_position: tuple[float, float] = (pie_x_coord, 0.9 * y_lim)
+    draw_pie_chart(
+        ax=ax,
+        data=pie_data,
+        colors=color_list,
+        labels=["Algorithms", "Rotations", "Base Moves"],
+        position=pie_position,
+        size=2*pie_radius,
+    )
+    # move legend next to pie chart
+    fig.canvas.draw()
+    new_legend_loc = ax.transAxes.inverted().transform(
+    ax.transData.transform((
+            pie_position[0] + pie_radius + legend_pie_gap,
+            pie_position[1] - pie_radius
+        )))
+    print(f"{new_legend_loc = }")
+    legend.set_loc(new_legend_loc)
+    # Adding gridlines with color #ddd
+    ax.grid(True, axis='y', color='#ddd')
+    
+    # Labeling and title
+    ax.set_xlabel("Actions")
+    ax.set_ylabel("Relative Frequency (%)")
+    ax.set_title("Histogram of Actions by Category (Relative Frequency)")
+    ax.set_xticks(range(len(actions)),actions, rotation=90)  # Rotate action labels for better visibility
 
-    plt.tight_layout()
+    fig.tight_layout()
     # save_path: str = get_policy_savepath()
     plt.show()
 
@@ -134,7 +236,8 @@ if __name__ == "__main__":
     sys.path.insert(0,parent2dir)
     from src.interaction_modules.ai_file_management import load_test_file
     
-    data, test_file_path = load_test_file()
+    # data, test_file_path = load_test_file()
+    data, test_file_path = load_test_file(r"C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/cube_2x2x2_sym_algs/2024-11-11_12-30-52/tests/test_2024-11-11_12-39-01.json")
     # Example usage:
     successful_runs = get_successful_runs(data['run_info'])
     average_successful_moves = average_moves(successful_runs)
