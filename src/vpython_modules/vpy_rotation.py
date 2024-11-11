@@ -33,6 +33,8 @@ def animate_move(
     max_cycle_order = max([len(cycle) for cycle in cycles])
     avg_rotation_axis = vpy.vec(0, 0, 0)
     for cycle in cycles:
+        if len(cycle) < 2: # skip 1-cycles for now
+            continue
         cycle_points, rot_info = calc_rotate_cycle(
                 points,
                 cycle,
@@ -54,6 +56,8 @@ def animate_move(
     # flip rotation axis of 2-cycles if necessary
     rot_info_index = 0
     for cycle in cycles:
+        if len(cycle) < 2: # skip 1-cycles for now
+            continue
         if len(cycle) > 2:
             rot_info_index += len(cycle)
             continue
@@ -72,6 +76,8 @@ def animate_move(
         target_fps=target_fps)
     # apply permutations to internal list of points
     for cycle in cycles:
+        if len(cycle) < 2: # skip 1-cycles for now
+            continue
         apply_cycle(points, cycle)
         # snap affected points to correct positions
         correct_positions(points, POINT_POS, cycle)
@@ -97,8 +103,12 @@ def get_order_2_axis(
         return vpy.vec(0, 0, 0)
     average_axis: vpy.vector = vpy.vec(0, 0, 0)
     for idx_1, cycle_1 in enumerate(cycles):
+        if len(cycle_1) != 2:
+            continue
         vec_1 = points[cycle_1[1]].pos - points[cycle_1[0]].pos
         for cycle_2 in cycles[idx_1+1:]:
+            if len(cycle_2) != 2:
+                continue
             vec_2 = points[cycle_2[1]].pos - points[cycle_2[0]].pos
             vec_3 = vpy.cross(vec_1, vec_2)
             if vpy.dot(average_axis, vec_3) < 0:
