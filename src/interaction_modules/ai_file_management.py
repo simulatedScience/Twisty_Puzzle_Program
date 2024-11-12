@@ -50,11 +50,13 @@ def get_policy_savepath(
     Returns:
         str: path to the new file: ...[exp_folder]/policy_analysis/[file_base_name]_[datetime2]
     """
-    path_parts: list[str] = test_file_path.split("/")
+    sep = "/" if "/" in test_file_path else "\\"
+    path_parts: list[str] = test_file_path.split(sep)
     test_datetime: str = path_parts[-1][5:-5] # remove "test_" and ".json"
     new_file_name: str = f"{file_base_name}_{test_datetime}"
     # create policy_analysis folder in exp_folder (= path_parts[-3])
     policy_analysis_folder = os.path.join(*path_parts[:-2], "policy_analysis")
+    policy_analysis_folder = policy_analysis_folder.replace(":", ":"+sep)
     os.makedirs(policy_analysis_folder, exist_ok=True)
     # return path to new file
     return os.path.join(policy_analysis_folder, new_file_name)

@@ -6,7 +6,13 @@ import os
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
 
-from .nn_rl_testing import test_from_file
+if __name__ == "__main__":
+    import sys, inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parent2dir = os.path.dirname(parentdir)
+    sys.path.insert(0,parent2dir)
+from src.ai_modules.nn_rl_testing import test_from_file
 
 
 def test_from_file_cli(
@@ -44,10 +50,6 @@ def test_from_file_cli(
             print("Exiting.")
             return
 
-    # 2. let user enter parameters for testing
-    # TODO: CLI
-    
-    # TODO update values
     test_from_file(
         exp_folder_path=exp_folder_path,
         model_snapshot_steps=model_snapshot_steps,
@@ -65,7 +67,23 @@ def pick_model(ai_files_path: str) -> str:
         filetypes=[("All files", "*.*"), ("model files", "*.zip")],
     )
     root.withdraw()
-    return file_path
+    
+    if "model_snapshots" in file_path:
+        model_snapshot_steps: int = int(file_path.split("_")[-2])
+        sep = "/" if "/" in file_path else "\\"
+        exp_folder_path = "/".join(file_path.split(sep)[:-2])
+    # check if user selected valid experiment folder
+    elif "model_snapshots" in os.listdir(file_path):
+        # find model with highest step count
+        model_snapshot_steps = 0
+        for model_snapshot in os.listdir(os.path.join(file_path, "model_snapshots")):
+            steps = int(model_snapshot.split("_")[-2])
+            if steps > model_snapshot_steps:
+                model_snapshot_steps = steps
+        exp_folder_path = file_path
+    else:
+        raise FileNotFoundError(f"Invalid file selected:\n  {file_path}")
+    return exp_folder_path, model_snapshot_steps
     
     
     # raise NotImplementedError("TODO")
@@ -91,4 +109,8 @@ def pick_model(ai_files_path: str) -> str:
     
     
 if __name__ == "__main__":
-    test_from_file_cli()
+    test_from_file_cli(
+        test_scramble_length=200,
+        test_max_moves=200,
+        num_tests=1000,
+    )

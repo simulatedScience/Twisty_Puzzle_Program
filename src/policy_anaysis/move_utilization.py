@@ -13,7 +13,6 @@ if __name__ == "__main__":
     parent2dir = os.path.dirname(parentdir)
     sys.path.insert(0,parent2dir)
 
-import vpython as vpy
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -84,7 +83,12 @@ def get_algorithm_utilization_data(test_data: dict[str, any], puzzle: Twisty_Puz
     
     return moves_to_solved_algs, unsolved_points_algs
 
-def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, ylabels: str):
+def plot_boxplot_from_dict(
+        data: dict[str, list[int]],
+        title: str,
+        xlabel: str,
+        ylabels: str,
+        save_path: str = "",):
     """
     Create a horizontal boxplot from a dictionary.
     
@@ -136,7 +140,7 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
         ax.set_ylabel(ylabel, fontweight="bold")
     fig.tight_layout()
     fig.subplots_adjust(
-        left=0.1, #0.05
+        left=0.15, #0.05
         bottom=0.1,
         right=0.99,
         top=0.92,
@@ -146,6 +150,9 @@ def plot_boxplot_from_dict(data: dict[str, list[int]], title: str, xlabel: str, 
     fig.suptitle(title, fontweight="bold")
     
     # Display the plot
+    if save_path:
+        fig.savefig(save_path, dpi=300)
+        print(f"Saved plot to {save_path}")
     plt.show()
 
 # Example usage:
@@ -181,12 +188,14 @@ def main(
         moves_to_solved_algs,
         title="Moves to Solved State for Each Action",
         xlabel="Moves to Solved State",
-        ylabels=("algorithm", "rotation", "move"))
+        ylabels=("algorithm", "rotation", "move"),
+        save_path=get_policy_savepath(test_file_path, "action_usage_over_moves_to_solved")+".png")
     plot_boxplot_from_dict(
         unsolved_points_algs,
         title="Unsolved Points for Each Action",
         xlabel="Unsolved Points",
-        ylabels=("algorithm", "rotation", "move"))
+        ylabels=("algorithm", "rotation", "move"),
+        save_path=get_policy_savepath(test_file_path, "action_usage_over_unsolved_points")+".png")
     os._exit(0)
 
 if __name__ == "__main__":
