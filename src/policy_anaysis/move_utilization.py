@@ -1,10 +1,6 @@
 """
 This module implements tools to analyse when algorithms are typically used by an agent during a solve.
 This helps gain insights into the agent's strategy and can be used by humans to replicate the agent's solutions or derive human-readable instructions to solve the puzzle.
-
-## Problem:
-`get_inverse_moves_dict` may not always provide the inverse of an algorithm.
-During algorithm generation, we don't add an inverse if the algorithm is self-inverse under rotation. So if a rotation r exists such that a^-1 = r a r^-1, then a' is self-inverse under rotation and we don't add a' to the inverse moves dict. In that case inversion requires multiple moves, which is currently not supported by `get_inverse_moves_dict` or this code.
 """
 import os, sys, inspect
 if __name__ == "__main__":
