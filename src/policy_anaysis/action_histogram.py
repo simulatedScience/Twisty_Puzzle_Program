@@ -176,8 +176,15 @@ def plot_action_histogram(
     # Add text labels on top of each bar
     for bar in bars:
         yval = bar.get_height()  # Get the height of the bar (which is the value)
-        ax.text(bar.get_x() + bar.get_width()/2, yval, f'{yval:.1f}%', 
-                ha='center', va='bottom', fontsize=10, color='black')
+        ax.text(
+            bar.get_x() + bar.get_width()/2,
+            yval,
+            f'{yval:.1f}%', 
+            ha='center',
+            va='bottom',
+            fontsize=10,
+            color='black',
+        )
     
     
     # Adding legend

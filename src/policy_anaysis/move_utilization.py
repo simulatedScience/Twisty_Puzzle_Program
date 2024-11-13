@@ -20,7 +20,10 @@ from src.puzzle_class import Twisty_Puzzle
 from src.interaction_modules.ai_file_management import get_policy_savepath
 
 
-def get_algorithm_utilization_data(test_data: dict[str, any], puzzle: Twisty_Puzzle) -> tuple[dict[str, list[int]], dict[str, list[int]]]:
+def get_algorithm_utilization_data(
+        test_data: dict[str, any],
+        puzzle: Twisty_Puzzle
+    ) -> tuple[dict[str, list[int]], dict[str, list[int]]]:
     """
     Analyze the usage of each algorithm and collect data on the number of moves to the solved state
     and the number of correct points when each algorithm is used.
