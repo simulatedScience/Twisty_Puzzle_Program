@@ -195,5 +195,5 @@ def main(
 if __name__ == "__main__":
     main(
         test_file_path="C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/rubiks_ai_sym_algs/2024-11-05_00-54-16/tests/test_2024-11-05_05-02-47.json",
-        num_tests=400
+        num_tests=400,
     )

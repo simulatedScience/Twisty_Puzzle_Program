@@ -30,6 +30,7 @@ def train_agent(
         load_model: str = None,
         max_moves: int = 50,
         start_scramble_depth: int = 1,
+        min_scramble_length: int = 1,
         success_threshold: float = 0.1,
         last_n_episodes: int = 1000,
         reward: str = "binary",
@@ -91,6 +92,7 @@ def train_agent(
                 base_actions=base_actions,
                 max_moves=max_moves,
                 initial_scramble_length=start_scramble_depth,
+                min_scramble_length=min_scramble_length,
                 success_threshold=success_threshold,
                 reward_func=reward_func,
         )
@@ -101,23 +103,24 @@ def train_agent(
     vec_env = make_vec_env(make_env, n_envs=n_envs)
     training_info: dict[str, str | int | float] = {
         # what model was trained
-        "puzzle_name":puzzle_name,
-        "base_actions":base_actions,
+        "puzzle_name": puzzle_name,
+        "base_actions": base_actions,
         # environment configuration
         "load_model": load_model,
-        "max_moves":max_moves,
-        "start_scramble_depth":start_scramble_depth,
-        "success_threshold":success_threshold,
-        "last_n_episodes":last_n_episodes,
-        "reward":reward,
+        "max_moves": max_moves,
+        "start_scramble_depth": start_scramble_depth,
+        "min_scramble_length": min_scramble_length,
+        "success_threshold": success_threshold,
+        "last_n_episodes": last_n_episodes,
+        "reward": reward,
         # rl training parameters
-        "n_steps":n_steps,
-        "learning_rate":learning_rate,
-        "batch_size":batch_size,
+        "n_steps": n_steps,
+        "learning_rate": learning_rate,
+        "batch_size": batch_size,
         # parallelization settings
-        "n_envs":n_envs,
-        "device":device,
-        "training_start":exp_folder,
+        "n_envs": n_envs,
+        "device": device,
+        "training_start": exp_folder,
     }
     # env
     if load_model:

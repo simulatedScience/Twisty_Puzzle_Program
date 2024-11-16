@@ -57,11 +57,12 @@ def test_agent(
     if verbosity:
         print(f"[{exp_identifier}] Testing agent on {num_tests} scrambles of length {scramble_length}...")
     env.scramble_length = scramble_length
+    env.min_scramble_length = scramble_length
     success_count: int = 0
     test_run_info: list[tuple[str, str, bool, int]] = []
     # with open(log_file_path, "w") as file:
     for i in range(num_tests):
-        obs, _ = env.reset(min_scramble_length=scramble_length)
+        obs, _ = env.reset()
         done = False
         action_sequence = []
         while not done:
@@ -186,6 +187,7 @@ def train_and_test_agent(
         load_model: str = None,
         max_moves: int = 50,
         start_scramble_depth: int = 1,
+        min_scramble_length: int = 1,
         success_threshold: float = 0.1,
         last_n_episodes: int = 1000,
         reward: str = "binary",
@@ -225,6 +227,7 @@ def train_and_test_agent(
         load_model=load_model,
         max_moves=max_moves,
         start_scramble_depth=start_scramble_depth,
+        min_scramble_length=min_scramble_length,
         success_threshold=success_threshold,
         last_n_episodes=last_n_episodes,
         reward=reward,
@@ -425,33 +428,37 @@ if __name__ == "__main__":
         # puzzle_name="rubiks_ai_sym_algs",
         # puzzle_name="rubiks_image_cube_sym_algs",
         # puzzle_name="geared_mixup_sym_algs",
-        # puzzle_name="gear_cube_ultimate_sym_algs",
-        # puzzle_name="gear_cube_ultimate",
+        puzzle_name="gear_cube_ultimate_sym_algs",
         # puzzle_name="cube_2x2x2_sym_algs",
         # puzzle_name="cuboid_3x3x2_sym_algs",
-        puzzle_name="cuboid_3x4x5_sym_algs",
+        # puzzle_name="cuboid_3x4x5_sym_algs",
         # puzzle_name="cube_2x2x2",
-        # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+        # puzzle_name="cuboid_3x3x2",
+        # puzzle_name="cuboid_3x4x5",
+        # puzzle_name="gear_cube_ultimate",
+        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # puzzle_name="mixup_cube_sym_algs",
         # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "S", "S'", "E", "E'"],
-        base_actions=None,
+        # base_actions=None,
         # environment configuration
         load_model=None,
         # load_model="2024-10-28_05-40-25",
         # load_model="2024-10-28_14-39-30",
         max_moves=200,
-        # start_scramble_depth=16,
-        start_scramble_depth=2,
-        # success_threshold=0.5,
-        # success_threshold=0.25,
-        success_threshold=0.1,
+        start_scramble_depth=32,
+        # start_scramble_depth=2,
+        # success_threshold=0.7,
+        # min_scramble_length=-1, # use deterministic scramble length
+        min_scramble_length=1, # use random scramble_length between min and current max
+        success_threshold=0.25,
+        # success_threshold=0.1,
         last_n_episodes=1000,
-        # reward="most_correct_points",
+        reward="most_correct_points",
         # reward="correct_points",
         # reward="multi_binary",
-        reward="binary",
+        # reward="binary",
         # rl training parameters
-        n_steps=50_000_000,
+        n_steps=250_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings

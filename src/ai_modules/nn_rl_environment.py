@@ -33,7 +33,8 @@ class Twisty_Puzzle_Env(gym.Env):
             actions: dict[str, list[list[int]]],
             base_actions: list[str] = None,
             max_moves: int = 50,
-            initial_scramble_length=1, # 1 seems to work best
+            initial_scramble_length=2,
+            min_scramble_length=1,
             success_threshold=0.1,
             reward_func: callable = None,
             # exp_identifier: str | None = None,
@@ -44,6 +45,7 @@ class Twisty_Puzzle_Env(gym.Env):
         self.max_moves: int = max_moves
         self.episode_counter: int = 0
         self.scramble_length: int = initial_scramble_length
+        self.min_scramble_length: int = min_scramble_length
         self.reward_func: callable = reward_func
         self.success_threshold: float = success_threshold
         # parameters for tracking success rate
@@ -87,7 +89,7 @@ class Twisty_Puzzle_Env(gym.Env):
         """
         return self.scramble_length
 
-    def reset(self, seed = None, options = None, min_scramble_length: int = 1) -> tuple[np.ndarray, dict]:
+    def reset(self, seed = None, options = None) -> tuple[np.ndarray, dict]:
         """
         Reset the environment to a random scrambled state. First, reset to solved, then apply `self.scramble_length` random base moves.
 
@@ -117,7 +119,7 @@ class Twisty_Puzzle_Env(gym.Env):
         #         #     print(f"[{self.exp_identifier}] Current success rate: {self.mean_success_rate:.2%}")
         self.state = self.scramble_puzzle(
             max_scramble_length = self.scramble_length,
-            min_scramble_length = min_scramble_length,
+            min_scramble_length = self.min_scramble_length,
         )
         return self.state, {}
 
