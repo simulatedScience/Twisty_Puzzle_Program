@@ -78,10 +78,10 @@ def generate_algorithms(
     current_moves: dict[str, list[list[str]]] = {name: puzzle.moves[name] for name in sympy_base_moves.keys()}
     
     n_points: int = len(puzzle.SOLVED_STATE)
-    base_move_orbits: list[set[int]] = calculate_point_orbits(
-        n_points=n_points,
-        moves=list(sympy_base_moves.values()),
-    )
+    # base_move_orbits: list[set[int]] = calculate_point_orbits(
+    #     n_points=n_points,
+    #     moves=list(sympy_base_moves.values()),
+    # )
     inverse_moves_dict: dict[str, str] = get_inverse_moves_dict(puzzle.moves)
     algs_generate_full_group: bool = False
     num_unique_algorithms: int = 1
