@@ -1,0 +1,29 @@
+{
+    "base_actions": [
+        "L",
+        "L'",
+        "R",
+        "R'",
+        "F",
+        "F'",
+        "B",
+        "B'",
+        "D",
+        "D'",
+        "U",
+        "U'"
+    ],
+    "load_model": null,
+    "max_moves": 200,
+    "start_scramble_depth": 2,
+    "success_threshold": 0.3,
+    "last_n_episodes": 1000,
+    "reward": "binary",
+    "n_steps": 30000000,
+    "learning_rate": 0.001,
+    "batch_size": 25000,
+    "n_envs": 1000,
+    "device": "cuda",
+    "training_start": "2024-11-14_12-39-28",
+    "training_end": "2024-11-14_12-48-37"
+}

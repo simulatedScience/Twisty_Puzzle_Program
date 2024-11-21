@@ -431,34 +431,36 @@ if __name__ == "__main__":
         puzzle_name="gear_cube_ultimate_sym_algs",
         # puzzle_name="cube_2x2x2_sym_algs",
         # puzzle_name="cuboid_3x3x2_sym_algs",
+        # base_actions=["F", "U", "U'", "R", "B", "L", "D", "D'", "M", "S"],
         # puzzle_name="cuboid_3x4x5_sym_algs",
+        # base_actions=["F", "2F", "U", "2U", "R", "B", "2B", "L", "D", "2D", "M", "E"],
         # puzzle_name="cube_2x2x2",
         # puzzle_name="cuboid_3x3x2",
         # puzzle_name="cuboid_3x4x5",
         # puzzle_name="gear_cube_ultimate",
-        # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
+        base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'"],
         # puzzle_name="mixup_cube_sym_algs",
         # base_actions=["F", "F'", "U", "U'", "R", "R'", "B", "B'", "L", "L'", "D", "D'", "M", "M'", "S", "S'", "E", "E'"],
-        base_actions=None,
+        # base_actions=None,
         # environment configuration
         load_model=None,
         # load_model="2024-10-28_05-40-25",
         # load_model="2024-10-28_14-39-30",
         max_moves=200,
-        start_scramble_depth=2,
-        # start_scramble_depth=32,
-        success_threshold=0.7,
-        # success_threshold=0.25,
+        # start_scramble_depth=2,
+        start_scramble_depth=16,
+        # success_threshold=0.7,
+        success_threshold=0.25,
         # success_threshold=0.1,
-        # min_scramble_length=-1, # use deterministic scramble length
-        min_scramble_length=1, # use random scramble_length between min and current max
+        min_scramble_length=-1, # use deterministic scramble length
+        # min_scramble_length=1, # use random scramble_length between min and current max
         last_n_episodes=1000,
-        # reward="most_correct_points",
+        reward="most_correct_points",
         # reward="correct_points",
         # reward="multi_binary",
-        reward="binary",
+        # reward="binary",
         # rl training parameters
-        n_steps=250_000_000,
+        n_steps=100_000_000,
         learning_rate=0.001,
         batch_size=25000,
         # parallelization settings
@@ -467,7 +469,7 @@ if __name__ == "__main__":
         verbosity=1,
         # test configuration
         num_tests=1000,
-        test_scramble_length=100,
+        test_scramble_length=200,
     )
     # tensorboard --logdir src/ai_files/dino_cube_sym_algs
     # tensorboard --logdir src/ai_files/

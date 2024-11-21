@@ -243,8 +243,8 @@ if __name__ == "__main__":
     sys.path.insert(0,parent2dir)
     from src.interaction_modules.ai_file_management import load_test_file
     
-    # data, test_file_path = load_test_file()
-    data, test_file_path = load_test_file(r"C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/cube_2x2x2_sym_algs/2024-11-11_12-30-52/tests/test_2024-11-11_12-39-01.json")
+    data, test_file_path = load_test_file()
+    # data, test_file_path = load_test_file(r"C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/cube_2x2x2_sym_algs/2024-11-11_12-30-52/tests/test_2024-11-11_12-39-01.json")
     # Example usage:
     successful_runs = get_successful_runs(data['run_info'])
     average_successful_moves = average_moves(successful_runs)
