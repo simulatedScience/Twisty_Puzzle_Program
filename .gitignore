@@ -43,6 +43,7 @@ doc/puzzle_solver/stepwise_rubiks_cube_solution.jpg
 # /src/ai_files/rubiks_ai_sym_algs/**/tb_logs
 /src/final_models/**/tb_logs
 /src/final_models/**/*.png
+!/src/final_models/**/*.zip
 # ignore images, but not links to images
 /puzzle_images/*.jpg
 /puzzle_images/*.png
