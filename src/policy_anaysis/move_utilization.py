@@ -10,6 +10,7 @@ if __name__ == "__main__":
     sys.path.insert(0,parent2dir)
 
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 import numpy as np
 
 from src.ai_modules.twisty_puzzle_model import perform_action
@@ -107,22 +108,31 @@ def plot_boxplot_from_dict(
     other_data: dict[str, list[int]] = {k: v for k, v in data.items() if not k in rot_data and not k in alg_data}
     
     n_plots: int = bool(rot_data) + bool(alg_data) + bool(other_data)
-    fig, axes = plt.subplots(
-        figsize=(5*n_plots, len(data) * 0.25),
-        nrows=1,
-        ncols=3,)
+    fig: plt.Figure = plt.figure(
+        figsize=(
+            5*n_plots,
+            len(data) * 0.25 if n_plots > 1 else len(data)*0.5
+        )
+    )
+    gs: GridSpec = GridSpec(1, n_plots, figure=fig)
+    # fig, axes = plt.subplots(
+    #     figsize=(5*n_plots, len(data) * 0.25),
+    #     nrows=1,
+    #     ncols=3,
+    # )
 
     labels: list[str] = []
+    valid_axes: list[plt.Axes] = []
 
-    for data, color, ax, ylabel in zip((alg_data, rot_data, other_data), (alg_color, rot_color, base_color), axes, ylabels):
+    for data, color, ylabel in zip((alg_data, rot_data, other_data), (alg_color, rot_color, base_color), ylabels):
         if not data:
-            # remove axes if data is empty
-            fig.delaxes(ax)
             continue
-        # Sort algorithms by their names to have a consistent order in the plot
+        ax = fig.add_subplot(gs[0, len(valid_axes)])
+        valid_axes.append(ax)
+        # Sort actions by their names to have a consistent order in the plot
         # sort data by mean of values
         sorted_data = {k: v for k, v in sorted(data.items(), key=lambda item: np.mean(item[1]))}
-        
+        # {k: np.mean(v) for k, v in sorted(data.items(), key=lambda item: np.mean(item[1]))}
         # Prepare data for the boxplot
         labels = list(sorted_data.keys())
         values = list(sorted_data.values())
@@ -139,7 +149,7 @@ def plot_boxplot_from_dict(
         ax.set_ylabel(ylabel, fontweight="bold")
     fig.tight_layout()
     fig.subplots_adjust(
-        left=0.15, #0.05
+        left=0.1, #0.05 to 0.2
         bottom=0.1,
         right=0.99,
         top=0.92,
@@ -199,4 +209,7 @@ def main(
 
 if __name__ == "__main__":
     # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\ai_files\cube_3x3x3_sym_algs\2024-09-28_23-37-59\tests\test_2024-09-29_05-31-09.json")
+    # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\agent_comparison_data\tests\deepcubeA_solves.json")
+    # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\agent_comparison_data\tests\human_layer_solves.json")
+    # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\2024-11-21_18-16-39_dense\tests\test_2024-11-21_22-07-42.json")
     main()

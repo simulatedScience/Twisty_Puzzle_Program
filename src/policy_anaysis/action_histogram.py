@@ -80,8 +80,8 @@ def draw_pie_chart(
     artists: list[plt.Artist] = []
     # compute transform to stretch pie chart into proper circle based on aspect ratio of the axis
     ax.set_aspect('equal')
-    # equal_aspect_transform = ax.transAxes#ax.transData # = default
-    equal_aspect_transform = ax.transData#ax.transData # = default
+    # equal_aspect_transform = ax.transAxes
+    equal_aspect_transform = ax.transData # =default
     # add circle as background
     circle_bg: Circle = Circle(
         position,
@@ -95,6 +95,8 @@ def draw_pie_chart(
     radius = size/2
     # start initial wedge at 0°
     for wedge_angle1, elem_color, elem_label in zip(wedge_angles, colors, labels):
+        if wedge_angle1 <= 0:
+            continue
         wedge_angle2 = last_angle + wedge_angle1
         wedge = Wedge(
             center=position,
@@ -174,23 +176,32 @@ def plot_action_histogram(
     label_actions = [f"{action}" for action in actions]
     bars = ax.bar(label_actions, counts_percentage, color=colors)
     # Add text labels on top of each bar
-    for bar in bars:
-        yval = bar.get_height()  # Get the height of the bar (which is the value)
-        ax.text(
-            bar.get_x() + bar.get_width()/2,
-            yval,
-            f'{yval:.1f}%', 
-            ha='center',
-            va='bottom',
-            fontsize=10,
-            color='black',
-        )
+    # for bar in bars:
+    #     yval = bar.get_height()  # Get the height of the bar (which is the value)
+    #     ax.text(
+    #         bar.get_x() + bar.get_width()/2,
+    #         yval + 0.5,
+    #         f'{yval:.1f}%', 
+    #         ha='center',
+    #         va='bottom',
+    #         rotation=90,
+    #         fontsize=10,
+    #         color='black',
+    #     )
     
     
     # Adding legend
+    legend_handles: list[int] = [bars[0], bars[len(sorted_alg)], bars[len(sorted_alg) + len(sorted_rot)]]
+    legend_labels: list[str] = ['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves']
+    reduced_handles: list[int] = []
+    reduced_labels: list[str] = []
+    for freq, handle, label in zip(pie_data, legend_handles, legend_labels):
+        if freq > 0:
+            reduced_handles.append(handle)
+            reduced_labels.append(label)
     legend = ax.legend(
-        handles=[bars[0], bars[len(sorted_alg)], bars[len(sorted_alg) + len(sorted_rot)]], 
-        labels=['Algorithms (alg_)', 'Rotations (rot_)', 'Base Moves'],
+        handles=reduced_handles, 
+        labels=reduced_labels,
         loc='upper center',
     )
     fig.canvas.draw()
@@ -202,7 +213,7 @@ def plot_action_histogram(
     y_lim: float = max(counts_percentage)
     pie_radius: float = y_lim * 0.09
     legend_pie_gap: float = pie_radius / 2
-    pie_x_coord: float = (len(actions) - legend_width_data_coords - legend_pie_gap) / 2
+    pie_x_coord: float = len(actions)*0.6 - (legend_width_data_coords + legend_pie_gap) / 2
     pie_position: tuple[float, float] = (pie_x_coord, 0.9 * y_lim)
     draw_pie_chart(
         ax=ax,
@@ -215,10 +226,12 @@ def plot_action_histogram(
     # move legend next to pie chart
     fig.canvas.draw()
     new_legend_loc = ax.transAxes.inverted().transform(
-    ax.transData.transform((
-            pie_position[0] + pie_radius + legend_pie_gap,
-            pie_position[1] - pie_radius
-        )))
+        ax.transData.transform((
+                pie_position[0] + pie_radius + legend_pie_gap,
+                pie_position[1] - pie_radius
+            )
+        )
+    )
     print(f"{new_legend_loc = }")
     legend.set_loc(new_legend_loc)
     # Adding gridlines with color #ddd
