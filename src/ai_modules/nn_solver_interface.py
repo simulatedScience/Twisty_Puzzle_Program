@@ -16,7 +16,8 @@ from .nn_rl_environment import Twisty_Puzzle_Env, puzzle_info_to_np
 from .nn_rl_training import setup_training, get_action_index_to_name
 from src.algorithm_generation.algorithm_generation import get_inverse_moves_dict
 
-AI_FILES_FOLDER_NAME: str = "ai_files"
+# AI_FILES_FOLDER_NAME: str = "ai_files"
+AI_FILES_FOLDER_NAME: str = "final_models"
 MODEL_SNAPSHOT_FOLDER_NAME: str = "model_snapshots"
 
 

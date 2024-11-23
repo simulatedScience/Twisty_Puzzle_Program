@@ -1,0 +1,1088 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<puzzledefinition name="gear_cube_ultimate_sym_algs" state_space_size="131066676589363200">
+  <points>
+    <point size="5.0">
+      <coords x="0.0" y="0.0" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.0" z="0.0"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="1.0" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.0" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-1.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="0.0" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.2121320343559643" y="0.0" z="-0.7878679656440357"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.1060660171779821" y="0.2598076211353316" z="-0.8939339828220177"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.8939339828220177" y="0.25980762113533173" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440355" y="1.6653345369377348e-16" z="-1.212132034355964"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.8939339828220174" y="-0.2598076211353315" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.1060660171779817" y="-0.25980762113533173" z="-0.8939339828220176"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.8939339828220177" y="-0.25980762113533173" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.1060660171779821" y="-0.2598076211353316" z="0.8939339828220177"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.2121320343559643" y="-0.0" z="0.7878679656440357"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.1060660171779817" y="0.25980762113533173" z="0.8939339828220176"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.8939339828220174" y="0.2598076211353315" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440355" y="-1.6653345369377348e-16" z="1.212132034355964"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.2121320343559643" y="0.0" z="0.7878679656440357"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.1060660171779817" y="0.25980762113533173" z="0.8939339828220176"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.1060660171779821" y="-0.2598076211353316" z="0.8939339828220177"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.8939339828220177" y="-0.25980762113533173" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440355" y="-1.6653345369377348e-16" z="1.212132034355964"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.8939339828220174" y="0.2598076211353315" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.1060660171779821" y="0.2598076211353316" z="-0.8939339828220177"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.2121320343559643" y="0.0" z="-0.7878679656440357"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.1060660171779817" y="-0.25980762113533173" z="-0.8939339828220176"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.8939339828220177" y="0.25980762113533173" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440355" y="1.6653345369377348e-16" z="-1.212132034355964"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.8939339828220174" y="-0.2598076211353315" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.25980762113533185" y="-0.8939339828220179" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.1102230246251565e-16" y="-0.7878679656440355" z="1.212132034355964"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.2598076211353315" y="-0.8939339828220174" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.25980762113533173" y="-1.1060660171779817" z="0.8939339828220176"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-1.2121320343559643" z="0.7878679656440357"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.2598076211353315" y="-1.1060660171779824" z="0.8939339828220177"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-1.2121320343559643" z="-0.7878679656440357"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.25980762113533173" y="-1.1060660171779817" z="-0.8939339828220176"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.2598076211353315" y="-0.8939339828220174" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-3.3306690738754696e-16" y="-0.7878679656440357" z="-1.212132034355964"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.25980762113533173" y="-1.1060660171779824" z="-0.8939339828220177"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.25980762113533185" y="-0.8939339828220179" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.2598076211353315" y="0.8939339828220174" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="2.220446049250313e-16" y="0.7878679656440355" z="1.212132034355964"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.25980762113533185" y="0.8939339828220179" z="1.106066017177982"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.25980762113533173" y="1.1060660171779824" z="0.8939339828220177"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="1.2121320343559643" z="0.7878679656440357"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.2598076211353313" y="1.1060660171779821" z="0.8939339828220176"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="1.2121320343559643" z="-0.7878679656440357"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.2598076211353315" y="1.1060660171779824" z="-0.8939339828220177"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.2598076211353323" y="0.8939339828220174" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.25980762113533173" y="1.1060660171779817" z="-0.8939339828220176"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.2598076211353315" y="0.8939339828220174" z="-1.106066017177982"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-4.440892098500626e-16" y="0.7878679656440353" z="-1.212132034355964"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.0" z="0.3"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.3" z="0.0"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.0" z="-0.3"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="-0.3" z="0.0"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="1.0" z="0.3"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.3" y="1.0" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="1.0" z="-0.3"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.3" y="1.0" z="0.0"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="0.3" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-0.3" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.3" y="0.0" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.3" y="0.0" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="0.3" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-0.3" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.3" y="0.0" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.3" y="0.0" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.0" z="0.3"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.0" z="-0.3"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.3" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="-0.3" z="0.0"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.3" y="-1.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.3" y="-1.0" z="0.0"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-1.0" z="0.3"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.0" y="-1.0" z="-0.3"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440357" y="-0.7878679656440357" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="-0.7878679656440359" z="0.7878679656440359"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440357" y="-1.0" z="0.7878679656440357"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="-0.7878679656440357" z="0.7878679656440357"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440359" y="-0.7878679656440359" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440359" y="-1.0" z="0.7878679656440359"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440359" y="-1.0" z="-0.7878679656440359"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="-0.7878679656440357" z="-0.7878679656440357"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440359" y="-0.7878679656440359" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440359" y="0.7878679656440359" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.7878679656440357" z="-0.7878679656440357"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440357" y="1.0" z="-0.7878679656440357"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440357" y="0.7878679656440357" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440359" y="1.0" z="-0.7878679656440359"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.7878679656440359" z="-0.7878679656440359"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440357" y="1.0" z="0.7878679656440357"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-1.0" y="0.7878679656440359" z="0.7878679656440359"/>
+      <color r="0.2" g="0.2" b="1.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="-0.7878679656440357" y="0.7878679656440357" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="0.7878679656440357" z="0.7878679656440357"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440359" y="1.0" z="0.7878679656440359"/>
+      <color r="1.0" g="0.0" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440359" y="0.7878679656440359" z="1.0"/>
+      <color r="0.8784313725490196" g="0.8784313725490196" b="0.8784313725490196"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440357" y="-0.7878679656440357" z="-1.0"/>
+      <color r="1.0" g="0.8431372549019608" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="1.0" y="-0.7878679656440359" z="-0.7878679656440359"/>
+      <color r="0.4" g="0.8" b="0.0"/>
+    </point>
+    <point size="5.0">
+      <coords x="0.7878679656440357" y="-1.0" z="-0.7878679656440357"/>
+      <color r="1.0" g="0.4980392156862745" b="0.0"/>
+    </point>
+  </points>
+  <moves>
+    <move name="U'">
+      <cycle>43, 17, 31, 22</cycle>
+      <cycle>63, 65, 62, 64</cycle>
+      <cycle>30, 21, 42, 16</cycle>
+      <cycle>32, 23, 44, 12</cycle>
+      <cycle>78, 95, 98, 82</cycle>
+      <cycle>96, 80, 79, 93</cycle>
+      <cycle>97, 81, 83, 94</cycle>
+      <cycle>46, 14, 34, 18</cycle>
+      <cycle>45, 13, 33, 19</cycle>
+      <cycle>47, 15, 35, 20</cycle>
+      <cycle>54, 76, 70, 58</cycle>
+    </move>
+    <move name="U">
+      <cycle>22, 31, 17, 43</cycle>
+      <cycle>64, 62, 65, 63</cycle>
+      <cycle>16, 42, 21, 30</cycle>
+      <cycle>12, 44, 23, 32</cycle>
+      <cycle>82, 98, 95, 78</cycle>
+      <cycle>93, 79, 80, 96</cycle>
+      <cycle>94, 83, 81, 97</cycle>
+      <cycle>18, 34, 14, 46</cycle>
+      <cycle>19, 33, 13, 45</cycle>
+      <cycle>20, 35, 15, 47</cycle>
+      <cycle>54, 58, 70, 76</cycle>
+    </move>
+    <move name="F'">
+      <cycle>0, 2, 5, 4</cycle>
+      <cycle>12, 27</cycle>
+      <cycle>13, 24</cycle>
+      <cycle>14, 25</cycle>
+      <cycle>15, 26</cycle>
+      <cycle>16, 29</cycle>
+      <cycle>17, 28</cycle>
+      <cycle>30, 44, 48, 41, 32, 46, 52, 38, 34, 42, 50, 36</cycle>
+      <cycle>31, 45, 51, 39, 33, 47, 53, 37, 35, 43, 49, 40</cycle>
+      <cycle>54, 56</cycle>
+      <cycle>55, 57</cycle>
+      <cycle>58, 66, 77, 63</cycle>
+      <cycle>60, 67, 76, 62</cycle>
+      <cycle>61, 74</cycle>
+      <cycle>64, 68</cycle>
+      <cycle>80, 91</cycle>
+      <cycle>81, 92</cycle>
+      <cycle>82, 90</cycle>
+      <cycle>96, 100</cycle>
+      <cycle>97, 101</cycle>
+      <cycle>98, 99</cycle>
+    </move>
+    <move name="F">
+      <cycle>4, 5, 2, 0</cycle>
+      <cycle>27, 12</cycle>
+      <cycle>24, 13</cycle>
+      <cycle>25, 14</cycle>
+      <cycle>26, 15</cycle>
+      <cycle>29, 16</cycle>
+      <cycle>28, 17</cycle>
+      <cycle>36, 50, 42, 34, 38, 52, 46, 32, 41, 48, 44, 30</cycle>
+      <cycle>40, 49, 43, 35, 37, 53, 47, 33, 39, 51, 45, 31</cycle>
+      <cycle>56, 54</cycle>
+      <cycle>57, 55</cycle>
+      <cycle>63, 77, 66, 58</cycle>
+      <cycle>62, 76, 67, 60</cycle>
+      <cycle>74, 61</cycle>
+      <cycle>68, 64</cycle>
+      <cycle>91, 80</cycle>
+      <cycle>92, 81</cycle>
+      <cycle>90, 82</cycle>
+      <cycle>100, 96</cycle>
+      <cycle>101, 97</cycle>
+      <cycle>99, 98</cycle>
+    </move>
+    <move name="R'">
+      <cycle>0, 3, 5, 1</cycle>
+      <cycle>6, 29, 12, 18, 8, 27, 14, 21, 10, 25, 16, 23</cycle>
+      <cycle>7, 28, 13, 20, 9, 24, 15, 22, 11, 26, 17, 19</cycle>
+      <cycle>42, 52</cycle>
+      <cycle>43, 53</cycle>
+      <cycle>44, 50</cycle>
+      <cycle>45, 49</cycle>
+      <cycle>46, 48</cycle>
+      <cycle>47, 51</cycle>
+      <cycle>54, 65, 71, 68</cycle>
+      <cycle>55, 72</cycle>
+      <cycle>56, 64, 70, 69</cycle>
+      <cycle>58, 60</cycle>
+      <cycle>59, 61</cycle>
+      <cycle>62, 66</cycle>
+      <cycle>87, 98</cycle>
+      <cycle>88, 96</cycle>
+      <cycle>89, 97</cycle>
+      <cycle>90, 95</cycle>
+      <cycle>91, 93</cycle>
+      <cycle>92, 94</cycle>
+    </move>
+    <move name="R">
+      <cycle>1, 5, 3, 0</cycle>
+      <cycle>23, 16, 25, 10, 21, 14, 27, 8, 18, 12, 29, 6</cycle>
+      <cycle>19, 17, 26, 11, 22, 15, 24, 9, 20, 13, 28, 7</cycle>
+      <cycle>52, 42</cycle>
+      <cycle>53, 43</cycle>
+      <cycle>50, 44</cycle>
+      <cycle>49, 45</cycle>
+      <cycle>48, 46</cycle>
+      <cycle>51, 47</cycle>
+      <cycle>68, 71, 65, 54</cycle>
+      <cycle>72, 55</cycle>
+      <cycle>69, 70, 64, 56</cycle>
+      <cycle>60, 58</cycle>
+      <cycle>61, 59</cycle>
+      <cycle>66, 62</cycle>
+      <cycle>98, 87</cycle>
+      <cycle>96, 88</cycle>
+      <cycle>97, 89</cycle>
+      <cycle>95, 90</cycle>
+      <cycle>93, 91</cycle>
+      <cycle>94, 92</cycle>
+    </move>
+    <move name="D'">
+      <cycle>6, 36, 25, 48</cycle>
+      <cycle>7, 40, 26, 51</cycle>
+      <cycle>8, 41, 29, 52</cycle>
+      <cycle>9, 39, 28, 53</cycle>
+      <cycle>10, 38, 27, 50</cycle>
+      <cycle>11, 37, 24, 49</cycle>
+      <cycle>56, 60, 71, 77</cycle>
+      <cycle>66, 69, 67, 68</cycle>
+      <cycle>84, 100, 91, 88</cycle>
+      <cycle>85, 101, 92, 89</cycle>
+      <cycle>86, 99, 90, 87</cycle>
+    </move>
+    <move name="D">
+      <cycle>48, 25, 36, 6</cycle>
+      <cycle>51, 26, 40, 7</cycle>
+      <cycle>52, 29, 41, 8</cycle>
+      <cycle>53, 28, 39, 9</cycle>
+      <cycle>50, 27, 38, 10</cycle>
+      <cycle>49, 24, 37, 11</cycle>
+      <cycle>77, 71, 60, 56</cycle>
+      <cycle>68, 67, 69, 66</cycle>
+      <cycle>88, 91, 100, 84</cycle>
+      <cycle>89, 92, 101, 85</cycle>
+      <cycle>87, 90, 99, 86</cycle>
+    </move>
+    <move name="L'">
+      <cycle>0, 1, 5, 3</cycle>
+      <cycle>6, 21, 12, 25, 8, 23, 14, 29, 10, 18, 16, 27</cycle>
+      <cycle>7, 22, 13, 26, 9, 19, 15, 28, 11, 20, 17, 24</cycle>
+      <cycle>30, 41</cycle>
+      <cycle>31, 39</cycle>
+      <cycle>32, 38</cycle>
+      <cycle>33, 37</cycle>
+      <cycle>34, 36</cycle>
+      <cycle>35, 40</cycle>
+      <cycle>54, 68, 71, 65</cycle>
+      <cycle>56, 69, 70, 64</cycle>
+      <cycle>57, 73</cycle>
+      <cycle>63, 67</cycle>
+      <cycle>74, 75</cycle>
+      <cycle>76, 77</cycle>
+      <cycle>78, 99</cycle>
+      <cycle>79, 100</cycle>
+      <cycle>80, 84</cycle>
+      <cycle>81, 85</cycle>
+      <cycle>82, 86</cycle>
+      <cycle>83, 101</cycle>
+    </move>
+    <move name="L">
+      <cycle>0, 3, 5, 1</cycle>
+      <cycle>6, 27, 16, 18, 10, 29, 14, 23, 8, 25, 12, 21</cycle>
+      <cycle>7, 24, 17, 20, 11, 28, 15, 19, 9, 26, 13, 22</cycle>
+      <cycle>30, 41</cycle>
+      <cycle>31, 39</cycle>
+      <cycle>32, 38</cycle>
+      <cycle>33, 37</cycle>
+      <cycle>34, 36</cycle>
+      <cycle>35, 40</cycle>
+      <cycle>54, 65, 71, 68</cycle>
+      <cycle>56, 64, 70, 69</cycle>
+      <cycle>57, 73</cycle>
+      <cycle>63, 67</cycle>
+      <cycle>74, 75</cycle>
+      <cycle>76, 77</cycle>
+      <cycle>78, 99</cycle>
+      <cycle>79, 100</cycle>
+      <cycle>80, 84</cycle>
+      <cycle>81, 85</cycle>
+      <cycle>82, 86</cycle>
+      <cycle>83, 101</cycle>
+    </move>
+    <move name="B'">
+      <cycle>0, 4, 5, 2</cycle>
+      <cycle>6, 18</cycle>
+      <cycle>7, 20</cycle>
+      <cycle>8, 21</cycle>
+      <cycle>9, 22</cycle>
+      <cycle>10, 23</cycle>
+      <cycle>11, 19</cycle>
+      <cycle>30, 38, 48, 42, 32, 36, 52, 44, 34, 41, 50, 46</cycle>
+      <cycle>31, 37, 51, 43, 33, 40, 53, 45, 35, 39, 49, 47</cycle>
+      <cycle>58, 63, 77, 66</cycle>
+      <cycle>59, 75</cycle>
+      <cycle>60, 62, 76, 67</cycle>
+      <cycle>65, 69</cycle>
+      <cycle>70, 71</cycle>
+      <cycle>72, 73</cycle>
+      <cycle>78, 87</cycle>
+      <cycle>79, 88</cycle>
+      <cycle>83, 89</cycle>
+      <cycle>84, 93</cycle>
+      <cycle>85, 94</cycle>
+      <cycle>86, 95</cycle>
+    </move>
+    <move name="B">
+      <cycle>0, 2, 5, 4</cycle>
+      <cycle>6, 18</cycle>
+      <cycle>7, 20</cycle>
+      <cycle>8, 21</cycle>
+      <cycle>9, 22</cycle>
+      <cycle>10, 23</cycle>
+      <cycle>11, 19</cycle>
+      <cycle>30, 46, 50, 41, 34, 44, 52, 36, 32, 42, 48, 38</cycle>
+      <cycle>31, 47, 49, 39, 35, 45, 53, 40, 33, 43, 51, 37</cycle>
+      <cycle>58, 66, 77, 63</cycle>
+      <cycle>59, 75</cycle>
+      <cycle>60, 67, 76, 62</cycle>
+      <cycle>65, 69</cycle>
+      <cycle>70, 71</cycle>
+      <cycle>72, 73</cycle>
+      <cycle>78, 87</cycle>
+      <cycle>79, 88</cycle>
+      <cycle>83, 89</cycle>
+      <cycle>84, 93</cycle>
+      <cycle>85, 94</cycle>
+      <cycle>86, 95</cycle>
+    </move>
+    <move name="rot_yr">
+      <cycle>0, 5</cycle>
+      <cycle>1, 2</cycle>
+      <cycle>3, 4</cycle>
+      <cycle>6, 34</cycle>
+      <cycle>7, 35</cycle>
+      <cycle>8, 30</cycle>
+      <cycle>9, 31</cycle>
+      <cycle>10, 32</cycle>
+      <cycle>11, 33</cycle>
+      <cycle>12, 50</cycle>
+      <cycle>13, 49</cycle>
+      <cycle>14, 48</cycle>
+      <cycle>15, 51</cycle>
+      <cycle>16, 52</cycle>
+      <cycle>17, 53</cycle>
+      <cycle>18, 36</cycle>
+      <cycle>19, 37</cycle>
+      <cycle>20, 40</cycle>
+      <cycle>21, 41</cycle>
+      <cycle>22, 39</cycle>
+      <cycle>23, 38</cycle>
+      <cycle>24, 45</cycle>
+      <cycle>25, 46</cycle>
+      <cycle>26, 47</cycle>
+      <cycle>27, 44</cycle>
+      <cycle>28, 43</cycle>
+      <cycle>29, 42</cycle>
+      <cycle>54, 60</cycle>
+      <cycle>55, 61</cycle>
+      <cycle>56, 58</cycle>
+      <cycle>57, 59</cycle>
+      <cycle>62, 68</cycle>
+      <cycle>63, 69</cycle>
+      <cycle>64, 66</cycle>
+      <cycle>65, 67</cycle>
+      <cycle>70, 77</cycle>
+      <cycle>71, 76</cycle>
+      <cycle>72, 74</cycle>
+      <cycle>73, 75</cycle>
+      <cycle>78, 86</cycle>
+      <cycle>79, 84</cycle>
+      <cycle>80, 88</cycle>
+      <cycle>81, 89</cycle>
+      <cycle>82, 87</cycle>
+      <cycle>83, 85</cycle>
+      <cycle>90, 98</cycle>
+      <cycle>91, 96</cycle>
+      <cycle>92, 97</cycle>
+      <cycle>93, 100</cycle>
+      <cycle>94, 101</cycle>
+      <cycle>95, 99</cycle>
+    </move>
+    <move name="rot_wr">
+      <cycle>1, 2, 3, 4</cycle>
+      <cycle>6, 36, 25, 48</cycle>
+      <cycle>7, 40, 26, 51</cycle>
+      <cycle>8, 41, 29, 52</cycle>
+      <cycle>9, 39, 28, 53</cycle>
+      <cycle>10, 38, 27, 50</cycle>
+      <cycle>11, 37, 24, 49</cycle>
+      <cycle>12, 44, 23, 32</cycle>
+      <cycle>13, 45, 19, 33</cycle>
+      <cycle>14, 46, 18, 34</cycle>
+      <cycle>15, 47, 20, 35</cycle>
+      <cycle>16, 42, 21, 30</cycle>
+      <cycle>17, 43, 22, 31</cycle>
+      <cycle>54, 58, 70, 76</cycle>
+      <cycle>55, 59, 73, 74</cycle>
+      <cycle>56, 60, 71, 77</cycle>
+      <cycle>57, 61, 72, 75</cycle>
+      <cycle>62, 65, 63, 64</cycle>
+      <cycle>66, 69, 67, 68</cycle>
+      <cycle>78, 82, 98, 95</cycle>
+      <cycle>79, 80, 96, 93</cycle>
+      <cycle>81, 97, 94, 83</cycle>
+      <cycle>84, 100, 91, 88</cycle>
+      <cycle>85, 101, 92, 89</cycle>
+      <cycle>86, 99, 90, 87</cycle>
+    </move>
+    <move name="rot_wb">
+      <cycle>1, 3</cycle>
+      <cycle>2, 4</cycle>
+      <cycle>6, 25</cycle>
+      <cycle>7, 26</cycle>
+      <cycle>8, 29</cycle>
+      <cycle>9, 28</cycle>
+      <cycle>10, 27</cycle>
+      <cycle>11, 24</cycle>
+      <cycle>12, 23</cycle>
+      <cycle>13, 19</cycle>
+      <cycle>14, 18</cycle>
+      <cycle>15, 20</cycle>
+      <cycle>16, 21</cycle>
+      <cycle>17, 22</cycle>
+      <cycle>30, 42</cycle>
+      <cycle>31, 43</cycle>
+      <cycle>32, 44</cycle>
+      <cycle>33, 45</cycle>
+      <cycle>34, 46</cycle>
+      <cycle>35, 47</cycle>
+      <cycle>36, 48</cycle>
+      <cycle>37, 49</cycle>
+      <cycle>38, 50</cycle>
+      <cycle>39, 53</cycle>
+      <cycle>40, 51</cycle>
+      <cycle>41, 52</cycle>
+      <cycle>54, 70</cycle>
+      <cycle>55, 73</cycle>
+      <cycle>56, 71</cycle>
+      <cycle>57, 72</cycle>
+      <cycle>58, 76</cycle>
+      <cycle>59, 74</cycle>
+      <cycle>60, 77</cycle>
+      <cycle>61, 75</cycle>
+      <cycle>62, 63</cycle>
+      <cycle>64, 65</cycle>
+      <cycle>66, 67</cycle>
+      <cycle>68, 69</cycle>
+      <cycle>78, 98</cycle>
+      <cycle>79, 96</cycle>
+      <cycle>80, 93</cycle>
+      <cycle>81, 94</cycle>
+      <cycle>82, 95</cycle>
+      <cycle>83, 97</cycle>
+      <cycle>84, 91</cycle>
+      <cycle>85, 92</cycle>
+      <cycle>86, 90</cycle>
+      <cycle>87, 99</cycle>
+      <cycle>88, 100</cycle>
+      <cycle>89, 101</cycle>
+    </move>
+    <move name="rot_wo">
+      <cycle>1, 4, 3, 2</cycle>
+      <cycle>6, 48, 25, 36</cycle>
+      <cycle>7, 51, 26, 40</cycle>
+      <cycle>8, 52, 29, 41</cycle>
+      <cycle>9, 53, 28, 39</cycle>
+      <cycle>10, 50, 27, 38</cycle>
+      <cycle>11, 49, 24, 37</cycle>
+      <cycle>12, 32, 23, 44</cycle>
+      <cycle>13, 33, 19, 45</cycle>
+      <cycle>14, 34, 18, 46</cycle>
+      <cycle>15, 35, 20, 47</cycle>
+      <cycle>16, 30, 21, 42</cycle>
+      <cycle>17, 31, 22, 43</cycle>
+      <cycle>54, 76, 70, 58</cycle>
+      <cycle>55, 74, 73, 59</cycle>
+      <cycle>56, 77, 71, 60</cycle>
+      <cycle>57, 75, 72, 61</cycle>
+      <cycle>62, 64, 63, 65</cycle>
+      <cycle>66, 68, 67, 69</cycle>
+      <cycle>78, 95, 98, 82</cycle>
+      <cycle>79, 93, 96, 80</cycle>
+      <cycle>81, 83, 94, 97</cycle>
+      <cycle>84, 88, 91, 100</cycle>
+      <cycle>85, 89, 92, 101</cycle>
+      <cycle>86, 87, 90, 99</cycle>
+    </move>
+    <move name="rot_yb">
+      <cycle>0, 5</cycle>
+      <cycle>1, 3</cycle>
+      <cycle>6, 14</cycle>
+      <cycle>7, 15</cycle>
+      <cycle>8, 16</cycle>
+      <cycle>9, 17</cycle>
+      <cycle>10, 12</cycle>
+      <cycle>11, 13</cycle>
+      <cycle>18, 25</cycle>
+      <cycle>19, 24</cycle>
+      <cycle>20, 26</cycle>
+      <cycle>21, 29</cycle>
+      <cycle>22, 28</cycle>
+      <cycle>23, 27</cycle>
+      <cycle>30, 41</cycle>
+      <cycle>31, 39</cycle>
+      <cycle>32, 38</cycle>
+      <cycle>33, 37</cycle>
+      <cycle>34, 36</cycle>
+      <cycle>35, 40</cycle>
+      <cycle>42, 52</cycle>
+      <cycle>43, 53</cycle>
+      <cycle>44, 50</cycle>
+      <cycle>45, 49</cycle>
+      <cycle>46, 48</cycle>
+      <cycle>47, 51</cycle>
+      <cycle>54, 71</cycle>
+      <cycle>55, 72</cycle>
+      <cycle>56, 70</cycle>
+      <cycle>57, 73</cycle>
+      <cycle>58, 60</cycle>
+      <cycle>59, 61</cycle>
+      <cycle>62, 66</cycle>
+      <cycle>63, 67</cycle>
+      <cycle>64, 69</cycle>
+      <cycle>65, 68</cycle>
+      <cycle>74, 75</cycle>
+      <cycle>76, 77</cycle>
+      <cycle>78, 99</cycle>
+      <cycle>79, 100</cycle>
+      <cycle>80, 84</cycle>
+      <cycle>81, 85</cycle>
+      <cycle>82, 86</cycle>
+      <cycle>83, 101</cycle>
+      <cycle>87, 98</cycle>
+      <cycle>88, 96</cycle>
+      <cycle>89, 97</cycle>
+      <cycle>90, 95</cycle>
+      <cycle>91, 93</cycle>
+      <cycle>92, 94</cycle>
+    </move>
+    <move name="rot_yg">
+      <cycle>0, 5</cycle>
+      <cycle>2, 4</cycle>
+      <cycle>6, 18</cycle>
+      <cycle>7, 20</cycle>
+      <cycle>8, 21</cycle>
+      <cycle>9, 22</cycle>
+      <cycle>10, 23</cycle>
+      <cycle>11, 19</cycle>
+      <cycle>12, 27</cycle>
+      <cycle>13, 24</cycle>
+      <cycle>14, 25</cycle>
+      <cycle>15, 26</cycle>
+      <cycle>16, 29</cycle>
+      <cycle>17, 28</cycle>
+      <cycle>30, 52</cycle>
+      <cycle>31, 53</cycle>
+      <cycle>32, 50</cycle>
+      <cycle>33, 49</cycle>
+      <cycle>34, 48</cycle>
+      <cycle>35, 51</cycle>
+      <cycle>36, 46</cycle>
+      <cycle>37, 45</cycle>
+      <cycle>38, 44</cycle>
+      <cycle>39, 43</cycle>
+      <cycle>40, 47</cycle>
+      <cycle>41, 42</cycle>
+      <cycle>54, 56</cycle>
+      <cycle>55, 57</cycle>
+      <cycle>58, 77</cycle>
+      <cycle>59, 75</cycle>
+      <cycle>60, 76</cycle>
+      <cycle>61, 74</cycle>
+      <cycle>62, 67</cycle>
+      <cycle>63, 66</cycle>
+      <cycle>64, 68</cycle>
+      <cycle>65, 69</cycle>
+      <cycle>70, 71</cycle>
+      <cycle>72, 73</cycle>
+      <cycle>78, 87</cycle>
+      <cycle>79, 88</cycle>
+      <cycle>80, 91</cycle>
+      <cycle>81, 92</cycle>
+      <cycle>82, 90</cycle>
+      <cycle>83, 89</cycle>
+      <cycle>84, 93</cycle>
+      <cycle>85, 94</cycle>
+      <cycle>86, 95</cycle>
+      <cycle>96, 100</cycle>
+      <cycle>97, 101</cycle>
+      <cycle>98, 99</cycle>
+    </move>
+    <move name="rot_yo">
+      <cycle>0, 5</cycle>
+      <cycle>1, 4</cycle>
+      <cycle>2, 3</cycle>
+      <cycle>6, 46</cycle>
+      <cycle>7, 47</cycle>
+      <cycle>8, 42</cycle>
+      <cycle>9, 43</cycle>
+      <cycle>10, 44</cycle>
+      <cycle>11, 45</cycle>
+      <cycle>12, 38</cycle>
+      <cycle>13, 37</cycle>
+      <cycle>14, 36</cycle>
+      <cycle>15, 40</cycle>
+      <cycle>16, 41</cycle>
+      <cycle>17, 39</cycle>
+      <cycle>18, 48</cycle>
+      <cycle>19, 49</cycle>
+      <cycle>20, 51</cycle>
+      <cycle>21, 52</cycle>
+      <cycle>22, 53</cycle>
+      <cycle>23, 50</cycle>
+      <cycle>24, 33</cycle>
+      <cycle>25, 34</cycle>
+      <cycle>26, 35</cycle>
+      <cycle>27, 32</cycle>
+      <cycle>28, 31</cycle>
+      <cycle>29, 30</cycle>
+      <cycle>54, 77</cycle>
+      <cycle>55, 75</cycle>
+      <cycle>56, 76</cycle>
+      <cycle>57, 74</cycle>
+      <cycle>58, 71</cycle>
+      <cycle>59, 72</cycle>
+      <cycle>60, 70</cycle>
+      <cycle>61, 73</cycle>
+      <cycle>62, 69</cycle>
+      <cycle>63, 68</cycle>
+      <cycle>64, 67</cycle>
+      <cycle>65, 66</cycle>
+      <cycle>78, 90</cycle>
+      <cycle>79, 91</cycle>
+      <cycle>80, 100</cycle>
+      <cycle>81, 101</cycle>
+      <cycle>82, 99</cycle>
+      <cycle>83, 92</cycle>
+      <cycle>84, 96</cycle>
+      <cycle>85, 97</cycle>
+      <cycle>86, 98</cycle>
+      <cycle>87, 95</cycle>
+      <cycle>88, 93</cycle>
+      <cycle>89, 94</cycle>
+    </move>
+    <move name="alg_rot_1_edge">
+      <cycle>18, 21, 23</cycle>
+      <cycle>19, 20, 22</cycle>
+    </move>
+    <move name="alg_rot_1_edge'">
+      <cycle>18, 23, 21</cycle>
+      <cycle>19, 22, 20</cycle>
+    </move>
+    <move name="alg_swap_4_centers">
+      <cycle>0, 5</cycle>
+      <cycle>2, 4</cycle>
+    </move>
+    <move name="alg_rot_2_edges">
+      <cycle>18, 23, 21</cycle>
+      <cycle>19, 22, 20</cycle>
+      <cycle>48, 50, 52</cycle>
+      <cycle>49, 53, 51</cycle>
+    </move>
+    <move name="alg_rot_2_edges'">
+      <cycle>18, 21, 23</cycle>
+      <cycle>19, 20, 22</cycle>
+      <cycle>48, 52, 50</cycle>
+      <cycle>49, 51, 53</cycle>
+    </move>
+    <move name="alg_rot_3_edges">
+      <cycle>6, 8, 10</cycle>
+      <cycle>7, 9, 11</cycle>
+      <cycle>18, 21, 23</cycle>
+      <cycle>19, 20, 22</cycle>
+      <cycle>30, 32, 34</cycle>
+      <cycle>31, 33, 35</cycle>
+    </move>
+    <move name="alg_rot_3_edges'">
+      <cycle>6, 10, 8</cycle>
+      <cycle>7, 11, 9</cycle>
+      <cycle>18, 23, 21</cycle>
+      <cycle>19, 22, 20</cycle>
+      <cycle>30, 34, 32</cycle>
+      <cycle>31, 35, 33</cycle>
+    </move>
+    <move name="alg_cycle_3_corners">
+      <cycle>78, 90, 82</cycle>
+      <cycle>79, 91, 80</cycle>
+      <cycle>81, 83, 92</cycle>
+    </move>
+    <move name="alg_cycle_3_corners'">
+      <cycle>78, 82, 90</cycle>
+      <cycle>79, 80, 91</cycle>
+      <cycle>81, 92, 83</cycle>
+    </move>
+    <move name="alg_swap_4_corners">
+      <cycle>78, 87</cycle>
+      <cycle>79, 88</cycle>
+      <cycle>80, 100</cycle>
+      <cycle>81, 101</cycle>
+      <cycle>82, 99</cycle>
+      <cycle>83, 89</cycle>
+    </move>
+    <move name="alg_swap_4_edges">
+      <cycle>55, 72</cycle>
+      <cycle>57, 73</cycle>
+      <cycle>59, 61</cycle>
+      <cycle>74, 75</cycle>
+    </move>
+    <move name="alg_flip_4_edges">
+      <cycle>56, 68</cycle>
+      <cycle>65, 70</cycle>
+      <cycle>67, 77</cycle>
+      <cycle>69, 71</cycle>
+    </move>
+    <move name="alg_swap_4_centers_2_edges">
+      <cycle>0, 5</cycle>
+      <cycle>1, 3</cycle>
+      <cycle>63, 76</cycle>
+      <cycle>65, 70</cycle>
+    </move>
+    <move name="alg_rot_4_edges">
+      <cycle>6, 8, 10</cycle>
+      <cycle>7, 9, 11</cycle>
+      <cycle>12, 14, 16</cycle>
+      <cycle>13, 15, 17</cycle>
+      <cycle>18, 21, 23</cycle>
+      <cycle>19, 20, 22</cycle>
+      <cycle>24, 26, 28</cycle>
+      <cycle>25, 29, 27</cycle>
+    </move>
+    <move name="alg_rot_4_edges'">
+      <cycle>6, 10, 8</cycle>
+      <cycle>7, 11, 9</cycle>
+      <cycle>12, 16, 14</cycle>
+      <cycle>13, 17, 15</cycle>
+      <cycle>18, 23, 21</cycle>
+      <cycle>19, 22, 20</cycle>
+      <cycle>24, 28, 26</cycle>
+      <cycle>25, 27, 29</cycle>
+    </move>
+    <move name="alg_cycle_3_corners_rot_1_edge">
+      <cycle>24, 26, 28</cycle>
+      <cycle>25, 29, 27</cycle>
+      <cycle>80, 88, 84</cycle>
+      <cycle>81, 89, 85</cycle>
+      <cycle>82, 87, 86</cycle>
+    </move>
+    <move name="alg_cycle_3_corners_rot_1_edge'">
+      <cycle>24, 28, 26</cycle>
+      <cycle>25, 27, 29</cycle>
+      <cycle>80, 84, 88</cycle>
+      <cycle>81, 85, 89</cycle>
+      <cycle>82, 86, 87</cycle>
+    </move>
+    <move name="alg_cycle_4_centers_swap_2_edges">
+      <cycle>0, 4, 5, 2</cycle>
+      <cycle>55, 57</cycle>
+      <cycle>61, 74</cycle>
+    </move>
+    <move name="alg_cycle_4_centers_swap_2_edges'">
+      <cycle>0, 2, 5, 4</cycle>
+      <cycle>55, 57</cycle>
+      <cycle>61, 74</cycle>
+    </move>
+  </moves>
+</puzzledefinition>
+	

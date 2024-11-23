@@ -23,7 +23,8 @@ def load_test_file(test_file: str | None = None) -> tuple[dict[str, any], str]:
         root = tk.Tk()
         root.withdraw()
         test_file = askopenfilename(
-            initialdir="./src/ai_files",
+            initialdir="./src/final_models",
+            # initialdir="./src/ai_files",
             title="Select a test file",
             filetypes=[("JSON Test files", "*.json")],
         )
