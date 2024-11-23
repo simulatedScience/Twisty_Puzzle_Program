@@ -1,0 +1,14 @@
+{
+    "alg_1": "3*(R D' B D D)",
+    "alg_2": "4*(U' L' R' F B' F)",
+    "alg_2'": "4*(F' B F' R L U)",
+    "alg_3": "3*(R' F U R')",
+    "alg_3'": "3*(R U' F' R)",
+    "alg_4": "2*(L U' B F' D B L' F' R F' B D D F U F')",
+    "alg_4'": "2*(F U' F' D' D' B' F R' F L B' D' F B' U L')",
+    "alg_5": "3*(R L B F)",
+    "alg_6": "2*(D L B B R' L' D' F B D')",
+    "alg_6'": "2*(D B' F' D L R B' B' L' D')",
+    "alg_7": "3*(U' R' B')",
+    "alg_7'": "3*(B R U)"
+}

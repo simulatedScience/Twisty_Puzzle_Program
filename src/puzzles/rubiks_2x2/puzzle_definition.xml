@@ -99,62 +99,62 @@
     </point>
   </points>
   <moves>
-    <move name="r">
+    <move name="R'">
       <cycle>10, 7, 16, 13</cycle>
       <cycle>9, 8, 15, 14</cycle>
       <cycle>11, 0, 17, 12</cycle>
     </move>
-    <move name="r'">
+    <move name="R">
       <cycle>13, 16, 7, 10</cycle>
       <cycle>14, 15, 8, 9</cycle>
       <cycle>12, 17, 0, 11</cycle>
     </move>
-    <move name="t">
+    <move name="U'">
       <cycle>9, 1, 4, 0</cycle>
       <cycle>10, 2, 5, 8</cycle>
       <cycle>7, 11, 3, 6</cycle>
     </move>
-    <move name="t'">
+    <move name="U">
       <cycle>0, 4, 1, 9</cycle>
       <cycle>8, 5, 2, 10</cycle>
       <cycle>6, 3, 11, 7</cycle>
     </move>
-    <move name="f">
+    <move name="F'">
       <cycle>2, 11, 14, 22</cycle>
       <cycle>1, 10, 12, 21</cycle>
       <cycle>9, 13, 23, 3</cycle>
     </move>
-    <move name="f'">
+    <move name="F">
       <cycle>22, 14, 11, 2</cycle>
       <cycle>21, 12, 10, 1</cycle>
       <cycle>3, 23, 13, 9</cycle>
     </move>
-    <move name="l">
+    <move name="L'">
       <cycle>5, 3, 21, 20</cycle>
       <cycle>4, 2, 23, 19</cycle>
       <cycle>1, 22, 18, 6</cycle>
     </move>
-    <move name="l'">
+    <move name="L">
       <cycle>20, 21, 3, 5</cycle>
       <cycle>19, 23, 2, 4</cycle>
       <cycle>6, 18, 22, 1</cycle>
     </move>
-    <move name="d">
+    <move name="D'">
       <cycle>23, 12, 15, 18</cycle>
       <cycle>22, 13, 17, 20</cycle>
       <cycle>14, 16, 19, 21</cycle>
     </move>
-    <move name="d'">
+    <move name="D">
       <cycle>18, 15, 12, 23</cycle>
       <cycle>20, 17, 13, 22</cycle>
       <cycle>21, 19, 16, 14</cycle>
     </move>
-    <move name="b">
+    <move name="B'">
       <cycle>8, 6, 19, 17</cycle>
       <cycle>0, 5, 18, 16</cycle>
       <cycle>4, 20, 15, 7</cycle>
     </move>
-    <move name="b'">
+    <move name="B">
       <cycle>17, 19, 6, 8</cycle>
       <cycle>16, 18, 5, 0</cycle>
       <cycle>7, 15, 20, 4</cycle>
