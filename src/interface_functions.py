@@ -134,6 +134,8 @@ def interface_listpuzzles(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_co
     all_puzzles = os.listdir(puzzle_folder_path)
     print("loadable puzzles:")
     for puzzle_name in all_puzzles:
+        if "." in puzzle_name or puzzle_name.startswith("__"):
+            continue
         print(f"\t{colored(puzzle_name, arg_color)}")
 
 
@@ -495,8 +497,8 @@ def interface_load_nn(puzzle: Twisty_Puzzle, command_color="#ff8800", arg_color=
     train neural network using HER
     """
     ai_files_folder_path: str = os.path.join("src", AI_FILES_FOLDER_NAME)
-    model_path: str = pick_model(ai_files_folder_path)
-
+    model_path, n_steps = pick_model(ai_files_folder_path)
+    model_path = os.path.join(model_path, "model_snapshots", f"rl_model_{n_steps}_steps")
     # try:
     puzzle.load_nn(
         model_path=model_path,

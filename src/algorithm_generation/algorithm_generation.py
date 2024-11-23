@@ -172,7 +172,7 @@ def generate_algorithms(
                     iterations_since_new_algorithm = 0
                 # trim unnecessary algorithms when the maximum number of algorithms is reached
                 if len(found_algorithms) >= max_number_of_algorithms:
-                    print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached. Trimming algorithms.")
+                    print(f"Maximum number of algorithms ({max_number_of_algorithms}) reached. Pruning algorithms.")
                     print(f"Currently reaching {current_group_order / puzzle.state_space_size:.3%} of the group.")
                     found_algorithms = trim_algorithms_to_current_group(
                         puzzle=puzzle,

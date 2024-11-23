@@ -420,6 +420,7 @@ but was of type '{type(shape_str)}'")
         reduced_cycles = Permutation(self.active_move_cycles).cyclic_form
         # save move
         self.moves[self.active_move_name] = [cycle[:] for cycle in reduced_cycles]
+        self.base_moves = {name: cycles for name, cycles in self.moves.items() if not name[:4] in ("rot_", "alg_")}
         print(f"saved move {colored(self.active_move_name, arg_color)}.")
         # add inverse move
         cycle_lengths = [len(cycle) for cycle in reduced_cycles]
