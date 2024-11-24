@@ -56,6 +56,7 @@ def test_from_file_cli(
         test_scramble_length=test_scramble_length,
         test_max_moves=test_max_moves,
         num_tests=num_tests,
+        deterministic=False,
     )
     
     

@@ -134,7 +134,8 @@ def test_from_file(
     env = Twisty_Puzzle_Env(
         solved_state=solved_state,
         actions=actions_dict,
-        base_actions=exp_config["base_actions"],
+        base_actions=[movename for movename in actions_dict if not (movename.startswith("rot_") or movename.startswith("alg_"))],
+        # base_actions=exp_config["base_actions"],
         max_moves=test_max_moves if test_max_moves else exp_config["max_moves"],
         initial_scramble_length=exp_config["start_scramble_depth"],
         success_threshold=exp_config["success_threshold"],

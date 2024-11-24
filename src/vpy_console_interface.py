@@ -115,19 +115,19 @@ def main_interaction(load_puzzle: str = None):
                         "drawpieces": interface_draw_pieces,
                         "validate": interface_validate}
         
-        # try:
-        if validate_command(command_dict, user_input):
-            run_command(
-                command_dict=command_dict,
-                user_input=user_input,
-                puzzle=puzzle,
-                command_color=command_color,
-                arg_color=argument_color,
-                error_color=error_color,
-            )
-        # except Exception as e:
-        #     print(colored(f"Error: {e}", error_color))
-        #     print(colored("please try again", error_color))
+        try:
+            if validate_command(command_dict, user_input):
+                run_command(
+                    command_dict=command_dict,
+                    user_input=user_input,
+                    puzzle=puzzle,
+                    command_color=command_color,
+                    arg_color=argument_color,
+                    error_color=error_color,
+                )
+        except Exception as e:
+            print(colored(f"Error: {e}", error_color))
+            print(colored("please try again", error_color))
 
 
 def validate_command(command_dict, user_input):
