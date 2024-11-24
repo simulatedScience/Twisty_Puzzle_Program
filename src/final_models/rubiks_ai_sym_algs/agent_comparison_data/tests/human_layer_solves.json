@@ -1,6 +1,6 @@
 {
-    "summary": "Success rate: 4/4 = 100.0%",
-    "num_tests": 4,
+    "summary": "Success rate: 5/5 = 100.0%",
+    "num_tests": 5,
     "test_max_moves": 1000,
     "deterministic": true,
     "test_time": 0,
