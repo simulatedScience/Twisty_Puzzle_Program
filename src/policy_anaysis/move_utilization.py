@@ -73,13 +73,14 @@ def get_algorithm_utilization_data(
 
             # if move.startswith("alg_"):
             # If this algorithm is not yet tracked, initialize an empty list
-            if move not in moves_to_solved_algs:
-                moves_to_solved_algs[move] = []
-                unsolved_points_algs[move] = []
+            inv_move: str = inverse_dict[move]
+            if inv_move not in moves_to_solved_algs:
+                moves_to_solved_algs[inv_move] = []
+                unsolved_points_algs[inv_move] = []
             
             # Record data for this algorithm occurrence
-            moves_to_solved_algs[move].append(moves_to_solved)  # Moves to the solved state
-            unsolved_points_algs[move].append(n_unseolved_points)  # Number of correct points
+            moves_to_solved_algs[inv_move].append(moves_to_solved)  # Moves to the solved state
+            unsolved_points_algs[inv_move].append(n_unseolved_points)  # Number of correct points
     
     return moves_to_solved_algs, unsolved_points_algs
 
@@ -138,25 +139,31 @@ def plot_boxplot_from_dict(
         values = list(sorted_data.values())
         
         # Create the horizontal boxplot
-        bplot: dict[str, list[plt.Line2D]] = ax.boxplot(values, vert=False, patch_artist=True)
+        bplot: dict[str, list[plt.Line2D]] = ax.boxplot(
+            values,
+            whis=(5, 95),
+            vert=False,
+            patch_artist=True,
+            )
         # fill with colors
         for patch in bplot['boxes']:
             patch.set_facecolor(color)
         # Set y-ticks as algorithm names
         ax.set_yticklabels(labels)
         # Set plot labels in bold font
-        ax.set_xlabel(xlabel, fontweight="bold")
+        # ax.set_xlabel(xlabel, fontweight="bold")
         ax.set_ylabel(ylabel, fontweight="bold")
+    fig.supxlabel(xlabel, fontweight="bold")
     fig.tight_layout()
-    fig.subplots_adjust(
-        left=0.1, #0.05 to 0.2
-        bottom=0.1,
-        right=0.99,
-        top=0.92,
-        wspace=0.25)
+    # fig.subplots_adjust(
+    #     left=0.1, #0.05 to 0.2
+    #     bottom=0.1,
+    #     right=0.99,
+    #     top=0.92,
+    #     wspace=0.25)
     
     # Set plot labels and title
-    fig.suptitle(title, fontweight="bold")
+    # fig.suptitle(title, fontweight="bold")
     
     # Display the plot
     if save_path:
@@ -195,14 +202,16 @@ def main(
     # Create boxplots
     plot_boxplot_from_dict(
         moves_to_solved_algs,
-        title="Moves to Solved State for Each Action",
-        xlabel="Moves to Solved State",
+        # title="Moves to Solved State for Each Action",
+        title="",
+        xlabel="moves to solved state",
         ylabels=("algorithm", "rotation", "move"),
         save_path=get_policy_savepath(test_file_path, "action_usage_over_moves_to_solved")+".png")
     plot_boxplot_from_dict(
         unsolved_points_algs,
-        title="Unsolved Points for Each Action",
-        xlabel="Unsolved Points",
+        # title="Unsolved Points for Each Action",
+        title="",
+        xlabel="number of unsolved points",
         ylabels=("algorithm", "rotation", "move"),
         save_path=get_policy_savepath(test_file_path, "action_usage_over_unsolved_points")+".png")
     os._exit(0)

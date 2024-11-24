@@ -4,12 +4,19 @@ Let the user choose a test file, then analyse all successful episodes in it to c
 
 from collections import Counter
 
+import os, sys, inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+parent2dir = os.path.dirname(parentdir)
+sys.path.insert(0,parent2dir)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge, Circle
 from matplotlib.transforms import IdentityTransform
 
-# from src.interaction_modules.ai_file_management import get_policy_savepath
+from src.interaction_modules.ai_file_management import load_test_file
+from src.interaction_modules.ai_file_management import get_policy_savepath
 
 def get_successful_runs(run_info):
     """Return all successful runs from run_info."""
@@ -123,7 +130,7 @@ def draw_pie_chart(
     # add text above pie chart
     ax.text(
         position[0],
-        position[1] - radius * 1.1,
+        position[1] - radius * 1.2,
         "Action Types\nDistribution",
         ha='center',
         va='top',
@@ -166,13 +173,15 @@ def plot_action_histogram(
 
     # Calculate relative frequencies (as percentages)
     counts_percentage = [(count / total_actions) * 100 for count in counts]
-    
+
     # Assign colors from the color_list
     colors = [color_list[0]] * len(sorted_alg) + [color_list[1]] * len(sorted_rot) + [color_list[2]] * len(sorted_base)
     
     # Create the bar plot
-    fig: plt.Figure = plt.figure(figsize=(12, 6))
-    ax = fig.add_subplot(111)
+    # fig: plt.Figure = plt.figure(figsize=(12, 6))
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=((len(counts_percentage)+5)/3, (15)/3), width_ratios=(len(counts_percentage), 3))
+    ax = axes[0]
+    ax2 = axes[1]
     label_actions = [f"{action}" for action in actions]
     bars = ax.bar(label_actions, counts_percentage, color=colors)
     # Add text labels on top of each bar
@@ -199,7 +208,7 @@ def plot_action_histogram(
         if freq > 0:
             reduced_handles.append(handle)
             reduced_labels.append(label)
-    legend = ax.legend(
+    legend = ax2.legend(
         handles=reduced_handles, 
         labels=reduced_labels,
         loc='upper center',
@@ -211,50 +220,51 @@ def plot_action_histogram(
     
     # Draw the pie chart
     y_lim: float = max(counts_percentage)
-    pie_radius: float = y_lim * 0.09
-    legend_pie_gap: float = pie_radius / 2
-    pie_x_coord: float = len(actions)*0.6 - (legend_width_data_coords + legend_pie_gap) / 2
-    pie_position: tuple[float, float] = (pie_x_coord, 0.9 * y_lim)
+    # pie_radius: float = y_lim * 0.09
+    # legend_pie_gap: float = pie_radius / 2
+    # pie_x_coord: float = len(actions)*0.6 - (legend_width_data_coords + legend_pie_gap) / 2
+    # pie_position: tuple[float, float] = (pie_x_coord, 0.9 * y_lim)
+    pie_radius: float = 0.8*y_lim
+    pie_position: tuple[float, float] = (0, 2*y_lim)
     draw_pie_chart(
-        ax=ax,
+        ax=ax2,
         data=pie_data,
         colors=color_list,
         labels=["Algorithms", "Rotations", "Base Moves"],
         position=pie_position,
         size=2*pie_radius,
     )
+    ax2.axis("off")
+    ax2.set_xlim(-1*y_lim,1*y_lim)
+    ax2.set_ylim(0, 5*y_lim)
     # move legend next to pie chart
     fig.canvas.draw()
-    new_legend_loc = ax.transAxes.inverted().transform(
-        ax.transData.transform((
-                pie_position[0] + pie_radius + legend_pie_gap,
-                pie_position[1] - pie_radius
-            )
-        )
-    )
-    print(f"{new_legend_loc = }")
-    legend.set_loc(new_legend_loc)
+    # new_legend_loc = ax.transAxes.inverted().transform(
+    #     ax.transData.transform((
+    #             pie_position[0] + pie_radius + legend_pie_gap,
+    #             pie_position[1] - pie_radius
+    #         )
+    #     )
+    # )
+    # print(f"{new_legend_loc = }")
+    # legend.set_loc(new_legend_loc)
     # Adding gridlines with color #ddd
     ax.grid(True, axis='y', color='#ddd')
     
     # Labeling and title
-    ax.set_xlabel("Actions")
-    ax.set_ylabel("Relative Frequency (%)")
-    ax.set_title("Histogram of Actions by Category (Relative Frequency)")
+    ax.set_xlabel("action")
+    ax.set_ylabel("relative frequency (%)")
+    # ax.set_title("Action Histogram by Category")
     ax.set_xticks(range(len(actions)),actions, rotation=90)  # Rotate action labels for better visibility
 
     fig.tight_layout()
-    # save_path: str = get_policy_savepath()
+    save_path: str = get_policy_savepath(test_file_path=test_file_path, file_base_name="action_histogram")
+    fig.savefig(save_path, dpi=300)
+    print(f"Saved plot to {save_path}.png.")
     plt.show()
 
 
 if __name__ == "__main__":
-    import os, sys, inspect
-    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    parentdir = os.path.dirname(currentdir)
-    parent2dir = os.path.dirname(parentdir)
-    sys.path.insert(0,parent2dir)
-    from src.interaction_modules.ai_file_management import load_test_file
     
     data, test_file_path = load_test_file()
     # data, test_file_path = load_test_file(r"C:/Users/basti/Documents/programming/python/Twisty_Puzzle_Program/src/ai_files/cube_2x2x2_sym_algs/2024-11-11_12-30-52/tests/test_2024-11-11_12-39-01.json")
