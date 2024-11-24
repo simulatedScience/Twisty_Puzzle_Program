@@ -1,5 +1,5 @@
 # Possible Improvements
-This is an incomplete list of all the potential improvements to the program that I am aware of. It is not sorted by priority or feasibility. Almost every major aspect of this project can be improved in some way, but I need to prioritize which features to implement and which ones to leave out or postpone.
+This is an incomplete list of the potential improvements to the program that I am aware of. It is not sorted by priority or feasibility. Almost every major aspect of this project can be improved in some way, but I need to prioritize which features to implement and which ones to leave out or postpone.
 
 ## Puzzle Simulator
 ### Puzzle Definition

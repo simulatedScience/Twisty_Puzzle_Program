@@ -47,11 +47,11 @@ There are three different automated solvers implemented in the program:
 3. An RL-based solver that trains an artificial neural network using PPO. This is by far the most capable solver. It learns to solve the 3x3x3 Rubik's cube in a few hours. This is the only solver that benefits from a GPU.
 
 To train an AI using the RL solver, we strongly recommend adding symmetry and algorithm moves to the puzzle first. For large puzzles, this can significantly reduce training times. (For small ones it may not matter much or increase training times slightly.)
-1. Detect rotational symmetries using `src/algorithm_generation/move_com_symmetry_detection.py` and define moves for them.  
+1. Detect rotational symmetries using the command `findsymmetries` in the main CLI or by running `src/algorithm_generation/move_com_symmetry_detection.py`. This creates a new version of the selected puzzle with added moves for each rotational symmetry.  
    Resulting moves are named `rot_[c1][c2]`, where c1 is the first letter of the color rotated to the white face and c2 is the first letter of the color rotated to the green or lime face (if they exist). Otherwise, rotations have numeric names.
-2. Generate Algorithms using `src/algorithm_generation/algorithm_generation_CLI.py`.  
-   This script generates algorithms for a given puzzle. It is highly recommended to use this on puzzles with symmetry moves already defined. (move names starting with `rot_`, turning the whole puzzle in space). This prevents finding many algorithms that are just rotations of each other.
-3. Train the AI using `src/ai_modules/nn_rl_testing.py` or `src/ai_modules/nn_rl_training.py`
+2. Generate Algorithms using the command `genalgs` in the main CLI or by running `src/algorithm_generation/algorithm_generation_CLI.py`.  
+   This generates algorithms for a given puzzle. It is highly recommended to use this on puzzles with symmetry moves already defined. (move names starting with `rot_`, turning the whole puzzle in space). This prevents finding many algorithms that are just rotations of each other. In the script, several parameters can be adjusted before algorithms are generated. These adjustments are currently not possible in the main CLI.
+3. Train the AI using `src/ai_modules/nn_rl_testing.py` or `src/ai_modules/nn_rl_training.py` Since training can take several hours for puzzles like the Rubik's Cube, this is not integrated into the main CLI.
 
 When training a model, you can continue from an existing model by providing the experiment folder name (found at `src/ai_files/[puzzlename]/[exp_folder]`) to the `load_model` parameter of `train_and_test_agent()` or `train_agent()`. This will load the latest model trained in that experiment. The `training_info.json` file detailing the training process will then include a reference to the model that was used as a starting point. The other training parameters can be different on the continued training.
 
@@ -65,10 +65,13 @@ There are three main ways of evaluating the learned policy of an AI:
 Finally, for RL agents, there are more tools implemented:
 1. test AI on random scrambles `src/ai_modules/nn_rl_testing.test_from_file()`  
    Results are solved in test files to be evaluated later. This already prints a success rate.
-2. Visualize test data using three provided tools:
+2. Visualize test data using four provided tools:
    1. Action histograms `src/policy_analysis/action_histogram.py`  
-    Shows how often each action was chosen.
+      Shows how often each action was chosen.
    2. Move utilization plots `src/policy_analysis/move_utilization.py`  
       Shows when during the solve each move was usually used. This can enable insights into the agents strategy.
-    3. Solution strategy visualization `src/policy_analysis/strategy_visualization.py`  
+   3. Move sequence pattern analysis `src/policy_analysis/action_sequence_patterns.py`  
+      Find the most common move patterns in an agent's solutions and plot their relative frequencies.
+   4. Solution strategy visualization `src/policy_analysis/strategy_visualization.py`  
+      This is not really working yet. The visualizations don't match what most humans would expect from this concept and aren't all that helpful because of it.
       Shows the order in which the points of the puzzle were solved on average. This can expose patterns like solving a specific face or piece type first.
