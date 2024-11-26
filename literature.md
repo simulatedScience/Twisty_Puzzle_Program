@@ -216,7 +216,7 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
 - **Modelling Perumtation puzzles** - Solving Puzzles related to Permutation Groups
   - [paper](https://dl.acm.org/doi/abs/10.1145/281508.281611), [pdf](https://dl.acm.org/doi/pdf/10.1145/281508.281611)
   - gives state space sizes for many popular twisty puzzles including Rubiks 2x2, 3x3, 4x4, Hungarian Rings (listed as "Pretzel"), Nintendo Barrel and Square One (listed as "MegaChallenger").
-  - roughly describes techniques for modelling puzzles like the Nintendo Barrel using monooids and permutation groups.
+  - roughly describes techniques for modelling puzzles like the Nintendo Barrel using monoids and permutation groups.
   - briefly mentions the difficulty of finding legal moves in the Square-1 puzzle, solving this with a 3d model.
   ```BibTex
   @inproceedings{10.1145/281508.281611,
