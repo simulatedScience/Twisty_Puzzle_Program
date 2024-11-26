@@ -196,7 +196,7 @@ author = {Agostinelli, Forest, McAleer, Stephen, Shmakov, Alexander, Baldi, Pier
   - [link](https://mathstrek.blog/2018/06/21/solving-permutation-based-puzzles/)
 
 - **An Algorithm for Solving the Factorization Problem in Permutation Groups**
-  - [paper](https://doi.org/10.1006/JSCO.1998.0202) by Torsten Minkwith (1998), Karlsruhe, [pdf](https://www.sciencedirect.com/science/article/pii/S0747717198902024?via%3Dihub)
+  - [paper](https://doi.org/10.1006/JSCO.1998.0202) by Torsten Minkwitz (1998), Karlsruhe, [pdf](https://www.sciencedirect.com/science/article/pii/S0747717198902024?via%3Dihub)
 ```BibTex
 @article{MINKWITZ199889,
   title = {An Algorithm for Solving the Factorization Problem in Permutation Groups},
