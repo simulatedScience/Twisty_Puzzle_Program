@@ -1,0 +1,10 @@
+{
+    "max_time": 300,
+    "max_base_sequence_length": 16,
+    "max_move_sequence_order": 200,
+    "max_algorithm_moves": 150,
+    "max_algorithm_order": 4,
+    "max_pieces_affected": 4,
+    "max_number_of_algorithms": 48,
+    "max_iterations_without_new_algorithm": 5000
+}
