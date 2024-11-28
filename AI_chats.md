@@ -34,3 +34,6 @@
 
 - GPT-4o 03.11.2024 [Covnerting two old files to new JSON format](https://chatgpt.com/share/67280a0d-7704-8007-8e27-0ea91a278d66)
   _I converted my code to output and expect algorithm moves files in json instead of txt format. To translate old files quickly, I used ChatGPT. The outputs were directly copied since they worked immediately. This saved a few minutes of tedious work._
+
+- GPT-4o 18.11.2024 [Implement plotting of TensorBoard data](https://chatgpt.com/share/67471819-ad94-8007-9c0a-b209ec6bf857)
+  _I used this code to load the tensorboard log files to then plot them in a customized way with matplotlib. ChatGPT helped to implement this slightly faster than I would have been able to without it. Generating the code required involved several iterations and some external sources. For the refinements of the initial solution, I only copied very small fragments from the new chat outputs._
