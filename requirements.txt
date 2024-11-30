@@ -4,7 +4,7 @@ txaio==22.2.1               # 3d-visualisation for vpython
 colored==1.4.4              # colored terminal outputs
 lxml==5.2.2                 # read/write xml files
 sympy==1.12.1               # to calculate number of states of a puzzle
-scipy                       # combinatorics
+scipy==1.13.1               # optimization for symmetry detection
 # keras                     # old neural networks
 numpy==1.26.4               # numerical operations
 tqdm==4.66.4                # progress bar
