@@ -17,6 +17,8 @@ models/*
 # ignore test files
 tests/state compression tests/*
 !tests/state compression tests/*.py
+
+complementary_programs
 # ignore videos (demonstrations)
 *.mp4
 # ignore colelcted literature
