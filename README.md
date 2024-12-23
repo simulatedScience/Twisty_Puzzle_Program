@@ -1,4 +1,4 @@
-# Twisty_Puzzle_Program
+# Twisty Puzzle Program - Simulator and AI solver
 A Program to digitize many twisty puzzles and solve them with an AI using Reinforcement Learning and automatic algorithm generation.
 
 This project includes a new twisty puzzle simulator for permutation puzzles as well as different solvers. The program can detect rotational symmetries of puzzles, find useful algorithms to solve them and then train an AI to solve the puzzle using Reinforcement Learning, making use of the generated algorithms and rotational symmetries.
