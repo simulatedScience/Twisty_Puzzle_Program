@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 # from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 from tensorflow.python.summary.summary_iterator import summary_iterator # ? (suggested by stackoverflow)
 import numpy as np
+# set mpl dpi
+plt.rcParams['figure.dpi'] = 200
 
 # Function to extract data from TensorBoard logs
 def extract_tensorboard_data(filepaths, tag):
@@ -26,12 +28,14 @@ def extract_tensorboard_data(filepaths, tag):
     return data
 
 # Function to plot data on a given axis
-def plot_data(ax, data, color_base, linestyle, alpha_step: float = 0.4, labels: list[str] = None, **kwargs):
+def plot_data(ax, data, color_base, linestyles: str | list[str], alpha_step: float = 0.4, labels: list[str] = None, **kwargs):
     num_lines = len(data)
     alpha_values = [1 - alpha_step*i for i in range(num_lines)]
     if not labels:
         labels = [None] * num_lines
-    for (steps, values), alpha, label in zip(data, alpha_values, labels):
+    if isinstance(linestyles, str):
+        linestyles = [linestyles] * num_lines
+    for (steps, values), alpha, linestyle, label in zip(data, alpha_values, linestyles, labels):
         ax.plot(steps, values, linestyle=linestyle, color=color_base, alpha=alpha, label=label, **kwargs)
 
 # Main function to load data and plot
@@ -52,15 +56,20 @@ def main(
     # Create the figure and axes
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8))
 
+    if len(labels) <= 4:
+        linestyles: list[str] = ["-", ":", "--", "-."][:len(labels)]
+    else:
+        linestyles: list[str] = ["-"] * len(labels)
+
     # Plot dense agents (blue, dashed lines)
-    plot_data(ax1, dense_len_data, dense_color, linestyle='-', labels=["dense, " + label for label in labels], alpha_step=alpha_step)
-    plot_data(ax2, dense_reward_data, dense_color, linestyle='-', alpha_step=alpha_step)
+    plot_data(ax1, dense_len_data, dense_color, linestyles=linestyles, labels=["dense, " + label for label in labels], alpha_step=alpha_step)
+    plot_data(ax2, dense_reward_data, dense_color, linestyles=linestyles, alpha_step=alpha_step)
 
     # Plot binary agents' data (red, solid)
-    plot_data(ax1, binary_len_data, binary_color, linestyle='-', labels=["binary, " + label for label in labels], alpha_step=alpha_step)
+    plot_data(ax1, binary_len_data, binary_color, linestyles=linestyles, labels=["binary, " + label for label in labels], alpha_step=alpha_step)
     # Create secondary y-axis for binary agents' rewards
     ax2_right = ax2.twinx()
-    plot_data(ax2_right, binary_reward_data, binary_color, linestyle='-', alpha_step=alpha_step)
+    plot_data(ax2_right, binary_reward_data, binary_color, linestyles=linestyles, alpha_step=alpha_step)
 
     # Configure axes and legends
     ax1.set_ylabel('average episode length')
@@ -109,9 +118,9 @@ if __name__ == "__main__":
         binary_paths,
         labels=[
             # "2x2x2 Cube",
-            "3x3x2 Cuboid",
+            # "3x3x2 Cuboid",
             "3x3x3 Cube",
-            "picture Cube",
+            # "picture Cube",
             ],
         alpha_step=0.5,
         )

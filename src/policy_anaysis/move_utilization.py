@@ -220,5 +220,5 @@ if __name__ == "__main__":
     # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\ai_files\cube_3x3x3_sym_algs\2024-09-28_23-37-59\tests\test_2024-09-29_05-31-09.json")
     # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\agent_comparison_data\tests\deepcubeA_solves.json")
     # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\agent_comparison_data\tests\human_layer_solves.json")
-    # main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\2024-11-21_18-16-39_dense\tests\test_2024-11-21_22-07-42.json")
-    main()
+    main(r"C:\Users\basti\Documents\programming\python\Twisty_Puzzle_Program\src\final_models\rubiks_ai_sym_algs\2024-11-21_18-16-39_dense\tests\test_2024-11-21_22-07-42.json")
+    # main()
