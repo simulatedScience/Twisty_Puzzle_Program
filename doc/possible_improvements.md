@@ -25,6 +25,8 @@ This is an incomplete list of the potential improvements to the program that I a
   Edge or corner turning moves in current puzzles are named using the first letter of the colors they affect. E.g. "wb" turns the white-blue edge 180°, "wgr" the white-green-red corner 120°, turning white towards green. This naming could be automated.
 - Add support for invisible points to enable more shapeshifting puzzles.  
   E.g. shapeshifting cuboids where 90° turns are possible on non-square faces.
+- Implement lower bound for state space size (computed from upper bound, partially done)
+- Try to find a faster way to calculate state space size.
 
 ### Visuals
 - Add more clip shapes to draw 3D pieces:  
@@ -82,6 +84,7 @@ This is an incomplete list of the potential improvements to the program that I a
   2. Detect useful patterns of algorithms and store them across puzzles as algorithm templates. Then, insert moves or move sequences into these templates to generate new algorithms. E.g. in a template `A B A'`, set `A = F U` and `B = R` to get `F U R U' F'` as a new potential algorithm.
 
 ## AI Solver
+- Integrate NN solver in the A* search. This should only take a few minutes to add as it's already well-prepared.
 - make NN architecture flexible. Currently uses the default sb3 policy for PPO (2 dense hidden layers with 64 neurons each).  
   This works well for all tested puzzles so far, but different architectures and parameter counts could reduce training time or improve performance of trained agents.
 - experiment with different RL algorithms.  
