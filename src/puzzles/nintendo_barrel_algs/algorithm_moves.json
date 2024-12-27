@@ -1,0 +1,18 @@
+{
+    "alg_1": "2*(s tl bl s bl bl bl s br s tr bl bl tr s tl)",
+    "alg_1'": "2*(tr s tl br br tl s bl s br br br s br tr s)",
+    "alg_2": "8*(bl tl tl s tl br tl s)",
+    "alg_2'": "8*(s tr bl tr s tr tr br)",
+    "alg_3": "5*(bl tr s br s tr br s tr tr s tl tl)",
+    "alg_3'": "5*(tr tr s tl tl s bl tl s bl s tl br)",
+    "alg_4": "5*(bl tr s bl bl tl br tl br s tl br s bl s)",
+    "alg_4'": "5*(s br s bl tr s bl tr bl tr br br s tl br)",
+    "alg_5": "10*(br s tr s br s tl s tr)",
+    "alg_5'": "10*(tl s tr s bl s tl s bl)",
+    "alg_6": "6*(s tl tl s br)",
+    "alg_7": "6*(s tr s bl bl)",
+    "alg_8": "6*(s tr tr s bl)",
+    "alg_9": "6*(tr bl tr br s br s tr)",
+    "alg_10": "6*(tl s tr tr br br tl tl s)",
+    "alg_11": "10*(s tr tr s tr br)"
+}
