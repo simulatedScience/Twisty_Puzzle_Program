@@ -2,7 +2,6 @@
 implementation of an A* algorithm for solving a given twisty puzzle
 """
 import time
-from copy import deepcopy
 
 import numpy as np
 from sortedcontainers import SortedDict
@@ -21,6 +20,8 @@ def solve_puzzle(
         max_time: float = 60,
         WEIGHT: float = 0.1):
     """
+    The the puzzle starting from [start_state] and find a sequence of actions that leads to the solved state. This uses a weighted A* search algorithm where the distance-to-goal heuristic is determined by the given ai_class.
+    
     inputs:
     -------
         start_state - (list) - scrambled state of the puzzle, that shall be solved
